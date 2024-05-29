@@ -1,5 +1,6 @@
 <template>
-  <h1>Jason</h1>
+  <h1>MEi</h1>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex ad fugit doloribus commodi adipisci, molestias nobis fuga libero necessitatibus repudiandae, harum exercitationem omnis explicabo accusantium optio maxime. Officia, ipsam mollitia!</p>
 </template>
 
 <script>
@@ -10,6 +11,10 @@ export default {
 
 <style lang="scss" scoped>
 h1 {
-  color: $colorRed;
+  color: $irishcoffee;
 }
+p{
+  color: $irishcoffee;
+}
+
 </style>
