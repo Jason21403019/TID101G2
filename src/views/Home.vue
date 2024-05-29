@@ -1,5 +1,5 @@
 <template>
-  <h1>Jason</h1>
+  <div></div>
 </template>
 
 <script>
@@ -8,8 +8,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-h1 {
-  color: $colorRed;
-}
-</style>
+<style lang="scss" scoped></style>
