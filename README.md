@@ -8,7 +8,7 @@ A single page app [Vite](https://vitejs.dev) starter template, created to easily
 - Pinia for state management
 - Vue Router 4 for client-side routing
 - Bootstrap 5.2 for layout and styling
-- SCSS variables inside Vue components
+- SCSS styles inside Vue components
 - Purgecss for eliminating unused CSS
 - Basic multiple layouts feature
 - ESLint config based on `eslint:recommended` with sensible defaults :relaxed:
