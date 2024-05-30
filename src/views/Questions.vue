@@ -246,19 +246,17 @@ export default {
 
 <style lang="scss" scoped>
 // @import '.';
-section{
+section {
   background: $negroni;
   height: 100%;
-  
-  .wrapper {
 
-  
+  .wrapper {
     border: 1px solid blue;
     width: 88.89%;
     margin: 0 auto;
     height: 100%;
- 
-  // margin: 0; /* 移除預設邊距 */
+
+    // margin: 0; /* 移除預設邊距 */
     .banner {
       width: 67.3%;
       width: 100%;
@@ -277,15 +275,11 @@ section{
         font-weight: bold;
       }
     }
-  .container{
-    width: 100%;
-    margin: 0 auto;
+    .container {
+      width: 100%;
+      margin: 0 auto;
     }
-}
-
-
-
-
+  }
 
   .box {
     border: 1px solid $ramos-gin-fizz;
@@ -298,25 +292,25 @@ section{
     .accordion {
       --bs-accordion-btn-focus-box-shadow: none !important;
 
-      .accordion-item{
+      .accordion-item {
         width: 95%;
         margin: 0 auto;
         border-bottom: 1px solid $ramos-gin-fizz;
       }
 
-      .accordion-item:nth-child(3){
+      .accordion-item:nth-child(3) {
         border-bottom: none;
       }
 
-      .accordion-collapse{
+      .accordion-collapse {
         border-bottom: none;
       }
 
-      .accordion-body{
+      .accordion-body {
         margin-left: 30px;
         margin-bottom: 10px;
       }
-   
+
       .accordion-button::after {
         display: none;
       }
@@ -326,12 +320,5 @@ section{
       }
     }
   }
-
 }
-
-
-
-
-
-
 </style>
