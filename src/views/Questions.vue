@@ -9,7 +9,7 @@
       <div class="container">
 
         <div class="box col-xxl-12 fs-1 mt-5">
-          <p class="mt-3 ms-2">購物流程說明</p>
+          <p class="mt-4 ms-5">購物流程說明</p>
 
           <div class="accordion accordion-flush" id="accordionFlushExample1">
             <div v-for="(item, index) in shoppingItems" :key="index" class="accordion-item bg-transparent"
@@ -36,7 +36,7 @@
 
      
         <div class="box col-xxl-12 fs-1 mt-5">
-          <p class="mt-3 ms-2">付款問題</p>
+          <p class="mt-4 ms-5">付款問題</p>
 
           <div class="accordion accordion-flush" id="accordionFlushExample2">
             <div v-for="(item, index) in paymentItems" :key="index" class="accordion-item bg-transparent"
@@ -63,7 +63,7 @@
 
       
         <div class="box col-xxl-12 fs-1 mt-5">
-          <p class="mt-3 ms-2">配送和運費問題</p>
+          <p class="mt-4 ms-5">配送和運費問題</p>
 
           <div class="accordion accordion-flush" id="accordionFlushExample3">
             <div v-for="(item, index) in shipItems" :key="index" class="accordion-item bg-transparent"
@@ -90,7 +90,7 @@
 
      
         <div class="box col-xxl-12 fs-1 mt-5">
-          <p class="mt-3 ms-2">會員制度說明</p>
+          <p class="mt-4 ms-5">會員制度說明</p>
 
           <div class="accordion accordion-flush" id="accordionFlushExample4">
             <div v-for="(item, index) in memberItems" :key="index" class="accordion-item bg-transparent"
@@ -215,16 +215,17 @@ export default {
 
 
 <style lang="scss" scoped>
-// @import '.';
+
 section{
   background: $negroni;
-  .wrapper {
-
+  height: 100%;
   
-    border: 1px solid blue;
+  .wrapper {
+    // border: 1px solid blue;
     width: 88.89%;
     margin: 0 auto;
-    height: 100%;
+    
+   
  
   // margin: 0; /* 移除預設邊距 */
     .banner {
@@ -233,7 +234,7 @@ section{
       height: 600px;
       // border: 1px solid yellow;
       overflow: hidden;
-      margin-top: 100px;
+      // margin-top: 100px;
       background: url('../imgs/QAImg/close-up-delicious-drinks.jpg');
     
       .title {
@@ -247,17 +248,17 @@ section{
       }
     
     }
-  .container{
-    width: 100%;
-    margin: 0 auto;
-    }
+  
 }
 
 
-
-
-
-  .box {
+.container{
+    width: 100%;
+    margin: 0 auto;
+    // border: 1px solid $ramos-gin-fizz;
+    // margin-bottom: 30px;
+   
+    .box {
     border: 1px solid $ramos-gin-fizz;
     border-radius: 8px;
     width: 100%;
@@ -268,19 +269,58 @@ section{
 
     .accordion {
       --bs-accordion-btn-focus-box-shadow: none !important;
-    }
-    .accordion-button::after {
-      display: none;
-    }
 
-    button {
-      background-color: transparent;
+      .accordion-item{
+        width: 95%;
+        margin: 0 auto;
+        border-bottom: 1px solid $ramos-gin-fizz;
+      }
+
+      .accordion-item:nth-child(3){
+        border-bottom: none;
+      }
+
+      .accordion-collapse{
+        border-bottom: none;
+      }
+
+      .accordion-body{
+        margin-left: 30px;
+        margin-bottom: 10px;
+      }
+   
+      .accordion-button::after {
+        display: none;
+      }
+
+      button {
+        background-color: transparent;
+      }
     }
  
   }
 
+  // .box:nth-child(4){
+  //   margin-bottom: 50px;
+  // }
+
 }
 
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+  
 
 
 
