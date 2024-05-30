@@ -35,7 +35,7 @@
           <router-link to="/" class="header__link item4">熱門商品</router-link>
           <router-link to="/" class="header__link item5">測驗遊戲</router-link>
           <router-link to="/" class="header__link item6">酒品專欄</router-link>
-          <router-link to="/" class="header__link item7">常見問題</router-link>
+          <router-link to="/question" class="header__link item7">常見問題</router-link>
         </li>
       </ul>
     </nav>
