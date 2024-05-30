@@ -1,5 +1,5 @@
 import App from './App.vue'
-import Default from '@/layouts/default/Default.vue'
+import Default from './layouts/default/Default.vue'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { router } from './router'
