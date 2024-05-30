@@ -5,7 +5,6 @@
       <div class="banner mx-auto">
         <h1 class="title text-center text-white">F&Q</h1>
       </div>
-
       <div class="container">
         <div class="box col-xxl-12 fs-1 mt-5">
           <p class="mt-4 ms-5">購物流程說明</p>
@@ -246,19 +245,18 @@ export default {
 
 <style lang="scss" scoped>
 // @import '.';
-section{
+section {
   background: $negroni;
   height: 100%;
-  
+  padding-bottom: 100px;
   .wrapper {
-
-  
-    border: 1px solid blue;
+    // border: 1px solid blue;
     width: 88.89%;
     margin: 0 auto;
     height: 100%;
- 
-  // margin: 0; /* 移除預設邊距 */
+    margin-bottom: 50px;
+
+    // margin: 0; /* 移除預設邊距 */
     .banner {
       width: 67.3%;
       width: 100%;
@@ -275,63 +273,56 @@ section{
         font-size: 5rem;
         letter-spacing: 20px;
         font-weight: bold;
+        font-family: $fontfamily-en;
       }
     }
-  .container{
-    width: 100%;
-    margin: 0 auto;
-    }
-}
+    .container {
+      width: 100%;
+      margin: 0 auto;
+      margin-bottom: 50px;
 
+      .box {
+        border: 1px solid $ramos-gin-fizz;
+        border-radius: 8px;
+        width: 100%;
+        p {
+          font-family: $fontfamily;
+          color: $ramos-gin-fizz;
+        }
 
+        .accordion {
+          --bs-accordion-btn-focus-box-shadow: none !important;
 
+          .accordion-item {
+            width: 95%;
+            margin: 0 auto;
+            border-bottom: 1px solid $ramos-gin-fizz;
+            font-family: $fontfamily;
+          }
 
+          .accordion-item:nth-child(3) {
+            border-bottom: none;
+          }
 
-  .box {
-    border: 1px solid $ramos-gin-fizz;
-    border-radius: 8px;
-    width: 100%;
-    p {
-      color: $ramos-gin-fizz;
-    }
+          .accordion-collapse {
+            border-bottom: none;
+          }
 
-    .accordion {
-      --bs-accordion-btn-focus-box-shadow: none !important;
+          .accordion-body {
+            margin-left: 30px;
+            margin-bottom: 10px;
+          }
 
-      .accordion-item{
-        width: 95%;
-        margin: 0 auto;
-        border-bottom: 1px solid $ramos-gin-fizz;
-      }
+          .accordion-button::after {
+            display: none;
+          }
 
-      .accordion-item:nth-child(3){
-        border-bottom: none;
-      }
-
-      .accordion-collapse{
-        border-bottom: none;
-      }
-
-      .accordion-body{
-        margin-left: 30px;
-        margin-bottom: 10px;
-      }
-   
-      .accordion-button::after {
-        display: none;
-      }
-
-      button {
-        background-color: transparent;
+          button {
+            background-color: transparent;
+          }
+        }
       }
     }
   }
-
 }
-
-
-
-
-
-
 </style>
