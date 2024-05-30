@@ -155,6 +155,7 @@
 
 <script>
 export default {
+  name: 'Questions',
   data() {
     return {
       shoppingItems: [
