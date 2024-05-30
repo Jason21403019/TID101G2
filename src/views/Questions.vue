@@ -51,7 +51,7 @@
               </h2>
               <div :id="'flush-collapse-payment-' + index" class="accordion-collapse collapse"
                 :aria-labelledby="'flush-heading-payment-' + index" data-bs-parent="#accordionFlushExample2">
-                <div class="accordion-body fs-5 ml-2">
+                <div class="accordion-body fs-5">
                   {{ item.content }}
                 </div>
               </div>
@@ -146,7 +146,7 @@ export default {
       paymentItems: [
         {
           title: '有哪些付款方式可供選擇?',
-          content: '我們目前只接受信用卡支付。',
+          content: '我們目前只接受信用卡支付，',
           isPlusIcon: true
         },
         {
@@ -215,15 +215,17 @@ export default {
 
 
 <style lang="scss" scoped>
+
 section{
   background: $negroni;
-  .wrapper {
-
+  height: 100%;
   
+  .wrapper {
     // border: 1px solid blue;
     width: 88.89%;
     margin: 0 auto;
-    height: 100%;
+    
+   
  
   // margin: 0; /* 移除預設邊距 */
     .banner {
@@ -246,17 +248,17 @@ section{
       }
     
     }
-  .container{
-    width: 100%;
-    margin: 0 auto;
-    }
+  
 }
 
 
-
-
-
-  .box {
+.container{
+    width: 100%;
+    margin: 0 auto;
+    // border: 1px solid $ramos-gin-fizz;
+    // margin-bottom: 30px;
+   
+    .box {
     border: 1px solid $ramos-gin-fizz;
     border-radius: 8px;
     width: 100%;
@@ -267,42 +269,58 @@ section{
 
     .accordion {
       --bs-accordion-btn-focus-box-shadow: none !important;
-      
+
       .accordion-item{
         width: 95%;
-        margin-left:30px ;
-        border-bottom:1px solid $ramos-gin-fizz ;
+        margin: 0 auto;
+        border-bottom: 1px solid $ramos-gin-fizz;
       }
 
       .accordion-item:nth-child(3){
-        border-bottom:none ;
+        border-bottom: none;
       }
 
       .accordion-collapse{
+        border-bottom: none;
+      }
+
+      .accordion-body{
         margin-left: 30px;
         margin-bottom: 10px;
       }
-
-
-      .accordion-button:focus{
-        box-shadow: none !important;
-      }
+   
       .accordion-button::after {
         display: none;
       }
 
-     
-
       button {
         background-color: transparent;
       }
-
     }
  
   }
 
+  // .box:nth-child(4){
+  //   margin-bottom: 50px;
+  // }
+
 }
 
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+  
 
 
 
