@@ -325,7 +325,6 @@ section{
         background-color: transparent;
       }
     }
- 
   }
 
 }

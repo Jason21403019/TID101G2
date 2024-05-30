@@ -1,17 +1,20 @@
-// 深紅 
-$campari: #381B1D; 
-// 米色 
-$ramos-gin-fizz:#FCF0D8; 
+// 深紅
+$campari: #381b1d;
+// 米色
+$ramos-gin-fizz: #fcf0d8;
 // 米咖色
-$irishcoffee:#CEAD82; 
+$irishcoffee: #cead82;
 // 黑色
-$blackvevet:#090909; 
+$blackvevet: #090909;
 // 不是白色的白
 $whitelady:#f6f6f6; 
+// 啟動
+$toggle-on:#2B963C;
+// 後台選單白色
+$babypowder:#FFFDFA;
 
 // 深色漸層
-$negroni: linear-gradient(180deg, #000, #381B1D);
-
+$negroni: linear-gradient(180deg, #000, #381b1d);
 
 //=== 字體大小 ===//
 // 圖片大標題、商品子頁金額
@@ -22,7 +25,7 @@ $fontSize_h2: 42px;
 
 // 分類圖文字、常見問題標題「購物流程說明」、全部商品頁的商品金額「NT$900 」、商品子頁介紹文及「還剩103件」、購物車標題「訂購資訊」
 // 後台各頁面標題 「訂單管理｜訂單列表」
-$fontSize_h3: 32px; 
+$fontSize_h3: 32px;
 
 // 酒品專欄內文、產品頁左側選單文字、常見問題中的問題「如何查看我的訂單狀態？」、全部商品頁的商品名稱「Carl Jung 卡爾榮格 Mousseux穆瑟無酒精氣泡酒 750ML/瓶」
 // 後台nav選單文字、「後台彈跳視窗中的大標題：折扣-新增」、「table標題：訂單編號等等」、「table標題內容：處理中、未付款等等」、「後台彈跳視窗中的小標題：名稱」
@@ -40,11 +43,9 @@ $letterspacing: 6px;
 
 //=== 字體行距 ===//
 $lineheight: 1.6em;
-$lineheight-en: 1.0em;
+$lineheight-en: 1em;
 
 //=== 字體 ===//
 $fontfamily: 'Noto Serif TC', sans-serif; //中文
 $fontfamily-en: 'Cormorant Garamond', serif; //英文
-$fontfamily-en2:'Fredericka the Great', serif; //英文裝飾體
-
-
+$fontfamily-en2: 'Fredericka the Great', serif; //英文裝飾體
