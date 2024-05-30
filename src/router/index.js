@@ -19,7 +19,16 @@ const routes = [
     meta: {
       layout: 'default'
     }
-  }
+  },
+  {
+    path: '/questions',
+    name: 'Questions',
+    component: () => import('../views/Questions.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
+
 ]
 const router = createRouter({
   linkActiveClass: 'active',
