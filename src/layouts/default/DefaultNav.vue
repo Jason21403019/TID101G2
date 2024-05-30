@@ -25,17 +25,17 @@
       </button>
     </div>
   </header>
-  <div class="menu__nav">
+  <div v-show="isHamburgerOpen" :class="['menu__nav', { active: isHamburgerOpen }]">
     <nav class="menu__nav-content">
       <ul class="menu__nav-ul">
         <li class="menu__nav-ul-item">
-          <router-link to="/" class="header__link">關於我們</router-link>
-          <router-link to="/" class="header__link">菜單</router-link>
-          <router-link to="/" class="header__link">預約訂位</router-link>
-          <router-link to="/" class="header__link">熱門商品</router-link>
-          <router-link to="/" class="header__link">測驗遊戲</router-link>
-          <router-link to="/" class="header__link">酒品專欄</router-link>
-          <router-link to="/" class="header__link">常見問題</router-link>
+          <router-link to="/" class="header__link item1">關於我們</router-link>
+          <router-link to="/" class="header__link item2">菜單</router-link>
+          <router-link to="/" class="header__link item3">預約訂位</router-link>
+          <router-link to="/" class="header__link item4">熱門商品</router-link>
+          <router-link to="/" class="header__link item5">測驗遊戲</router-link>
+          <router-link to="/" class="header__link item6">酒品專欄</router-link>
+          <router-link to="/question" class="header__link item7">常見問題</router-link>
         </li>
       </ul>
     </nav>
@@ -92,7 +92,7 @@ export default {
     border: none;
     outline: none;
     background-color: transparent;
-    z-index: 4;
+    z-index: 10;
   }
 
   .hamburger__bar {
@@ -123,5 +123,9 @@ export default {
   .hamburger__close .hamburger__bar:nth-child(2) {
     transform: translateY(-8px) rotate(-45deg);
   }
+}
+
+.menu__nav {
+  position: fixed;
 }
 </style>
