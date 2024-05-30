@@ -1,129 +1,161 @@
 <template>
   <section>
-    <div class=" wrapper">
+    <div class="wrapper">
       <!-- banner -->
-      <div class="banner mx-auto ">
+      <div class="banner mx-auto">
         <h1 class="title text-center text-white">F&Q</h1>
       </div>
 
       <div class="container">
-
         <div class="box col-xxl-12 fs-1 mt-5">
           <p class="mt-4 ms-5">購物流程說明</p>
 
-          <div class="accordion accordion-flush" id="accordionFlushExample1">
-            <div v-for="(item, index) in shoppingItems" :key="index" class="accordion-item bg-transparent"
-              style="color: #FCF0D8;">
-              <h2 class="accordion-header" :id="'flush-heading-shopping-' + index">
-                <button class="accordion-button collapsed fs-4 bg-transparent border-0" style="color: #FCF0D8;"
-                  type="button" data-bs-toggle="collapse" :data-bs-target="'#flush-collapse-shopping-' + index"
-                  aria-expanded="false" :aria-controls="'flush-collapse-shopping-' + index"
-                  @click="toggleIcon(index, 'shopping')">
+          <div id="accordionFlushExample1" class="accordion accordion-flush">
+            <div
+              v-for="(item, index) in shoppingItems"
+              :key="index"
+              class="accordion-item bg-transparent"
+              style="color: #fcf0d8"
+            >
+              <h2 :id="'flush-heading-shopping-' + index" class="accordion-header">
+                <button
+                  class="accordion-button collapsed fs-4 bg-transparent border-0"
+                  style="color: #fcf0d8"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  :data-bs-target="'#flush-collapse-shopping-' + index"
+                  aria-expanded="false"
+                  :aria-controls="'flush-collapse-shopping-' + index"
+                  @click="toggleIcon(index, 'shopping')"
+                >
                   <i :class="item.isPlusIcon ? 'bi bi-plus fs-2' : 'bi bi-dash fs-2'"></i> {{ item.title }}
                 </button>
               </h2>
-              <div :id="'flush-collapse-shopping-' + index" class="accordion-collapse collapse"
-                :aria-labelledby="'flush-heading-shopping-' + index" data-bs-parent="#accordionFlushExample1">
+              <div
+                :id="'flush-collapse-shopping-' + index"
+                class="accordion-collapse collapse"
+                :aria-labelledby="'flush-heading-shopping-' + index"
+                data-bs-parent="#accordionFlushExample1"
+              >
                 <div class="accordion-body fs-5">
                   {{ item.content }}
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-      
 
-     
         <div class="box col-xxl-12 fs-1 mt-5">
           <p class="mt-4 ms-5">付款問題</p>
 
-          <div class="accordion accordion-flush" id="accordionFlushExample2">
-            <div v-for="(item, index) in paymentItems" :key="index" class="accordion-item bg-transparent"
-              style="color: #FCF0D8;">
-              <h2 class="accordion-header" :id="'flush-heading-payment-' + index">
-                <button class="accordion-button collapsed fs-4 bg-transparent border-0" style="color: #FCF0D8;"
-                  type="button" data-bs-toggle="collapse" :data-bs-target="'#flush-collapse-payment-' + index"
-                  aria-expanded="false" :aria-controls="'flush-collapse-payment-' + index"
-                  @click="toggleIcon(index, 'payment')">
+          <div id="accordionFlushExample2" class="accordion accordion-flush">
+            <div
+              v-for="(item, index) in paymentItems"
+              :key="index"
+              class="accordion-item bg-transparent"
+              style="color: #fcf0d8"
+            >
+              <h2 :id="'flush-heading-payment-' + index" class="accordion-header">
+                <button
+                  class="accordion-button collapsed fs-4 bg-transparent border-0"
+                  style="color: #fcf0d8"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  :data-bs-target="'#flush-collapse-payment-' + index"
+                  aria-expanded="false"
+                  :aria-controls="'flush-collapse-payment-' + index"
+                  @click="toggleIcon(index, 'payment')"
+                >
                   <i :class="item.isPlusIcon ? 'bi bi-plus fs-2' : 'bi bi-dash fs-2'"></i> {{ item.title }}
                 </button>
               </h2>
-              <div :id="'flush-collapse-payment-' + index" class="accordion-collapse collapse"
-                :aria-labelledby="'flush-heading-payment-' + index" data-bs-parent="#accordionFlushExample2">
+              <div
+                :id="'flush-collapse-payment-' + index"
+                class="accordion-collapse collapse"
+                :aria-labelledby="'flush-heading-payment-' + index"
+                data-bs-parent="#accordionFlushExample2"
+              >
                 <div class="accordion-body fs-5">
                   {{ item.content }}
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-      
 
-      
         <div class="box col-xxl-12 fs-1 mt-5">
           <p class="mt-4 ms-5">配送和運費問題</p>
 
-          <div class="accordion accordion-flush" id="accordionFlushExample3">
-            <div v-for="(item, index) in shipItems" :key="index" class="accordion-item bg-transparent"
-              style="color: #FCF0D8;">
-              <h2 class="accordion-header" :id="'flush-heading-shipping-' + index">
-                <button class="accordion-button collapsed fs-4 bg-transparent border-0" style="color: #FCF0D8;"
-                  type="button" data-bs-toggle="collapse" :data-bs-target="'#flush-collapse-shipping-' + index"
-                  aria-expanded="false" :aria-controls="'flush-collapse-shipping-' + index"
-                  @click="toggleIcon(index, 'shipping')">
+          <div id="accordionFlushExample3" class="accordion accordion-flush">
+            <div v-for="(item, index) in shipItems" :key="index" class="accordion-item bg-transparent" style="color: #fcf0d8">
+              <h2 :id="'flush-heading-shipping-' + index" class="accordion-header">
+                <button
+                  class="accordion-button collapsed fs-4 bg-transparent border-0"
+                  style="color: #fcf0d8"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  :data-bs-target="'#flush-collapse-shipping-' + index"
+                  aria-expanded="false"
+                  :aria-controls="'flush-collapse-shipping-' + index"
+                  @click="toggleIcon(index, 'shipping')"
+                >
                   <i :class="item.isPlusIcon ? 'bi bi-plus fs-2' : 'bi bi-dash fs-2'"></i> {{ item.title }}
                 </button>
               </h2>
-              <div :id="'flush-collapse-shipping-' + index" class="accordion-collapse collapse"
-                :aria-labelledby="'flush-heading-shipping-' + index" data-bs-parent="#accordionFlushExample3">
+              <div
+                :id="'flush-collapse-shipping-' + index"
+                class="accordion-collapse collapse"
+                :aria-labelledby="'flush-heading-shipping-' + index"
+                data-bs-parent="#accordionFlushExample3"
+              >
                 <div class="accordion-body fs-5">
                   {{ item.content }}
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-     
 
-     
         <div class="box col-xxl-12 fs-1 mt-5">
           <p class="mt-4 ms-5">會員制度說明</p>
 
-          <div class="accordion accordion-flush" id="accordionFlushExample4">
-            <div v-for="(item, index) in memberItems" :key="index" class="accordion-item bg-transparent"
-              style="color: #FCF0D8;">
-              <h2 class="accordion-header" :id="'flush-heading-member-' + index">
-                <button class="accordion-button collapsed fs-4 bg-transparent border-0" style="color: #FCF0D8;"
-                  type="button" data-bs-toggle="collapse" :data-bs-target="'#flush-collapse-member-' + index"
-                  aria-expanded="false" :aria-controls="'flush-collapse-member-' + index"
-                  @click="toggleIcon(index, 'member')">
+          <div id="accordionFlushExample4" class="accordion accordion-flush">
+            <div v-for="(item, index) in memberItems" :key="index" class="accordion-item bg-transparent" style="color: #fcf0d8">
+              <h2 :id="'flush-heading-member-' + index" class="accordion-header">
+                <button
+                  class="accordion-button collapsed fs-4 bg-transparent border-0"
+                  style="color: #fcf0d8"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  :data-bs-target="'#flush-collapse-member-' + index"
+                  aria-expanded="false"
+                  :aria-controls="'flush-collapse-member-' + index"
+                  @click="toggleIcon(index, 'member')"
+                >
                   <i :class="item.isPlusIcon ? 'bi bi-plus fs-2' : 'bi bi-dash fs-2'"></i> {{ item.title }}
                 </button>
               </h2>
-              <div :id="'flush-collapse-member-' + index" class="accordion-collapse collapse"
-                :aria-labelledby="'flush-heading-member-' + index" data-bs-parent="#accordionFlushExample4">
+              <div
+                :id="'flush-collapse-member-' + index"
+                class="accordion-collapse collapse"
+                :aria-labelledby="'flush-heading-member-' + index"
+                data-bs-parent="#accordionFlushExample4"
+              >
                 <div class="accordion-body fs-5">
                   {{ item.content }}
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
-      
     </div>
-
-    
   </section>
 </template>
 
-
 <script>
 export default {
+  name: 'Questions',
   data() {
     return {
       shoppingItems: [
@@ -193,26 +225,24 @@ export default {
           content: '自優惠券歸戶起一個月內，需使用完畢，一張優惠券可以使用一次。',
           isPlusIcon: true
         }
-      ],
-    };
+      ]
+    }
   },
   methods: {
     toggleIcon(index, type) {
       if (type === 'shopping') {
-        this.shoppingItems[index].isPlusIcon = !this.shoppingItems[index].isPlusIcon;
+        this.shoppingItems[index].isPlusIcon = !this.shoppingItems[index].isPlusIcon
       } else if (type === 'payment') {
-        this.paymentItems[index].isPlusIcon = !this.paymentItems[index].isPlusIcon;
+        this.paymentItems[index].isPlusIcon = !this.paymentItems[index].isPlusIcon
       } else if (type === 'shipping') {
-        this.shipItems[index].isPlusIcon = !this.shipItems[index].isPlusIcon;
+        this.shipItems[index].isPlusIcon = !this.shipItems[index].isPlusIcon
       } else if (type === 'member') {
-        this.memberItems[index].isPlusIcon = !this.memberItems[index].isPlusIcon;
+        this.memberItems[index].isPlusIcon = !this.memberItems[index].isPlusIcon
       }
     }
   }
-};
+}
 </script>
-
-
 
 <style lang="scss" scoped>
 
@@ -236,17 +266,15 @@ section{
       overflow: hidden;
       // margin-top: 100px;
       background: url('../imgs/QAImg/close-up-delicious-drinks.jpg');
-    
       .title {
         // border: 1px solid blue;
         margin-top: 250px;
         // color: $irishcoffee !important;
         text-shadow: 5px 5px 5px #000000;
-        font-size: 5rem ;
+        font-size: 5rem;
         letter-spacing: 20px;
         font-weight: bold;
       }
-    
     }
   
 }
@@ -262,9 +290,8 @@ section{
     border: 1px solid $ramos-gin-fizz;
     border-radius: 8px;
     width: 100%;
-    
     p {
-     color: $ramos-gin-fizz;
+      color: $ramos-gin-fizz;
     }
 
     .accordion {
@@ -297,7 +324,6 @@ section{
         background-color: transparent;
       }
     }
- 
   }
 
   // .box:nth-child(4){
