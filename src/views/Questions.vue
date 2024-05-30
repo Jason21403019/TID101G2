@@ -9,7 +9,7 @@
       <div class="container">
 
         <div class="box col-xxl-12 fs-1 mt-5">
-          <p class="mt-3 ms-2">購物流程說明</p>
+          <p class="mt-4 ms-5">購物流程說明</p>
 
           <div class="accordion accordion-flush" id="accordionFlushExample1">
             <div v-for="(item, index) in shoppingItems" :key="index" class="accordion-item bg-transparent"
@@ -36,7 +36,7 @@
 
      
         <div class="box col-xxl-12 fs-1 mt-5">
-          <p class="mt-3 ms-2">付款問題</p>
+          <p class="mt-4 ms-5">付款問題</p>
 
           <div class="accordion accordion-flush" id="accordionFlushExample2">
             <div v-for="(item, index) in paymentItems" :key="index" class="accordion-item bg-transparent"
@@ -51,7 +51,7 @@
               </h2>
               <div :id="'flush-collapse-payment-' + index" class="accordion-collapse collapse"
                 :aria-labelledby="'flush-heading-payment-' + index" data-bs-parent="#accordionFlushExample2">
-                <div class="accordion-body fs-5">
+                <div class="accordion-body fs-5 ml-2">
                   {{ item.content }}
                 </div>
               </div>
@@ -63,7 +63,7 @@
 
       
         <div class="box col-xxl-12 fs-1 mt-5">
-          <p class="mt-3 ms-2">配送和運費問題</p>
+          <p class="mt-4 ms-5">配送和運費問題</p>
 
           <div class="accordion accordion-flush" id="accordionFlushExample3">
             <div v-for="(item, index) in shipItems" :key="index" class="accordion-item bg-transparent"
@@ -90,7 +90,7 @@
 
      
         <div class="box col-xxl-12 fs-1 mt-5">
-          <p class="mt-3 ms-2">會員制度說明</p>
+          <p class="mt-4 ms-5">會員制度說明</p>
 
           <div class="accordion accordion-flush" id="accordionFlushExample4">
             <div v-for="(item, index) in memberItems" :key="index" class="accordion-item bg-transparent"
@@ -146,7 +146,7 @@ export default {
       paymentItems: [
         {
           title: '有哪些付款方式可供選擇?',
-          content: '我們目前只接受信用卡支付，',
+          content: '我們目前只接受信用卡支付。',
           isPlusIcon: true
         },
         {
@@ -215,13 +215,12 @@ export default {
 
 
 <style lang="scss" scoped>
-// @import '.';
 section{
   background: $negroni;
   .wrapper {
 
   
-    border: 1px solid blue;
+    // border: 1px solid blue;
     width: 88.89%;
     margin: 0 auto;
     height: 100%;
@@ -233,7 +232,7 @@ section{
       height: 600px;
       // border: 1px solid yellow;
       overflow: hidden;
-      margin-top: 100px;
+      // margin-top: 100px;
       background: url('../imgs/QAImg/close-up-delicious-drinks.jpg');
     
       .title {
@@ -268,13 +267,36 @@ section{
 
     .accordion {
       --bs-accordion-btn-focus-box-shadow: none !important;
-    }
-    .accordion-button::after {
-      display: none;
-    }
+      
+      .accordion-item{
+        width: 95%;
+        margin-left:30px ;
+        border-bottom:1px solid $ramos-gin-fizz ;
+      }
 
-    button {
-      background-color: transparent;
+      .accordion-item:nth-child(3){
+        border-bottom:none ;
+      }
+
+      .accordion-collapse{
+        margin-left: 30px;
+        margin-bottom: 10px;
+      }
+
+
+      .accordion-button:focus{
+        box-shadow: none !important;
+      }
+      .accordion-button::after {
+        display: none;
+      }
+
+     
+
+      button {
+        background-color: transparent;
+      }
+
     }
  
   }
