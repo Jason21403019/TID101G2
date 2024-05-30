@@ -19,6 +19,14 @@ const routes = [
     meta: {
       layout: 'default'
     }
+  },
+  {
+    path: '/menu',
+    name: 'Menu',
+    component: () => import('../views/Menu.vue'),
+    meta: {
+      layout: 'default'
+    }
   }
 ]
 const router = createRouter({
