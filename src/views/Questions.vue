@@ -5,7 +5,6 @@
       <div class="banner mx-auto">
         <h1 class="title text-center text-white">F&Q</h1>
       </div>
-
       <div class="container">
         <div class="box col-xxl-12 fs-1 mt-5">
           <p class="mt-4 ms-5">購物流程說明</p>
@@ -120,7 +119,7 @@
           <p class="mt-4 ms-5">會員制度說明</p>
 
           <div id="accordionFlushExample4" class="accordion accordion-flush">
-            <div v-for="(item, index) in memberItems" :key="index" class="accordion-item bg-transparent" style="color: #fcf0d8">
+            <div v-for="(item, index) in memberItems" :key="index" class="accordion-item bg-transparent" style="color: #fcf0d8;">
               <h2 :id="'flush-heading-member-' + index" class="accordion-header">
                 <button
                   class="accordion-button collapsed fs-4 bg-transparent border-0"
@@ -249,14 +248,14 @@ export default {
 section{
   background: $negroni;
   height: 100%;
-  
+  padding-bottom: 100px;
   .wrapper {
-
-  
-    border: 1px solid blue;
+    // border: 1px solid blue;
     width: 88.89%;
     margin: 0 auto;
     height: 100%;
+    margin-bottom: 50px;
+
  
   // margin: 0; /* 移除預設邊距 */
     .banner {
@@ -275,63 +274,56 @@ section{
         font-size: 5rem;
         letter-spacing: 20px;
         font-weight: bold;
+        font-family: $fontfamily-en;
       }
     }
   .container{
     width: 100%;
     margin: 0 auto;
-    }
-}
+    margin-bottom: 50px;
 
-
-
-
-
-  .box {
+    .box {
     border: 1px solid $ramos-gin-fizz;
     border-radius: 8px;
     width: 100%;
     p {
+      font-family: $fontfamily;
       color: $ramos-gin-fizz;
     }
 
-    .accordion {
-      --bs-accordion-btn-focus-box-shadow: none !important;
+      .accordion {
+        --bs-accordion-btn-focus-box-shadow: none !important;
 
-      .accordion-item{
-        width: 95%;
-        margin: 0 auto;
-        border-bottom: 1px solid $ramos-gin-fizz;
-      }
+        .accordion-item{
+          width: 95%;
+          margin: 0 auto;
+          border-bottom: 1px solid $ramos-gin-fizz;
+          font-family: $fontfamily;
+        }
 
-      .accordion-item:nth-child(3){
-        border-bottom: none;
-      }
+        .accordion-item:nth-child(3){
+          border-bottom: none;
+        }
 
-      .accordion-collapse{
-        border-bottom: none;
-      }
+        .accordion-collapse{
+          border-bottom: none;
+        }
 
-      .accordion-body{
-        margin-left: 30px;
-        margin-bottom: 10px;
-      }
-   
-      .accordion-button::after {
-        display: none;
-      }
+        .accordion-body{
+          margin-left: 30px;
+          margin-bottom: 10px;
+        }
+    
+        .accordion-button::after {
+          display: none;
+        }
 
-      button {
-        background-color: transparent;
+        button {
+          background-color: transparent;
+        }
       }
     }
+    } 
   }
-
 }
-
-
-
-
-
-
 </style>
