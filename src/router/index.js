@@ -55,6 +55,15 @@ const routes = [
   },
 
 
+  },
+  {
+    path: '/menu',
+    name: 'Menu',
+    component: () => import('../views/Menu.vue'),
+    meta: {
+      layout: 'default'
+    }
+  }
 ]
 const router = createRouter({
   linkActiveClass: 'active',
