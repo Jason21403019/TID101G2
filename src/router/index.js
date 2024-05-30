@@ -27,8 +27,7 @@ const routes = [
     meta: {
       layout: 'default'
     }
-  },
-
+  }
 ]
 const router = createRouter({
   linkActiveClass: 'active',
