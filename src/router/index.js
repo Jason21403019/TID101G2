@@ -38,39 +38,37 @@ const routes = [
   {
     path: '/menus',
     name: 'Menus',
-    component: () => import('../views/'),
+    component: () => import('../views/Menus.vue'),
     meta: {
       layout: 'default'
     }
-  },
-  
+  }
 
   // backend
-  {
-    path: '/admin_login',
-    name: 'AdminLogin',
-    component: () => import('../views/AdminLogin.vue'),
-    meta: {
-      layout: 'Admin'
-    }
-  },
-  {
-    path: '/admin',
-    name: 'Admin',
-    component: () => import('../views/Admin.vue'),
-    meta: {
-      layout: 'Admin'
-    }
-  },
-  {
-    path: '/admin_account',
-    name: 'AdminAccount',
-    component: () => import('../views/AdminAccount.vue'),
-    meta: {
-      layout: 'Admin'
-    }
-  },
- 
+  // {
+  //   path: '/admin_login',
+  //   name: 'AdminLogin',
+  //   component: () => import('../views/AdminLogin.vue'),
+  //   meta: {
+  //     layout: 'Admin'
+  //   }
+  // },
+  // {
+  //   path: '/admin',
+  //   name: 'Admin',
+  //   component: () => import('../views/Admin.vue'),
+  //   meta: {
+  //     layout: 'Admin'
+  //   }
+  // },
+  // {
+  //   path: '/admin_account',
+  //   name: 'AdminAccount',
+  //   component: () => import('../views/AdminAccount.vue'),
+  //   meta: {
+  //     layout: 'Admin'
+  //   }
+  // },
 ]
 const router = createRouter({
   linkActiveClass: 'active',

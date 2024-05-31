@@ -33,13 +33,13 @@
     <nav class="menu__nav-content">
       <ul class="menu__nav-ul">
         <li class="menu__nav-ul-item">
-          <router-link to="/" class="menu__link item1">關於我們</router-link>
-          <router-link to="/" class="menu__link item2">菜單</router-link>
-          <router-link to="/" class="menu__link item3">預約訂位</router-link>
-          <router-link to="/" class="menu__link item4">熱門商品</router-link>
-          <router-link to="/" class="menu__link item5">測驗遊戲</router-link>
-          <router-link to="/" class="menu__link item6">酒品專欄</router-link>
-          <router-link to="/question" class="menu__link item7">常見問題</router-link>
+          <router-link to="/" class="menu__link"><span class="item1">關於我們</span></router-link>
+          <router-link to="/" class="menu__link"><span class="item2">菜單</span></router-link>
+          <router-link to="/" class="menu__link"><span class="item3">預約訂位</span></router-link>
+          <router-link to="/" class="menu__link"><span class="item4">熱門商品</span></router-link>
+          <router-link to="/" class="menu__link"><span class="item5">測驗遊戲</span></router-link>
+          <router-link to="/" class="menu__link"><span class="item6">酒品專欄</span></router-link>
+          <router-link to="/question" class="menu__link"><span class="item7">常見問題</span></router-link>
         </li>
       </ul>
     </nav>
@@ -172,20 +172,21 @@ body {
         font-size: $fontSize_h2;
         text-decoration: none;
         text-align: center;
-      }
-      .item1 {
-        color: $whitelady;
-        position: relative;
-        top: -110px;
-        transform: skewY(-20deg);
-        &:before {
-          content: 'AboutUs';
-          font-size: $fontSize_h3;
-          text-align: center;
-          top: 50px;
-          left: 10%;
-          // transform: translate(-50%, -50%) skewY(20deg);
-          position: absolute;
+        .item1 {
+          border: 1px solid red;
+          color: $whitelady;
+          position: relative;
+          top: -210px;
+          transform: rotateX(90deg) skewY(10deg);
+          &:before {
+            content: 'AboutUs';
+            font-size: $fontSize_h3;
+            text-align: center;
+            top: 60px;
+            left: 10%;
+            transform: skewY(-5deg);
+            position: absolute;
+          }
         }
       }
     }
