@@ -119,7 +119,7 @@
           <p class="mt-4 ms-5">會員制度說明</p>
 
           <div id="accordionFlushExample4" class="accordion accordion-flush">
-            <div v-for="(item, index) in memberItems" :key="index" class="accordion-item bg-transparent" style="color: #fcf0d8;">
+            <div v-for="(item, index) in memberItems" :key="index" class="accordion-item bg-transparent" style="color: #fcf0d8">
               <h2 :id="'flush-heading-member-' + index" class="accordion-header">
                 <button
                   class="accordion-button collapsed fs-4 bg-transparent border-0"
@@ -245,7 +245,7 @@ export default {
 
 <style lang="scss" scoped>
 // @import '.';
-section{
+section {
   background: $negroni;
   height: 100%;
   padding-bottom: 100px;
@@ -256,8 +256,7 @@ section{
     height: 100%;
     margin-bottom: 50px;
 
- 
-  // margin: 0; /* 移除預設邊距 */
+    // margin: 0; /* 移除預設邊距 */
     .banner {
       width: 67.3%;
       width: 100%;
@@ -277,10 +276,10 @@ section{
         font-family: $fontfamily-en;
       }
     }
-  .container{
-    width: 100%;
-    margin: 0 auto;
-    margin-bottom: 50px;
+    .container {
+      width: 100%;
+      margin: 0 auto;
+      margin-bottom: 50px;
 
     .box {
     border: 1px solid $ramos-gin-fizz;
