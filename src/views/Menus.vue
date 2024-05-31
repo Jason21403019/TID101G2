@@ -10,7 +10,7 @@
 export default {
   name: 'Menus',
   components: {
-    // MenuItem: () => import('../components/MenuItem.vue')
+    MenuItem: () => import('../components/MenuItem.vue')
   },
   data() {
     return {
