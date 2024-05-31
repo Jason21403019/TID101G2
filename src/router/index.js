@@ -43,7 +43,7 @@ const routes = [
       layout: 'default'
     }
   },
-  },
+  
 
   // backend
   {
