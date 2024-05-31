@@ -38,7 +38,7 @@ const routes = [
   {
     path: '/menus',
     name: 'Menus',
-    component: () => import('../views/Menus.vue'),
+    component: () => import('../views/'),
     meta: {
       layout: 'default'
     }
