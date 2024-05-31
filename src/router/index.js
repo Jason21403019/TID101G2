@@ -26,7 +26,15 @@ const routes = [
     meta: {
       layout: 'default'
     }
-  }
+  },
+  {
+    path: '/reserve',
+    name: 'Reserve',
+    component: () => import('../views/Reserve.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
 ]
 const router = createRouter({
   linkActiveClass: 'active',

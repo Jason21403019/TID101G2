@@ -177,7 +177,7 @@ export default {
       paymentItems: [
         {
           title: '有哪些付款方式可供選擇?',
-          content: '我們目前只接受信用卡支付，',
+          content: '我們目前只接受信用卡支付。',
           isPlusIcon: true
         },
         {
@@ -271,7 +271,7 @@ section{
         margin-top: 250px;
         // color: $irishcoffee !important;
         text-shadow: 5px 5px 5px #000000;
-        font-size: 5rem;
+        font-size:$fontSize_h1;
         letter-spacing: 20px;
         font-weight: bold;
         font-family: $fontfamily-en;
@@ -288,7 +288,9 @@ section{
     width: 100%;
     p {
       font-family: $fontfamily;
+      letter-spacing: $letterspacing;
       color: $ramos-gin-fizz;
+      font-size:$fontSize_h3 ;
     }
 
       .accordion {
@@ -299,31 +301,42 @@ section{
           margin: 0 auto;
           border-bottom: 1px solid $ramos-gin-fizz;
           font-family: $fontfamily;
-        }
+          font-size: $fontSize_h4;
+          letter-spacing: $letterspacing;
+          --bs-accordion-border-width:none!important;
 
-        .accordion-item:nth-child(3){
-          border-bottom: none;
-        }
+          &:nth-child(3){
+            border-bottom: none;
+          }
+       
 
-        .accordion-collapse{
-          border-bottom: none;
-        }
+          .accordion-button{
+            letter-spacing: $letterspacing;
+            // border-bottom:none!important; ;
+          }
 
-        .accordion-body{
-          margin-left: 30px;
-          margin-bottom: 10px;
-        }
+         
+
+          .accordion-body{
+            margin-left: 30px;
+            margin-bottom: 10px;
+            line-height: 2;
+          }  
     
-        .accordion-button::after {
-          display: none;
+          .accordion-button::after {
+            display: none;
+          }
+
+          button {
+            background-color: transparent;
+          }
+
         }
 
-        button {
-          background-color: transparent;
-        }
+        
       }
     }
-    } 
+   } 
   }
 }
 </style>
