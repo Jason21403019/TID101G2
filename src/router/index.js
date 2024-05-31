@@ -27,7 +27,6 @@ const routes = [
       layout: 'default'
     }
   },
-<<<<<<< HEAD
   {
     path: '/reserve',
     name: 'Reserve',
@@ -36,33 +35,6 @@ const routes = [
       layout: 'default'
     }
   },
-=======
-
-  // backend
-  // {
-  //   path: '/admin_login',
-  //   name: 'AdminLogin',
-  //   component: () => import('../views/AdminLogin.vue'),
-  //   meta: {
-  //     layout: 'Admin'
-  //   }
-  // },
-  // {
-  //   path: '/admin',
-  //   name: 'Admin',
-  //   component: () => import('../views/Admin.vue'),
-  //   meta: {
-  //     layout: 'Admin'
-  //   }
-  // },
-  // {
-  //   path: '/admin_account',
-  //   name: 'AdminAccount',
-  //   component: () => import('../views/AdminAccount.vue'),
-  //   meta: {
-  //     layout: 'Admin'
-  //   }
-  // },
   {
     path: '/menus',
     name: 'Menus',
@@ -70,8 +42,34 @@ const routes = [
     meta: {
       layout: 'default'
     }
-  }
->>>>>>> 8b770451d92844c08881c8a6e7b7f947f24f392c
+  },
+
+  // backend
+  {
+    path: '/admin_login',
+    name: 'AdminLogin',
+    component: () => import('../views/AdminLogin.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('../views/Admin.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin_account',
+    name: 'AdminAccount',
+    component: () => import('../views/AdminAccount.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+ 
 ]
 const router = createRouter({
   linkActiveClass: 'active',
