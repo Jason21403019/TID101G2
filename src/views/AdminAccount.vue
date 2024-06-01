@@ -58,7 +58,8 @@
         </tr>
       </tbody>
       <caption>
-        每頁列表顯示<span class="main__list-number">6</span>筆
+        每頁列表顯示<span class="main__list-number">6</span
+        >筆
       </caption>
     </table>
   </section>
@@ -182,8 +183,8 @@ export default {
   width: 85%;
   margin-top: 20px;
   margin-left: 160px;
-  .table-thead{
-    th{
+  .table-thead {
+    th {
       background-color: $campari;
       color: $ramos-gin-fizz;
     }

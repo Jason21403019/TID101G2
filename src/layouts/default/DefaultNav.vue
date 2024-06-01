@@ -42,6 +42,9 @@
           <router-link to="/question" class="menu__link"><span class="item7">常見問題</span></router-link>
         </li>
       </ul>
+      <div class="menu__nav-img">
+        <img src="../../imgs/burger.png" alt="" />
+      </div>
     </nav>
   </div>
 </template>
@@ -54,6 +57,7 @@ export default {
       isHamburgerOpen: false
     }
   },
+
   methods: {
     toggleHamburger() {
       this.isHamburgerOpen = !this.isHamburgerOpen
@@ -69,7 +73,7 @@ body {
 .header {
   display: flex;
   justify-content: space-between;
-  background-color: $irishcoffee;
+  background: $negroni;
   &__logoarea {
     width: 100px;
     height: 80px;
@@ -109,9 +113,32 @@ body {
     outline: none;
     background-color: transparent;
     z-index: 10;
-    // border: 1px solid red;
+    border: 1px solid red;
     margin-left: 15px;
     margin-bottom: 2px;
+    height: 35px;
+    &::after {
+      content: '';
+      display: block;
+      position: relative;
+      width: 10px;
+      height: 10px;
+      top: -1rem;
+      left: 0.5rem;
+      border-radius: 20px;
+      border: 1px solid red;
+      background: $negroni;
+      z-index: -1;
+    }
+    &.active::after {
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+      background: $negroni;
+      z-index: 9;
+    }
   }
 
   .hamburger__bar {
@@ -150,46 +177,152 @@ body {
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: $irishcoffee;
+  background: $negroni;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
   &.active {
-    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: $negroni;
+    z-index: 8;
   }
   &-content {
-    border: 1px solid red;
+    display: flex;
     width: 100%;
     height: 100%;
   }
   &-ul {
     display: flex;
-    position: relative;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
     &-item {
+      border: 1px solid red;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       .menu__link {
+        // border: 1px solid green;
         font-family: $fontfamily;
-        font-size: $fontSize_h2;
+        font-size: $fontSize_h3;
         text-decoration: none;
         text-align: center;
-        .item1 {
-          border: 1px solid red;
+        color: $whitelady;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0 12rem;
+        color: rgba($color: $whitelady, $alpha: 0.5);
+        &:hover {
           color: $whitelady;
+        }
+        .item1 {
+          width: 100%;
           position: relative;
-          top: -210px;
-          transform: rotateX(90deg) skewY(10deg);
-          &:before {
-            content: 'AboutUs';
-            font-size: $fontSize_h3;
-            text-align: center;
-            top: 60px;
-            left: 10%;
-            transform: skewY(-5deg);
+          top: -5rem;
+          left: -5rem;
+          &::before {
+            content: 'About';
             position: absolute;
+            top: 1.8rem;
+            left: 1.6rem;
+            font-size: $fontSize_h4;
           }
+          // border: 1px solid blue;
+        }
+        .item2 {
+          position: relative;
+          top: -4rem;
+          left: 5rem;
+          &::before {
+            content: 'Menu';
+            position: absolute;
+            top: 1.8rem;
+            left: 0.2rem;
+            font-size: $fontSize_h4;
+          }
+          // border: 1px solid blue;
+        }
+        .item3 {
+          position: relative;
+          top: -3rem;
+          left: -5rem;
+          &::before {
+            content: 'Booking';
+            position: absolute;
+            top: 1.8rem;
+            left: 1.3rem;
+            font-size: $fontSize_h4;
+          }
+          // border: 1px solid blue;
+        }
+        .item4 {
+          position: relative;
+          top: -2rem;
+          left: 5rem;
+          &::before {
+            content: 'Product';
+            position: absolute;
+            top: 1.8rem;
+            left: 1.5rem;
+            font-size: $fontSize_h4;
+          }
+          // border: 1px solid blue;
+        }
+        .item5 {
+          position: relative;
+          top: -1rem;
+          left: -5rem;
+          &::before {
+            content: 'QuizGame';
+            position: absolute;
+            top: 1.8rem;
+            left: 0.8rem;
+            font-size: $fontSize_h4;
+          }
+          // border: 1px solid blue;
+        }
+        .item6 {
+          position: relative;
+          top: 0rem;
+          left: 5rem;
+          &::before {
+            content: 'WineColumn';
+            position: absolute;
+            top: 1.8rem;
+            font-size: $fontSize_h4;
+          }
+          // border: 1px solid blue;
+        }
+        .item7 {
+          position: relative;
+          top: 2rem;
+          left: -5rem;
+          &::before {
+            content: 'Q&A';
+            position: absolute;
+            top: 1.8rem;
+            left: 2.3rem;
+            font-size: $fontSize_h4;
+          }
+          // border: 1px solid blue;
         }
       }
     }
+  }
+  &-img {
+    padding-top: 5rem;
+    width: 50%;
+    border: 1px solid red;
   }
 }
 </style>
