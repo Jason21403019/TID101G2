@@ -5,6 +5,12 @@
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
   >
+    <div class="d-flex justify-content-start">
+      <a class="navbar-brand" href="#">
+        <img src="../../imgs/logo/logo.png" alt="logo" width="60" height="60" />
+        <span v-if="isExpanded" class="logo-text">CAPTIVATE INTOXICAT</span>
+      </a>
+    </div>
     <ul v-if="!isExpanded" class="nav">
       <li v-for="item in navItems" :key="item.text" class="nav-item">
         <admin-icon-manger :icon="item.icon" :expanded="false" />
@@ -133,8 +139,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+
 .sidebar {
   position: fixed;
+  top: 0;
   width: 80px;
   height: 100vh;
   background-color: $irishcoffee;
@@ -143,14 +152,21 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  // z-index: 1;
   .nav-item svg {
     fill: $babypowder;
   }
   &-expanded {
     width: 250px;
   }
-
+  .navbar-brand{
+    img{
+      padding: 5px;
+    }
+    .logo-text {
+      margin-left: 10px;
+      // font-size: 1.5rem; 
+    }
+  }
   .nav,
   .accordion {
     list-style: none;
