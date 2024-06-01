@@ -66,5 +66,15 @@ export default {
       box-shadow: none;
     }
   }
+  .dropdown-menu{
+    background-color: $ramos-gin-fizz;
+    .dropdown-item {
+      color: $campari;
+      &:hover {
+        background-color: $campari;
+        color: $ramos-gin-fizz;
+      }
+    }
+  }
 }
 </style>
