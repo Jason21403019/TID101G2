@@ -1,11 +1,8 @@
 <template>
   <nav class="navbar">
     <div class="container-fluid">
-      <div class="d-flex justify-content-start">
-        <a class="navbar-brand" href="#">
-          <img src="../../imgs/logo/logo.png" alt="" width="80" height="80" />
-        </a>
-        <a class="navbar-brand" @click="$emit('toggleSidebar')">
+      <div :class="['d-flex', 'justify-content-start', { 'button-shifted': isExpanded }]">
+        <a class="navbar-brand" @click="handleClick">
           <img src="../../imgs/icon/icon_hambur-w.svg" alt="" width="40" height="40" />
         </a>
       </div>
@@ -26,17 +23,35 @@
 <script>
 export default {
   name: 'AdminHeader',
-  emits: ['toggleSidebar']
-}
+  props: {
+    isExpanded: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  methods: {
+    handleClick() {
+      this.$emit('toggleSidebar');
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
+@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
 .navbar {
   background-color: $irishcoffee;
+  .button-shifted {
+    transform: translateX(200px); /* 向右移動200px，根據需要調整位移量 */
+    transition: transform 0.3s ease;
+  }
+  .d-flex.justify-content-start {
+    transition: transform 0.3s ease;
+  }
   .navbar-brand {
     display: flex;
     align-items: center;
-    margin-left: 90px;
+    margin-left: 80px;
     img {
       font-size: $fontSize_h2;
       background-color: $irishcoffee;
@@ -47,7 +62,7 @@ export default {
       }
     }
     &:focus {
-      outline: none;
+      border: none;
       box-shadow: none;
     }
   }
