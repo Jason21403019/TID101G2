@@ -7,8 +7,8 @@
   >
     <div class="d-flex justify-content-start">
       <a class="navbar-brand" href="#">
-        <img src="../../imgs/logo/logo.png" alt="logo" width="60" height="60" />
-        <span v-if="isExpanded" class="logo-text">CAPTIVATE INTOXICAT</span>
+        <img src="../../imgs/logo/logo-w.png" alt="logo" width="60" height="60" />
+        <span v-if="isExpanded" class="logo-text">紙醉金迷後台</span>
       </a>
     </div>
     <ul v-if="!isExpanded" class="nav">
@@ -19,7 +19,7 @@
 
     <ul v-else id="accordionFlushExample" class="accordion accordion-flush">
       <li v-for="(item, index) in navItems" :key="item.text" class="accordion-item">
-        <h2 :id="'flush-heading' + index" class="accordion-header">
+        <div :id="'flush-heading' + index" class="accordion-header">
           <button
             class="accordion-button collapsed"
             type="button"
@@ -32,7 +32,7 @@
             <admin-icon-manger :icon="item.icon" :expanded="expandedIndex === index" />
             <span class="nav-text">{{ item.text }}</span>
           </button>
-        </h2>
+        </div>
         <div
           :id="'flush-collapse' + index"
           class="accordion-collapse collapse"
@@ -142,6 +142,7 @@ export default {
 @import '../../../node_modules/bootstrap/scss/bootstrap.scss';
 
 .sidebar {
+  font-family: $fontfamily,$fontfamily-en;
   position: fixed;
   top: 0;
   width: 80px;
@@ -197,9 +198,10 @@ export default {
       outline: none;
       background-color: $irishcoffee;
       color: $babypowder;
+      font-size: $fontSize_h5;
       .nav-icon {
         flex-shrink: 0;
-        margin-right: 30px;
+        margin-right: 20px;
       }
       &::after {
         background-image: url('../../imgs/icon/icon_option-w.svg');
@@ -221,7 +223,7 @@ export default {
 
     li {
       padding-bottom: 15px;
-      line-height: 20px;
+      line-height: $lineheight;
 
       a {
         text-decoration: none;
