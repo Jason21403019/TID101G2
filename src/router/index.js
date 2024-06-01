@@ -43,9 +43,9 @@ const routes = [
       layout: 'default'
     }
   },
-  
 
   // backend
+<<<<<<< HEAD
   // {
   //   path: '/admin_login',
   //   name: 'AdminLogin',
@@ -54,6 +54,16 @@ const routes = [
   //     layout: 'Admin'
   //   }
   // },
+=======
+  {
+    path: '/admin_login',
+    name: 'AdminLogin',
+    component: () => import('../views/AdminLogin.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+>>>>>>> b4870a3ce169dd3bc670ac21d46de7fc3c24c82d
   // {
   //   path: '/admin',
   //   name: 'Admin',
@@ -62,6 +72,7 @@ const routes = [
   //     layout: 'Admin'
   //   }
   // },
+<<<<<<< HEAD
   // {
   //   path: '/admin_account',
   //   name: 'AdminAccount',
@@ -71,6 +82,16 @@ const routes = [
   //   }
   // },
  
+=======
+  {
+    path: '/admin_account',
+    name: 'AdminAccount',
+    component: () => import('../views/AdminAccount.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  }
+>>>>>>> b4870a3ce169dd3bc670ac21d46de7fc3c24c82d
 ]
 const router = createRouter({
   linkActiveClass: 'active',
