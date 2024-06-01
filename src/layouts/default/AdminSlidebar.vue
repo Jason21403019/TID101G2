@@ -51,8 +51,8 @@
 </template>
 
 <script>
-import AdminIconManger from '@/components/AdminIconManger.vue'
-import { variables } from '@/js/AdminVariables.js'
+import AdminIconManger from '../../components/AdminIconManger.vue'
+import { variables } from '../../js/AdminVariables.js'
 
 export default {
   components: {
