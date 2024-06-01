@@ -190,22 +190,25 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: $negroni;
+    // background: $negroni;
     z-index: 8;
   }
   &-content {
     display: flex;
+    border: 1px solid green;
     width: 100%;
     height: 100%;
   }
   &-ul {
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     &-item {
       border: 1px solid red;
-      height: 100%;
+      height: 70%;
+      width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -226,7 +229,6 @@ body {
           color: $whitelady;
         }
         .item1 {
-          width: 100%;
           position: relative;
           top: -5rem;
           left: -5rem;
@@ -320,7 +322,9 @@ body {
     }
   }
   &-img {
-    padding-top: 5rem;
+    flex: 1;
+    padding-top: 7rem;
+    padding-left: 5rem;
     width: 50%;
     border: 1px solid red;
   }
