@@ -43,11 +43,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-main {
-  transition: margin-left 0.3s ease;
+*{
+  font-family: $fontfamily,$fontfamily-en;
+  main {
+    transition: margin-left 0.3s ease;
+  }
+  
+  .main-shifted {
+    margin-left: 160px; /* 根據側邊欄的寬度調整這個值 */
+  }
+
 }
 
-.main-shifted {
-  margin-left: 160px; /* 根據側邊欄的寬度調整這個值 */
-}
 </style>
