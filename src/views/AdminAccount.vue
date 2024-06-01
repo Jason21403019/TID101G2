@@ -10,6 +10,7 @@
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
     <AdminBtnAdd :click="openForm" />
   </div>
+
   <section>
     <table class="table">
       <thead class="table-thead">
@@ -65,13 +66,15 @@
 
 <script>
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
+import AdminBtnAdd from '../components/AdminBtnAdd.vue'
 import Swal from 'sweetalert2'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
   name: 'AdminAccount',
   components: {
-    AdminBreadcrumb
+    AdminBreadcrumb,
+    AdminBtnAdd
   },
   data() {
     return {
@@ -163,10 +166,10 @@ export default {
   color: $campari;
   &-h1 {
     display: inline;
-    font-size: 40px;
+    font-size: $fontSize_h2;
   }
   &-pipe {
-    font-size: 40px;
+    font-size: $fontSize_h2;
     margin: 0 20px;
   }
 }
