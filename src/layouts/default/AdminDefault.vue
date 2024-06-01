@@ -32,6 +32,7 @@ export default {
   },
   created() {
     const route = useRoute()
+
     this.isLoginPage = route.path === '/admin_login'
   },
   methods: {
