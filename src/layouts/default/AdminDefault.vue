@@ -1,6 +1,6 @@
 <template>
   <header v-if="!isLoginPage">
-    <admin-header @toggleSidebar="toggleSidebar" />
+    <admin-header :isExpanded="isExpanded" @toggleSidebar="toggleSidebar" />
     <admin-slidebar :isExpanded="isExpanded" @update:isExpanded="isExpanded = $event" />
   </header>
 
