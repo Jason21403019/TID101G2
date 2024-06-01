@@ -11,8 +11,8 @@
     <AdminBtnAdd :click="openForm" />
   </div>
   <section>
-    <table class="table table-striped">
-      <thead>
+    <table class="table">
+      <thead class="table-thead">
         <tr>
           <th scope="col">項次</th>
           <th scope="col">姓名</th>
@@ -57,8 +57,7 @@
         </tr>
       </tbody>
       <caption>
-        每頁列表顯示<span class="main__list-number">6</span
-        >筆
+        每頁列表顯示<span class="main__list-number">6</span>筆
       </caption>
     </table>
   </section>
@@ -156,6 +155,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../node_modules/bootstrap/scss/bootstrap.scss'; // 確保這一行在最上面
+
 .adminblock {
   margin-top: 40px;
   margin-left: 160px;
@@ -178,9 +179,11 @@ export default {
   width: 85%;
   margin-top: 20px;
   margin-left: 160px;
-  thead {
-    background-color: $campari;
-    color: $ramos-gin-fizz;
+  .table-thead{
+    th{
+      background-color: $campari;
+      color: $ramos-gin-fizz;
+    }
   }
   #flexSwitchCheckChecked:checked {
     background-color: $toggle-on;
