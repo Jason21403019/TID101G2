@@ -1,6 +1,6 @@
 <template>
   <button class="create_btn" type="button" @click="handleClick">
-    <img src="../imgs/icon/icon_expand-w-67.svg" alt="addIcon" height="20px" width="20px" />
+    <img src="../imgs/icon/icon_expand-w-67.svg" alt="addIcon" height="20" width="20" />
     新增
   </button>
 </template>
