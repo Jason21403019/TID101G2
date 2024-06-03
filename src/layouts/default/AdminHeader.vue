@@ -42,6 +42,9 @@ export default {
 @import '../../../node_modules/bootstrap/scss/bootstrap.scss';
 .navbar {
   background-color: $irishcoffee;
+  position: fixed;
+  top: 0;
+  width: 100%;
   .button-shifted {
     transform: translateX(200px); /* 向右移動200px，根據需要調整位移量 */
     transition: transform 0.3s ease;

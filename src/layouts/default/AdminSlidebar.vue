@@ -6,10 +6,14 @@
     @mouseleave="handleMouseLeave"
   >
     <div class="d-flex justify-content-start">
-      <a class="navbar-brand" href="#">
+      <!-- <a class="navbar-brand" href="#">
         <img src="../../imgs/logo/logo-w.png" alt="logo" width="60" height="60" />
         <span v-if="isExpanded" class="logo-text">紙醉金迷後台</span>
-      </a>
+      </a> -->
+    <router-link to="/admin">
+      <img src="../../imgs/logo/logo-w.png" alt="logo" width="60" height="60" />
+      <span v-if="isExpanded" class="logo-text">紙醉金迷後台</span>
+    </router-link>
     </div>
     <ul v-if="!isExpanded" class="nav">
       <li v-for="item in navItems" :key="item.text" class="nav-item">
@@ -159,13 +163,15 @@ export default {
   &-expanded {
     width: 250px;
   }
-  .navbar-brand{
+  .d-flex{
     img{
       padding: 5px;
     }
     .logo-text {
       margin-left: 10px;
-      // font-size: 1.5rem; 
+      text-decoration: none;
+      border: none;
+      color: $babypowder;
     }
   }
   .nav,
