@@ -53,14 +53,14 @@ const routes = [
       layout: 'Admin'
     }
   },
-  // {
-  //   path: '/admin',
-  //   name: 'Admin',
-  //   component: () => import('../views/Admin.vue'),
-  //   meta: {
-  //     layout: 'Admin'
-  //   }
-  // },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('../views/Admin.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
   {
     path: '/admin_account',
     name: 'AdminAccount',
