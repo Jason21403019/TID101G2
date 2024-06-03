@@ -68,6 +68,15 @@ const routes = [
     meta: {
       layout: 'Admin'
     }
+  },
+  {
+    // 登入前後台頁面
+    path: '/login_page',
+    name: 'loginpage',
+    component: () => import('../views/LoginPage.vue'),
+    meta: {
+      layout: 'logindefault'
+    }
   }
 ]
 const router = createRouter({
