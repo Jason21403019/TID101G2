@@ -34,6 +34,7 @@ export default {
 .breadcrumb-nav {
   margin-top: 20px;
   margin-right: 20px;
+  background-color: $whitelady;
   .breadcrumb-item {
     a {
       color: $campari;
