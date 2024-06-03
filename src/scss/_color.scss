@@ -17,6 +17,20 @@ $babypowder:#FFFDFA;
 $negroni: linear-gradient(180deg, #000, #381b1d);
 
 //=== 字體大小 ===//
+// @mixin breakpoint($point) {
+//     @media screen and (max-width: $point) {
+//       @content;
+//     }
+//   }
+
+// :root {
+//     font-size: 16px;
+
+//     @include breakpoint( 540px) {
+//         font-size: 12px;
+//     }
+
+// }
 // 圖片大標題、商品子頁金額
 $fontSize_h1: 60px;
 
