@@ -46,8 +46,10 @@ export default {
 <style lang="scss" scoped>
 *{
   font-family: $fontfamily,$fontfamily-en;
+  background-color: $whitelady;
   main {
     transition: margin-left 0.3s ease;
+    background-color: $whitelady;
   }
   
   .main-shifted {
