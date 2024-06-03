@@ -7,16 +7,30 @@ $irishcoffee: #cead82;
 // 黑色
 $blackvevet: #090909;
 // 不是白色的白
-$whitelady:#f6f6f6; 
+$whitelady: #f6f6f6;
 // 啟動
-$toggle-on:#2B963C;
+$toggle-on: #2b963c;
 // 後台選單白色
-$babypowder:#FFFDFA;
+$babypowder: #fffdfa;
 
 // 深色漸層
 $negroni: linear-gradient(180deg, #000, #381b1d);
 
 //=== 字體大小 ===//
+// @mixin breakpoint($point) {
+//     @media screen and (max-width: $point) {
+//       @content;
+//     }
+//   }
+
+// :root {
+//     font-size: 16px;
+
+//     @include breakpoint( 540px) {
+//         font-size: 12px;
+//     }
+
+// }
 // 圖片大標題、商品子頁金額
 $fontSize_h1: 60px;
 
