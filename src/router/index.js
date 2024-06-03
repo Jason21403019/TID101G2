@@ -62,13 +62,78 @@ const routes = [
   //   }
   // },
   {
+    path: '/admin_member',
+    name: 'AdminMember',
+    component: () => import('../views/AdminMember.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin_type',
+    name: 'AdminType',
+    component: () => import('../views/AdminType.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin_product',
+    name: 'AdminProduct',
+    component: () => import('../views/AdminProduct.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin_order',
+    name: 'AdminOrder',
+    component: () => import('../views/AdminOrder.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin_category',
+    name: 'AdminCategory',
+    component: () => import('../views/AdminCategory.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin_article',
+    name: 'AdminArticle',
+    component: () => import('../views/AdminArticle.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin_res',
+    name: 'AdminRes',
+    component: () => import('../views/AdminRes.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
     path: '/admin_account',
     name: 'AdminAccount',
     component: () => import('../views/AdminAccount.vue'),
     meta: {
       layout: 'Admin'
     }
-  }
+  },
+  {
+    path: '/admin_panel',
+    name: 'AdminPanel',
+    component: () => import('../views/AdminPanel.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  
 ]
 const router = createRouter({
   linkActiveClass: 'active',
