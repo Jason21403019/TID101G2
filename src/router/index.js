@@ -65,6 +65,10 @@ const routes = [
     path: '/admin_account',
     name: 'AdminAccount',
     component: () => import('../views/AdminAccount.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
 
   {
     path: '/reserve_sec',
