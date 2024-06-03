@@ -27,51 +27,32 @@ const routes = [
       layout: 'default'
     }
   },
-<<<<<<< HEAD
   {
-    path: '/reserve',
-    name: 'Reserve',
-    component: () => import('../views/Reserve.vue'),
+    path: '/reserve_first',
+    name: 'Reserve_first',
+    component: () => import('../views/Reserve_first.vue'),
     meta: {
       layout: 'default'
     }
   },
-=======
 
-  // backend
-  // {
-  //   path: '/admin_login',
-  //   name: 'AdminLogin',
-  //   component: () => import('../views/AdminLogin.vue'),
-  //   meta: {
-  //     layout: 'Admin'
-  //   }
-  // },
-  // {
-  //   path: '/admin',
-  //   name: 'Admin',
-  //   component: () => import('../views/Admin.vue'),
-  //   meta: {
-  //     layout: 'Admin'
-  //   }
-  // },
-  // {
-  //   path: '/admin_account',
-  //   name: 'AdminAccount',
-  //   component: () => import('../views/AdminAccount.vue'),
-  //   meta: {
-  //     layout: 'Admin'
-  //   }
-  // },
   {
-    path: '/menus',
-    name: 'Menus',
-    component: () => import('../views/Menus.vue'),
+    path: '/reserve_sec',
+    name: 'Reserve_sec',
+    component: () => import('../views/Reserve_sec.vue'),
     meta: {
       layout: 'default'
     }
-  }
->>>>>>> 8b770451d92844c08881c8a6e7b7f947f24f392c
+  },
+
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: () => import('../views/Cart.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
 ]
 const router = createRouter({
   linkActiveClass: 'active',
