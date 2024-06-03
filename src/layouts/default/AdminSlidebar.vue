@@ -6,14 +6,10 @@
     @mouseleave="handleMouseLeave"
   >
     <div class="d-flex justify-content-start">
-      <!-- <a class="navbar-brand" href="#">
+      <router-link to="/admin">
         <img src="../../imgs/logo/logo-w.png" alt="logo" width="60" height="60" />
         <span v-if="isExpanded" class="logo-text">紙醉金迷後台</span>
-      </a> -->
-    <router-link to="/admin">
-      <img src="../../imgs/logo/logo-w.png" alt="logo" width="60" height="60" />
-      <span v-if="isExpanded" class="logo-text">紙醉金迷後台</span>
-    </router-link>
+      </router-link>
     </div>
     <ul v-if="!isExpanded" class="nav">
       <li v-for="item in navItems" :key="item.text" class="nav-item">
@@ -84,11 +80,6 @@ export default {
             { text: variables.productblock.typeList, link: '/#/admin_type' },
             { text: variables.productblock.productList, link: '/#/admin_product' }
           ]
-        },
-        {
-          text: variables.disblock.discount,
-          icon: 'discount',
-          subItems: [{ text: variables.disblock.coupon, link: '/' }]
         },
         {
           text: variables.orderblock.order,
@@ -163,6 +154,7 @@ export default {
   &-expanded {
     width: 250px;
   }
+
   .d-flex{
     img{
       padding: 5px;
@@ -170,10 +162,15 @@ export default {
     .logo-text {
       margin-left: 10px;
       text-decoration: none;
-      border: none;
+      outline: none;
+      border-bottom: none;
       color: $babypowder;
     }
+    a{
+      text-decoration: none;
+    }
   }
+
   .nav,
   .accordion {
     list-style: none;
