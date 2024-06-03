@@ -43,6 +43,14 @@ const routes = [
       layout: 'default'
     }
   },
+  {
+    path: '/wine_column',
+    name: 'WineColumn',
+    component: () => import('../views/WineColumn.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
 
   // backend
   {

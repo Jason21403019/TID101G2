@@ -66,19 +66,23 @@ export default {
 }
 </script>
 
-<style lang="scss">
-body {
-  position: relative;
-}
+<style lang="scss" scoped>
 .header {
+  position: sticky;
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  background: $negroni;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.07);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8.2px);
+  -webkit-backdrop-filter: blur(8.2px);
   &__logoarea {
     width: 100px;
     height: 80px;
     padding-left: 1rem;
     &-logo {
+      cursor: pointer;
       img {
         width: 100%;
         // height: 100%;
@@ -103,6 +107,7 @@ body {
         }
         &-img2 {
           width: 30px;
+          padding-top: 2px;
         }
       }
     }
@@ -113,30 +118,33 @@ body {
     outline: none;
     background-color: transparent;
     z-index: 10;
-    border: 1px solid red;
+    // border: 1px solid red;
     margin-left: 15px;
     margin-bottom: 2px;
     height: 35px;
+    position: relative;
     &::after {
       content: '';
       display: block;
-      position: relative;
+      position: absolute;
       width: 10px;
       height: 10px;
-      top: -1rem;
-      left: 0.5rem;
+      left: 0.85rem;
+      top: 0.6rem;
       border-radius: 20px;
-      border: 1px solid red;
-      background: $negroni;
+      // border: 1px solid red;
+      // background: $negroni;
       z-index: -1;
+      transition: width 0.5s ease, height 0.5s ease, top 0.5s ease, left 0.5s ease;
     }
     &.active::after {
       width: 100vw;
       height: 100vh;
+      // border: 1px solid blue;
       top: 0;
       left: 0;
       border-radius: 50%;
-      background: $negroni;
+      // background: $negroni;
       z-index: 9;
     }
   }
@@ -148,20 +156,15 @@ body {
     margin: 5.5px 3px;
     border-radius: 20px;
     background-color: $whitelady;
-    transition: all 1s ease-in-out;
-  }
-  .hamburger__open.active .hamburger__bar:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
   }
 
-  .hamburger__open.active .hamburger__bar:nth-child(2) {
-    opacity: 0;
+  .hamburger__open {
+    // border: 1px solid red;
   }
-
-  .hamburger__open.active .hamburger__bar:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
+  .hamburger__close {
+    // border: 1px solid red;
+    padding-top: 8px;
   }
-
   .hamburger__close .hamburger__bar:nth-child(1) {
     transform: translateY(1px) rotate(45deg);
   }
@@ -172,30 +175,34 @@ body {
 }
 
 .menu__nav {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-  background: $negroni;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  overflow-x: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: width 0.5s ease;
+  // background: $negroni;
+  // opacity: 0;
+  // visibility: hidden;
+  // transition: opacity 0.5s ease, visibility 0.5s ease;
   &.active {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    // background: $negroni;
-    z-index: 8;
+    width: 100%;
+    //   opacity: 1;
+    //   visibility: visible;
+    //   transition: opacity 0.5s ease, visibility 0.5s ease;
+    //   position: fixed;
+    //   top: 0;
+    //   left: 0;
+    //   width: 100vw;
+    //   height: 100vh;
+    //   // background: $negroni;
+    //   z-index: 8;
   }
   &-content {
     display: flex;
-    border: 1px solid green;
+    // border: 1px solid green;
     width: 100%;
     height: 100%;
   }
@@ -206,7 +213,7 @@ body {
     justify-content: center;
     align-items: center;
     &-item {
-      border: 1px solid red;
+      // border: 1px solid red;
       height: 70%;
       width: 100%;
       display: flex;
@@ -326,7 +333,7 @@ body {
     padding-top: 7rem;
     padding-left: 5rem;
     width: 50%;
-    border: 1px solid red;
+    // border: 1px solid red;
   }
 }
 </style>
