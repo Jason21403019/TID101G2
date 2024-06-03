@@ -5,7 +5,7 @@ export const variables = {
   },
   productblock: {
     product: '商品管理',
-    typeList: '類別類表',
+    typeList: '類別列表',
     productList: '商品列表',
   },
   disblock: {
@@ -28,6 +28,10 @@ export const variables = {
   adminblock:{
     admin: '管理者專區',
     account: '帳號管理',
+  },
+  adminpanel:{
+    panel: '管理面板',
+    profile: '個人資料'
   }
 };
 
