@@ -11,4 +11,8 @@ import DefaultFooter from './DefaultFooter.vue'
 import DefaultNav from './DefaultNav.vue'
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+body {
+  background: $negroni;
+}
+</style>
