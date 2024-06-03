@@ -133,7 +133,6 @@ const routes = [
       layout: 'Admin'
     }
   },
-<<<<<<< HEAD
   {
     // 登入前後台頁面
     path: '/login_page',
@@ -142,8 +141,7 @@ const routes = [
     meta: {
       layout: 'logindefault'
     }
-  }
-=======
+  },
 
   {
     path: '/reserve_sec',
@@ -169,9 +167,7 @@ const routes = [
     meta: {
       layout: 'Admin'
     }
-  },
-  
->>>>>>> c432f08ae6d0050b64baf393f0eb6d0bd9210207
+  }
 ]
 const router = createRouter({
   linkActiveClass: 'active',
