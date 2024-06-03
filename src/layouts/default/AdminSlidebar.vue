@@ -71,14 +71,14 @@ export default {
         {
           text: variables.memberblock.member,
           icon: 'member',
-          subItems: [{ text: variables.memberblock.memberList, link: '/' }]
+          subItems: [{ text: variables.memberblock.memberList, link: '/#/admin_member' }]
         },
         {
           text: variables.productblock.product,
           icon: 'product',
           subItems: [
-            { text: variables.productblock.typeList, link: '/' },
-            { text: variables.productblock.productList, link: '/' }
+            { text: variables.productblock.typeList, link: '/#/admin_type' },
+            { text: variables.productblock.productList, link: '/#/admin_product' }
           ]
         },
         {
@@ -89,20 +89,20 @@ export default {
         {
           text: variables.orderblock.order,
           icon: 'order',
-          subItems: [{ text: variables.orderblock.orderList, link: '/' }]
+          subItems: [{ text: variables.orderblock.orderList, link: '/#/admin_order' }]
         },
         {
           text: variables.articleblock.wine,
           icon: 'wine',
           subItems: [
-            { text: variables.articleblock.categoryList, link: '/' },
-            { text: variables.articleblock.articleList, link: '/' }
+            { text: variables.articleblock.categoryList, link: '/#/admin_category' },
+            { text: variables.articleblock.articleList, link: '/#/admin_article' }
           ]
         },
         {
           text: variables.resblock.reservation,
           icon: 'reservation',
-          subItems: [{ text: variables.resblock.bookingList, link: '/' }]
+          subItems: [{ text: variables.resblock.bookingList, link: '/#/admin_res' }]
         },
         {
           text: variables.adminblock.admin,

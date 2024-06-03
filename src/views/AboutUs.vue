@@ -23,8 +23,6 @@
       </span>
     </section>
 
-    <!-- 練習 -->
-
     <!-- map -->
     <section class="aboutBackground_4">
       <div></div>
@@ -39,15 +37,13 @@
 </template>
 
 <script>
-import { gsap } from 'gsap'
-
+import gsap from 'gsap'
+// import ScrollTrigger from 'gsap/ScrollTrigger'
 export default {
   name: 'About',
-
   data() {
     return {
-      about_logo: 'about_logo',
-      logoSrc: '../imgs/logo/logo-w.png',
+      logoSrc: './src/imgs/logo/logo-w.png',
       englishText: 'Fredericka the Great',
       title1: '紙醉金迷',
       content:
@@ -72,10 +68,10 @@ export default {
       gsap.fromTo(
         section,
         {
-          backgroundPosition: () => `50% ${i ? -window.innerHeight * this.getRatio(section) : '0'}px`
+          backgroundPosition: () => `50% ${i ? -window.innerHeight * getRatio(section) : '0'}px`
         },
         {
-          backgroundPosition: () => `50% ${window.innerHeight * (1 - this.getRatio(section))}px`,
+          backgroundPosition: () => `50% ${window.innerHeight * (1 - getRatio(section))}px`,
           ease: 'ease-out',
           scrollTrigger: {
             trigger: section,
@@ -89,15 +85,12 @@ export default {
       )
     })
   },
-
   methods: {
     testPage() {
-      location.href = './Home.vue'
+      location.href = './Questions.vue'
     },
-
     getRatio(element) {
       const rect = element.getBoundingClientRect()
-
       return rect.top / window.innerHeight
     }
   }
@@ -106,22 +99,39 @@ export default {
 
 <style lang="scss" scoped>
 body {
+  background-color: black;
   button {
     background-color: transparent;
-    border-color: #fcf0d8;
-    color: #fcf0d8;
+    border-color: $irishcoffee;
+    color: $irishcoffee;
     border-radius: 84px;
+    font-size: 62px;
+    padding: 1% 5%;
+    letter-spacing: 10px;
   }
   h1 {
+    color: $whitelady;
     font-size: 102px;
+    padding-bottom: 4%;
   }
   h2 {
+    color: $whitelady;
     font-size: 92px;
+    font-family: $fontfamily;
+    padding-bottom: 4%;
+  }
+  h3 {
+    color: $whitelady;
+    font-size: 32px;
+    font-family: $fontfamily;
+    line-height: 50px;
   }
   p {
+    color: $whitelady;
     text-align: center;
     font-size: 56px;
-    font-family: 'Fredericka the Great', serif;
+    font-family: $fontfamily-en2;
+    padding-bottom: 2%;
   }
   main {
     width: 100vw;
@@ -157,13 +167,11 @@ body {
     }
     .aboutBackground_3 {
       background-image: url(../imgs/aboutImg/about_pc03.png);
-      button {
-        font-size: 62px;
-        padding: 1% 5%;
-        letter-spacing: 10px;
-      }
+      background-color: #381b1d;
+      opacity: 0.9;
     }
     .aboutBackground_4 {
+      background-color: #381b1d;
       /* display: unset; */
       text-align: left;
       justify-content: left;
