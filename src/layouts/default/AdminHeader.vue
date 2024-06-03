@@ -3,16 +3,16 @@
     <div class="container-fluid">
       <div :class="['d-flex', 'justify-content-start', { 'button-shifted': isExpanded }]">
         <a class="navbar-brand" @click="handleClick">
-          <img src="../../imgs/icon/icon_hambur-w.svg" alt="" width="40" height="40" />
+          <img src="../../imgs/icon/icon_hambur-w.svg" alt="固定導覽列" width="40" height="40" />
         </a>
       </div>
 
       <div class="btn-group d-flex justify-content-end">
         <button type="button" class="navbar-brand btn" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="../../imgs/icon/icon_admin-person-w.svg" alt="" width="40" height="40" />
+          <img src="../../imgs/icon/icon_admin-person-w.svg" alt="管理者面板" width="40" height="40" />
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="#">個人資料</a></li>
+          <li><router-link class="dropdown-item" to="/admin_panel">個人資料</router-link></li>
           <li><a class="dropdown-item" href="#">登出</a></li>
         </ul>
       </div>
@@ -30,8 +30,9 @@ export default {
     },
   },
   methods: {
-    handleClick() {
+    handleClick(event) {
       this.$emit('toggleSidebar');
+      event.target.blur(); // 移除焦點
     },
   },
 };
@@ -48,6 +49,7 @@ export default {
   .d-flex.justify-content-start {
     transition: transform 0.3s ease;
   }
+
   .navbar-brand {
     display: flex;
     align-items: center;
@@ -64,17 +66,26 @@ export default {
     &:focus {
       border: none;
       box-shadow: none;
+      outline: none;
     }
   }
   .dropdown-menu{
     background-color: $ramos-gin-fizz;
     .dropdown-item {
+      background-color: $ramos-gin-fizz;
       color: $campari;
       &:hover {
         background-color: $campari;
         color: $ramos-gin-fizz;
       }
     }
+  }
+  
+  .btn-group > 
+  .btn[data-v-b6c4c226]:not(:last-child):not(.dropdown-toggle), 
+  .btn-group > .btn.dropdown-toggle-split[data-v-b6c4c226]:first-child, 
+  .btn-group > .btn-group:not(:last-child) > .btn[data-v-b6c4c226] {
+      border: none !important;
   }
 }
 </style>
