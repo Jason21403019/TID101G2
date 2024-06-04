@@ -35,8 +35,11 @@ export default {
   margin-top: 20px;
   margin-right: 20px;
   background-color: $whitelady;
+  font-size: $fontSize_h5;
+  
   .breadcrumb-item {
     a {
+      font-size: $fontSize_h5;
       color: $campari;
     }
   }
