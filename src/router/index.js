@@ -148,7 +148,7 @@ const routes = [
     name: 'Reserve_sec',
     component: () => import('../views/Reserve_sec.vue'),
     meta: {
-      layout:'default'
+      layout: 'default'
     }
   },
 
@@ -168,7 +168,14 @@ const routes = [
       layout: 'Admin'
     }
   },
-  
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('../views/Register.vue'),
+    meta: {
+      layout: 'default'
+    }
+  }
 ]
 const router = createRouter({
   linkActiveClass: 'active',
