@@ -29,9 +29,10 @@
             <button @click="cancelReservation">
                 取消訂位
             </button>
-
-            <p>如需更改訂位資訊，或有其他訂位問題，請來電</p>
-
+            
+            <div class="btn_text">
+                <p>如需更改訂位資訊，或有其他訂位問題，請來電</p>
+            </div>
         </div>
 
     </div>
@@ -93,13 +94,22 @@ export default {
     padding: 50px;
     width: 50%;
     margin: 0 auto;
-    // padding: 50px;
-    // position: absolute;
-    // top: 50%;
-    // left: 50%;
-    // transform: translate(-50%,-50%);
+    
+    @include breakpoint(1280px) {
+        width: 60%;
+       
+    }
 
-    // outline: 1px solid red;
+    @include breakpoint(820px) {
+        width: 80%;
+       
+    }
+
+    @include breakpoint(540px) {
+        width: 100%;
+       
+    }
+
 
     p{
         font-family:$fontfamily;
@@ -112,6 +122,11 @@ export default {
         background-color:$ramos-gin-fizz;
         padding: 0 0 50px 0;
 
+        @include breakpoint(430px) {
+            padding: 0 0 30px 0;
+       
+        }
+
         .order{
             display: flex;
             justify-content: center;
@@ -119,6 +134,11 @@ export default {
             background-color:$campari;
             border-bottom:10px solid #fff ;
             padding: 20px;
+
+            @include breakpoint(430px) {
+                padding: 10px;
+       
+            }
            
             img{
                 width: 30px;
@@ -160,17 +180,26 @@ export default {
             border:1px solid $irishcoffee;
             padding: 30px;
             text-align: center;
+
+            @include breakpoint(430px) {
+                padding: 20px;
+            }
             
 
             .hello{
                 font-size:$fontSize_p;
                 margin-bottom: 10px;
+
+                @include breakpoint(430px) {
+                font-size: $fontSize_h4;
+                }
             }
 
             .r_date{
                 font-size:$fontSize_h3;
                 margin-bottom: 30px;
                 font-weight: bold;
+
 
             }
 
@@ -184,6 +213,10 @@ export default {
             .r_guests{
                 font-size:$fontSize_p;
                 margin-bottom: 30px;
+
+                @include breakpoint(430px) {
+                font-size: $fontSize_h4;
+                }
             }
 
             button{
@@ -198,9 +231,17 @@ export default {
                 font-weight: bold;
             }
 
-            p{
-                font-size: $fontSize_p;
-            }
+            .btn_text{
+                p{
+                    font-size: $fontSize_p;
+
+                    @include breakpoint(430px) {
+                    font-size: $fontSize_h5;
+                    line-height: 2;
+                    
+                    }
+                }
+            }   
 
         }
     }
