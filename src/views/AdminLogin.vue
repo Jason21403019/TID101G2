@@ -16,7 +16,7 @@
                 <label for="password">密碼</label>
                 <input type="password" class="form-control" v-model="password" id="password" placeholder="請輸入密碼" />
               </div>
-              <button type="submit" class="btn btn-primary btn-block">登入</button>
+              <button type="submit" class="btn btn-primary">登入</button>
             </form>
           </div>
         </div>
@@ -45,8 +45,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-div[data-v-f2aac0b3] {
-  padding: 10px;
+@import '../../node_modules/bootstrap/scss/bootstrap.scss'; 
+.container {
+  padding: 5px;
+  font-size: $fontSize_h4;
+
+  .text-center{
+    font-size: $fontSize_h3;
+  }
   body {
     background-color: $babypowder;
     height: 100vh;
@@ -54,18 +60,21 @@ div[data-v-f2aac0b3] {
     justify-content: center;
     align-items: center;
   }
-
   .card {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   .card-header {
     background-color: $irishcoffee;
-    color: #fff;
+    color: $babypowder;
     border-bottom: none;
     border-radius: 10px 10px 0 0;
     padding: 10px;
   }
+  label, .form-control{
+    margin-bottom: 10px;
+  }
+
   .btn-primary {
     background-color: $campari;
     border-color: $campari;
