@@ -167,6 +167,14 @@ const routes = [
     meta: {
       layout: 'Admin'
     }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('../views/Register.vue'),
+    meta: {
+      layout: 'default'
+    }
   }
 ]
 const router = createRouter({

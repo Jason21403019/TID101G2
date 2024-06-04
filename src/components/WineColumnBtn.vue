@@ -1,5 +1,5 @@
 <template>
-  <button class="read-more-button" @click="handleClick">Read More</button>
+  <button class="read-more-button" @click="handleClick">閱讀更多</button>
 </template>
 
 <script>
@@ -17,7 +17,7 @@ export default {
 .read-more-button {
   position: absolute;
   top: 46%;
-  left: 34%;
+  left: 36%;
   padding: 0.5rem 1rem;
   background-color: rgba(255, 255, 255, 0.8);
   border: none;
