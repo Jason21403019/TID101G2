@@ -1,44 +1,36 @@
 <template>
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+  <div id="exampleModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="modal">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">{{ title }}</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h1 id="exampleModalLabel" class="modal-title fs-5">{{ title }}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeModal"></button>
         </div>
         <div class="modal-body">
-          <form>
-            <div v-for="(field, index) in fields" :key="index" class="mb-3">
+          <form @submit.prevent="handleSubmit">
+            <div v-for="field in fields" :key="field.id" class="mb-3">
               <label :for="field.id" class="col-form-label">{{ field.label }}:</label>
-              <component
-                :is="field.type"
-                class="form-control"
-                :id="field.id"
-                v-model="formData[field.id]"
-                v-if="field.type !== 'select'"
-              />
-              <select
-                v-if="field.type === 'select'"
-                class="form-control"
-                :id="field.id"
-                v-model="formData[field.id]"
-              >
-                <option v-for="option in field.options" :key="option.value" :value="option.value">
-                  {{ option.text }}
-                </option>
+              <input v-if="field.type === 'input'" :id="field.id" v-model="formData[field.id]" class="form-control" :type="field.type" />
+              <input v-if="field.type === 'password'" :id="field.id" v-model="formData[field.id]" class="form-control" :type="field.type" />
+              <textarea v-if="field.type === 'textarea'" :id="field.id" v-model="formData[field.id]" class="form-control"></textarea>
+              <select v-if="field.type === 'select'" :id="field.id" v-model="formData[field.id]" class="form-control">
+                <option v-for="option in field.options" :key="option.value" :value="option.value">{{ option.text }}</option>
               </select>
-            </div>
-            <div class="mb-3 d-flex align-items-center">
-              <label for="flexSwitchCheckChecked" class="col-form-label me-2">啟用/停用:</label>
-              <div class="form-check form-switch">
-                <input id="flexSwitchCheckChecked" class="form-check-input" type="checkbox" v-model="formData.active" />
+              <div v-if="field.type === 'checkbox'" class="form-check form-switch">
+                <input :id="field.id" v-model="formData[field.id]" class="form-check-input" :type="field.type" />
               </div>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-          <button type="button" class="btn btn-primary" @click="save">儲存</button>
+          <AdminBtn 
+            modal 
+            modal-target="#exampleModal" 
+            modal-whatever="@fat"
+            @click="handleSubmit"
+          >
+            <template #text>儲存</template>
+          </AdminBtn>
         </div>
       </div>
     </div>
@@ -46,7 +38,13 @@
 </template>
 
 <script>
+import AdminBtn from './AdminBtn.vue';
+
 export default {
+  name: 'AdminModal',
+  components: {
+    AdminBtn
+  },
   props: {
     title: {
       type: String,
@@ -59,12 +57,79 @@ export default {
     formData: {
       type: Object,
       required: true
+    },
+    visible: {
+      type: Boolean,
+      required: true
+    }
+  },
+  watch: {
+    visible(val) {
+      if (val) {
+        this.showModal();
+      } else {
+        this.hideModal();
+      }
     }
   },
   methods: {
-    save() {
+    showModal() {
+      const modalElement = this.$refs.modal;
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    },
+    hideModal() {
+      const modalElement = this.$refs.modal;
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
+    },
+    closeModal() {
+      this.$emit('close');
+    },
+    handleSubmit() {
       this.$emit('save', this.formData);
+      this.closeModal();
     }
   }
 }
 </script>
+
+
+<style lang="scss" scoped>
+@import '../../node_modules/bootstrap/scss/bootstrap.scss'; 
+
+#exampleModal{
+  font-size: $fontSize_h4;
+  color: $campari;
+
+  .modal-header{
+    background-color: $babypowder;
+  }
+
+  .modal-body{
+    background-color: $babypowder;
+
+    .col-form-label{
+      font-size: $fontSize_h4;
+    }
+
+    .form-control{
+      outline: 1px solid $campari;
+      // &:focus {
+        
+      // }
+    }
+    .form-check-input:checked{
+      background-color: $toggle-on;
+      border: solid $toggle-on;
+    }
+  }
+
+  .modal-footer{
+    background-color: $babypowder;
+  }
+}
+
+</style>
