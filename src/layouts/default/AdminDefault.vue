@@ -51,16 +51,16 @@ export default {
 body{
   font-family: $fontfamily,$fontfamily-en;
   background: $whitelady;
+  
   .AdminWrapper{
     padding-top: 60px;
     background: $whitelady;
     height: 100vh;
   }
+
   main {
-    transition: margin-left 0.3s ease;
-    // background-color: $whitelady;
-    width: 100%;
- 
+    transition: margin-left 0.3s ease; 
+    background-color: $whitelady;
   }
   
   .main-shifted {
