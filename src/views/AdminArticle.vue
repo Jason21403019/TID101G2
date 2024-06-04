@@ -9,7 +9,7 @@
 
   <!-- 按鈕 -->
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <admin-btn :handle-click="addNew">
+    <admin-btn @click="openModal('add')">
       <template #icon>
         <img src="../imgs/icon/icon_expand-w-67.svg" alt="addIcon" height="20" width="20" />
       </template>
@@ -17,6 +17,16 @@
     </admin-btn>
   </div>
 
+  <!-- 彈跳視窗 -->
+  <AdminModal
+    :title="modalTitle"
+    :fields="formFields"
+    :formData.sync="formData"
+    :visible="isModalVisible"
+    @save="handleSave"
+    @close="closeModal"
+  />
+  
   <!-- 列表 -->
   <section>
     <table class="table">
@@ -75,13 +85,15 @@
 <script>
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
+import AdminModal from '../components/AdminModal.vue'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
   name: 'AdminArticle',
   components: {
     AdminBreadcrumb,
-    AdminBtn
+    AdminBtn,
+    AdminModal
   },
   data() {
     return {
@@ -91,9 +103,78 @@ export default {
         { text: '首頁', link: '/admin', active: false },
         { text: variables.articleblock.wine, link: '', active: true },
         { text: variables.articleblock.articleList, link: '/admin_article', active: false }
-      ]
+      ],
+
+      actionType: 'add',
+      modalTitle: '文章新增',
+      formFields: [
+        {
+          id: 'columnCategory',
+          label: '專欄名稱',
+          type: 'select',
+          options: [
+            { value: 'knowledge', text: 'Wine Knowledge 酒類知識' },
+            { value: 'reports', text: 'Foreign Reports 國外報導' },
+            { value: 'cocktail', text: 'Cocktail New World 調酒新世界' },
+          ]
+        },
+        { id: 'title', label: '專欄標題', type: 'input' },
+        { id: 'author', label: '作者', type: 'input' },
+        { id: 'release', label: '發布時間', type: 'date' },
+        // { id: 'content', label: '專欄內容', type: 'ckeditor' },
+        { id: 'upload', label: '標題圖上傳', type: 'file' },
+        { id: 'active', label: '顯示狀態', type: 'checkbox' }
+      ],
+      formData: {
+        columnCategory: '',
+        title: '',
+        author: '',
+        release: '',
+        content: '',
+        upload: '',
+        active: true
+      },
+      existingData: {
+        columnCategory: 'Wine Knowledge 酒類知識',
+        title: '威士忌釀造的藝術',
+        author: 'Jason Chang',
+        release: '',
+        content: '',
+        upload: '',
+        active: true
+      },
+      isModalVisible: false
     }
   },
+  methods: {
+    openModal(action, data = null) {
+      this.actionType = action;
+      this.modalTitle = action === 'add' ? '文章新增' : '文章編輯';
+      this.formData = data || {
+        columnCategory: '',
+        title: '',
+        author: '',
+        release: '',
+        content: '',
+        upload: '',
+        active: true
+      };
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+    },
+    handleSave(formData) {
+      if (this.actionType === 'add') {
+        // 新增邏輯
+        console.log('新增資料', formData);
+      } else {
+        // 編輯邏輯
+        console.log('編輯資料', formData);
+      }
+      this.closeModal();
+    }
+  }
 }
 </script>
 
