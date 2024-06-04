@@ -139,7 +139,7 @@ const routes = [
     name: 'Reserve_sec',
     component: () => import('../views/Reserve_sec.vue'),
     meta: {
-      layout: 'Admin'
+      layout:'default'
     }
   },
 
