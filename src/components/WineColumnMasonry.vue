@@ -3,12 +3,12 @@
     <div class="winecolumn__masonry-item1">
       <div class="winecolumn__masonry-item1-lf">
         <div class="winecolumn__masonry-item1-lf-tp">
-          <h3>專業品酒師的開瓶技巧</h3>
+          <h3>{{ title }}</h3>
           <img
             src="@/imgs/wineColumnImg/bartender-opens-bottle-red-wine-using-wine-opener-pour-lot-empty-glasses-bar-counter-blurred-background-wine-tasting-open-beverage-bartender-dinner-concept.jpg"
             alt=""
           />
-          <div class="category-name">{{ jason }}</div>
+          <div class="category-name">{{ category }}</div>
           <ReadMoreButton />
         </div>
         <div class="winecolumn__masonry-item1-lf-bt">
@@ -51,9 +51,17 @@ export default {
     //   type: String,
     //   required: true
     // },
-    category: {
-      type: String,
-      required: true
+    // category: {
+    //   type: String,
+    //   required: true
+    // }
+  },
+  data() {
+    return {
+      title: '專業品酒師的開瓶技巧',
+      //   imageSrc:
+      //     '@/imgs/wineColumnImg/bartender-opens-bottle-red-wine-using-wine-opener-pour-lot-empty-glasses-bar-counter-blurred-background-wine-tasting-open-beverage-bartender-dinner-concept.jpg',
+      category: 'jason'
     }
   }
 }
@@ -68,13 +76,13 @@ export default {
   flex-direction: column;
   color: $ramos-gin-fizz;
   font-family: $fontfamily;
-
+  padding-bottom: 6rem;
   &-item1 {
     display: flex;
     height: 75%;
     // border: 1px solid green;
     margin: 0.5rem 0;
-    padding-bottom: 0.5rem;
+    // padding-bottom: 0.5rem;
     &-lf {
       width: 35%;
       //   border: 1px solid red;
@@ -94,6 +102,10 @@ export default {
           height: 100%;
           background-color: rgba($color: #000, $alpha: 0.4);
           z-index: 1;
+          transition: all 0.5s ease;
+        }
+        &:hover::before {
+          background-color: rgba($color: #000, $alpha: 0.8);
         }
         h3 {
           position: absolute;

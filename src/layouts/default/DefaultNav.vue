@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" :class="{ '-black': currentPath === 'Home' || currentPath === 'Home' }">
     <div class="header__logoarea">
       <routerlink to="/" class="header__logoarea-logo">
         <img src="../../imgs/logo/logo-w.png" alt="" />
@@ -14,32 +14,29 @@
           <img class="header__icons-icon-img2" src="../../imgs/icon/icon_cart-shopping-w.svg" alt="" />
         </router-link>
       </div>
-      <button
-        v-if="!isHamburgerOpen"
-        :class="['h__btn', 'hamburger__open', { active: isHamburgerOpen }]"
-        @click="toggleHamburger"
-      >
+      <button class="h__btn" :class="hamburger__class" @click="toggleHamburger">
         <span class="hamburger__bar"></span>
         <span class="hamburger__bar"></span>
         <span class="hamburger__bar"></span>
       </button>
-      <button v-else :class="['h__btn', 'hamburger__close', { active: !isHamburgerOpen }]" @click="toggleHamburger">
+      <!-- <div class="h__btn " :class="[ 'hamburger__open', { active: isHamburgerOpen }]"></div> -->
+      <!-- <button v-else :class="['h__btn', 'hamburger__close', { active: !isHamburgerOpen }]" @click="toggleHamburger">
         <span class="hamburger__bar"></span>
         <span class="hamburger__bar"></span>
-      </button>
+      </button> -->
     </div>
   </header>
   <div v-show="isHamburgerOpen" :class="['menu__nav', { active: isHamburgerOpen }]">
     <nav class="menu__nav-content">
       <ul class="menu__nav-ul">
-        <li class="menu__nav-ul-item">
-          <router-link to="/" class="menu__link"><span class="item1">關於我們</span></router-link>
-          <router-link to="/" class="menu__link"><span class="item2">菜單</span></router-link>
+        <li class="menu__nav-ul-item" :class="hamburger__class">
+          <router-link to="/about_us" class="menu__link"><span class="item1">關於我們</span></router-link>
+          <router-link to="/menus" class="menu__link"><span class="item2">菜單</span></router-link>
           <router-link to="/" class="menu__link"><span class="item3">預約訂位</span></router-link>
           <router-link to="/" class="menu__link"><span class="item4">熱門商品</span></router-link>
           <router-link to="/" class="menu__link"><span class="item5">測驗遊戲</span></router-link>
-          <router-link to="/" class="menu__link"><span class="item6">酒品專欄</span></router-link>
-          <router-link to="/question" class="menu__link"><span class="item7">常見問題</span></router-link>
+          <router-link to="/wine_column" class="menu__link"><span class="item6">酒品專欄</span></router-link>
+          <router-link to="/questions" class="menu__link"><span class="item7">常見問題</span></router-link>
         </li>
       </ul>
       <div class="menu__nav-img">
@@ -57,6 +54,15 @@ export default {
       isHamburgerOpen: false
     }
   },
+  computed: {
+    currentPath() {
+      console.log(this.$route)
+      return this.$route.name
+    },
+    hamburger__class() {
+      return this.isHamburgerOpen === true ? 'active' : ''
+    }
+  },
 
   methods: {
     toggleHamburger() {
@@ -68,7 +74,8 @@ export default {
 
 <style lang="scss" scoped>
 .header {
-  position: sticky;
+  position: fixed;
+  top: 0;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -127,55 +134,46 @@ export default {
       content: '';
       display: block;
       position: absolute;
-      width: 10px;
-      height: 10px;
+      width: 30px;
+      height: 30px;
       left: 0.85rem;
       top: 0.6rem;
       border-radius: 20px;
-      // border: 1px solid red;
-      // background: $negroni;
-      z-index: -1;
-      transition: width 0.5s ease, height 0.5s ease, top 0.5s ease, left 0.5s ease;
+      background: rgba(#fff, 0.3);
+      border-radius: 50%;
+      transition: transform 0.5s ease;
     }
     &.active::after {
-      width: 100vw;
-      height: 100vh;
-      // border: 1px solid blue;
-      top: 0;
-      left: 0;
-      border-radius: 50%;
-      // background: $negroni;
-      z-index: 9;
+      transform: scale(120);
     }
   }
+}
+.hamburger__bar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5.5px 3px;
+  border-radius: 20px;
+  background-color: $whitelady;
+  transition: transform 0.4s;
 
-  .hamburger__bar {
-    display: block;
-    width: 25px;
-    height: 3px;
-    margin: 5.5px 3px;
-    border-radius: 20px;
-    background-color: $whitelady;
-  }
+  .active & {
+    &:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
 
-  .hamburger__open {
-    // border: 1px solid red;
-  }
-  .hamburger__close {
-    // border: 1px solid red;
-    padding-top: 8px;
-  }
-  .hamburger__close .hamburger__bar:nth-child(1) {
-    transform: translateY(1px) rotate(45deg);
-  }
+    &:nth-child(2) {
+      opacity: 0;
+    }
 
-  .hamburger__close .hamburger__bar:nth-child(2) {
-    transform: translateY(-8px) rotate(-45deg);
+    &:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
+    }
   }
 }
 
 .menu__nav {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
@@ -183,7 +181,8 @@ export default {
   overflow-x: hidden;
   background-color: rgba(0, 0, 0, 0.5);
   transition: width 0.5s ease;
-  // background: $negroni;
+  background: $negroni;
+  z-index: 100;
   // opacity: 0;
   // visibility: hidden;
   // transition: opacity 0.5s ease, visibility 0.5s ease;
