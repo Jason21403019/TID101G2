@@ -9,11 +9,7 @@
 
   <!-- 按鈕 -->
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <admin-btn 
-      modal 
-      modal-target="#exampleModal" 
-      modal-whatever="@fat"
-    >
+    <admin-btn @click="openModal('add')">
       <template #icon>
         <img src="../imgs/icon/icon_expand-w-67.svg" alt="addIcon" height="20" width="20" />
       </template>
@@ -22,57 +18,15 @@
   </div>
 
   <!-- 彈跳視窗 -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">管理者新增</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label for="recipient-name" class="col-form-label">姓名:</label>
-              <input type="text" class="form-control" id="recipient-name">
-            </div>
-            <div class="mb-3">
-              <label for="recipient-name" class="col-form-label">E-mail:</label>
-              <input type="text" class="form-control" id="recipient-name">
-            </div>
-            <div class="mb-3">
-              <label for="recipient-name" class="col-form-label">手機:</label>
-              <input type="text" class="form-control" id="recipient-name">
-            </div>
-            <div class="mb-3">
-              <label for="recipient-name" class="col-form-label">設定密碼:</label>
-              <input type="text" class="form-control" id="recipient-name">
-            </div>
-            <div class="mb-3">
-              <label for="recipient-name" class="col-form-label">確認密碼:</label>
-              <input type="text" class="form-control" id="recipient-name">
-            </div>
-            <div class="mb-3">
-              <label for="recipient-name" class="col-form-label">職位:</label>
-              <select class="form-control" id="recipient-name">
-                <option value="manager">主管</option>
-                <option value="developer">員工</option>
-              </select>
-            </div>
-            <div class="mb-3 d-flex align-items-center">
-              <label for="flexSwitchCheckChecked" class="col-form-label me-2">啟用/停用:</label>
-              <div class="form-check form-switch">
-                <input id="flexSwitchCheckChecked" class="form-check-input" type="checkbox" checked />
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-          <button type="button" class="btn btn-primary">儲存</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <AdminModal
+    :title="modalTitle"
+    :fields="formFields"
+    :formData.sync="formData"
+    :visible="isModalVisible"
+    @save="handleSave"
+    @close="closeModal"
+  />
+
   <!-- 列表 -->
   <section>
     <table class="table">
@@ -96,9 +50,9 @@
           <td>主管</td>
           <td></td>
           <td>
-            <a href="">
-              <img src="../imgs/icon/icon_admin-edit.svg" alt="" width="20px" height="20ox" />
-            </a>
+            <button @click="openModal('edit', existingData)">
+              <img src="../imgs/icon/icon_admin-edit.svg" alt="" width="20px" height="20px" />
+            </button>
           </td>
         </tr>
 
@@ -130,14 +84,15 @@
 <script>
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
-import Swal from 'sweetalert2'
+import AdminModal from '../components/AdminModal.vue'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
   name: 'AdminAccount',
   components: {
     AdminBreadcrumb,
-    AdminBtn
+    AdminBtn,
+    AdminModal
   },
   data() {
     return {
@@ -147,13 +102,75 @@ export default {
         { text: '首頁', link: '/admin', active: false },
         { text: variables.adminblock.admin, link: '', active: true },
         { text: variables.adminblock.account, link: '/admin_account', active: false }
-      ]
-    }
+      ],
+
+      actionType: 'add',
+      modalTitle: '管理者新增',
+      formFields: [
+        { id: 'name', label: '姓名', type: 'input' },
+        { id: 'email', label: 'E-mail', type: 'input' },
+        { id: 'phone', label: '手機', type: 'input' },
+        { id: 'password', label: '設定密碼', type: 'password' },
+        { id: 'confirmPassword', label: '確認密碼', type: 'password' },
+        {
+          id: 'position',
+          label: '職位',
+          type: 'select',
+          options: [
+            { value: 'manager', text: '主管' },
+            { value: 'developer', text: '員工' }
+          ]
+        },
+        { id: 'active', label: '停用/啟用', type: 'checkbox' }
+      ],
+      formData: {
+        name: '',
+        email: '',
+        phone: '',
+        password: '',
+        confirmPassword: '',
+        position: 'manager',
+        active: true
+      },
+      existingData: {
+        name: '主管',
+        email: 'Tibame@gmail.com',
+        phone: '09123456789',
+        position: 'manager',
+        active: true
+      },
+      isModalVisible: false
+    };
   },
-
-
-    
-  
+  methods: {
+    openModal(action, data = null) {
+      this.actionType = action;
+      this.modalTitle = action === 'add' ? '管理者新增' : '管理者編輯';
+      this.formData = data || {
+        name: '',
+        email: '',
+        phone: '',
+        password: '',
+        confirmPassword: '',
+        position: 'manager',
+        active: true
+      };
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+    },
+    handleSave(formData) {
+      if (this.actionType === 'add') {
+        // 新增邏輯
+        console.log('新增資料', formData);
+      } else {
+        // 編輯邏輯
+        console.log('編輯資料', formData);
+      }
+      this.closeModal();
+    }
+  }
 }
 </script>
 
