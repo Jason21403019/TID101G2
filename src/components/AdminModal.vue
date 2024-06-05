@@ -12,7 +12,11 @@
               <label :for="field.id" class="col-form-label">{{ field.label }}:</label>
               <input v-if="field.type === 'input'" :id="field.id" v-model="formData[field.id]" class="form-control" :type="field.type" />
               <input v-if="field.type === 'password'" :id="field.id" v-model="formData[field.id]" class="form-control" :type="field.type" />
+              <input v-if="field.type === 'file'" :id="field.id" v-model="formData[field.id]" class="form-control" :type="field.type" />
+              <input v-if="field.type === 'date'" :id="field.id" v-model="formData[field.id]" class="form-control" :type="field.type" />
               <textarea v-if="field.type === 'textarea'" :id="field.id" v-model="formData[field.id]" class="form-control"></textarea>
+              <!-- 文字編輯器 -->
+              <!-- <admin-text-editor v-if="field.type === 'ckeditor'" :id="field.id" v-model="formData[field.id]"></admin-text-editor> -->
               <select v-if="field.type === 'select'" :id="field.id" v-model="formData[field.id]" class="form-control">
                 <option v-for="option in field.options" :key="option.value" :value="option.value">{{ option.text }}</option>
               </select>
@@ -39,11 +43,13 @@
 
 <script>
 import AdminBtn from './AdminBtn.vue';
+// import AdminTextEditor from './AdminTextEditor.vue';
 
 export default {
   name: 'AdminModal',
   components: {
-    AdminBtn
+    AdminBtn,
+    // AdminTextEditor
   },
   props: {
     title: {
@@ -117,9 +123,6 @@ export default {
 
     .form-control{
       outline: 1px solid $campari;
-      // &:focus {
-        
-      // }
     }
     .form-check-input:checked{
       background-color: $toggle-on;

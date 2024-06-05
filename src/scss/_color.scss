@@ -17,43 +17,64 @@ $babypowder: #fffdfa;
 $negroni: linear-gradient(180deg, #000, #381b1d);
 
 //=== 字體大小 ===//
-// @mixin breakpoint($point) {
-//     @media screen and (max-width: $point) {
-//       @content;
-//     }
-//   }
+@mixin breakpoint($point) {
+    @media screen and (max-width: $point) {
+      @content;
+    }
+  }
 
-// :root {
-//     font-size: 16px;
+:root {
 
-//     @include breakpoint( 540px) {
-//         font-size: 12px;
-//     }
+    font-size: 16px;
+    //windows
+    @include breakpoint( 1280px) {
+        font-size: 16px;
+    }
+    @include breakpoint( 1024px) {
+        font-size: 12px;
 
-// }
+    }
+
+    //tablet
+    @include breakpoint( 820px) {
+        font-size: 12px;
+    }
+   
+    //mobile
+    @include breakpoint( 430px) {
+        font-size: 9px;
+       
+    }
+
+    @include breakpoint( 375px) {
+        font-size: 6px;
+
+    }
+
+}
 // 圖片大標題、商品子頁金額
-$fontSize_h1: 60px;
+$fontSize_h1: 3.75rem;
 
 // 頁面標題、商品子頁標題
-$fontSize_h2: 42px;
+$fontSize_h2: 2.625rem;
 
 // 分類圖文字、常見問題標題「購物流程說明」、全部商品頁的商品金額「NT$900 」、商品子頁介紹文及「還剩103件」、購物車標題「訂購資訊」
 // 後台各頁面標題 「訂單管理｜訂單列表」
-$fontSize_h3: 32px;
+$fontSize_h3: 2rem;
 
 // 酒品專欄內文、產品頁左側選單文字、常見問題中的問題「如何查看我的訂單狀態？」、全部商品頁的商品名稱「Carl Jung 卡爾榮格 Mousseux穆瑟無酒精氣泡酒 750ML/瓶」
 // 後台nav選單文字、「後台彈跳視窗中的大標題：折扣-新增」、「table標題：訂單編號等等」、「table標題內容：處理中、未付款等等」、「後台彈跳視窗中的小標題：名稱」
-$fontSize_h4: 20px;
+$fontSize_h4: 1.25rem;
 
 // 前後台麵包屑
 // 「後台彈跳視窗中的input的內文：貼心免運券」
-$fontSize_h5: 18px;
+$fontSize_h5: 1.125rem;
 
 //閱讀的文字最小只能用到16px，斟酌使用
-$fontSize_p: 16px;
+$fontSize_p: 1rem;
 
 //=== 字體字距 ===//
-$letterspacing: 6px;
+$letterspacing: 0.375rem;
 
 //=== 字體行距 ===//
 $lineheight: 1.6em;

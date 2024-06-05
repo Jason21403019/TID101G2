@@ -181,10 +181,12 @@ export default {
   margin-top: 40px;
   margin-left: 160px;
   color: $campari;
+  
   &-h1 {
     display: inline;
     font-size: $fontSize_h3;
   }
+
   &-pipe {
     font-size: $fontSize_h3;
     margin: 0 20px;
@@ -193,6 +195,7 @@ export default {
 .d-grid {
   margin-right: 95px;
   margin-top: 190px;
+
   img {
     margin-right: 5px;
   }
@@ -202,17 +205,21 @@ export default {
   width: 85%;
   margin-top: 10px;
   margin-left: 160px;
+
   .table-thead {
     font-size: $fontSize_h4;
+
     th {
       background-color: $campari;
       color: $ramos-gin-fizz;
     }
   }
+
   #flexSwitchCheckChecked:checked {
     background-color: $toggle-on;
     border: solid $toggle-on;
   }
+
   .fa-solid.fa-pencil {
     color: $campari;
   }

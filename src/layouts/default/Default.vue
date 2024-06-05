@@ -13,6 +13,6 @@ import DefaultNav from './DefaultNav.vue'
 
 <style lang="scss">
 body {
-  background: $negroni;
+  // background: $negroni;
 }
 </style>

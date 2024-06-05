@@ -40,12 +40,17 @@
 </template>
 
 <script>
+import AdminIconManger from '../components/AdminIconManger.vue'
+import DefaultBkSidebar from '../layouts/default/AdminSlidebar.vue'
 // import AdminLineChart from '../components/AdminLineChart.vue'
+
 export default {
   name: 'Admin',
-  // components: {
-  //   AdminLineChart
-  // },
+  components: {
+    AdminIconManger,
+    DefaultBkSidebar
+    // AdminLineChart
+  },
   data() {
     return {
       overview: '總攬',
