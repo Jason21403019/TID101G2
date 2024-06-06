@@ -1,16 +1,16 @@
 <template>
-  <body>
+  <main>
     <div class="AdminWrapper">
       <header v-if="!isLoginPage">
         <admin-header :isExpanded="isExpanded" @toggleSidebar="toggleSidebar" />
         <admin-slidebar :isExpanded="isExpanded" @update:isExpanded="isExpanded = $event" />
       </header>
 
-      <main :class="{ 'main-shifted': isExpanded && !isLoginPage }">
+      <section :class="{ 'main-shifted': isExpanded && !isLoginPage }">
         <RouterView></RouterView>
-      </main>
+      </section>
     </div>
-  </body>
+  </main>
 </template>
 
 <script>
@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-body{
+main{
   font-family: $fontfamily,$fontfamily-en;
   background: $whitelady;
   
@@ -58,7 +58,7 @@ body{
     height: 100vh;
   }
 
-  main {
+  section {
     transition: margin-left 0.3s ease; 
     background-color: $whitelady;
   }
