@@ -168,15 +168,6 @@ const routes = [
       layout: 'default'
     }
   },
-  // {
-  //   path: '/admin_panel',
-  //   name: 'AdminPanel',
-  //   component: () => import('../views/AdminPanel.vue'),
-  //   meta: {
-  //     layout: 'Admin'
-  //   }
-  // },
-
   {
     path: '/admin_panel',
     name: 'AdminPanel',
