@@ -5,13 +5,14 @@
         <h1 class="winecolumn__wrapper-title-cn">
           {{ title_cn }}
         </h1>
+
         <span class="winecolumn__wrapper-title-en">
           {{ title_en }}
         </span>
       </div>
       <section class="wine__category">
         <ul class="wine__category-ul">
-          <li v-for="(item, index) in wineCategories" :key="index" class="wine__category-ul-item">
+          <li v-for="(item, index) in wineCategories" :key="index" class="wine__category-ul-item" data-aos="zoom-in">
             <router-link :to="item.link" class="wine__link">
               <div class="wine__link-img">
                 <img :src="item.imgSrc" :alt="item.altText" />
@@ -21,6 +22,7 @@
           </li>
         </ul>
       </section>
+
       <div class="dropdown" @click="toggleDropdown">
         <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle" type="button" aria-expanded="false">
           {{ selectedOption }}
@@ -37,14 +39,24 @@
 </template>
 
 <script>
+import AOS from 'aos'
 import WineColumnMasonry from '@/components/WineColumnMasonry.vue'
 import bottleWine from '@/imgs/wineColumnImg/bottle-with-champagne-glasses-tray.jpg'
 import cotailWorld from '@/imgs/wineColumnImg/spicy-michelada-drink-assortment-table.jpg'
 import newsReport from '@/imgs/wineColumnImg/businessman-reading-daily-news.jpg'
+import 'aos/dist/aos.css'
 
 export default {
   name: 'WineColumn',
   components: { WineColumnMasonry },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      // 在路由變更後刷新 AOS
+      vm.$nextTick(() => {
+        AOS.refreshHard() // 使用 refreshHard 確保 AOS 完全重新計算
+      })
+    })
+  },
   data() {
     return {
       title_cn: '酒品專欄',
@@ -73,6 +85,20 @@ export default {
       ]
     }
   },
+  mounted() {
+    setTimeout(() => {
+      AOS.init({
+        offset: 200,
+        duration: 600,
+        easing: 'ease-in-sine',
+        delay: 100
+      })
+    }, 100)
+  },
+  updated() {
+    AOS.refresh()
+  },
+
   methods: {
     selectOption(option, event) {
       this.selectedOption = option
@@ -93,7 +119,7 @@ export default {
 }
 .winecolumn__wrapper {
   padding-top: 100px;
-  width: 90%;
+  width: 80%;
   margin: 0 auto;
   &-title {
     // border: 1px solid red;
@@ -134,8 +160,8 @@ export default {
           justify-content: center;
           align-items: center;
           text-decoration: none;
-          width: 380px;
-          height: 260px;
+          width: 340px;
+          height: 230px;
           &-text {
             position: absolute;
             font-size: $fontSize_h2;

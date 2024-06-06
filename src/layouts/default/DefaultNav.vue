@@ -19,31 +19,35 @@
         <span class="hamburger__bar"></span>
         <span class="hamburger__bar"></span>
       </button>
-      <!-- <div class="h__btn " :class="[ 'hamburger__open', { active: isHamburgerOpen }]"></div> -->
-      <!-- <button v-else :class="['h__btn', 'hamburger__close', { active: !isHamburgerOpen }]" @click="toggleHamburger">
-        <span class="hamburger__bar"></span>
-        <span class="hamburger__bar"></span>
-      </button> -->
+      <div class="circle" :class="hamburger__class"></div>
+      <div :class="['menu__nav', { active: isHamburgerOpen }]">
+        <nav class="menu__nav-content">
+          <ul class="menu__nav-ul">
+            <li class="menu__nav-ul-item" :class="hamburger__class">
+              <router-link to="/about_us" class="menu__link" @click="closeHamburger"
+                ><span class="item1">關於我們</span></router-link
+              >
+              <router-link to="/menus" class="menu__link" @click="closeHamburger"><span class="item2">菜單</span></router-link>
+              <router-link to="/reserve_first" class="menu__link" @click="closeHamburger"
+                ><span class="item3">預約訂位</span></router-link
+              >
+              <router-link to="/" class="menu__link" @click="closeHamburger"><span class="item4">熱門商品</span></router-link>
+              <router-link to="/" class="menu__link" @click="closeHamburger"><span class="item5">測驗遊戲</span></router-link>
+              <router-link to="/wine_column" class="menu__link" @click="closeHamburger"
+                ><span class="item6">酒品專欄</span></router-link
+              >
+              <router-link to="/questions" class="menu__link" @click="closeHamburger"
+                ><span class="item7">常見問題</span></router-link
+              >
+            </li>
+          </ul>
+          <div class="menu__nav-img">
+            <img src="../../imgs/burger.png" alt="" />
+          </div>
+        </nav>
+      </div>
     </div>
   </header>
-  <div v-show="isHamburgerOpen" :class="['menu__nav', { active: isHamburgerOpen }]">
-    <nav class="menu__nav-content">
-      <ul class="menu__nav-ul">
-        <li class="menu__nav-ul-item" :class="hamburger__class">
-          <router-link to="/about_us" class="menu__link"><span class="item1">關於我們</span></router-link>
-          <router-link to="/menus" class="menu__link"><span class="item2">菜單</span></router-link>
-          <router-link to="/" class="menu__link"><span class="item3">預約訂位</span></router-link>
-          <router-link to="/" class="menu__link"><span class="item4">熱門商品</span></router-link>
-          <router-link to="/" class="menu__link"><span class="item5">測驗遊戲</span></router-link>
-          <router-link to="/wine_column" class="menu__link"><span class="item6">酒品專欄</span></router-link>
-          <router-link to="/questions" class="menu__link"><span class="item7">常見問題</span></router-link>
-        </li>
-      </ul>
-      <div class="menu__nav-img">
-        <img src="../../imgs/burger.png" alt="" />
-      </div>
-    </nav>
-  </div>
 </template>
 
 <script>
@@ -57,6 +61,7 @@ export default {
   computed: {
     currentPath() {
       console.log(this.$route)
+
       return this.$route.name
     },
     hamburger__class() {
@@ -67,6 +72,9 @@ export default {
   methods: {
     toggleHamburger() {
       this.isHamburgerOpen = !this.isHamburgerOpen
+    },
+    closeHamburger() {
+      this.isHamburgerOpen = false
     }
   }
 }
@@ -84,6 +92,7 @@ export default {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(8.2px);
   -webkit-backdrop-filter: blur(8.2px);
+  padding: 0.7rem 0.5rem;
   &__logoarea {
     width: 100px;
     height: 80px;
@@ -124,31 +133,32 @@ export default {
     border: none;
     outline: none;
     background-color: transparent;
-    z-index: 10;
     // border: 1px solid red;
     margin-left: 15px;
     margin-bottom: 2px;
     height: 35px;
     position: relative;
-    &::after {
-      content: '';
-      display: block;
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      left: 0.85rem;
-      top: 0.6rem;
-      border-radius: 20px;
-      background: rgba(#fff, 0.3);
-      border-radius: 50%;
-      transition: transform 0.5s ease;
-    }
-    &.active::after {
+  }
+  .circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: absolute;
+    right: 1rem;
+    top: 0.8rem;
+    transform: scale(0);
+    transition: transform 0.8s ease;
+    background: $negroni;
+
+    z-index: -1;
+    &.active {
       transform: scale(120);
     }
   }
 }
 .hamburger__bar {
+  position: relative;
+  z-index: 10;
   display: block;
   width: 25px;
   height: 3px;
@@ -173,33 +183,27 @@ export default {
 }
 
 .menu__nav {
-  position: sticky;
+  // border: 1px solid red;
+  position: relative;
+  z-index: 9;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
   overflow-x: hidden;
-  background-color: rgba(0, 0, 0, 0.5);
-  transition: width 0.5s ease;
-  background: $negroni;
-  z-index: 100;
-  // opacity: 0;
-  // visibility: hidden;
-  // transition: opacity 0.5s ease, visibility 0.5s ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease-in;
+
   &.active {
     width: 100%;
-    //   opacity: 1;
-    //   visibility: visible;
-    //   transition: opacity 0.5s ease, visibility 0.5s ease;
-    //   position: fixed;
-    //   top: 0;
-    //   left: 0;
-    //   width: 100vw;
-    //   height: 100vh;
-    //   // background: $negroni;
-    //   z-index: 8;
+    opacity: 1;
+    pointer-events: auto;
   }
   &-content {
+    position: relative;
+    z-index: 999;
     display: flex;
     // border: 1px solid green;
     width: 100%;
@@ -229,32 +233,62 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 0 12rem;
+        margin: 0.15rem 14rem;
+        padding: 1.25rem 3rem;
+        // border: 1px solid red;
         color: rgba($color: $whitelady, $alpha: 0.5);
+
         &:hover {
           color: $whitelady;
         }
+        &:nth-child(even) {
+          transform: translateX(100px);
+        }
+        &:nth-child(odd) {
+          transform: translateX(-50px);
+        }
+        &:nth-child(1) {
+          transform: rotate(-8deg) translateX(-80px);
+        }
+        &:nth-child(2) {
+          transform: rotate(7deg) translateX(220px) translateY(-40px);
+        }
+        &:nth-child(3) {
+          transform: rotate(9deg) translate(-50px, 30px);
+        }
+        &:nth-child(4) {
+          transform: rotate(-6deg) translate(220px, 40px);
+        }
+        &:nth-child(5) {
+          transform: rotate(-9deg) translate(-60px, 10px);
+        }
+        &:nth-child(6) {
+          transform: rotate(4deg) translateX(230px) translateY(30px);
+        }
+        &:nth-child(7) {
+          transform: rotate(9deg) translateX(-60px) translateY(40px);
+        }
         .item1 {
           position: relative;
-          top: -5rem;
-          left: -5rem;
+          // top: -5rem;
+          // left: -5rem;
           &::before {
             content: 'About';
             position: absolute;
-            top: 1.8rem;
-            left: 1.6rem;
+            top: 2.4rem;
+            left: 2rem;
             font-size: $fontSize_h4;
           }
           // border: 1px solid blue;
         }
         .item2 {
           position: relative;
-          top: -4rem;
-          left: 5rem;
+          // top: -4rem;
+          // left: 5rem;
           &::before {
             content: 'Menu';
             position: absolute;
-            top: 1.8rem;
+            top: 2.4rem;
             left: 0.2rem;
             font-size: $fontSize_h4;
           }
@@ -262,12 +296,12 @@ export default {
         }
         .item3 {
           position: relative;
-          top: -3rem;
-          left: -5rem;
+          // top: -3rem;
+          // left: -5rem;
           &::before {
             content: 'Booking';
             position: absolute;
-            top: 1.8rem;
+            top: 2.4rem;
             left: 1.3rem;
             font-size: $fontSize_h4;
           }
@@ -275,12 +309,12 @@ export default {
         }
         .item4 {
           position: relative;
-          top: -2rem;
-          left: 5rem;
+          // top: -2rem;
+          // left: 5rem;
           &::before {
             content: 'Product';
             position: absolute;
-            top: 1.8rem;
+            top: 2.4rem;
             left: 1.5rem;
             font-size: $fontSize_h4;
           }
@@ -288,12 +322,12 @@ export default {
         }
         .item5 {
           position: relative;
-          top: -1rem;
-          left: -5rem;
+          // top: -1rem;
+          // left: -5rem;
           &::before {
             content: 'QuizGame';
             position: absolute;
-            top: 1.8rem;
+            top: 2.4rem;
             left: 0.8rem;
             font-size: $fontSize_h4;
           }
@@ -301,24 +335,24 @@ export default {
         }
         .item6 {
           position: relative;
-          top: 0rem;
-          left: 5rem;
+          // top: 0rem;
+          // left: 5rem;
           &::before {
             content: 'WineColumn';
             position: absolute;
-            top: 1.8rem;
+            top: 2.4rem;
             font-size: $fontSize_h4;
           }
           // border: 1px solid blue;
         }
         .item7 {
           position: relative;
-          top: 2rem;
-          left: -5rem;
+          // top: 2rem;
+          // left: -5rem;
           &::before {
             content: 'Q&A';
             position: absolute;
-            top: 1.8rem;
+            top: 2.4rem;
             left: 2.3rem;
             font-size: $fontSize_h4;
           }
@@ -333,6 +367,23 @@ export default {
     padding-left: 5rem;
     width: 50%;
     // border: 1px solid red;
+  }
+}
+@keyframes shaked {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(0deg);
   }
 }
 </style>
