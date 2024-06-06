@@ -1,11 +1,15 @@
 <template>
-  <header v-if="!isLoginPage">
-    <admin-header :isExpanded="isExpanded" @toggleSidebar="toggleSidebar" />
-    <admin-slidebar :isExpanded="isExpanded" @update:isExpanded="isExpanded = $event" />
-  </header>
+  <main>
+    <div class="AdminWrapper">
+      <header v-if="!isLoginPage">
+        <admin-header :isExpanded="isExpanded" @toggleSidebar="toggleSidebar" />
+        <admin-slidebar :isExpanded="isExpanded" @update:isExpanded="isExpanded = $event" />
+      </header>
 
-  <main :class="{ 'main-shifted': isExpanded && !isLoginPage }">
-    <RouterView></RouterView>
+      <section :class="{ 'main-shifted': isExpanded && !isLoginPage }">
+        <RouterView></RouterView>
+      </section>
+    </div>
   </main>
 </template>
 
@@ -44,15 +48,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-*{
+main{
   font-family: $fontfamily,$fontfamily-en;
-  background-color: $whitelady;
-  main {
-    transition: margin-left 0.3s ease;
+  background: $whitelady;
+  
+  .AdminWrapper{
+    padding-top: 60px;
+    background: $whitelady;
+    height: 100vh;
+  }
+
+  section {
+    transition: margin-left 0.3s ease; 
     background-color: $whitelady;
   }
   
   .main-shifted {
+    background-color: $whitelady;
     margin-left: 160px; /* 根據側邊欄的寬度調整這個值 */
   }
 

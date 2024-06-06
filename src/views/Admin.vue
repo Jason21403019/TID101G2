@@ -7,7 +7,7 @@
           <h3>{{ notShipped_count }}</h3>
           <h4>{{ notShipped }}</h4>
         </div>
-        <img :src="box" alt="" />
+        <img :src="icons" alt="" />
       </article>
 
       <article>
@@ -15,7 +15,7 @@
           <h3>{{ Unpaid_count }}</h3>
           <h4>{{ Unpaid }}</h4>
         </div>
-        <img :src="box" alt="" />
+        <img :src="icons" alt="" />
       </article>
 
       <article>
@@ -23,12 +23,12 @@
           <h3>{{ needRestock_count }}</h3>
           <h4>{{ needRestock }}</h4>
         </div>
-        <img :src="box" alt="" />
+        <img :src="icons" alt="" />
       </article>
     </section>
     <h2>{{ dataAnalysis }}</h2>
     <section>
-      <!-- <AdminLineChart></AdminLineChart> -->
+      <AdminLineChart></AdminLineChart>
     </section>
     <h2>{{ CommonFunctions }}</h2>
     <section>
@@ -40,12 +40,17 @@
 </template>
 
 <script>
-// import AdminLineChart from '../components/AdminLineChart.vue'
+import AdminIconManger from '../components/AdminIconManger.vue'
+import DefaultBkSidebar from '../layouts/default/AdminSlidebar.vue'
+import AdminLineChart from '../components/AdminLineChart.vue'
+
 export default {
   name: 'Admin',
-  // components: {
-  //   AdminLineChart
-  // },
+  components: {
+    AdminIconManger,
+    DefaultBkSidebar,
+    AdminLineChart
+  },
   data() {
     return {
       overview: '總攬',
@@ -57,7 +62,7 @@ export default {
       Unpaid: '訂單未付款',
       needRestock_count: 0,
       needRestock: '商品需補貨',
-      box: '../imgs/icon/icon_admin-money-bill.svg',
+      icons: '../imgs/icon/icon_admin-money-bill.svg',
       commodity: '新增商品',
       article: '新增文章',
       reserve: '預約管理'

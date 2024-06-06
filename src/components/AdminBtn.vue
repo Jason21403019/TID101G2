@@ -43,7 +43,7 @@ export default {
   color: $ramos-gin-fizz;
   border: none;
   border-radius: 4px;
-  padding: 5px;
+  padding: 10px;
 
 }
 </style>

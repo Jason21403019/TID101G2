@@ -1,37 +1,39 @@
 <template>
-  <div class="Winecolumn__wrapper">
-    <div class="Winecolumn__wrapper-title">
-      <h1 class="Winecolumn__wrapper-title-cn">
-        {{ title_cn }}
-      </h1>
-      <span class="Winecolumn__wrapper-title-en">
-        {{ title_en }}
-      </span>
+  <body class="winecolumn">
+    <div class="winecolumn__wrapper">
+      <div class="winecolumn__wrapper-title">
+        <h1 class="winecolumn__wrapper-title-cn">
+          {{ title_cn }}
+        </h1>
+        <span class="winecolumn__wrapper-title-en">
+          {{ title_en }}
+        </span>
+      </div>
+      <section class="wine__category">
+        <ul class="wine__category-ul">
+          <li v-for="(item, index) in wineCategories" :key="index" class="wine__category-ul-item">
+            <router-link :to="item.link" class="wine__link">
+              <div class="wine__link-img">
+                <img :src="item.imgSrc" :alt="item.altText" />
+              </div>
+              <span class="wine__link-text">{{ item.text }}</span>
+            </router-link>
+          </li>
+        </ul>
+      </section>
+      <div class="dropdown" @click="toggleDropdown">
+        <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle" type="button" aria-expanded="false">
+          {{ selectedOption }}
+        </button>
+        <ul class="dropdown-menu" :class="{ show: isOpen }" aria-labelledby="dropdownMenuButton">
+          <li @click.stop="selectOption('最新文章', $event)"><a class="dropdown-item" href="">最新文章</a></li>
+          <li @click.stop="selectOption('熱門文章', $event)"><a class="dropdown-item" href="">熱門文章</a></li>
+          <li @click.stop="selectOption('本日熱門', $event)"><a class="dropdown-item" href="">本日熱門</a></li>
+        </ul>
+      </div>
+      <WineColumnMasonry />
     </div>
-    <section class="wine__category">
-      <ul class="wine__category-ul">
-        <li v-for="(item, index) in wineCategories" :key="index" class="wine__category-ul-item">
-          <router-link :to="item.link" class="wine__link">
-            <div class="wine__link-img">
-              <img :src="item.imgSrc" :alt="item.altText" />
-            </div>
-            <span class="wine__link-text">{{ item.text }}</span>
-          </router-link>
-        </li>
-      </ul>
-    </section>
-    <div class="dropdown" @click="toggleDropdown">
-      <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle" type="button" aria-expanded="false">
-        {{ selectedOption }}
-      </button>
-      <ul class="dropdown-menu" :class="{ show: isOpen }" aria-labelledby="dropdownMenuButton">
-        <li @click.stop="selectOption('最新文章', $event)"><a class="dropdown-item" href="">最新文章</a></li>
-        <li @click.stop="selectOption('熱門文章', $event)"><a class="dropdown-item" href="">熱門文章</a></li>
-        <li @click.stop="selectOption('本日熱門', $event)"><a class="dropdown-item" href="">本日熱門</a></li>
-      </ul>
-    </div>
-    <WineColumnMasonry />
-  </div>
+  </body>
 </template>
 
 <script>
@@ -85,7 +87,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.Winecolumn__wrapper {
+.winecolumn {
+  width: 100%;
+  background: $negroni;
+}
+.winecolumn__wrapper {
+  padding-top: 100px;
   width: 90%;
   margin: 0 auto;
   &-title {
@@ -116,7 +123,7 @@ export default {
       justify-content: space-evenly;
       //   border: 1px solid red;
       background: $ramos-gin-fizz;
-      padding: 3rem 0;
+      padding: 2rem 0;
       overflow-x: scroll;
       &-item {
         // border: 1px solid blue;
@@ -169,7 +176,7 @@ export default {
   }
   .dropdown {
     width: 100%;
-    margin: 3rem 0;
+    margin: 3rem 0 0.5rem 0;
     display: flex;
     justify-content: end;
     position: relative;

@@ -51,6 +51,14 @@ const routes = [
       layout: 'default'
     }
   },
+  {
+    path: '/product',
+    name: 'Product',
+    component: () => import('../views/Product.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
 
   // backend
   {
@@ -69,6 +77,7 @@ const routes = [
       layout: 'Admin'
     }
   },
+<<<<<<< HEAD
   // {
   //   path: '/admin_member',
   //   name: 'AdminMember',
@@ -133,13 +142,88 @@ const routes = [
   //     layout: 'Admin'
   //   }
   // },
+=======
+  {
+    path: '/admin_member',
+    name: 'AdminMember',
+    component: () => import('../views/AdminMember.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin_type',
+    name: 'AdminType',
+    component: () => import('../views/AdminType.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin_product',
+    name: 'AdminProduct',
+    component: () => import('../views/AdminProduct.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin_order',
+    name: 'AdminOrder',
+    component: () => import('../views/AdminOrder.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin_category',
+    name: 'AdminCategory',
+    component: () => import('../views/AdminCategory.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin_article',
+    name: 'AdminArticle',
+    component: () => import('../views/AdminArticle.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin_res',
+    name: 'AdminRes',
+    component: () => import('../views/AdminRes.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/admin_account',
+    name: 'AdminAccount',
+    component: () => import('../views/AdminAccount.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    // 登入前後台頁面
+    path: '/login_page',
+    name: 'loginpage',
+    component: () => import('../views/LoginPage.vue'),
+    meta: {
+      layout: 'logindefault'
+    }
+  },
+>>>>>>> 49537af41d60633a9364d2e759debcea4cd69bc3
 
   {
     path: '/reserve_sec',
     name: 'Reserve_sec',
     component: () => import('../views/Reserve_sec.vue'),
     meta: {
-      layout: 'Admin'
+      layout: 'default'
     }
   },
 
@@ -151,6 +235,7 @@ const routes = [
       layout: 'default'
     }
   },
+<<<<<<< HEAD
   // {
   //   path: '/admin_panel',
   //   name: 'AdminPanel',
@@ -160,6 +245,24 @@ const routes = [
   //   }
   // },
   
+=======
+  {
+    path: '/admin_panel',
+    name: 'AdminPanel',
+    component: () => import('../views/AdminPanel.vue'),
+    meta: {
+      layout: 'Admin'
+    }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('../views/Register.vue'),
+    meta: {
+      layout: 'default'
+    }
+  }
+>>>>>>> 49537af41d60633a9364d2e759debcea4cd69bc3
 ]
 const router = createRouter({
   linkActiveClass: 'active',
