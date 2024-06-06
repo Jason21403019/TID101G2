@@ -123,6 +123,43 @@
             </div>
 
         </section>
+
+        <!-- 右半邊 -->
+        <section class="right">
+            <!-- 商品卡片 -->
+            <ul>
+                <div class="product">  
+                    <li>
+                        <!-- 照片 -->
+                        <div class="pic">
+                            <img src="../imgs/productsImg/sparkling wine/PIERRE ZERO.png" alt="">
+                        </div>
+                        <!-- 標題&數量按鈕 -->
+                        <div class="text">
+                            <h4>PIERRE ZERO <br/>夏朵內無酒精氣泡白酒 12瓶</h4>
+                                <div class="text_down">
+                                    <p>200mL/瓶</p>
+                                    <div class="btn">
+                                        <button>-</button>
+                                        <p>1</p>
+                                        <button>+</button>
+                                    </div>
+                                </div>    
+                        </div>
+                        <!-- 金額 -->
+                        <div class="price">
+                            <p>$ 4,560</p>
+                        </div>  
+                    </li>
+                    <!-- 刪除 -->
+                    <div class="delete">
+                        <button>
+                            <img class="img" src="../imgs/icon/icon_delete.svg" alt="">
+                        </button>
+                    </div>
+                </div>
+            </ul>
+        </section>
     </div>
 </template>
 
@@ -132,16 +169,16 @@
 .wrapper{
     width: 100%;
     background-color:$campari;
-    outline: 1px solid red;
+    // outline: 1px solid red;
+    display: flex;
 
     //左半邊
     .left{
         width: 50%;
-        padding-top: 30px;
+        padding-top: 50px;
         margin-top: 30px;
-        outline: 1px solid #fff;
-      
-           
+        border-right:3px solid $whitelady;
+        // outline: 1px solid #fff;
        //訂單資訊
         .order-title{
             width: 100%;
@@ -149,13 +186,13 @@
             background-color:$ramos-gin-fizz;
 
             h2{
-                font-size:$fontSize_h2;
-                font-family:$fontfamily;
-                letter-spacing:$letterspacing;
-                color:$campari;
-                font-weight: bold;
-                padding: 20px;
-                margin-left: 10px;
+              font-size:$fontSize_h2;
+              font-family:$fontfamily;
+              letter-spacing:$letterspacing;
+              color:$campari;
+              font-weight: bold;
+              padding: 20px;
+              margin-left: 10px;
             }
         }
 
@@ -176,7 +213,7 @@
         //姓名和電話
         .first{
             width: 100%;
-            outline: 1px solid #000;
+            // outline: 1px solid #000;
             display: flex;
             justify-content: center;
             padding: 20px;
@@ -264,8 +301,8 @@
                 padding: 20px;
                 border-radius: 4px;
             }
-        }
 
+        }
    
 
     //訂購人資訊
@@ -325,7 +362,130 @@
     }
 
     //右半邊
+    .right{
+        width: 50%;
+        padding-top: 50px;
+        margin-top: 30px;
+        background-color: $whitelady;
+
+        ul{
+            width: 100%;
+            outline:1px solid #000;
+             
+            .product{
+                // outline: 1px solid yellow;
+                width: 80%;
+                
+                display: flex;
+                align-items: center;
+                
+                margin-left: 70px;
+                li{
+                    display: flex;
+                    align-items:center;
+                    justify-content: space-between;
+                    border: 1px solid yellow;
+                    width: 100%;
+                    background-color: #fff;
+                    border: 1px solid $irishcoffee;
+                    border-radius: 8px;
+                    padding: 10px;
+
+                    //商品圖片
+                    .pic{
+
+                        width: 30%;
+                        text-align: center;
+                        outline: 1px solid purple;
+
+                        img{
+                            width: 80%;
+                        }
+                    }
+
+                    //商品名稱
+                    .text{
+                        outline: 1px solid blue;
+                        width: 70%;
+
+                        h4{
+                            font-size:$fontSize_p;
+                            font-family:$fontfamily;
+                            letter-spacing:$letterspacing;
+                            color:#000;
+                            line-height: 1.2;
+                           margin-bottom: 10px;
+                        }
+
+                        .text_down{
+                            display: flex;
+                            justify-content:space-evenly;
+                            align-items: center;
+                            padding: 10px;
+                            p{
+                                font-size:$fontSize_p;
+                                color: #d3d3d3;
+                            }
+
+                            .btn{
+                                display: flex;
+                                align-items: center;
+                                // outline: 1px solid red;
+                                width: 20%;
+                                margin: 0 auto;
+                                margin-left: 130px;
+                                
+                                button{
+                                    width: 100%;
+                                    border: none;
+                                    border:1px solid #000;
+                                    margin-right: 10px;
+                                    background-color: transparent;
+                                    font-size: $fontSize_h5;
+                                    
+                                    
+                                }
+
+                                p{
+                                    font-size: $fontSize_h4;
+                                    color:#000;
+                                    letter-spacing:$letterspacing
+                                }
+                            }
+                        }
+
+                    }
+
+                    .price{
+                        width: 20%;
+                        p{
+                            font-size: 1.5rem;
+                            text-align: center;
+                            font-weight: bold;
+                        }
+                    }
+                }
+
+                
+                
+            }
+
+            .delete{
+                outline: 1px solid orange;
+                width: 10%;
+                text-align: center;
+                margin-left: 30px;
+
+                button{
+                    img {
+                        width: 60%;
+                        
+                    }
+                }
+            }
+        }
+    }    
   }
 
 
-</style>
+</style> 
