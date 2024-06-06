@@ -13,7 +13,7 @@
         <h3 v-html="content"></h3>
       </span>
     </section>
-
+    <p class="paragraph">{{ englishText }}</p>
     <!-- 跳轉心理測驗 -->
     <section ref="section3" class="aboutBackground_3">
       <span>
@@ -25,13 +25,18 @@
 
     <!-- map -->
     <section class="aboutBackground_4">
-      <div></div>
-      <span>
+      <iframe
+        src="https://maps.google.com?output=embed&q=緯育TibaMe附設台北職訓中心"
+        width="100%"
+        height="530vh"
+        frameborder="0"
+      ></iframe>
+      <div>
         <h3>{{ businessHours }}</h3>
         <h3>{{ email }}</h3>
         <h3>{{ phone }}</h3>
         <h3>{{ address }}</h3>
-      </span>
+      </div>
     </section>
   </main>
 </template>
@@ -87,7 +92,7 @@ export default {
   },
   methods: {
     testPage() {
-      location.href = './Questions.vue'
+      this.$router.push('/questions')
     },
     getRatio(element) {
       const rect = element.getBoundingClientRect()
@@ -165,6 +170,10 @@ body {
     .aboutBackground_2 {
       background-image: url(../imgs/aboutImg/about_pc02.png);
     }
+    .paragraph {
+      background-color: #381b1d;
+      padding: 5% 0;
+    }
     .aboutBackground_3 {
       background-image: url(../imgs/aboutImg/about_pc03.png);
       background-color: #381b1d;
@@ -172,15 +181,21 @@ body {
     }
     .aboutBackground_4 {
       background-color: #381b1d;
-      /* display: unset; */
+      display: flex;
+      flex-direction: column;
       text-align: left;
-      justify-content: left;
+      padding: 0 5%;
+      padding-top: 5%;
+      // justify-content: left;
       /* line-height: 50px; */
-      p {
-        /* display: unset; */
-        text-align: left;
-        justify-content: left;
-        /* line-height: 50px; */
+      div {
+        width: 100%;
+        p {
+          /* display: unset; */
+          text-align: left;
+          justify-content: left;
+          /* line-height: 50px; */
+        }
       }
     }
   }

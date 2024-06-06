@@ -18,7 +18,7 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss" scoped>
 .TextEditor {
   /* 文字框高度 */
   height: 300px;
