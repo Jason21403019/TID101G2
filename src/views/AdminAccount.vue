@@ -41,36 +41,28 @@
           <th scope="col">編輯</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>主管</td>
-          <td>Tibame@gmail.com</td>
-          <td>09123456789</td>
-          <td>主管</td>
-          <td></td>
-          <td>
-            <button @click="openModal('edit', existingData)">
-              <img src="../imgs/icon/icon_admin-edit.svg" alt="" width="20px" height="20px" />
-            </button>
-          </td>
-        </tr>
-
-        <tr>
-          <th scope="row">2</th>
-          <td>員工</td>
-          <td>Tibame@gmail.com</td>
-          <td>09123456789</td>
-          <td>員工</td>
+      <tbody class="table-tbody">
+        <tr v-for="(admin, index) in admins" :key="admin.id">
+          <th scope="row">{{ index + 1 }}</th>
+          <td>{{ admin.name }}</td>
+          <td>{{ admin.email }}</td>
+          <td>{{ admin.phone }}</td>
+          <td>{{ admin.position }}</td>
           <td>
             <div class="form-check form-switch">
-              <input id="flexSwitchCheckChecked" class="form-check-input" type="checkbox" checked />
+              <input 
+                :id="'flexSwitchCheckChecked' + admin.id" 
+                class="form-check-input" 
+                type="checkbox" 
+                v-model="admin.active"
+                @change="toggleStatus(admin)"
+              />
             </div>
           </td>
           <td>
-            <a href="">
-              <img src="../imgs/icon/icon_admin-edit.svg" alt="" width="20px" height="20px" />
-            </a>
+            <button @click="openModal('edit', admin)">
+              <img src="../imgs/icon/icon_admin-edit.svg" alt="editIcon" width="20px" height="20px" />
+            </button>
           </td>
         </tr>
       </tbody>
@@ -104,10 +96,11 @@ export default {
         { text: variables.adminblock.account, link: '/admin_account', active: false }
       ],
 
+      // 彈跳視窗model
       actionType: 'add',
       modalTitle: '管理者新增',
       formFields: [
-        { id: 'name', label: '姓名', type: 'input' },
+        { id: 'name', label: '姓名', type: 'input' ,name:'name'},
         { id: 'email', label: 'E-mail', type: 'input' },
         { id: 'phone', label: '手機', type: 'input' },
         { id: 'password', label: '設定密碼', type: 'password' },
@@ -132,21 +125,20 @@ export default {
         position: 'manager',
         active: true
       },
-      existingData: {
-        name: '主管',
-        email: 'Tibame@gmail.com',
-        phone: '09123456789',
-        position: 'manager',
-        active: true
-      },
-      isModalVisible: false
+      // 要串資料庫的地方
+      admins: [
+        { id: 1, name: 'Tibame', email: 'Tibame@gmail.com', phone: '09123456789', position: '主管', active: true },
+      ],
+      isModalVisible: false,
+      existingData: null
     };
   },
   methods: {
+    // 彈跳視窗：是新增按鈕還是table的編輯按鈕
     openModal(action, data = null) {
       this.actionType = action;
       this.modalTitle = action === 'add' ? '管理者新增' : '管理者編輯';
-      this.formData = data || {
+      this.formData = data ? { ...data } : {
         name: '',
         email: '',
         phone: '',
@@ -163,13 +155,17 @@ export default {
     handleSave(formData) {
       if (this.actionType === 'add') {
         // 新增邏輯
-        console.log('新增資料', formData);
+        const newAdmin = { ...formData, id: this.admins.length + 1 };
+        this.admins.push(newAdmin);
       } else {
         // 編輯邏輯
-        console.log('編輯資料', formData);
+        const index = this.admins.findIndex(admin => admin.id === formData.id);
+        if (index !== -1) {
+          this.admins.splice(index, 1, { ...formData });
+        }
       }
       this.closeModal();
-    }
+    },
   }
 }
 </script>
@@ -193,7 +189,7 @@ export default {
   }
 }
 .d-grid {
-  margin-right: 95px;
+  margin-right: 125px;
   margin-top: 190px;
 
   img {
@@ -201,6 +197,9 @@ export default {
   }
 }
 
+.table td, .table th {
+  vertical-align: middle;
+}
 .table {
   width: 85%;
   margin-top: 10px;
@@ -212,16 +211,28 @@ export default {
     th {
       background-color: $campari;
       color: $ramos-gin-fizz;
+      vertical-align: middle;
     }
   }
-
+  .table-tbody {
+    
+    td {
+      vertical-align: middle;
+    }
+    // table的toggle
+    .form-check-input:checked {
+      background-color: $toggle-on;
+      border-color: $toggle-on;
+    }
+    button {
+      border: none;
+      background: none;
+    }
+  }
+  // 彈跳視窗的toggle
   #flexSwitchCheckChecked:checked {
     background-color: $toggle-on;
     border: solid $toggle-on;
-  }
-
-  .fa-solid.fa-pencil {
-    color: $campari;
   }
 }
 </style>
