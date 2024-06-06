@@ -37,43 +37,33 @@
           <th scope="col">點擊次數</th>
           <th scope="col">發布時間</th>
           <th scope="col">顯示</th>
-          <th scope="col">查閱</th>
+          <th scope="col">編輯</th>
+          <th scope="col">刪除</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">威士忌釀造的藝術</th>
-          <td>酒類知識</td>
-          <td>1</td>
-          <td>2024-05-08 10:26:10</td>
+        <tr v-for="(article, index) in articles" :key="index">
+          <th scope="row">{{ article.category }}</th>
+          <td>{{ article.title }}</td>
+          <td>{{ article.clicks }}</td>
+          <td>{{ article.publishDate }}</td>
           <td>
             <div class="form-check form-switch">
               <input id="flexSwitchCheckChecked" class="form-check-input" type="checkbox" checked />
             </div>
           </td>
           <td>
-            <a href="">
-              <img src="../imgs/icon/icon_admin-menu-dots.svg" alt="" width="20px" height="20ox" />
-            </a>
+            <button @click="openModal('edit', article)">
+              <img src="../imgs/icon/icon_admin-edit.svg" alt="編輯" width="20px" height="20ox" />
+            </button>
+          </td>
+          <td>
+            <button @click="deleteArticle(article, index)">
+              <img src="../imgs/icon/icon_delete.svg" alt="刪除" width="20px" height="20ox" />
+            </button>
           </td>
         </tr>
 
-        <tr>
-          <th scope="row">伏特加之行 - 清酒探索</th>
-          <td>國外報導</td>
-          <td>15</td>
-          <td>2024-05-08 10:26:10</td>
-          <td>
-            <div class="form-check form-switch">
-              <input id="flexSwitchCheckChecked" class="form-check-input" type="checkbox" checked />
-            </div>
-          </td>
-          <td>
-            <a href="">
-              <img src="../imgs/icon/icon_admin-menu-dots.svg" alt="" width="20px" height="20ox" />
-            </a>
-          </td>
-        </tr>
       </tbody>
       <caption>
         每頁列表顯示<span class="main__list-number">6</span>筆
@@ -109,7 +99,7 @@ export default {
       modalTitle: '文章新增',
       formFields: [
         {
-          id: 'columnCategory',
+          id: 'category',
           label: '專欄名稱',
           type: 'select',
           options: [
@@ -120,29 +110,28 @@ export default {
         },
         { id: 'title', label: '專欄標題', type: 'input' },
         { id: 'author', label: '作者', type: 'input' },
-        { id: 'release', label: '發布時間', type: 'date' },
+        { id: 'publishDate', label: '發布時間', type: 'date' },
         // { id: 'content', label: '專欄內容', type: 'ckeditor' },
         { id: 'upload', label: '標題圖上傳', type: 'file' },
         { id: 'active', label: '顯示狀態', type: 'checkbox' }
       ],
       formData: {
-        columnCategory: '',
+        category: '',
         title: '',
         author: '',
-        release: '',
+        publishDate: '',
         content: '',
         upload: '',
         active: true
       },
-      existingData: {
-        columnCategory: 'Wine Knowledge 酒類知識',
+      articles:[{
+        id: 1,
+        category: 'Wine Knowledge 酒類知識',
         title: '威士忌釀造的藝術',
-        author: 'Jason Chang',
-        release: '',
-        content: '',
-        upload: '',
+        clicks: 1,
+        publishDate: '2024/06/01',
         active: true
-      },
+      }],
       isModalVisible: false
     }
   },
@@ -151,10 +140,10 @@ export default {
       this.actionType = action;
       this.modalTitle = action === 'add' ? '文章新增' : '文章編輯';
       this.formData = data || {
-        columnCategory: '',
+        category: '',
         title: '',
         author: '',
-        release: '',
+        publishDate: '',
         content: '',
         upload: '',
         active: true
@@ -167,12 +156,20 @@ export default {
     handleSave(formData) {
       if (this.actionType === 'add') {
         // 新增邏輯
-        console.log('新增資料', formData);
+        const newArticle = { ...formData, id: this.articles.length + 1 };
+        this.articles.push(newArticle);
       } else {
         // 編輯邏輯
-        console.log('編輯資料', formData);
-      }
+        const index = this.articles.findIndex(article => article.id === formData.id);
+        if (index !== -1) {
+          this.articles.splice(index, 1, { ...formData });
+        }
       this.closeModal();
+      }
+    },
+    // 刪除
+    deleteArticle(article, index) {
+      this.articles.splice(index, 1);
     }
   }
 }
@@ -205,7 +202,9 @@ export default {
     margin-right: 5px;
   }
 }
-
+.table td, .table th {
+  vertical-align: middle;
+}
 .table {
   width: 85%;
   margin-top: 10px;
@@ -225,7 +224,10 @@ export default {
       }
     }
   }
-
+  button {
+    border: none;
+    background: none;
+  }
   #flexSwitchCheckChecked:checked {
     background-color: $toggle-on;
     border: solid $toggle-on;
