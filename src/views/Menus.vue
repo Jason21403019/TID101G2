@@ -1,166 +1,152 @@
 <template>
   <div class="warper">
     <div class="menu1">
-        <h1>Appetier開胃菜</h1>
-        <img src="../imgs/menuImg/food_menu_1-01.jpg" alt="" id="img1">
-        <img src="../imgs/menuImg/menu_pc01.png" alt="" id="before-img1">
-      </div>
-      <div class="menu2">
-        <h1>Drink Snacks喝酒菜</h1>
-        <img src="../imgs/menuImg/food_menu_1-02.jpg" alt="">
-        <img src="../imgs/menuImg/menu_pc07.png" alt="" id="before-img2-1">
-        <img src="../imgs/menuImg/menu_pc03.png" alt="" id="before-img2-2">
-      </div>
-      <div class="menu3">
-        <h1>Chefs Selection主廚特選</h1>
-        <img src="../imgs/menuImg/food_menu_1-03.jpg" alt="">
-        <img src="../imgs/menuImg/menu_pc04.png" alt="" id="before-img3-1">
-        <img src="../imgs/menuImg/menu_pc02.png" alt="" id="before-img3-2">
-      </div>
-      <div class="menu4">
-        <h1>Captivate Intoxicat紙醉金迷</h1>
-        <img src="../imgs/menuImg/food_menu_1-04.jpg" alt="">
-        <img src="../imgs/menuImg/menu_pc08.png" alt="" id="before-img4-1">
-        <img src="../imgs/menuImg/menu_pc05.png" alt="" id="before-img4-2">
-      </div>
+      <h1>Appetier開胃菜</h1>
+      <img src="../imgs/menuImg/food_menu_1-01.jpg" alt="" id="img1" @click="showLightbox(0)" />
+      <img src="../imgs/menuImg/menu_pc01.png" alt="" id="before-img1" />
+    </div>
+    <div class="menu2">
+      <h1>Drink Snacks喝酒菜</h1>
+      <img src="../imgs/menuImg/food_menu_1-02.jpg" alt="" id="img2" @click="showLightbox(1)" />
+      <img src="../imgs/menuImg/menu_pc07.png" alt="" id="before-img2-1" />
+      <img src="../imgs/menuImg/menu_pc03.png" alt="" id="before-img2-2" />
+    </div>
+    <div class="menu3">
+      <h1>Chefs Selection主廚特選</h1>
+      <img src="../imgs/menuImg/food_menu_1-03.jpg" alt="" id="img3" @click="showLightbox(2)" />
+      <img src="../imgs/menuImg/menu_pc04.png" alt="" id="before-img3-1" />
+      <img src="../imgs/menuImg/menu_pc02.png" alt="" id="before-img3-2" />
+    </div>
+    <div class="menu4">
+      <h1>Captivate Intoxicat紙醉金迷</h1>
+      <img src="../imgs/menuImg/food_menu_1-04.jpg" alt="" id="img4" @click="showLightbox(3)" />
+      <img src="../imgs/menuImg/menu_pc08.png" alt="" id="before-img4-1" />
+      <img src="../imgs/menuImg/menu_pc05.png" alt="" id="before-img4-2" />
+    </div>
+    <vue-easy-lightbox :visible="visible" :imgs="imgs[index]" :index="index" @hide="visible = false" />
   </div>
 </template>
 
 <script>
-import { onMounted } from 'vue';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
-
-export default {
-  name: 'MenuComponent',
-  setup() {
-    onMounted(() => {
-      gsap.to('#before-img1', {
-        duration: 1.5,
-        x: -800,
-        scale: 1.75,
-        rotation: 180,
-        scrollTrigger: {
-          trigger: '#before-img1',
-          start: 'top 80%', // 調整這裡
-          end: 'bottom 20%', // 調整這裡
-          scrub: 1,
-          markers: true
-        }
-      });
-      gsap.to('#before-img2-1', {
-        duration: 1.5,
-        x: -450,
-        scrollTrigger: {
-          trigger: '#before-img2-1',
-          start: 'top 80%', // 調整這裡
-          end: 'bottom 20%', // 調整這裡
-          scrub: 1,
-          markers: true
-          
-        }
-      });
-      gsap.to('#before-img2-2', {
-        duration: 1.5,
-        x: 480,
-        scrollTrigger: {
-          trigger: '#before-img2-2',
-          start: 'top 80%', // 調整這裡
-          end: 'bottom 20%', // 調整這裡
-          scrub: 1,
-          markers: true
-        }
-      });
-      gsap.to('#before-img3-1', {
-        duration: 1.5,
-        x: 500,
-        scrollTrigger: {
-          trigger: '#before-img3-1',
-          start: 'top 80%', // 調整這裡
-          end: 'bottom 20%', // 調整這裡
-          scrub: 1,
-          markers: true
-        }
-      });
-      gsap.to('#before-img3-2', {
-        duration: 1.5,
-        x: -200,
-        scrollTrigger: {
-          trigger: '#before-img3-2',
-          start: 'top 80%', // 調整這裡
-          end: 'bottom 20%', // 調整這裡
-          scrub: 1,
-          markers: true
-        }
-      });
-      gsap.to('#before-img4-1', {
-        duration: 1.5,
-        x: 190,
-        scrollTrigger: {
-          trigger: '#before-img4-1',
-          start: 'top 80%', // 調整這裡
-          end: 'bottom 30%', // 調整這裡
-          scrub: 1,
-          markers: true
-        }
-      });
-      gsap.to('#before-img4-2', {
-        duration: 1.5,
-        x: -290,
-        scrollTrigger: {
-          trigger: '#before-img4-2',
-          start: 'top 80%', // 調整這裡
-          end: 'bottom 50%', // 調整這裡
-          scrub: 1,
-          markers: true
-        }
-      });
-    });
-  }
-};
-</script>
-<!-- <script>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import VueEasyLightbox from 'vue-easy-lightbox'
+import imagesLoaded from 'imagesloaded'
+
+import image_1 from '../imgs/menuImg/food_menu_1-01.jpg'
+import image_2 from '../imgs/menuImg/food_menu_1-02.jpg'
+import image_3 from '../imgs/menuImg/food_menu_1-03.jpg'
+import image_4 from '../imgs/menuImg/food_menu_1-04.jpg'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default {
   name: 'MenuComponent',
+  components: {
+    VueEasyLightbox
+  },
   setup() {
-    onMounted(() => {
-      const animations = [
-        { selector: '#before-img1', x: -800, scale: 1.75, rotation: 180, end: 'bottom 20%' },
-        { selector: '#before-img2-1', x: -450, end: 'bottom 20%' },
-        { selector: '#before-img2-2', x: 480, end: 'bottom 20%' },
-        { selector: '#before-img3-1', x: 500, end: 'bottom 20%' },
-        { selector: '#before-img3-2', x: -200, end: 'bottom 20%' },
-        { selector: '#before-img4-1', x: 190, end: 'bottom 30%' },
-        { selector: '#before-img4-2', x: -290, end: 'bottom 50%' }
-      ]
+    const visible = ref(false)
+    const index = ref(0)
+    const imgs = ref([image_1, image_2, image_3, image_4])
 
-      animations.forEach(animation => {
-        gsap.to(animation.selector, {
+    const showLightbox = (i) => {
+      index.value = i
+      visible.value = true
+    }
+
+    onMounted(() => {
+      const container = document.querySelector('.warper')
+      imagesLoaded(container, () => {
+        // 圖片已經全部加載完成後執行 gsap 動畫
+        gsap.to('#before-img1', {
           duration: 1.5,
-          x: animation.x,
-          scale: animation.scale || 1,
-          rotation: animation.rotation || 0,
+          x: -800,
+          scale: 1.75,
+          rotation: 180,
           scrollTrigger: {
-            trigger: animation.selector,
-            start: 'top center',
-            end: animation.end,
+            trigger: '#before-img1',
+            start: 'top 80%',
+            end: 'bottom 20%',
+            scrub: 1
+          }
+        })
+        gsap.to('#before-img2-1', {
+          duration: 0.5,
+          x: -450,
+          scrollTrigger: {
+            trigger: '#before-img2-1',
+            start: 'top 50%',
+            end: 'bottom 50%',
             scrub: 1,
-            markers: true
+            rotation: 360
+          }
+        })
+        gsap.to('#before-img2-2', {
+          duration: 1,
+          x: 480,
+          rotate: 180,
+          scrollTrigger: {
+            trigger: '#before-img2-2',
+            start: 'top center',
+            end: 'bottom center',
+            scrub: 1
+          }
+        })
+        gsap.to('#before-img3-1', {
+          duration: 1.5,
+          x: 500,
+          scrollTrigger: {
+            trigger: '#before-img3-1',
+            start: 'top 50%',
+            end: 'bottom center',
+            scrub: 1
+          }
+        })
+        gsap.to('#before-img3-2', {
+          duration: 1.5,
+          x: -200,
+          scrollTrigger: {
+            trigger: '#before-img3-2',
+            start: 'top 40%',
+            end: 'bottom center',
+            scrub: 1
+          }
+        })
+        gsap.to('#before-img4-1', {
+          duration: 1.5,
+          x: 190,
+          scrollTrigger: {
+            trigger: '#before-img4-1',
+            start: 'top 30%',
+            end: 'bottom center',
+            scrub: 1
+          }
+        })
+        gsap.to('#before-img4-2', {
+          duration: 1.5,
+          x: -290,
+          scrollTrigger: {
+            trigger: '#before-img4-2',
+            start: 'top 80%',
+            end: 'bottom 100%',
+            scrub: 1
           }
         })
       })
     })
+
+    return {
+      visible,
+      index,
+      imgs,
+      showLightbox
+    }
   }
 }
-</script> -->
+</script>
+
 <style lang="scss" scoped>
 .warper {
   overflow: hidden;

@@ -51,6 +51,14 @@ const routes = [
       layout: 'default'
     }
   },
+  {
+    path: '/product',
+    name: 'Product',
+    component: () => import('../views/Product.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
 
   // backend
   {
