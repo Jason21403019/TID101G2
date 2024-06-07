@@ -27,7 +27,7 @@ export default { name: 'DefaultFooter' }
 <style lang="scss" scoped="scoped">
 .footer {
   background-color: #fcf0d8;
-  padding: 20px;
+  padding: 1vw;
   color: black;
   text-align: center;
 
@@ -44,7 +44,7 @@ export default { name: 'DefaultFooter' }
 
   &__text {
     h1 {
-      font-size: 14px;
+      font-size:$fontSize_h5;
       margin: 5px 0;
     }
   }
