@@ -24,29 +24,7 @@
       <img id="before-img4-2" src="../imgs/menuImg/menu_pc05.png" alt="" />
     </div>
     <vue-easy-lightbox :visible="visible" :imgs="imgs[index]" :index="index" @hide="visible = false" />
-      <h1>Appetier開胃菜</h1>
-      <img src="../imgs/menuImg/food_menu_1-01.jpg" alt="" id="img1" @click="showLightbox(0)" />
-      <img src="../imgs/menuImg/menu_pc01.png" alt="" id="before-img1" />
-    </div>
-    <div class="menu2">
-      <h1>Drink Snacks喝酒菜</h1>
-      <img src="../imgs/menuImg/food_menu_1-02.jpg" alt="" id="img2" @click="showLightbox(1)" />
-      <img src="../imgs/menuImg/menu_pc07.png" alt="" id="before-img2-1" />
-      <img src="../imgs/menuImg/menu_pc03.png" alt="" id="before-img2-2" />
-    </div>
-    <div class="menu3">
-      <h1>Chefs Selection主廚特選</h1>
-      <img src="../imgs/menuImg/food_menu_1-03.jpg" alt="" id="img3" @click="showLightbox(2)" />
-      <img src="../imgs/menuImg/menu_pc04.png" alt="" id="before-img3-1" />
-      <img src="../imgs/menuImg/menu_pc02.png" alt="" id="before-img3-2" />
-    </div>
-    <div class="menu4">
-      <h1>Captivate Intoxicat紙醉金迷</h1>
-      <img src="../imgs/menuImg/food_menu_1-04.jpg" alt="" id="img4" @click="showLightbox(3)" />
-      <img src="../imgs/menuImg/menu_pc08.png" alt="" id="before-img4-1" />
-      <img src="../imgs/menuImg/menu_pc05.png" alt="" id="before-img4-2" />
-    </div>
-    <vue-easy-lightbox :visible="visible" :imgs="imgs[index]" :index="index" @hide="visible = false" />
+
   </div>
 </template>
 
@@ -178,7 +156,7 @@ export default {
   align-items: center;
   background: $negroni;
   padding: 100px;
-  
+
   .menu1,
   .menu2,
   .menu3,
@@ -186,12 +164,10 @@ export default {
     position: relative;
   }
 
-  #img1
-  #img2
-  #img3
-  #img4 {
+  #img1 #img2 #img3 #img4 {
     max-width: 100%;
-    height: auto; /* 確保圖片按比例縮放 */
+    height: auto;
+    /* 確保圖片按比例縮放 */
   }
 
   #before-img1 {
@@ -205,7 +181,7 @@ export default {
     position: absolute;
     right: -50rem;
     top: 30rem;
-    width:100%;
+    width: 100%;
     height: auto;
     transform: rotate(-16deg);
   }
@@ -214,7 +190,7 @@ export default {
     position: absolute;
     right: 59rem;
     top: 2rem;
-    width:100%;
+    width: 100%;
     height: auto;
   }
 
@@ -222,7 +198,7 @@ export default {
     position: absolute;
     right: 65rem;
     top: 10rem;
-    width:100%;
+    width: 100%;
     height: auto;
     transform: rotate(25deg);
   }
@@ -231,7 +207,7 @@ export default {
     position: absolute;
     right: -42rem;
     top: 28rem;
-    width:100%;
+    width: 100%;
     height: auto;
   }
 
@@ -239,7 +215,7 @@ export default {
     position: absolute;
     right: 35rem;
     top: 8rem;
-    width:100%;
+    width: 100%;
     height: auto;
     transform: rotate(17deg);
   }
@@ -248,7 +224,7 @@ export default {
     position: absolute;
     right: -40rem;
     top: 25rem;
-    width:100%;
+    width: 100%;
     height: auto;
     transform: rotate(-17deg);
   }
@@ -263,6 +239,7 @@ export default {
 }
 
 @media screen and (max-width: 820px) {
+
   #before-img1,
   #before-img2-1,
   #before-img2-2,
@@ -270,10 +247,10 @@ export default {
   #before-img3-2,
   #before-img4-1,
   #before-img4-2 {
-    display: none; /* 768px 以下隱藏動畫綁定物件 */
+    display: none;
+    /* 768px 以下隱藏動畫綁定物件 */
   }
-  h1{
 
-  }
+  h1 {}
 }
 </style>
