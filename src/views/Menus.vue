@@ -24,6 +24,29 @@
       <img id="before-img4-2" src="../imgs/menuImg/menu_pc05.png" alt="" />
     </div>
     <vue-easy-lightbox :visible="visible" :imgs="imgs[index]" :index="index" @hide="visible = false" />
+      <h1>Appetier開胃菜</h1>
+      <img src="../imgs/menuImg/food_menu_1-01.jpg" alt="" id="img1" @click="showLightbox(0)" />
+      <img src="../imgs/menuImg/menu_pc01.png" alt="" id="before-img1" />
+    </div>
+    <div class="menu2">
+      <h1>Drink Snacks喝酒菜</h1>
+      <img src="../imgs/menuImg/food_menu_1-02.jpg" alt="" id="img2" @click="showLightbox(1)" />
+      <img src="../imgs/menuImg/menu_pc07.png" alt="" id="before-img2-1" />
+      <img src="../imgs/menuImg/menu_pc03.png" alt="" id="before-img2-2" />
+    </div>
+    <div class="menu3">
+      <h1>Chefs Selection主廚特選</h1>
+      <img src="../imgs/menuImg/food_menu_1-03.jpg" alt="" id="img3" @click="showLightbox(2)" />
+      <img src="../imgs/menuImg/menu_pc04.png" alt="" id="before-img3-1" />
+      <img src="../imgs/menuImg/menu_pc02.png" alt="" id="before-img3-2" />
+    </div>
+    <div class="menu4">
+      <h1>Captivate Intoxicat紙醉金迷</h1>
+      <img src="../imgs/menuImg/food_menu_1-04.jpg" alt="" id="img4" @click="showLightbox(3)" />
+      <img src="../imgs/menuImg/menu_pc08.png" alt="" id="before-img4-1" />
+      <img src="../imgs/menuImg/menu_pc05.png" alt="" id="before-img4-2" />
+    </div>
+    <vue-easy-lightbox :visible="visible" :imgs="imgs[index]" :index="index" @hide="visible = false" />
   </div>
 </template>
 
@@ -58,7 +81,6 @@ export default {
 
     onMounted(() => {
       const container = document.querySelector('.warper')
-
       imagesLoaded(container, () => {
         // 圖片已經全部加載完成後執行 gsap 動畫
         gsap.to('#before-img1', {
