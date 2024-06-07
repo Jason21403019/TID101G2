@@ -17,16 +17,6 @@
     </admin-btn>
   </div>
 
-  <!-- 彈跳視窗 -->
-  <AdminModal
-    v-model:form-data="formData"
-    :title="modalTitle"
-    :fields="formFields"
-    :visible="isModalVisible"
-    @save="handleSave"
-    @close="closeModal"
-  />
-
   <!-- 列表 -->
   <section>
     <table class="table">
@@ -43,23 +33,23 @@
       </thead>
       <tbody>
         <tr v-for="(article, index) in articles" :key="index">
-          <th scope="row">{{ article.category }}</th>
           <td>{{ article.title }}</td>
+          <td>{{ article.category }}</td>
           <td>{{ article.clicks }}</td>
           <td>{{ article.publishDate }}</td>
           <td>
             <div class="form-check form-switch">
-              <input id="flexSwitchCheckChecked" class="form-check-input" type="checkbox" checked />
+              <input :id="'flexSwitchCheckChecked' + index" class="form-check-input" type="checkbox" v-model="article.show" />
             </div>
           </td>
           <td>
             <button @click="openModal('edit', article)">
-              <img src="../imgs/icon/icon_admin-edit.svg" alt="編輯" width="20px" height="20ox" />
+              <img src="../imgs/icon/icon_admin-edit.svg" alt="編輯" width="20px" height="20px" />
             </button>
           </td>
           <td>
-            <button @click="deleteArticle(article, index)">
-              <img src="../imgs/icon/icon_delete.svg" alt="刪除" width="20px" height="20ox" />
+            <button @click="deleteArticle(index)">
+              <img src="../imgs/icon/icon_delete.svg" alt="刪除" width="20px" height="20px" />
             </button>
           </td>
         </tr>
@@ -70,12 +60,15 @@
       </caption>
     </table>
   </section>
+
+  <!-- 彈跳視窗 -->
+  <ModalArticle :actionType="currentActionType" ref="modal" :article="currentArticle" :onSave="handleSave"></ModalArticle>
 </template>
 
 <script>
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
-import AdminModal from '../components/AdminModal.vue'
+import ModalArticle from '../components/AdminModalArticle.vue'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
@@ -83,7 +76,7 @@ export default {
   components: {
     AdminBreadcrumb,
     AdminBtn,
-    AdminModal
+    ModalArticle
   },
   data() {
     return {
@@ -95,84 +88,45 @@ export default {
         { text: variables.articleblock.articleList, link: '/admin_article', active: false }
       ],
 
-      actionType: 'add',
-      modalTitle: '文章新增',
-      formFields: [
-        {
-          id: 'category',
-          label: '專欄名稱',
-          type: 'select',
-          options: [
-            { value: 'knowledge', text: 'Wine Knowledge 酒類知識' },
-            { value: 'reports', text: 'Foreign Reports 國外報導' },
-            { value: 'cocktail', text: 'Cocktail New World 調酒新世界' }
-          ]
-        },
-        { id: 'title', label: '專欄標題', type: 'input' },
-        { id: 'author', label: '作者', type: 'input' },
-        { id: 'publishDate', label: '發布時間', type: 'date' },
-        // { id: 'content', label: '專欄內容', type: 'ckeditor' },
-        { id: 'upload', label: '標題圖上傳', type: 'file' },
-        { id: 'active', label: '顯示狀態', type: 'checkbox' }
-      ],
-      formData: {
-        category: '',
+      currentActionType: 'add',
+      currentArticle: {
         title: '',
-        author: '',
+        category: '',
+        clicks: 0,
         publishDate: '',
-        content: '',
-        upload: '',
-        active: true
+        show: true
       },
       articles: [
         {
-          id: 1,
-          category: 'Wine Knowledge 酒類知識',
-          title: '威士忌釀造的藝術',
-          clicks: 1,
-          publishDate: '2024/06/01',
-          active: true
+          title: '文章標題 1',
+          category: '分類 1',
+          clicks: 123,
+          publishDate: '2023-05-01',
+          show: true
         }
-      ],
-      isModalVisible: false
+      ]
     }
   },
   methods: {
-    openModal(action, data = null) {
-      this.actionType = action
-      this.modalTitle = action === 'add' ? '文章新增' : '文章編輯'
-      this.formData = data || {
-        category: '',
-        title: '',
-        author: '',
-        publishDate: '',
-        content: '',
-        upload: '',
-        active: true
-      }
-      this.isModalVisible = true
-    },
-    closeModal() {
-      this.isModalVisible = false
+    openModal(action, article = null) {
+      this.currentActionType = action
+      this.currentArticle = article ? { ...article } : { title: '', category: '', clicks: 0, publishDate: '', show: true }
+      this.$refs.modal.show()
     },
     handleSave(formData) {
-      if (this.actionType === 'add') {
+      if (this.currentActionType === 'add') {
         // 新增邏輯
         const newArticle = { ...formData, id: this.articles.length + 1 }
-
         this.articles.push(newArticle)
       } else {
         // 編輯邏輯
         const index = this.articles.findIndex((article) => article.id === formData.id)
-
         if (index !== -1) {
           this.articles.splice(index, 1, { ...formData })
         }
-        this.closeModal()
       }
     },
-    // 刪除
-    deleteArticle(article, index) {
+    deleteArticle(index) {
       this.articles.splice(index, 1)
     }
   }
@@ -229,6 +183,10 @@ export default {
       }
     }
   }
+  .form-check-input:checked {
+    background-color: $toggle-on;
+    border: solid $toggle-on;
+  }
   button {
     border: none;
     background: none;
@@ -236,10 +194,6 @@ export default {
   #flexSwitchCheckChecked:checked {
     background-color: $toggle-on;
     border: solid $toggle-on;
-  }
-
-  .fa-solid.fa-pencil {
-    color: $campari;
   }
 }
 </style>
