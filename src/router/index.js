@@ -66,6 +66,7 @@ const routes = [
       layout: 'default'
     }
   },
+  // 熱門商品
   {
     path: '/product',
     name: 'Product',
@@ -74,8 +75,7 @@ const routes = [
       layout: 'default'
     }
   },
-
-  // backend
+  // 測驗遊戲
   {
     path: '/product',
     name: 'Product',

@@ -59,6 +59,7 @@ export default {
 
     onMounted(() => {
       const container = document.querySelector('.warper')
+
       imagesLoaded(container, () => {
         // 圖片已經全部加載完成後執行 gsap 動畫
         gsap.to('#before-img1', {

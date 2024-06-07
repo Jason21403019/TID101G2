@@ -7,7 +7,6 @@
           <WineColumnCategory v-for="(item, index) in wineCategories" :key="index" :item="item" />
         </ul>
       </section>
-
       <div class="dropdown" @click="toggleDropdown">
         <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle" type="button" aria-expanded="false">
           {{ selectedOption }}
