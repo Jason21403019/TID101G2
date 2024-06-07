@@ -1,13 +1,13 @@
 <template>
   <div id="heart" class="heart">
     <div id="backgrounds" class="background-images">
-      <img src="./imgs/quizGameImg/gamequiz_bg2-1.png" alt="" class="bg-img bg-img1" />
-      <img src="./imgs/quizGameImg/gamequiz_bg2-2.png" alt="" class="bg-img bg-img2" />
-      <img src="./imgs/quizGameImg/gamequiz_bg2-3.png" alt="" class="bg-img bg-img3" />
-      <img src="./imgs/quizGameImg/gamequiz_bg2-4.png" alt="" class="bg-img bg-img4" />
+      <img src="@/imgs/quizGameImg/gamequiz_bg2-1.png" alt="" class="bg-img bg-img1" />
+      <img src="@/imgs/quizGameImg/gamequiz_bg2-2.png" alt="" class="bg-img bg-img2" />
+      <img src="@/imgs/quizGameImg/gamequiz_bg2-3.png" alt="" class="bg-img bg-img3" />
+      <img src="@/imgs/quizGameImg/gamequiz_bg2-4.png" alt="" class="bg-img bg-img4" />
     </div>
     <div id="logo" class="logo">
-      <img src="./imgs/logo/logo-w.png" alt="" />
+      <img src="@/imgs/logo/logo-w.png" alt="" />
     </div>
     <div id="title" class="title">
       <h1>發掘你的調酒名單</h1>
@@ -36,8 +36,8 @@ export default {
   mounted() {
     document.addEventListener('DOMContentLoaded', () => {
       imagesLoaded('.bg-img', () => {
-        let images = document.querySelectorAll('.bg-img')
-        let tl = gsap.timeline({ repeat: -1, repeatDelay: 0 })
+        const images = document.querySelectorAll('.bg-img')
+        const tl = gsap.timeline({ repeat: -1, repeatDelay: 0 })
 
         images.forEach((img, index) => {
           tl.to(img, {
@@ -87,7 +87,7 @@ body {
 }
 
 .heart {
-  background: url(./imgs/quizGameImg/gamequiz_mbg-10.jpg) center center no-repeat;
+  background: url(@/imgs/quizGameImg/gamequiz_mbg-10.jpg) center center no-repeat;
   background-size: cover;
   width: 100%;
   height: 100vh;

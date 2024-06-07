@@ -12,25 +12,25 @@
     <div class="row mb-3">
       <label for="nameInput" class="col-sm-1 col-form-label">姓名</label>
       <div class="col-sm-3">
-        <input type="text" class="form-control" id="nameInput">
+        <input id="nameInput" type="text" class="form-control" />
       </div>
     </div>
     <div class="row mb-3">
       <label for="phoneInput" class="col-sm-1 col-form-label">電話</label>
       <div class="col-sm-3">
-        <input type="text" class="form-control" id="phoneInput">
+        <input id="phoneInput" type="text" class="form-control" />
       </div>
     </div>
     <div class="row mb-3">
       <label for="emailInput" class="col-sm-1 col-form-label">Email</label>
       <div class="col-sm-3">
-        <input type="email" class="form-control" id="emailInput">
+        <input id="emailInput" type="email" class="form-control" />
       </div>
     </div>
     <div class="row mb-3">
       <label for="positionInput" class="col-sm-1 col-form-label">職位</label>
       <div class="col-sm-3">
-        <input type="text" class="form-control" id="positionInput" placeholder="員工" disabled>
+        <input id="positionInput" type="text" class="form-control" placeholder="員工" disabled />
       </div>
     </div>
 
@@ -41,13 +41,13 @@
       </admin-btn>
     </div>
   </section>
-
 </template>
 
 <script>
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
 import { variables } from '../js/AdminVariables.js'
+
 export default {
   name: 'AdminPanel',
   components: {
@@ -64,13 +64,12 @@ export default {
         { text: variables.adminpanel.profile, link: '/admin_panel', active: false }
       ]
     }
-  },
+  }
 }
 </script>
 
-
 <style lang="scss" scoped>
-@import '../../node_modules/bootstrap/scss/bootstrap.scss'; 
+@import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
 .adminpanel {
   margin-top: 40px;
@@ -85,16 +84,16 @@ export default {
     margin: 0 20px;
   }
 }
-.panelblock{
+.panelblock {
   margin-top: 80px;
   font-size: $fontSize_h4;
   color: $campari;
 
-  .col-form-label{
+  .col-form-label {
     margin-left: 160px;
   }
 
-  .d-grid{
+  .d-grid {
     margin-top: 40px;
     margin-left: 160px;
   }

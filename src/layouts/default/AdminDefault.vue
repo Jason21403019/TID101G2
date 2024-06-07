@@ -2,8 +2,8 @@
   <main>
     <div class="AdminWrapper">
       <header v-if="!isLoginPage">
-        <admin-header :isExpanded="isExpanded" @toggleSidebar="toggleSidebar" />
-        <admin-slidebar :isExpanded="isExpanded" @update:isExpanded="isExpanded = $event" />
+        <admin-header :is-expanded="isExpanded" @toggle-sidebar="toggleSidebar" />
+        <admin-slidebar :is-expanded="isExpanded" @update:is-expanded="isExpanded = $event" />
       </header>
 
       <section :class="{ 'main-shifted': isExpanded && !isLoginPage }">
@@ -48,26 +48,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-main{
-  font-family: $fontfamily,$fontfamily-en;
+main {
+  font-family: $fontfamily, $fontfamily-en;
   background: $whitelady;
-  
-  .AdminWrapper{
+
+  .AdminWrapper {
     padding-top: 60px;
     background: $whitelady;
     height: 100vh;
   }
 
   section {
-    transition: margin-left 0.3s ease; 
+    transition: margin-left 0.3s ease;
     background-color: $whitelady;
   }
-  
+
   .main-shifted {
     background-color: $whitelady;
     margin-left: 160px; /* 根據側邊欄的寬度調整這個值 */
   }
-
 }
-
 </style>

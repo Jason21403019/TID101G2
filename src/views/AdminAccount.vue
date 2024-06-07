@@ -19,9 +19,9 @@
 
   <!-- 彈跳視窗 -->
   <AdminModal
+    v-model:form-data="formData"
     :title="modalTitle"
     :fields="formFields"
-    :formData.sync="formData"
     :visible="isModalVisible"
     @save="handleSave"
     @close="closeModal"
@@ -50,11 +50,11 @@
           <td>{{ admin.position }}</td>
           <td>
             <div class="form-check form-switch">
-              <input 
-                :id="'flexSwitchCheckChecked' + admin.id" 
-                class="form-check-input" 
-                type="checkbox" 
+              <input
+                :id="'flexSwitchCheckChecked' + admin.id"
                 v-model="admin.active"
+                class="form-check-input"
+                type="checkbox"
                 @change="toggleStatus(admin)"
               />
             </div>
@@ -67,7 +67,8 @@
         </tr>
       </tbody>
       <caption>
-        每頁列表顯示<span class="main__list-number">6</span>筆
+        每頁列表顯示<span class="main__list-number">6</span
+        >筆
       </caption>
     </table>
   </section>
@@ -100,7 +101,7 @@ export default {
       actionType: 'add',
       modalTitle: '管理者新增',
       formFields: [
-        { id: 'name', label: '姓名', type: 'input' ,name:'name'},
+        { id: 'name', label: '姓名', type: 'input', name: 'name' },
         { id: 'email', label: 'E-mail', type: 'input' },
         { id: 'phone', label: '手機', type: 'input' },
         { id: 'password', label: '設定密碼', type: 'password' },
@@ -126,46 +127,48 @@ export default {
         active: true
       },
       // 要串資料庫的地方
-      admins: [
-        { id: 1, name: 'Tibame', email: 'Tibame@gmail.com', phone: '09123456789', position: '主管', active: true },
-      ],
+      admins: [{ id: 1, name: 'Tibame', email: 'Tibame@gmail.com', phone: '09123456789', position: '主管', active: true }],
       isModalVisible: false,
       existingData: null
-    };
+    }
   },
   methods: {
     // 彈跳視窗：是新增按鈕還是table的編輯按鈕
     openModal(action, data = null) {
-      this.actionType = action;
-      this.modalTitle = action === 'add' ? '管理者新增' : '管理者編輯';
-      this.formData = data ? { ...data } : {
-        name: '',
-        email: '',
-        phone: '',
-        password: '',
-        confirmPassword: '',
-        position: 'manager',
-        active: true
-      };
-      this.isModalVisible = true;
+      this.actionType = action
+      this.modalTitle = action === 'add' ? '管理者新增' : '管理者編輯'
+      this.formData = data
+        ? { ...data }
+        : {
+            name: '',
+            email: '',
+            phone: '',
+            password: '',
+            confirmPassword: '',
+            position: 'manager',
+            active: true
+          }
+      this.isModalVisible = true
     },
     closeModal() {
-      this.isModalVisible = false;
+      this.isModalVisible = false
     },
     handleSave(formData) {
       if (this.actionType === 'add') {
         // 新增邏輯
-        const newAdmin = { ...formData, id: this.admins.length + 1 };
-        this.admins.push(newAdmin);
+        const newAdmin = { ...formData, id: this.admins.length + 1 }
+
+        this.admins.push(newAdmin)
       } else {
         // 編輯邏輯
-        const index = this.admins.findIndex(admin => admin.id === formData.id);
+        const index = this.admins.findIndex((admin) => admin.id === formData.id)
+
         if (index !== -1) {
-          this.admins.splice(index, 1, { ...formData });
+          this.admins.splice(index, 1, { ...formData })
         }
       }
-      this.closeModal();
-    },
+      this.closeModal()
+    }
   }
 }
 </script>
@@ -177,7 +180,7 @@ export default {
   margin-top: 40px;
   margin-left: 160px;
   color: $campari;
-  
+
   &-h1 {
     display: inline;
     font-size: $fontSize_h3;
@@ -197,7 +200,8 @@ export default {
   }
 }
 
-.table td, .table th {
+.table td,
+.table th {
   vertical-align: middle;
 }
 .table {
@@ -215,7 +219,6 @@ export default {
     }
   }
   .table-tbody {
-    
     td {
       vertical-align: middle;
     }

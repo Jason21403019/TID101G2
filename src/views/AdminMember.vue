@@ -23,7 +23,7 @@
       <admin-date-input start-date-id="dateInputField1" end-date-id="dateInputField2">
         <template #label>選擇日期</template>
       </admin-date-input>
-  
+
       <admin-btn :handle-click="search">
         <template #icon>
           <img src="../imgs/icon/icon_admin-search-w.svg" alt="addIcon" height="20" width="20" />
@@ -32,7 +32,7 @@
       </admin-btn>
     </div>
   </div>
-  
+
   <section>
     <table class="table">
       <thead class="table-thead">
@@ -88,18 +88,18 @@
       </tbody>
 
       <caption>
-        每頁列表顯示<span class="main__list-number">6</span>筆
+        每頁列表顯示<span class="main__list-number">6</span
+        >筆
       </caption>
     </table>
   </section>
-
 </template>
 
 <script>
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
-import AdminInput from '../components/AdminInput.vue'
-import AdminDateInput from '../components/AdminDateInput.vue'
 import AdminBtn from '../components/AdminBtn.vue'
+import AdminDateInput from '../components/AdminDateInput.vue'
+import AdminInput from '../components/AdminInput.vue'
 import Swal from 'sweetalert2'
 import { variables } from '../js/AdminVariables.js'
 
@@ -213,9 +213,9 @@ export default {
   width: 85%;
   margin-top: 100px;
   margin-left: 160px;
-  .table-thead{
+  .table-thead {
     font-size: $fontSize_h4;
-    th{
+    th {
       background-color: $campari;
       color: $ramos-gin-fizz;
     }

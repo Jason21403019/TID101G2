@@ -29,6 +29,5 @@ export default {
   border: 1px solid $campari;
   border-radius: 4px;
   padding: 5px;
-
 }
 </style>

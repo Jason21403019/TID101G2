@@ -24,7 +24,7 @@
         <template #label>訂位日期</template>
         <template #info>(最多查詢100天)</template>
       </admin-date-input>
-  
+
       <admin-btn :handle-click="search">
         <template #icon>
           <img src="../imgs/icon/icon_admin-search-w.svg" alt="addIcon" height="20" width="20" />
@@ -82,19 +82,19 @@
       </tbody>
 
       <caption>
-        每頁列表顯示<span class="main__list-number">6</span>筆
+        每頁列表顯示<span class="main__list-number">6</span
+        >筆
       </caption>
     </table>
   </section>
-
 </template>
 
 <script>
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
-import AdminInput from '../components/AdminInput.vue'
-import AdminDateInput from '../components/AdminDateInput.vue'
 import AdminBtn from '../components/AdminBtn.vue'
 import AdminBulkBtn from '../components/AdminBulkBtn.vue'
+import AdminDateInput from '../components/AdminDateInput.vue'
+import AdminInput from '../components/AdminInput.vue'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
@@ -116,7 +116,7 @@ export default {
         { text: variables.resblock.bookingList, link: '/admin_res', active: false }
       ]
     }
-  },
+  }
 }
 </script>
 
@@ -136,10 +136,10 @@ export default {
     margin: 0 20px;
   }
 }
-.searchDay{
+.searchDay {
   font-size: $fontSize_p;
 }
-.d-grid{
+.d-grid {
   margin-top: 50px;
   margin-left: 160px;
 }
@@ -147,9 +147,9 @@ export default {
   width: 85%;
   margin-top: 10px;
   margin-left: 160px;
-  .table-thead{
+  .table-thead {
     font-size: $fontSize_h4;
-    th{
+    th {
       background-color: $campari;
       color: $ramos-gin-fizz;
     }
