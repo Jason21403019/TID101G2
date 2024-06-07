@@ -165,14 +165,14 @@
     width: 100%;
     background-color: $whitelady;
     // border: 1px solid blue;
-
+    padding-top: 150px;
 
 
     .banner{
         width: 64%;
         height: 400px;
         margin: 0 auto;
-        margin-top: 50px;
+        // padding-top: 150px;
         // border: 1px solid green;
         background: url('../imgs/bookingImg/close-up-drink-bar2.jpg');
 
