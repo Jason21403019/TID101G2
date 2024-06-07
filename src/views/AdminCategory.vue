@@ -19,9 +19,9 @@
 
   <!-- 彈跳視窗 -->
   <AdminModal
+    v-model:form-data="formData"
     :title="modalTitle"
     :fields="formFields"
-    :formData.sync="formData"
     :visible="isModalVisible"
     @save="handleSave"
     @close="closeModal"
@@ -59,7 +59,8 @@
         </tr>
       </tbody>
       <caption>
-        每頁列表顯示<span class="main__list-number">6</span>筆
+        每頁列表顯示<span class="main__list-number">6</span
+        >筆
       </caption>
     </table>
   </section>
@@ -87,52 +88,54 @@ export default {
         { text: variables.articleblock.wine, link: '', active: true },
         { text: variables.articleblock.categoryList, link: '/admin_category', active: false }
       ],
-      
+
       actionType: 'add',
       modalTitle: '分類新增',
       formFields: [
         { id: 'name', label: '名稱', type: 'input' },
-        { id: 'memo', label: '備註', type: 'textarea' },
+        { id: 'memo', label: '備註', type: 'textarea' }
       ],
       formData: {
         name: '',
-        memo: '',
+        memo: ''
       },
-       // 要串資料庫的地方
-      categories: [{name: '酒類知識', memo:'後台在看：這頁只有做一個分類名稱,多一個備註讓列表不會太空'}],
+      // 要串資料庫的地方
+      categories: [{ name: '酒類知識', memo: '後台在看：這頁只有做一個分類名稱,多一個備註讓列表不會太空' }],
       isModalVisible: false
     }
   },
   methods: {
     openModal(action, data = null) {
-      this.actionType = action;
-      this.modalTitle = action === 'add' ? '分類新增' : '分類編輯';
-      this.formData = data ? { ...data } : { name: '', memo: '' };
-      this.isModalVisible = true;
+      this.actionType = action
+      this.modalTitle = action === 'add' ? '分類新增' : '分類編輯'
+      this.formData = data ? { ...data } : { name: '', memo: '' }
+      this.isModalVisible = true
     },
     closeModal() {
-      this.isModalVisible = false;
+      this.isModalVisible = false
     },
     handleSave(formData) {
       if (this.actionType === 'add') {
         // 新增邏輯
-        const newCategory = { ...formData, id: this.categories.length + 1 };
-        this.categories.push(newCategory);
+        const newCategory = { ...formData, id: this.categories.length + 1 }
+
+        this.categories.push(newCategory)
       } else {
         // 編輯邏輯
-        const index = this.categories.findIndex(category => category.id === formData.id);
+        const index = this.categories.findIndex((category) => category.id === formData.id)
+
         if (index !== -1) {
-         this.categories.splice(index, 1, { ...formData });
+          this.categories.splice(index, 1, { ...formData })
         }
       }
-      this.closeModal();
+      this.closeModal()
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../../node_modules/bootstrap/scss/bootstrap.scss'; 
+@import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
 .articleblock {
   margin-top: 40px;
@@ -175,7 +178,7 @@ export default {
     background-color: $toggle-on;
     border: solid $toggle-on;
   }
-  
+
   .fa-solid.fa-pencil {
     color: $campari;
   }

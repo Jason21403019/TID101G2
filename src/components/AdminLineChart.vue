@@ -20,7 +20,7 @@ export default {
       const ctx = document.getElementById('Chart').getContext('2d')
       const labels = ['一月份', '二月份', '三月份', '四月份', '五月份', '六月份', '七月份']
       const data = {
-        labels: labels,
+        labels,
         datasets: [
           {
             label: '每月銷售額',
@@ -38,7 +38,7 @@ export default {
       }
       const config = {
         type: 'line',
-        data: data,
+        data,
         options: {
           responsive: true,
           interaction: {
@@ -71,13 +71,14 @@ export default {
           }
         }
       }
+
       new Chart(ctx, config)
     },
     renderChart2() {
       const ctx = document.getElementById('Chart2').getContext('2d')
       const labels = ['一月份', '二月份', '三月份', '四月份', '五月份', '六月份', '七月份']
       const data = {
-        labels: labels,
+        labels,
         datasets: [
           {
             label: '每月會員人數',
@@ -95,7 +96,7 @@ export default {
       }
       const config = {
         type: 'line',
-        data: data,
+        data,
         options: {
           responsive: true,
           interaction: {
@@ -128,13 +129,14 @@ export default {
           }
         }
       }
+
       new Chart(ctx, config)
     },
     renderChart3() {
       const ctx = document.getElementById('Chart3').getContext('2d')
       const labels = ['一月份', '二月份', '三月份', '四月份', '五月份', '六月份', '七月份']
       const data = {
-        labels: labels,
+        labels,
         datasets: [
           {
             label: '每月訂位數量',
@@ -152,7 +154,7 @@ export default {
       }
       const config = {
         type: 'line',
-        data: data,
+        data,
         options: {
           responsive: true,
           interaction: {
@@ -185,6 +187,7 @@ export default {
           }
         }
       }
+
       new Chart(ctx, config)
     }
   }

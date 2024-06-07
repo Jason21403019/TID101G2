@@ -1,5 +1,5 @@
 <template>
-  <div id="exampleModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="modal">
+  <div id="exampleModal" ref="modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -10,11 +10,40 @@
           <form @submit.prevent="handleSubmit">
             <div v-for="field in fields" :key="field.id" class="mb-3">
               <label :for="field.id" class="col-form-label">{{ field.label }}:</label>
-              <input v-if="field.type === 'input'" :id="field.id" v-model="formData[field.id]" class="form-control" :type="field.type" />
-              <input v-if="field.type === 'password'" :id="field.id" v-model="formData[field.id]" class="form-control" :type="field.type" />
-              <input v-if="field.type === 'file'" :id="field.id" v-model="formData[field.id]" class="form-control" :type="field.type" />
-              <input v-if="field.type === 'date'" :id="field.id" v-model="formData[field.id]" class="form-control" :type="field.type" />
-              <textarea v-if="field.type === 'textarea'" :id="field.id" v-model="formData[field.id]" class="form-control"></textarea>
+              <input
+                v-if="field.type === 'input'"
+                :id="field.id"
+                v-model="formData[field.id]"
+                class="form-control"
+                :type="field.type"
+              />
+              <input
+                v-if="field.type === 'password'"
+                :id="field.id"
+                v-model="formData[field.id]"
+                class="form-control"
+                :type="field.type"
+              />
+              <input
+                v-if="field.type === 'file'"
+                :id="field.id"
+                v-model="formData[field.id]"
+                class="form-control"
+                :type="field.type"
+              />
+              <input
+                v-if="field.type === 'date'"
+                :id="field.id"
+                v-model="formData[field.id]"
+                class="form-control"
+                :type="field.type"
+              />
+              <textarea
+                v-if="field.type === 'textarea'"
+                :id="field.id"
+                v-model="formData[field.id]"
+                class="form-control"
+              ></textarea>
               <!-- 文字編輯器 -->
               <!-- <admin-text-editor v-if="field.type === 'ckeditor'" :id="field.id" v-model="formData[field.id]"></admin-text-editor> -->
               <select v-if="field.type === 'select'" :id="field.id" v-model="formData[field.id]" class="form-control">
@@ -27,12 +56,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          <AdminBtn 
-            modal 
-            modal-target="#exampleModal" 
-            modal-whatever="@fat"
-            @click="handleSubmit"
-          >
+          <AdminBtn modal modal-target="#exampleModal" modal-whatever="@fat" @click="handleSubmit">
             <template #text>儲存</template>
           </AdminBtn>
         </div>
@@ -42,13 +66,13 @@
 </template>
 
 <script>
-import AdminBtn from './AdminBtn.vue';
+import AdminBtn from './AdminBtn.vue'
 // import AdminTextEditor from './AdminTextEditor.vue';
 
 export default {
   name: 'AdminModal',
   components: {
-    AdminBtn,
+    AdminBtn
     // AdminTextEditor
   },
   props: {
@@ -69,70 +93,71 @@ export default {
       required: true
     }
   },
+  emits: ['close', 'save'],
   watch: {
     visible(val) {
       if (val) {
-        this.showModal();
+        this.showModal()
       } else {
-        this.hideModal();
+        this.hideModal()
       }
     }
   },
   methods: {
     showModal() {
-      const modalElement = this.$refs.modal;
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
+      const modalElement = this.$refs.modal
+      const modal = new bootstrap.Modal(modalElement)
+
+      modal.show()
     },
     hideModal() {
-      const modalElement = this.$refs.modal;
-      const modal = bootstrap.Modal.getInstance(modalElement);
+      const modalElement = this.$refs.modal
+      const modal = bootstrap.Modal.getInstance(modalElement)
+
       if (modal) {
-        modal.hide();
+        modal.hide()
       }
     },
     closeModal() {
-      this.$emit('close');
+      this.$emit('close')
     },
     handleSubmit() {
-      this.$emit('save', this.formData);
-      this.closeModal();
+      this.$emit('save', this.formData)
+      this.closeModal()
     }
   }
 }
 </script>
 
-
 <style lang="scss" scoped>
-@import '../../node_modules/bootstrap/scss/bootstrap.scss'; 
+@import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
-#exampleModal{
+#exampleModal {
   font-size: $fontSize_h4;
   color: $campari;
 
-  .modal-header{
+  .modal-header {
     background-color: $babypowder;
   }
 
-  .modal-body{
+  .modal-body {
     background-color: $babypowder;
 
-    .col-form-label{
+    .col-form-label {
       font-size: $fontSize_h4;
     }
 
-    .form-control{
+    .form-control {
       outline: 1px solid $campari;
     }
-    .form-check-input:checked{
+    .form-check-input:checked {
       background-color: $toggle-on;
       border: solid $toggle-on;
     }
   }
 
-  .modal-footer{
+  .modal-footer {
     background-color: $babypowder;
   }
 }
-
 </style>

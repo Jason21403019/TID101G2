@@ -3,11 +3,11 @@
     <div class="loginpage">
       <div class="box">
         <div class="wrapper">
-          <a draggable="true" @dragstart="onDragStart" data-link="/">
+          <a draggable="true" data-link="/" @dragstart="onDragStart">
             <img class="log_home" src="../imgs/loginImg/login_but-02.svg" width="125" height="125" />
           </a>
 
-          <a draggable="true" @dragstart="onDragStart" data-link="/admin_login">
+          <a draggable="true" data-link="/admin_login" @dragstart="onDragStart">
             <img class="log_admin" src="../imgs/loginImg/login_but-03.svg" width="125" height="125" />
           </a>
         </div>
@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: 'login',
+  name: 'Login',
   data() {
     return {
       // 拖移事件觸發後更換圖片
@@ -34,16 +34,18 @@ export default {
       // 原本的設定會只吃到第一個父層連結也就是home
       // event.dataTransfer.setData('link', event.target.closest('a').getAttribute('data-link'));
 
-      //透過抓到a標籤，找到裡面的data-link的屬性值，獲得要去路徑網址
+      // 透過抓到a標籤，找到裡面的data-link的屬性值，獲得要去路徑網址
       const link = event.target.closest('a').getAttribute('data-link')
+
       event.dataTransfer.setData('link', link)
     },
     onDrop(event) {
-      const link = event.dataTransfer.getData('link');
+      const link = event.dataTransfer.getData('link')
+
       if (link) {
-        this.onImage = this.offImage;
+        this.onImage = this.offImage
         setTimeout(() => {
-          this.$router.push(link); 
+          this.$router.push(link)
         }, 300)
       }
     }

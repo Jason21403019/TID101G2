@@ -36,7 +36,7 @@ export default {
   margin-right: 20px;
   background-color: $whitelady;
   font-size: $fontSize_h5;
-  
+
   .breadcrumb-item {
     a {
       font-size: $fontSize_h5;

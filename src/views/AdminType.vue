@@ -19,9 +19,9 @@
 
   <!-- 彈跳視窗 -->
   <AdminModal
+    v-model:form-data="formData"
     :title="modalTitle"
     :fields="formFields"
-    :formData.sync="formData"
     :visible="isModalVisible"
     @save="handleSave"
     @close="closeModal"
@@ -55,7 +55,8 @@
         </tr>
       </tbody>
       <caption>
-        每頁列表顯示<span class="main__list-number">6</span>筆
+        每頁列表顯示<span class="main__list-number">6</span
+        >筆
       </caption>
     </table>
   </section>
@@ -88,48 +89,48 @@ export default {
       modalTitle: '類別新增',
       formFields: [
         { id: 'name', label: '名稱', type: 'input' },
-        { id: 'memo', label: '備註', type: 'textarea' },
+        { id: 'memo', label: '備註', type: 'textarea' }
       ],
       formData: {
         name: '',
-        memo: '',
+        memo: ''
       },
       existingData: {
         name: '無酒精紅酒',
-        memo: '後台在看：這頁只有做一個分類名稱,多一個備註讓列表不會太空',
+        memo: '後台在看：這頁只有做一個分類名稱,多一個備註讓列表不會太空'
       },
       isModalVisible: false
-    };
+    }
   },
   methods: {
     openModal(action, data = null) {
-      this.actionType = action;
-      this.modalTitle = action === 'add' ? '類別新增' : '類別編輯';
+      this.actionType = action
+      this.modalTitle = action === 'add' ? '類別新增' : '類別編輯'
       this.formData = data || {
         name: '',
-        memo: '',
-      };
-      this.isModalVisible = true;
+        memo: ''
+      }
+      this.isModalVisible = true
     },
     closeModal() {
-      this.isModalVisible = false;
+      this.isModalVisible = false
     },
     handleSave(formData) {
       if (this.actionType === 'add') {
         // 新增邏輯
-        console.log('新增資料', formData);
+        console.log('新增資料', formData)
       } else {
         // 編輯邏輯
-        console.log('編輯資料', formData);
+        console.log('編輯資料', formData)
       }
-      this.closeModal();
+      this.closeModal()
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../../node_modules/bootstrap/scss/bootstrap.scss'; 
+@import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
 .productblock {
   margin-top: 40px;
@@ -174,7 +175,7 @@ export default {
     background-color: $toggle-on;
     border: solid $toggle-on;
   }
-  
+
   .fa-solid.fa-pencil {
     color: $campari;
   }

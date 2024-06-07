@@ -1,16 +1,16 @@
 <template>
   <header class="header" :class="{ '-black': currentPath === 'Home' || currentPath === 'Home' }">
     <div class="header__logoarea">
-      <routerlink to="/" class="header__logoarea-logo">
+      <router-link to="/" class="header__logoarea-logo">
         <img src="../../imgs/logo/logo-w.png" alt="" />
-      </routerlink>
+      </router-link>
     </div>
     <div class="header__btnarea">
       <div class="header__btnarea-icons">
         <router-link to="/" class="header__icons-icon">
           <img class="header__icons-icon-img1" src="../../imgs/icon/icon_member-on-w.svg" alt="" />
         </router-link>
-        <router-link to="/" class="header__icons-icon">
+        <router-link to="/cart" class="header__icons-icon">
           <img class="header__icons-icon-img2" src="../../imgs/icon/icon_cart-shopping-w.svg" alt="" />
         </router-link>
       </div>
@@ -31,7 +31,9 @@
               <router-link to="/reserve_first" class="menu__link" @click="closeHamburger"
                 ><span class="item3">預約訂位</span></router-link
               >
-              <router-link to="/" class="menu__link" @click="closeHamburger"><span class="item4">熱門商品</span></router-link>
+              <router-link to="/product" class="menu__link" @click="closeHamburger"
+                ><span class="item4">熱門商品</span></router-link
+              >
               <router-link to="/" class="menu__link" @click="closeHamburger"><span class="item5">測驗遊戲</span></router-link>
               <router-link to="/wine_column" class="menu__link" @click="closeHamburger"
                 ><span class="item6">酒品專欄</span></router-link
@@ -144,8 +146,8 @@ export default {
     height: 30px;
     border-radius: 50%;
     position: absolute;
-    right: 1rem;
-    top: 0.8rem;
+    right: 1.9rem;
+    top: 2.2rem;
     transform: scale(0);
     transition: transform 0.8s ease;
     background: $negroni;
@@ -210,7 +212,7 @@ export default {
     height: 100%;
   }
   &-ul {
-    flex: 1;
+    // flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -218,7 +220,7 @@ export default {
     &-item {
       // border: 1px solid red;
       height: 70%;
-      width: 100%;
+      // width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;

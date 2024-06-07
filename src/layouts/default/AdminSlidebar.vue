@@ -65,6 +65,7 @@ export default {
       default: false
     }
   },
+  emits: ['expand', 'collapse', 'update:isExpanded'],
   data() {
     return {
       navItems: [
@@ -137,7 +138,7 @@ export default {
 @import '../../../node_modules/bootstrap/scss/bootstrap.scss';
 
 .sidebar {
-  font-family: $fontfamily,$fontfamily-en;
+  font-family: $fontfamily, $fontfamily-en;
   position: fixed;
   top: 0;
   width: 80px;
@@ -155,8 +156,8 @@ export default {
     width: 250px;
   }
 
-  .d-flex{
-    img{
+  .d-flex {
+    img {
       padding: 5px;
     }
     .logo-text {
@@ -166,7 +167,7 @@ export default {
       border-bottom: none;
       color: $babypowder;
     }
-    a{
+    a {
       text-decoration: none;
     }
   }

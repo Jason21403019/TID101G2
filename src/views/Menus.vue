@@ -2,42 +2,42 @@
   <div class="warper">
     <div class="menu1">
       <h1>Appetier開胃菜</h1>
-      <img src="../imgs/menuImg/food_menu_1-01.jpg" alt="" id="img1" @click="showLightbox(0)" />
-      <img src="../imgs/menuImg/menu_pc01.png" alt="" id="before-img1" />
+      <img id="img1" src="../imgs/menuImg/food_menu_1-01.jpg" alt="" @click="showLightbox(0)" />
+      <img id="before-img1" src="../imgs/menuImg/menu_pc01.png" alt="" />
     </div>
     <div class="menu2">
       <h1>Drink Snacks喝酒菜</h1>
-      <img src="../imgs/menuImg/food_menu_1-02.jpg" alt="" id="img2" @click="showLightbox(1)" />
-      <img src="../imgs/menuImg/menu_pc07.png" alt="" id="before-img2-1" />
-      <img src="../imgs/menuImg/menu_pc03.png" alt="" id="before-img2-2" />
+      <img id="img2" src="../imgs/menuImg/food_menu_1-02.jpg" alt="" @click="showLightbox(1)" />
+      <img id="before-img2-1" src="../imgs/menuImg/menu_pc07.png" alt="" />
+      <img id="before-img2-2" src="../imgs/menuImg/menu_pc03.png" alt="" />
     </div>
     <div class="menu3">
       <h1>Chefs Selection主廚特選</h1>
-      <img src="../imgs/menuImg/food_menu_1-03.jpg" alt="" id="img3" @click="showLightbox(2)" />
-      <img src="../imgs/menuImg/menu_pc04.png" alt="" id="before-img3-1" />
-      <img src="../imgs/menuImg/menu_pc02.png" alt="" id="before-img3-2" />
+      <img id="img3" src="../imgs/menuImg/food_menu_1-03.jpg" alt="" @click="showLightbox(2)" />
+      <img id="before-img3-1" src="../imgs/menuImg/menu_pc04.png" alt="" />
+      <img id="before-img3-2" src="../imgs/menuImg/menu_pc02.png" alt="" />
     </div>
     <div class="menu4">
       <h1>Captivate Intoxicat紙醉金迷</h1>
-      <img src="../imgs/menuImg/food_menu_1-04.jpg" alt="" id="img4" @click="showLightbox(3)" />
-      <img src="../imgs/menuImg/menu_pc08.png" alt="" id="before-img4-1" />
-      <img src="../imgs/menuImg/menu_pc05.png" alt="" id="before-img4-2" />
+      <img id="img4" src="../imgs/menuImg/food_menu_1-04.jpg" alt="" @click="showLightbox(3)" />
+      <img id="before-img4-1" src="../imgs/menuImg/menu_pc08.png" alt="" />
+      <img id="before-img4-2" src="../imgs/menuImg/menu_pc05.png" alt="" />
     </div>
     <vue-easy-lightbox :visible="visible" :imgs="imgs[index]" :index="index" @hide="visible = false" />
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import VueEasyLightbox from 'vue-easy-lightbox'
 import imagesLoaded from 'imagesloaded'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { gsap } from 'gsap'
+import { onMounted, ref } from 'vue'
 
-import image_1 from '../imgs/menuImg/food_menu_1-01.jpg'
-import image_2 from '../imgs/menuImg/food_menu_1-02.jpg'
-import image_3 from '../imgs/menuImg/food_menu_1-03.jpg'
-import image_4 from '../imgs/menuImg/food_menu_1-04.jpg'
+import image1 from '../imgs/menuImg/food_menu_1-01.jpg'
+import image2 from '../imgs/menuImg/food_menu_1-02.jpg'
+import image3 from '../imgs/menuImg/food_menu_1-03.jpg'
+import image4 from '../imgs/menuImg/food_menu_1-04.jpg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -49,7 +49,7 @@ export default {
   setup() {
     const visible = ref(false)
     const index = ref(0)
-    const imgs = ref([image_1, image_2, image_3, image_4])
+    const imgs = ref([image1, image2, image3, image4])
 
     const showLightbox = (i) => {
       index.value = i
@@ -58,6 +58,7 @@ export default {
 
     onMounted(() => {
       const container = document.querySelector('.warper')
+
       imagesLoaded(container, () => {
         // 圖片已經全部加載完成後執行 gsap 動畫
         gsap.to('#before-img1', {

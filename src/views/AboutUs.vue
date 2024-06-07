@@ -96,6 +96,7 @@ export default {
     },
     getRatio(element) {
       const rect = element.getBoundingClientRect()
+
       return rect.top / window.innerHeight
     }
   }

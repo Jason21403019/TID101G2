@@ -61,7 +61,8 @@
           </div>
           <div class="login__container-noaccount">
             <p>沒有帳號嗎？<button @click="showRegister">註冊</button></p>
-            <p>忘記密碼嗎？<button>重設密碼</button></p>
+            <p>忘記密碼嗎？<button @click="showFirstPopup = true">重設密碼</button></p>
+            <ForgetPasswordPop :isvible="showFirstPopup" @close-popup="showFirstPopup = false" />
           </div>
           <div class="login__container-submit">
             <button>登入</button>
@@ -73,11 +74,15 @@
 </template>
 
 <script>
+import ForgetPasswordPop from '@/components/ForgetPasswordPop.vue'
+
 export default {
   name: 'RegisterAndLogin',
+  components: { ForgetPasswordPop },
   data() {
     return {
-      isRegister: true
+      isRegister: true,
+      showFirstPopup: false
     }
   },
   methods: {

@@ -26,16 +26,17 @@ export default {
   props: {
     isExpanded: {
       type: Boolean,
-      required: true,
-    },
+      required: true
+    }
   },
+  emits: ['toggleSidebar'],
   methods: {
     handleClick(event) {
-      this.$emit('toggleSidebar');
-      event.target.blur(); // 移除焦點
-    },
-  },
-};
+      this.$emit('toggleSidebar')
+      event.target.blur() // 移除焦點
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -72,7 +73,7 @@ export default {
       outline: none;
     }
   }
-  .dropdown-menu{
+  .dropdown-menu {
     background-color: $ramos-gin-fizz;
     .dropdown-item {
       background-color: $ramos-gin-fizz;
@@ -83,12 +84,11 @@ export default {
       }
     }
   }
-  
-  .btn-group > 
-  .btn[data-v-b6c4c226]:not(:last-child):not(.dropdown-toggle), 
-  .btn-group > .btn.dropdown-toggle-split[data-v-b6c4c226]:first-child, 
+
+  .btn-group > .btn[data-v-b6c4c226]:not(:last-child):not(.dropdown-toggle),
+  .btn-group > .btn.dropdown-toggle-split[data-v-b6c4c226]:first-child,
   .btn-group > .btn-group:not(:last-child) > .btn[data-v-b6c4c226] {
-      border: none !important;
+    border: none !important;
   }
 }
 </style>

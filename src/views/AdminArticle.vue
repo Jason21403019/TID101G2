@@ -19,14 +19,14 @@
 
   <!-- 彈跳視窗 -->
   <AdminModal
+    v-model:form-data="formData"
     :title="modalTitle"
     :fields="formFields"
-    :formData.sync="formData"
     :visible="isModalVisible"
     @save="handleSave"
     @close="closeModal"
   />
-  
+
   <!-- 列表 -->
   <section>
     <table class="table">
@@ -63,10 +63,10 @@
             </button>
           </td>
         </tr>
-
       </tbody>
       <caption>
-        每頁列表顯示<span class="main__list-number">6</span>筆
+        每頁列表顯示<span class="main__list-number">6</span
+        >筆
       </caption>
     </table>
   </section>
@@ -105,7 +105,7 @@ export default {
           options: [
             { value: 'knowledge', text: 'Wine Knowledge 酒類知識' },
             { value: 'reports', text: 'Foreign Reports 國外報導' },
-            { value: 'cocktail', text: 'Cocktail New World 調酒新世界' },
+            { value: 'cocktail', text: 'Cocktail New World 調酒新世界' }
           ]
         },
         { id: 'title', label: '專欄標題', type: 'input' },
@@ -124,21 +124,23 @@ export default {
         upload: '',
         active: true
       },
-      articles:[{
-        id: 1,
-        category: 'Wine Knowledge 酒類知識',
-        title: '威士忌釀造的藝術',
-        clicks: 1,
-        publishDate: '2024/06/01',
-        active: true
-      }],
+      articles: [
+        {
+          id: 1,
+          category: 'Wine Knowledge 酒類知識',
+          title: '威士忌釀造的藝術',
+          clicks: 1,
+          publishDate: '2024/06/01',
+          active: true
+        }
+      ],
       isModalVisible: false
     }
   },
   methods: {
     openModal(action, data = null) {
-      this.actionType = action;
-      this.modalTitle = action === 'add' ? '文章新增' : '文章編輯';
+      this.actionType = action
+      this.modalTitle = action === 'add' ? '文章新增' : '文章編輯'
       this.formData = data || {
         category: '',
         title: '',
@@ -147,36 +149,38 @@ export default {
         content: '',
         upload: '',
         active: true
-      };
-      this.isModalVisible = true;
+      }
+      this.isModalVisible = true
     },
     closeModal() {
-      this.isModalVisible = false;
+      this.isModalVisible = false
     },
     handleSave(formData) {
       if (this.actionType === 'add') {
         // 新增邏輯
-        const newArticle = { ...formData, id: this.articles.length + 1 };
-        this.articles.push(newArticle);
+        const newArticle = { ...formData, id: this.articles.length + 1 }
+
+        this.articles.push(newArticle)
       } else {
         // 編輯邏輯
-        const index = this.articles.findIndex(article => article.id === formData.id);
+        const index = this.articles.findIndex((article) => article.id === formData.id)
+
         if (index !== -1) {
-          this.articles.splice(index, 1, { ...formData });
+          this.articles.splice(index, 1, { ...formData })
         }
-      this.closeModal();
+        this.closeModal()
       }
     },
     // 刪除
     deleteArticle(article, index) {
-      this.articles.splice(index, 1);
+      this.articles.splice(index, 1)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../../node_modules/bootstrap/scss/bootstrap.scss'; 
+@import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
 .articleblock {
   margin-top: 40px;
@@ -202,7 +206,8 @@ export default {
     margin-right: 5px;
   }
 }
-.table td, .table th {
+.table td,
+.table th {
   vertical-align: middle;
 }
 .table {
@@ -236,6 +241,5 @@ export default {
   .fa-solid.fa-pencil {
     color: $campari;
   }
-
 }
 </style>

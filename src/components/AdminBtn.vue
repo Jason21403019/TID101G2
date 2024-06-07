@@ -1,10 +1,10 @@
 <template>
-  <button 
-    class="admin_btn" 
-    type="button" 
-    v-bind="$attrs" 
-    :data-bs-toggle="modal ? 'modal' : null" 
-    :data-bs-target="modal ? modalTarget : null" 
+  <button
+    class="admin_btn"
+    type="button"
+    v-bind="$attrs"
+    :data-bs-toggle="modal ? 'modal' : null"
+    :data-bs-target="modal ? modalTarget : null"
     :data-bs-whatever="modal ? modalWhatever : null"
   >
     <slot name="icon"></slot>
@@ -15,6 +15,7 @@
 <script>
 export default {
   name: 'AdminBtn',
+  inheritAttrs: false,
   props: {
     modal: {
       type: Boolean,
@@ -28,8 +29,7 @@ export default {
       type: String,
       default: ''
     }
-  },
-  inheritAttrs: false
+  }
 }
 </script>
 
@@ -44,6 +44,5 @@ export default {
   border: none;
   border-radius: 4px;
   padding: 10px;
-
 }
 </style>

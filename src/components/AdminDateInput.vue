@@ -8,9 +8,9 @@
         <slot name="info"></slot>
       </div>
     </div>
-    <input :id="startDateId" type="date" class="form-control">
+    <input :id="startDateId" type="date" class="form-control" />
     <span>到</span>
-    <input :id="endDateId" type="date" class="form-control">
+    <input :id="endDateId" type="date" class="form-control" />
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.date__Input{
+.date__Input {
   width: 50%;
   margin-left: 170px;
   margin-top: 5px;
@@ -45,9 +45,8 @@ export default {
     margin-right: 10px;
     width: 20%;
     // align-items: center;
-
   }
-  span{
+  span {
     margin: 0 5px;
   }
 }
