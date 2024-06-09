@@ -17,43 +17,23 @@
     </admin-btn>
   </div>
 
-  <!-- 彈跳視窗 -->
-  <AdminModal
-    v-model:form-data="formData"
-    :title="modalTitle"
-    :fields="formFields"
-    :visible="isModalVisible"
-    @save="handleSave"
-    @close="closeModal"
-  />
-
   <!-- 列表 -->
   <section>
     <table class="table">
       <thead class="table-thead">
         <tr>
-          <th scope="col">分類名稱</th>
+          <th scope="col">名稱</th>
           <th scope="col">備註</th>
-          <th scope="col">&nbsp;</th>
-          <th scope="col">&nbsp;</th>
-          <th scope="col">&nbsp;</th>
-          <th scope="col">&nbsp;</th>
-          <th scope="col">&nbsp;</th>
           <th scope="col">編輯</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="table-tbody">
         <tr v-for="category in categories" :key="category.id">
-          <th scope="row">{{ category.name }}</th>
+          <td>{{ category.name }}</td>
           <td>{{ category.memo }}</td>
-          <th scope="col">&nbsp;</th>
-          <th scope="col">&nbsp;</th>
-          <th scope="col">&nbsp;</th>
-          <th scope="col">&nbsp;</th>
-          <th scope="col">&nbsp;</th>
           <td>
             <button @click="openModal('edit', category)">
-              <img src="../imgs/icon/icon_admin-edit.svg" alt="編輯" width="20px" height="20px" />
+              <img src="../imgs/icon/icon_admin-edit.svg" alt="editIcon" width="20px" height="20px" />
             </button>
           </td>
         </tr>
@@ -64,12 +44,15 @@
       </caption>
     </table>
   </section>
+
+  <!-- 彈跳視窗 -->
+  <ModalCategory :actionType="currentActionType" ref="modal" :category="currentCategory" :onSave="handleSave"></ModalCategory>
 </template>
 
 <script>
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
-import AdminModal from '../components/AdminModal.vue'
+import ModalCategory from '../components/AdminModalCategory.vue'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
@@ -77,7 +60,7 @@ export default {
   components: {
     AdminBreadcrumb,
     AdminBtn,
-    AdminModal
+    ModalCategory
   },
   data() {
     return {
@@ -89,53 +72,50 @@ export default {
         { text: variables.articleblock.categoryList, link: '/admin_category', active: false }
       ],
 
-      actionType: 'add',
-      modalTitle: '分類新增',
-      formFields: [
-        { id: 'name', label: '名稱', type: 'input' },
-        { id: 'memo', label: '備註', type: 'textarea' }
-      ],
-      formData: {
+      currentActionType: 'add',
+      currentCategory: {
         name: '',
         memo: ''
       },
-      // 要串資料庫的地方
-      categories: [{ name: '酒類知識', memo: '後台在看：這頁只有做一個分類名稱,多一個備註讓列表不會太空' }],
-      isModalVisible: false
+      categories: [
+        {
+          id: 1,
+          name: 'Category 1',
+          memo: '備註 1'
+        },
+        {
+          id: 2,
+          name: 'Category 2',
+          memo: '備註 2'
+        }
+      ]
     }
   },
   methods: {
-    openModal(action, data = null) {
-      this.actionType = action
-      this.modalTitle = action === 'add' ? '分類新增' : '分類編輯'
-      this.formData = data ? { ...data } : { name: '', memo: '' }
-      this.isModalVisible = true
-    },
-    closeModal() {
-      this.isModalVisible = false
+    openModal(action, category = null) {
+      this.currentActionType = action
+      this.currentCategory = category ? { ...category } : { name: '', memo: '' }
+      this.$refs.modal.show()
     },
     handleSave(formData) {
-      if (this.actionType === 'add') {
+      if (this.currentActionType === 'add') {
         // 新增邏輯
         const newCategory = { ...formData, id: this.categories.length + 1 }
-
         this.categories.push(newCategory)
       } else {
         // 編輯邏輯
         const index = this.categories.findIndex((category) => category.id === formData.id)
-
         if (index !== -1) {
           this.categories.splice(index, 1, { ...formData })
         }
       }
-      this.closeModal()
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../../node_modules/bootstrap/scss/bootstrap.scss';
+@import '../../node_modules/bootstrap/scss/bootstrap.scss'; 
 
 .articleblock {
   margin-top: 40px;
@@ -178,9 +158,6 @@ export default {
     background-color: $toggle-on;
     border: solid $toggle-on;
   }
-
-  .fa-solid.fa-pencil {
-    color: $campari;
-  }
+ 
 }
 </style>

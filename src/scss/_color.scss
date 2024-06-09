@@ -42,12 +42,12 @@ $negroni: linear-gradient(180deg, #000, #381b1d);
    
     //mobile
     @include breakpoint( 430px) {
-        font-size: 9px;
+        font-size: 12px;
        
     }
 
     @include breakpoint( 375px) {
-        font-size: 6px;
+        font-size: 12px;
 
     }
 

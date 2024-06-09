@@ -6,8 +6,9 @@
     <span class="orderblock-pipe"> | </span>
     <h1 class="orderblock-h1">{{ subTitle }}</h1>
   </div>
+
   <!-- 搜尋 -->
-  <div>
+  <section>
     <admin-input input-id="formGroupExampleInput1">
       <template #label>查詢條件</template>
       <template #select>
@@ -22,6 +23,7 @@
       </template>
     </admin-input>
 
+    <!-- 查詢日期 -->
     <div class="d-flex align-items-center">
       <admin-date-input start-date-id="dateInputField1" end-date-id="dateInputField2">
         <template #label>訂單日期</template>
@@ -35,7 +37,8 @@
         <template #text>查詢</template>
       </admin-btn>
     </div>
-  </div>
+  </section>
+
   <!-- 按鈕 -->
   <div class="d-grid gap-2 d-md-flex justify-content-md-start">
     <admin-bulk-btn :handle-click="bulkCancel">
@@ -57,47 +60,45 @@
           <th scope="col">收件人姓名</th>
           <th scope="col">訂單狀態</th>
           <th scope="col">付款狀態</th>
-          <th scope="col">查看</th>
+          <th scope="col">編輯</th>
+          <th scope="col">取消</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-for="order in orders" :key="order.orderId">
           <th scope="row"></th>
-          <td>20210517379430</td>
-          <td>2024/05/10</td>
-          <td>不熬夜</td>
-          <td>不熬夜</td>
-          <td>處理中</td>
-          <td>未付款</td>
+          <td>{{ order.orderId }}</td>
+          <td>{{ order.orderDate }}</td>
+          <td>{{ order.memberName }}</td>
+          <td>{{ order.recipientName }}</td>
+          <td>{{ order.orderStatus }}</td>
+          <td>{{ order.paymentStatus }}</td>
           <td>
-            <a href="">
-              <img src="../imgs/icon/icon_admin-menu-dots.svg" alt="" width="20px" height="20px" />
-            </a>
+            <button @click="openModal('edit', selectedOrder)">
+              <img src="../imgs/icon/icon_admin-edit.svg" alt="" width="20px" height="20px" />
+            </button>
           </td>
-        </tr>
-
-        <tr>
-          <th scope="row"></th>
-          <td>20210517379430</td>
-          <td>2024/05/10</td>
-          <td>不熬夜</td>
-          <td>不熬夜</td>
-          <td>處理中</td>
-          <td>未付款</td>
           <td>
-            <a href="">
-              <img src="../imgs/icon/icon_admin-menu-dots.svg" alt="" width="20px" height="20px" />
-            </a>
+            <button @click="openModal('cancel', selectedOrder)">
+              <img src="../imgs/icon/icon_admin-square.svg" alt="" width="20px" height="20px" />
+            </button>
           </td>
         </tr>
       </tbody>
-
       <caption>
         每頁列表顯示<span class="main__list-number">6</span
         >筆
       </caption>
     </table>
   </section>
+
+  <ModalOrder
+    ref="modal"
+    :actionType="currentActionType"
+    :order="currentOrder"
+    :showCancelReason="showCancelReason"
+    @save="handleSave"
+  />
 </template>
 
 <script>
@@ -106,6 +107,7 @@ import AdminBtn from '../components/AdminBtn.vue'
 import AdminBulkBtn from '../components/AdminBulkBtn.vue'
 import AdminDateInput from '../components/AdminDateInput.vue'
 import AdminInput from '../components/AdminInput.vue'
+import ModalOrder from '../components/AdminModalOrder.vue'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
@@ -115,7 +117,8 @@ export default {
     AdminInput,
     AdminDateInput,
     AdminBtn,
-    AdminBulkBtn
+    AdminBulkBtn,
+    ModalOrder
   },
   data() {
     return {
@@ -125,7 +128,35 @@ export default {
         { text: '首頁', link: '/admin', active: false },
         { text: variables.orderblock.order, link: '', active: true },
         { text: variables.orderblock.orderList, link: '/admin_order', active: false }
-      ]
+      ],
+      // 假資料
+      orders: [
+        {
+          orderId: '20210517379430',
+          orderDate: '2024/05/10',
+          memberName: '不熬夜',
+          recipientName: '不熬夜',
+          orderStatus: '處理中',
+          paymentStatus: '未付款'
+        }
+        // 其他訂單...
+      ],
+      currentActionType: '',
+      currentOrder: {},
+      showCancelReason: false
+    }
+  },
+  methods: {
+    openModal(actionType, order) {
+      this.currentActionType = actionType
+      this.currentOrder = order
+      this.showCancelReason = actionType === 'cancel'
+      this.$refs.modal.show()
+    },
+    handleSave(order) {
+      // 編輯訂單的邏輯
+      console.log('編輯訂單', order)
+      // 更新訂單數據的邏輯
     }
   }
 }
@@ -165,19 +196,14 @@ export default {
       color: $ramos-gin-fizz;
     }
   }
+  button {
+    border: none;
+    background: none;
+  }
   #flexSwitchCheckChecked:checked {
     background-color: $toggle-on;
     border: solid $toggle-on;
   }
-  .fa-solid.fa-pencil {
-    color: $campari;
-  }
-}
-.swal-form {
-  // z-index: 3;
-  .swal2-input {
-    pointer-events: auto; /* 確保輸入框可以被點擊和輸入 */
-    opacity: 1; /* 確保輸入框是可見的 */
-  }
 }
 </style>
+
