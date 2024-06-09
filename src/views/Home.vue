@@ -1,24 +1,24 @@
 <template>
   <section class="hm_wrapper">
-    <div :class="animation" class="story1 home_Background_1">
+    <div :class="animation" class="story1 homeBackground_1" ref="story1">
       <span class="story1_span">
         <h2>in this city</h2>
         <h3>在這個城市裡，有一家餐酒館<br />名為「紙醉金迷」<br />它坐落在城市的中心<br />是城市的靈魂所在.....</h3>
       </span>
     </div>
-    <div class="story2 homeBackground_3">
+    <div class="story2 homeBackground_3" ref="story2">
       <span class="story1_span2">
         <h2>wonderful journey</h2>
         <h3>在這裡....<br />人們可以品嚐到世界各地的頂級美酒<br />它每一杯都是心靈的享受<br />每一口都是一段奇妙的旅程</h3>
       </span>
     </div>
-    <div class="story3 homeBackground_4">
+    <div class="story3 homeBackground_4" ref="story3">
       <span class="story1_span3">
         <h2>captivate Intoxicat</h2>
         <h3>著迷陶醉在美酒與夜色的夢境中<br />讓每位到訪者在這裡都能找到自己獨特的夢境</h3>
       </span>
     </div>
-    <div :class="animation2" class="story4 homeBackground_5" @click="aboutPage">
+    <div :class="animation2" class="story4 homeBackground_5" @click="aboutPage" ref="story4">
       <span class="story1_span4">
         <h2>intoxicating dreams</h2>
         <h3>歡迎來到紙醉金迷<br />讓我們一同迷失在美酒與夜色的奇妙之中<br />盡情享受這片醉人的夢境.....</h3>
@@ -28,8 +28,9 @@
 </template>
 
 <script>
-// import { gsap } from 'gsap';
-// import { onMounted } from 'vue'
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 export default {
   name: 'Home',
   data() {
@@ -40,35 +41,86 @@ export default {
     }
   },
   mounted() {
-    this.startBackground_1()
-    this.startBackground_2()
+    this.startBackground_1();
+    this.startBackground_2();
+    this.inScrollTrigger();
   },
   methods: {
     startBackground_1() {
       setInterval(() => {
         this.animation = this.animation === 'homeBackground_1' ? 'homeBackground_2' : 'homeBackground_1'
       }, 1000)
-      // 一秒換一次
     },
-    // 引導入口的動畫
     startBackground_2() {
       setInterval(() => {
         this.animation2 = this.animation2 === 'homeBackground_6' ? 'homeBackground_7' : 'homeBackground_6'
       }, 1000)
-      // 一秒換一次
     },
-    // 按鈕跳轉到關於我們
     aboutPage() {
       location.href = '../views/AboutUs.vue'
     },
-    getRatio(element) {
-      const rect = element.getBoundingClientRect()
+    inScrollTrigger() {
+      gsap.registerPlugin(ScrollTrigger);
 
-      return rect.top / window.innerHeight
+      const story1 = this.$refs.story1;
+      const story2 = this.$refs.story2;
+      const story3 = this.$refs.story3;
+      const story4 = this.$refs.story4;
+
+      // gsap.from(story1, {
+      //   scrollTrigger: {
+      //     trigger: story1,
+      //     start: "top 0%",
+      //     end: "top 20%",
+      //     scrub: 1,
+      //     toggleActions: "play none none reverse"
+      //   },
+      //   opacity: 0,
+      //   duration: 1
+      // });
+
+      gsap.from(story2, {
+        scrollTrigger: {
+          trigger: story2,
+          start: "top 80%",
+          end: "top 20%",
+          scrub: 1,
+          toggleActions: "play none none reverse"
+        },
+        //透明度
+        opacity: 0,
+        //時間
+        duration: 1
+      });
+
+      gsap.from(story3, {
+        scrollTrigger: {
+          trigger: story3,
+          start: "top 80%",
+          end: "top 20%",
+          scrub: 1,
+          toggleActions: "play none none reverse"
+        },
+        opacity: 0,
+        duration: 1
+      });
+
+      gsap.from(story4, {
+        scrollTrigger: {
+          trigger: story4,
+          start: "top 80%",
+          end: "top 20%",
+          scrub: 1,
+          toggleActions: "play none none reverse"
+        },
+        opacity: 0,
+        duration: 1
+      });
     }
   }
 }
 </script>
+
 <style lang="scss" scoped>
 section {
   background: $negroni;
@@ -80,6 +132,7 @@ section {
     justify-content: start;
     align-items: center;
     justify-items: start;
+    
   }
 
   .story2 {
@@ -187,7 +240,8 @@ section {
   }
   .homeBackground_7 {
     background-image: url(../imgs/homePageImg/homePage_story4_on.png);
-    background-size: 100%;
+        background-size: cover;
+    background-position: center;
     height: 250vh;
   }
   // 按鈕範圍

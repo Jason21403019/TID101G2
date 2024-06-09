@@ -12,7 +12,7 @@
           </a>
         </div>
         <div class="login" @dragover.prevent @drop="onDrop">
-          <img :src="onImage" width="800" />
+          <img :src="onImage" width="590" />
         </div>
       </div>
     </div>
@@ -60,7 +60,7 @@ section {
   .wrapper {
     display: flex;
     justify-content: space-evenly;
-    padding-top: 60px;
+    padding-top: 40px;
     z-index: 1;
   }
   .login {
@@ -70,5 +70,15 @@ section {
       position: relative;
     }
   }
+  .log_home, .log_admin {
+    cursor: grab;
+    transition: transform 0.3s ease; 
+}
+
+.log_home:hover, .log_admin:hover {
+  cursor: grab;
+    transform: scale(1.1); 
+}
+
 }
 </style>
