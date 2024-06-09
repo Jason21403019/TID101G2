@@ -2,10 +2,10 @@
   <main id="commodity_tab">
     <section id="tabName">
       <button
-        v-for="tab in tabs"
-        :key="tab.id"
         type="button"
+        v-for="tab in tabs"
         :class="{ active: currentTab == tab.id }"
+        :key="tab.id"
         @click="currentTab = tab.id"
       >
         {{ tab.name }}
@@ -13,7 +13,7 @@
     </section>
 
     <section class="test">
-      <component :is="current_tab_component" class="tab_content"></component>
+      <component v-bind:is="current_tab_component" class="tab_content"></component>
     </section>
   </main>
 </template>

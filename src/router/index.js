@@ -66,7 +66,16 @@ const routes = [
       layout: 'default'
     }
   },
-  // 熱門商品
+  {
+    path: '/product',
+    name: 'Product',
+    component: () => import('../views/Product.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
+
+  // backend
   {
     path: '/product',
     name: 'Product',
@@ -79,7 +88,8 @@ const routes = [
   {
     path: '/quizgame',
     name: 'Quizgame',
-    component: () => import('../views/Quizgame.vue'),
+    component: () => import('../views/quizgame.vue'),
+    // component: () => import('../views/Quizgame.vue'),
     meta: {
       layout: 'default'
     }

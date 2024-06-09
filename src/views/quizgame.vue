@@ -31,6 +31,7 @@
 import gsap from 'gsap'
 import imagesLoaded from 'imagesloaded'
 
+
 export default {
   name: 'HeartAnimation',
   mounted() {
