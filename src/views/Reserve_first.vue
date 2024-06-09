@@ -153,26 +153,20 @@
 
 <style lang="scss" scoped>
 
-@mixin breakpoint($point) {
-  @media screen and (max-width: $point) {
-    @content;
-  }
-}
-
 
 .wrapper{
     margin: 0 auto ;
     width: 100%;
     background-color: $whitelady;
     // border: 1px solid blue;
-    padding-top: 150px;
+    // padding-top: 150px;
 
 
     .banner{
         width: 64%;
-        height: 400px;
+        // height: 400px;
         margin: 0 auto;
-        // padding-top: 150px;
+        padding-top: 150px;
         // border: 1px solid green;
         background: url('../imgs/bookingImg/close-up-drink-bar2.jpg');
 
