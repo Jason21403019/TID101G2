@@ -7,6 +7,7 @@
           <WineColumnCategory v-for="(item, index) in wineCategories" :key="index" :item="item" />
         </ul>
       </section>
+
       <div class="dropdown" @click="toggleDropdown">
         <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle" type="button" aria-expanded="false">
           {{ selectedOption }}
@@ -24,12 +25,12 @@
 
 <script>
 import AOS from 'aos'
-import WineColumnCategory from '@/components/WineColumnCategory.vue'
-import WineColumnMasonry from '@/components/WineColumnMasonry.vue'
-import WineColumnTitle from '@/components/WineColumnTitle.vue'
-import bottleWine from '@/imgs/wineColumnImg/bottle-with-champagne-glasses-tray.jpg'
-import cotailWorld from '@/imgs/wineColumnImg/spicy-michelada-drink-assortment-table.jpg'
-import newsReport from '@/imgs/wineColumnImg/businessman-reading-daily-news.jpg'
+import WineColumnCategory from '../components/WineColumnCategory.vue'
+import WineColumnMasonry from '../components/WineColumnMasonry.vue'
+import WineColumnTitle from '../components/WineColumnTitle.vue'
+import bottleWine from '../imgs/wineColumnImg/bottle-with-champagne-glasses-tray.jpg'
+import cotailWorld from '../imgs/wineColumnImg/spicy-michelada-drink-assortment-table.jpg'
+import newsReport from '../imgs/wineColumnImg/businessman-reading-daily-news.jpg'
 import 'aos/dist/aos.css'
 
 export default {
