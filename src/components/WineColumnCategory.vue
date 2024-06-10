@@ -1,5 +1,10 @@
 <template>
-  <li class="wine__category-ul-item" :class="{ active: isActive }" data-aos="zoom-in" @click="handleClick">
+  <li
+    class="wine__category-ul-item"
+    :class="{ active: isActive }"
+    :data-aos="windowWidth > 430 ? 'zoom-in' : ''"
+    @click="handleClick"
+  >
     <router-link :to="item.link" class="wine__link">
       <div class="wine__link-img">
         <img :src="item.imgSrc" :alt="item.altText" />
@@ -23,9 +28,23 @@ export default {
     }
   },
   emits: ['item-clicked'],
+  data() {
+    return {
+      windowWidth: window.innerWidth
+    }
+  },
+  mounted() {
+    window.addEventListener('resize', this.updateWindowWidth)
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.updateWindowWidth)
+  },
   methods: {
     handleClick() {
       this.$emit('item-clicked', this.item.link)
+    },
+    updateWindowWidth() {
+      this.windowWidth = window.innerWidth
     }
   }
 }
@@ -46,6 +65,7 @@ export default {
 .wine__category-ul-item {
   // border: 1px solid blue;
   .wine__link {
+    // border: 1px solid red;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -54,6 +74,32 @@ export default {
     text-decoration: none;
     width: 340px;
     height: 230px;
+    @include breakpoint(1280px) {
+      width: 300px;
+      height: 200px;
+    }
+    @include breakpoint(960px) {
+      width: 250px;
+      height: 200px;
+    }
+    @include breakpoint(820px) {
+      width: 780px;
+      &:nth-child(1) {
+        margin: 1rem;
+      }
+    }
+    @include breakpoint(430px) {
+      width: 350px;
+      &:nth-child(1) {
+        margin: 1rem;
+      }
+    }
+    @include breakpoint(375px) {
+      width: 300px;
+      &:nth-child(1) {
+        margin: 1rem;
+      }
+    }
     &-text {
       position: absolute;
       font-size: $fontSize_h3;

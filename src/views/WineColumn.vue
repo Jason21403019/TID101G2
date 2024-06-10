@@ -116,6 +116,18 @@ export default {
   padding-top: 100px;
   width: 80%;
   margin: 0 auto;
+  @include breakpoint(1280px) {
+    width: 85%;
+  }
+  @include breakpoint(1130px) {
+    width: 95%;
+  }
+  @include breakpoint(1000px) {
+    width: 98%;
+  }
+  @include breakpoint(430px) {
+    width: 90%;
+  }
   .wine__category {
     width: 100%;
     // border: 1px solid red;
@@ -127,6 +139,10 @@ export default {
       background: $ramos-gin-fizz;
       padding: 2rem 0;
       overflow-x: scroll;
+      @include breakpoint(860px) {
+        flex-direction: column;
+        align-items: center;
+      }
     }
   }
   .dropdown {

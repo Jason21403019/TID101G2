@@ -32,10 +32,10 @@
     </div>
     <h3 class="wine__article-related">更多相關文章</h3>
     <div class="article-grid">
-      <div v-for="article in articles" :key="article.id" class="article-card">
-        <img :src="article.image" alt="article image" />
+      <div v-for="article_item in articles" :key="article_item.id" class="article-card">
+        <img :src="article_item.image" alt="article image" />
         <div class="article-content">
-          <h3>{{ article.title }}</h3>
+          <h3>{{ article_item.title }}</h3>
         </div>
         <ReadMoreButton />
       </div>

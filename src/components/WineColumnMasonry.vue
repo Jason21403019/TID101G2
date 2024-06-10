@@ -102,22 +102,48 @@ export default {
   color: $ramos-gin-fizz;
   font-family: $fontfamily;
   padding-bottom: 6rem;
+  @include breakpoint(430px) {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 2rem;
+    height: auto;
+    padding-bottom: 1rem;
+  }
+
   &-item1 {
     display: flex;
     height: 75%;
     // border: 1px solid green;
     margin: 0.5rem 0 1.5rem 0;
     padding-bottom: 2rem;
+    @include breakpoint(430px) {
+      flex-direction: column;
+      height: auto;
+    }
+    &-lf,
+    &-rg {
+      @include breakpoint(430px) {
+        width: 100%;
+        margin: 0;
+      }
+    }
     &-lf {
       width: 35%;
       // border: 1px solid red;
       margin-right: 2rem;
-
+      @include breakpoint(430px) {
+        width: 100%;
+        margin-right: 0;
+      }
       &-tp {
         width: 100%;
         height: 40%;
         // border: 1px solid blue;
         margin-bottom: 2rem;
+        @include breakpoint(430px) {
+          height: auto;
+        }
         position: relative;
         &::before {
           content: '';
@@ -164,6 +190,9 @@ export default {
         height: 60%;
         // border: 1px solid blue;
         position: relative;
+        @include breakpoint(430px) {
+          height: auto;
+        }
         &::before {
           content: '';
           display: block;
@@ -212,12 +241,32 @@ export default {
     &-rg {
       width: 65%;
       // border: 1px solid blue;
+      @include breakpoint(430px) {
+        height: auto;
+        width: 100%;
+      }
+      &-tp,
+      &-bt {
+        @include breakpoint(430px) {
+          gap: 2rem;
+          height: auto;
+          flex-direction: column;
+        }
+      }
       &-tp {
         width: 100%;
         height: 60%;
         // border: 1px solid yellow;
         display: flex;
         margin-bottom: 2rem;
+        &-l,
+        &-r {
+          @include breakpoint(430px) {
+            gap: 1rem;
+            margin-right: 0;
+            height: 100%;
+          }
+        }
         &-l {
           width: 100%;
           height: 100%;
@@ -268,8 +317,11 @@ export default {
         &-r {
           width: 100%;
           height: 100%;
-          //   border: 1px solid palegoldenrod;
+          // border: 1px solid palegoldenrod;
           position: relative;
+          @include breakpoint(430px) {
+            gap: 2rem;
+          }
           &::before {
             content: '';
             display: block;
@@ -366,6 +418,9 @@ export default {
     height: 25%;
     // border: 1px solid blue;
     position: relative;
+    @include breakpoint(430px) {
+      height: auto;
+    }
     &::before {
       content: '';
       display: block;

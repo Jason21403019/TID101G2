@@ -32,11 +32,21 @@ export default {
   align-items: center;
   color: $ramos-gin-fizz;
   margin: 2rem 0;
+
+  @include breakpoint(430px) {
+    flex-direction: column;
+    align-items: baseline;
+  }
+
   &-cn {
     font-size: $fontSize_h2;
     font-family: $fontfamily;
     font-weight: bold;
     letter-spacing: $letterspacing;
+    @include breakpoint(430px) {
+      font-size: $fontSize_h3;
+      margin-bottom: 1rem;
+    }
   }
   &-en {
     font-size: $fontSize_h4;
@@ -45,6 +55,11 @@ export default {
     letter-spacing: $letterspacing;
     margin-left: 1rem;
     color: rgba($color: $ramos-gin-fizz, $alpha: 0.5);
+    @include breakpoint(430px) {
+      font-size: $fontSize_h5;
+      align-self: start;
+      margin-left: 0;
+    }
   }
 }
 </style>
