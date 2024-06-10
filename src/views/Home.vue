@@ -18,18 +18,20 @@
         <h3>著迷陶醉在美酒與夜色的夢境中<br />讓每位到訪者在這裡都能找到自己獨特的夢境</h3>
       </span>
     </div>
-    <div :class="animation2" class="story4 homeBackground_5" @click="aboutPage" ref="story4">
+    <div @click="aboutPage">
+    <div :class="animation2" class="story4 homeBackground_5" ref="story4">
       <span class="story1_span4">
         <h2>intoxicating dreams</h2>
         <h3>歡迎來到紙醉金迷<br />讓我們一同迷失在美酒與夜色的奇妙之中<br />盡情享受這片醉人的夢境.....</h3>
       </span>
     </div>
+  </div>
   </section>
 </template>
 
 <script>
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default {
   name: 'Home',
@@ -41,9 +43,9 @@ export default {
     }
   },
   mounted() {
-    this.startBackground_1();
-    this.startBackground_2();
-    this.inScrollTrigger();
+    this.startBackground_1()
+    this.startBackground_2()
+    this.inScrollTrigger()
   },
   methods: {
     startBackground_1() {
@@ -56,17 +58,20 @@ export default {
         this.animation2 = this.animation2 === 'homeBackground_6' ? 'homeBackground_7' : 'homeBackground_6'
       }, 1000)
     },
+    // 進入關於我們
     aboutPage() {
-      location.href = '../views/AboutUs.vue'
+      // window.location.href = '/about_us';
+      this.$router.push('/about_us')
     },
+    //特效GSAP
     inScrollTrigger() {
-      gsap.registerPlugin(ScrollTrigger);
+      gsap.registerPlugin(ScrollTrigger)
 
-      const story1 = this.$refs.story1;
-      const story2 = this.$refs.story2;
-      const story3 = this.$refs.story3;
-      const story4 = this.$refs.story4;
-
+      const story1 = this.$refs.story1
+      const story2 = this.$refs.story2
+      const story3 = this.$refs.story3
+      const story4 = this.$refs.story4
+      
       // gsap.from(story1, {
       //   scrollTrigger: {
       //     trigger: story1,
@@ -81,41 +86,44 @@ export default {
 
       gsap.from(story2, {
         scrollTrigger: {
+          // 觸發滾動事件的元素
           trigger: story2,
-          start: "top 80%",
-          end: "top 20%",
-          scrub: 1,
-          toggleActions: "play none none reverse"
+          // 開始位置
+          start: 'top 50%',
+          // 結束位置
+          end: 'top 20%',
+          scrub: 3,
+          toggleActions: 'play none none reverse'
         },
         //透明度
         opacity: 0,
         //時間
-        duration: 1
-      });
+        duration: 5
+      })
 
       gsap.from(story3, {
         scrollTrigger: {
           trigger: story3,
-          start: "top 80%",
-          end: "top 20%",
+          start: 'top 80%',
+          end: 'top 20%',
           scrub: 1,
-          toggleActions: "play none none reverse"
+          toggleActions: 'play none none reverse'
         },
         opacity: 0,
-        duration: 1
-      });
+        duration: 5
+      })
 
       gsap.from(story4, {
         scrollTrigger: {
           trigger: story4,
-          start: "top 80%",
-          end: "top 20%",
+          start: 'top 80%',
+          end: 'top 20%',
           scrub: 1,
-          toggleActions: "play none none reverse"
+          toggleActions: 'play none none reverse'
         },
         opacity: 0,
         duration: 1
-      });
+      })
     }
   }
 }
@@ -132,7 +140,6 @@ section {
     justify-content: start;
     align-items: center;
     justify-items: start;
-    
   }
 
   .story2 {
@@ -240,7 +247,7 @@ section {
   }
   .homeBackground_7 {
     background-image: url(../imgs/homePageImg/homePage_story4_on.png);
-        background-size: cover;
+    background-size: cover;
     background-position: center;
     height: 250vh;
   }
