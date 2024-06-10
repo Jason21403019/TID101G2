@@ -42,8 +42,10 @@
 </template>
 
 <script>
-import gsap from 'gsap'
-// import ScrollTrigger from 'gsap/ScrollTrigger'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+gsap.registerPlugin(ScrollTrigger)
+
 export default {
   name: 'About',
   data() {
@@ -78,7 +80,7 @@ export default {
         {
           backgroundPosition: () => `50% ${window.innerHeight * (1 - getRatio(section))}px`,
           ease: 'ease-out',
-          scrollTrigger: {
+          ScrollTrigger: {
             trigger: section,
             start: () => (i ? 'top bottom' : 'top top'),
             end: 'bottom top',
@@ -96,7 +98,6 @@ export default {
     },
     getRatio(element) {
       const rect = element.getBoundingClientRect()
-
       return rect.top / window.innerHeight
     }
   }
@@ -140,7 +141,7 @@ body {
     padding-bottom: 2%;
   }
   main {
-    width: 100vw;
+    width: 100%;
     section {
       position: relative;
       background-repeat: no-repeat;
@@ -189,12 +190,17 @@ body {
       padding-top: 5%;
       // justify-content: left;
       /* line-height: 50px; */
+      iframe {
+        border-radius: 10px;
+      }
       div {
         width: 100%;
+        padding: 3% 0;
         p {
           /* display: unset; */
           text-align: left;
           justify-content: left;
+
           /* line-height: 50px; */
         }
       }

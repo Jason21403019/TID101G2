@@ -7,7 +7,7 @@
           <h3>{{ notShipped_count }}</h3>
           <h4>{{ notShipped }}</h4>
         </div>
-        <img :src="icons" alt="" />
+        <img :src="icons1" alt="" />
       </article>
 
       <article>
@@ -15,7 +15,7 @@
           <h3>{{ Unpaid_count }}</h3>
           <h4>{{ Unpaid }}</h4>
         </div>
-        <img :src="icons" alt="" />
+        <img :src="icons2" alt="" />
       </article>
 
       <article>
@@ -23,7 +23,7 @@
           <h3>{{ needRestock_count }}</h3>
           <h4>{{ needRestock }}</h4>
         </div>
-        <img :src="icons" alt="" />
+        <img :src="icons3" alt="" />
       </article>
     </section>
     <h2>{{ dataAnalysis }}</h2>
@@ -31,6 +31,7 @@
       <AdminLineChart></AdminLineChart>
     </section>
     <h2>{{ CommonFunctions }}</h2>
+
     <section>
       <input type="button" :value="commodity" @click="commodityPage(commodity)" />
       <input type="button" :value="article" @click="commodityPage(article)" />
@@ -41,11 +42,8 @@
 
 <script>
 import AdminIconManger from '../components/AdminIconManger.vue'
-import AdminLineChart from '../components/AdminLineChart.vue'
 import DefaultBkSidebar from '../layouts/default/AdminSlidebar.vue'
 import AdminLineChart from '../components/AdminLineChart.vue'
-import DefaultBkSidebar from '../layouts/default/AdminSlidebar.vue'
-
 export default {
   name: 'Admin',
   components: {
@@ -64,7 +62,9 @@ export default {
       Unpaid: '訂單未付款',
       needRestock_count: 0,
       needRestock: '商品需補貨',
-      icons: '../imgs/icon/icon_admin-money-bill.svg',
+      icons1: 'src/imgs/icon/icon_admin-rectangle.svg',
+      icons2: 'src/imgs/icon/icon_admin-money-bill.svg',
+      icons3: '/src/imgs/icon/icon_admin-tags.svg',
       commodity: '新增商品',
       article: '新增文章',
       reserve: '預約管理'
@@ -73,11 +73,11 @@ export default {
   methods: {
     commodityPage(page) {
       if (page === '新增商品') {
-        window.location.href = '#'
+        window.location.href = '#/admin_product'
       } else if (page === '新增文章') {
-        window.location.href = '#'
+        window.location.href = '#/admin_article'
       } else if (page === '預約管理') {
-        window.location.href = '#'
+        window.location.href = '#/admin_order'
       }
     }
   }

@@ -22,5 +22,6 @@ export default {
 .TextEditor {
   /* 文字框高度 */
   height: 300px;
+  $babypowder
 }
 </style>
