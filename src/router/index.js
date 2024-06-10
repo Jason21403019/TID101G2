@@ -185,14 +185,14 @@ const routes = [
     }
   },
   // 會員專區查看訂單
-  // {
-  //   path: '/member_order',
-  //   name: 'MemberOrder',
-  //   component: () => import('../views/MemberOrder.vue'),
-  //   meta: {
-  //     layout: 'default'
-  //   }
-  // },
+  {
+    path: '/member_order',
+    name: 'MemberOrder',
+    component: () => import('../views/MemberOrder.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
   // 會員專區查看預約
   {
     path: '/member_reserve',
