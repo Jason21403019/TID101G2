@@ -1,48 +1,56 @@
 <template>
-  <h1>我的優惠券</h1>
-  <section>
-    <article>
-      <img src="../imgs/voucherImg/free.png" alt="" />
-      <ul class="couponInfo">
-        <li class="title">{{ coupon1.conponName }}</li>
-        <li>有效日期:{{ coupon1.Time }}</li>
-        <li>代碼:{{ coupon1.code }}</li>
-      </ul>
-    </article>
-    <article>
-      <img src="../imgs/voucherImg/sale.png" alt="" />
-      <ul class="couponInfo">
-        <li class="title">{{ coupon2.conponName }}</li>
-        <li>{{ coupon2.info }}</li>
-        <li>有效日期:{{ coupon2.Time }}</li>
-        <li>代碼:{{ coupon2.code }}</li>
-      </ul>
-    </article>
-    <article>
-      <img src="../imgs/voucherImg/sale.png" alt="" />
-      <ul class="couponInfo">
-        <li class="title">{{ coupon2.conponName }}</li>
-        <li>{{ coupon2.info }}</li>
-        <li>有效日期:{{ coupon2.Time }}</li>
-        <li>代碼:{{ coupon2.code }}</li>
-        <li class="invalid">{{ Invalid }}</li>
-      </ul>
-    </article>
-    <article>
-      <img src="../imgs/voucherImg/sale.png" alt="" />
-      <ul class="couponInfo">
-        <li class="title">{{ coupon2.conponName }}</li>
-        <li>{{ coupon2.info }}</li>
-        <li>有效日期:{{ coupon2.Time }}</li>
-        <li>代碼:{{ coupon2.code }}</li>
-        <li class="Use">{{ use }}</li>
-      </ul>
-    </article>
-  </section>
+  <main>
+    <MemberMenu />
+
+    <section>
+      <h1>我的優惠券</h1>
+      <article>
+        <img src="../imgs/voucherImg/free.png" alt="" />
+        <ul class="couponInfo">
+          <li class="title">{{ coupon1.conponName }}</li>
+          <li>有效日期:{{ coupon1.Time }}</li>
+          <li>代碼:{{ coupon1.code }}</li>
+        </ul>
+      </article>
+      <article>
+        <img src="../imgs/voucherImg/sale.png" alt="" />
+        <ul class="couponInfo">
+          <li class="title">{{ coupon2.conponName }}</li>
+          <li>{{ coupon2.info }}</li>
+          <li>有效日期:{{ coupon2.Time }}</li>
+          <li>代碼:{{ coupon2.code }}</li>
+        </ul>
+      </article>
+      <article>
+        <img src="../imgs/voucherImg/sale.png" alt="" />
+        <ul class="couponInfo">
+          <li class="title">{{ coupon2.conponName }}</li>
+          <li>{{ coupon2.info }}</li>
+          <li>有效日期:{{ coupon2.Time }}</li>
+          <li>代碼:{{ coupon2.code }}</li>
+          <li class="invalid">{{ Invalid }}</li>
+        </ul>
+      </article>
+      <article>
+        <img src="../imgs/voucherImg/sale.png" alt="" />
+        <ul class="couponInfo">
+          <li class="title">{{ coupon2.conponName }}</li>
+          <li>{{ coupon2.info }}</li>
+          <li>有效日期:{{ coupon2.Time }}</li>
+          <li>代碼:{{ coupon2.code }}</li>
+          <li class="Use">{{ use }}</li>
+        </ul>
+      </article>
+    </section>
+  </main>
 </template>
 
 <script>
+import MemberMenu from '../components/MemberMenu.vue'
 export default {
+  components: {
+    MemberMenu
+  },
   data() {
     return {
       use: '已使用',
@@ -68,60 +76,66 @@ export default {
 <style>
 body {
   background-color: #381b1d;
-  h1 {
-    color: #fcf0d8;
-    font-size: 45px;
+  main {
     margin-top: 8%;
-    margin-bottom: 3%;
-    margin-left: auto;
-    width: 80%;
-  }
-  section {
-    font-family: 'Noto Serif TC';
-    font-weight: bold;
-    font-size: 20px;
-    margin-bottom: 30%;
-    width: 75%;
-    background-color: #fcf0d8;
-    padding: 3% 2%;
-    margin-left: auto;
-    margin-right: 8%;
     display: flex;
-    flex-wrap: wrap;
-    article {
-      border: 1px solid black;
-      border-radius: 5px;
-      background-color: #f6f6f6;
+    h1 {
+      color: #fcf0d8;
+      font-size: 45px;
+      margin-top: -15%;
+      margin-bottom: 3%;
+      margin-left: -4.5%;
+      width: 80%;
+    }
+    section {
+      font-family: 'Noto Serif TC';
+      font-weight: bold;
+      font-size: 20px;
+      margin-bottom: 30%;
+      width: 75%;
+      background-color: #fcf0d8;
+      padding: 3% 2%;
+      margin-left: auto;
+      margin-right: 8%;
+      margin-top: 6%;
       display: flex;
-      width: 38%;
-      margin: 1% 1%;
-      img {
-        display: block;
-        padding: 1% 1%;
-      }
-      .couponInfo {
+      flex-wrap: wrap;
+      article {
+        border: 1px solid black;
+        border-radius: 5px;
+        background-color: #f6f6f6;
         display: flex;
-        flex-direction: column;
-        width: 100%;
-        li {
-          /* margin-top: 2%; */
-          padding: 2% 0;
-          font-size: 11px;
+        width: 38%;
+        margin: 1% 1%;
+        img {
+          display: block;
+          padding: 1% 1%;
         }
-        .title {
-          font-size: 32px;
-        }
-        .invalid {
-          font-size: 30px;
-          color: red;
-          margin-left: auto;
-          margin-top: -13%;
-        }
-        .Use {
-          font-size: 30px;
-          color: red;
-          margin-left: auto;
-          margin-top: -13%;
+        .couponInfo {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          list-style-type: none;
+          li {
+            /* margin-top: 2%; */
+            padding: 2% 0;
+            font-size: 11px;
+          }
+          .title {
+            font-size: 32px;
+          }
+          .invalid {
+            font-size: 30px;
+            color: red;
+            margin-left: auto;
+            margin-top: -13%;
+          }
+          .Use {
+            font-size: 30px;
+            color: red;
+            margin-left: auto;
+            margin-top: -13%;
+          }
         }
       }
     }

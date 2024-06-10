@@ -19,7 +19,7 @@
       <span>
         <p>{{ englishText }}</p>
         <h2>{{ title2 }}</h2>
-        <button @click="testPage">{{ buttonText }}</button>
+        <button @click="commodityPage(buttonText)">{{ buttonText }}</button>
       </span>
     </section>
 
@@ -54,7 +54,7 @@ export default {
       englishText: 'Fredericka the Great',
       title1: '紙醉金迷',
       content:
-        '「紙醉金迷」以浪漫、神秘的氛圍和美酒品味為主題，吸引消費者，<br>提供來自世界各地的頂級美酒和美食，以專業的服務，營造出愉悅的用餐體驗。',
+        '「紙醉金迷」以浪漫、神秘的氛圍和美酒品味為主題，吸引消費者，提供來自世界各地的頂級美酒和美食，以專業的服務，營造出愉悅的用餐體驗。',
       title2: '尋找屬於您自己的故事',
       buttonText: '開始測驗',
       businessHours: '營業時間：PM5:00~AM3:00',
@@ -71,30 +71,32 @@ export default {
       this.$refs.section3
     ]
 
-    sections.forEach((section, i) => {
-      gsap.fromTo(
-        section,
-        {
-          backgroundPosition: () => `50% ${i ? -window.innerHeight * getRatio(section) : '0'}px`
-        },
-        {
-          backgroundPosition: () => `50% ${window.innerHeight * (1 - getRatio(section))}px`,
-          ease: 'ease-out',
-          ScrollTrigger: {
-            trigger: section,
-            start: () => (i ? 'top bottom' : 'top top'),
-            end: 'bottom top',
-            scrub: true,
-            invalidateOnRefresh: true,
-            markers: true
-          }
-        }
-      )
-    })
+    // sections.forEach((section, i) => {
+    //   gsap.fromTo(
+    //     section,
+    //     {
+    //       backgroundPosition: () => `50% ${i ? -window.innerHeight * getRatio(section) : '0'}px`
+    //     },
+    //     {
+    //       backgroundPosition: () => `50% ${window.innerHeight * (1 - getRatio(section))}px`,
+    //       ease: 'ease-out',
+    //       ScrollTrigger: {
+    //         trigger: section,
+    //         start: () => (i ? 'top bottom' : 'top top'),
+    //         end: 'bottom top',
+    //         scrub: true,
+    //         invalidateOnRefresh: true,
+    //         markers: true
+    //       }
+    //     }
+    //   )
+    // })
   },
   methods: {
-    testPage() {
-      this.$router.push('/questions')
+    commodityPage(page) {
+      if (page === '開始測驗') {
+        window.location.href = 'ˇ#/quizgame'
+      }
     },
     getRatio(element) {
       const rect = element.getBoundingClientRect()
@@ -105,8 +107,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@mixin breakpoint($point) {
+  @if $point == pc {
+    @media (max-width: 1100px) {
+      @content;
+    }
+  } @else if $point == mobile {
+    @media (max-width: 768px) {
+      @content;
+    }
+  } @else if $point == mobile2 {
+    @media (max-width: 430px) {
+      @content;
+    }
+  }
+}
+
 body {
-  background-color: black;
   button {
     background-color: transparent;
     border-color: $irishcoffee;
@@ -120,18 +137,34 @@ body {
     color: $whitelady;
     font-size: 102px;
     padding-bottom: 4%;
+    @include breakpoint(mobile) {
+      font-size: 90px;
+    }
+    @include breakpoint(mobile2) {
+      font-size: 75px;
+    }
   }
   h2 {
     color: $whitelady;
     font-size: 92px;
     font-family: $fontfamily;
     padding-bottom: 4%;
+
+    @include breakpoint(mobile) {
+      font-size: 75px;
+    }
+    @include breakpoint(mobile2) {
+      font-size: 60px;
+    }
   }
   h3 {
     color: $whitelady;
     font-size: 32px;
     font-family: $fontfamily;
     line-height: 50px;
+    width: 70%;
+    // text-align: center;
+    margin: 0 auto;
   }
   p {
     color: $whitelady;
@@ -139,9 +172,20 @@ body {
     font-size: 56px;
     font-family: $fontfamily-en2;
     padding-bottom: 2%;
+    @include breakpoint(pc) {
+      font-size: 50px;
+    }
+    @include breakpoint(mobile) {
+      font-size: 45px;
+    }
+    @include breakpoint(mobile2) {
+      font-size: 40px;
+    }
   }
   main {
     width: 100%;
+    // padding-top: 10%;
+    background-color: black;
     section {
       position: relative;
       background-repeat: no-repeat;
@@ -155,8 +199,8 @@ body {
       align-items: center;
       justify-content: center;
       span {
-        position: absolute;
-        z-index: 1;
+        // position: absolute;
+        // z-index: 1;
       }
     }
     .aboutBackground_1 {
@@ -166,7 +210,16 @@ body {
       align-items: center;
       justify-content: center;
       img {
-        width: 20%;
+        @include breakpoint(pc) {
+          width: 500px;
+        }
+        @include breakpoint(mobile) {
+          width: 450px;
+        }
+        @include breakpoint(mobile2) {
+          width: 400px;
+        }
+        // width: 40%;
       }
     }
     .aboutBackground_2 {
@@ -190,6 +243,16 @@ body {
       padding-top: 5%;
       // justify-content: left;
       /* line-height: 50px; */
+      h3 {
+        margin: 0;
+        width: 100%;
+        @include breakpoint(mobile) {
+          font-size: 26px;
+        }
+        @include breakpoint(mobile2) {
+          font-size: 20px;
+        }
+      }
       iframe {
         border-radius: 10px;
       }

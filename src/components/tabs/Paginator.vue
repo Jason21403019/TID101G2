@@ -41,7 +41,7 @@ export default {
   },
 
   mounted() {
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 12; i++) {
       this.productCount.push(i)
     }
   }

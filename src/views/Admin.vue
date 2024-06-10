@@ -85,10 +85,12 @@ export default {
 </script>
 <style lang="scss" scoped>
 main {
-  width: 90%;
+  width: 100%;
   float: right;
   padding-right: 3%;
   font-family: $fontfamily;
+  background-color: $whitelady;
+  padding-left: 10%;
   h2 {
     font-size: 40px;
     font-weight: bold;

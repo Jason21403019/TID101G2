@@ -35,6 +35,7 @@ import Tab2Content from '../components/ProductInfo.vue'
 export default {
   // components: ['TabContent'],
   components: { Tab2Content },
+
   data() {
     return {
       currentTab: 'tab1',
@@ -146,10 +147,29 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@mixin breakpoint($point) {
+  @if $point == pc {
+    @media (max-width: 1100px) {
+      @content;
+    }
+  } @else if $point == mobile {
+    @media (max-width: 768px) {
+      @content;
+    }
+  } @else if $point == mobile2 {
+    @media (max-width: 430px) {
+      @content;
+    }
+  }
+}
 #tabName {
   width: 300px;
   font-weight: bold;
+  @include breakpoint(mobile) {
+    display: flex;
+    flex-direction: row;
+  }
 }
 article {
   margin: 0 3%;
@@ -182,12 +202,17 @@ main {
 .productInfo {
   display: flex;
   flex-direction: row;
+  margin-left: 3%;
+  @include breakpoint(mobile) {
+    flex-direction: column;
+  }
 }
 .test {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+  width: 100%;
 }
 
 .tab_content {

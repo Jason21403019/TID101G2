@@ -3,7 +3,8 @@
     <!-- 商品詳細資訊 -->
     <section class="productInformation">
       <article class="productImg">
-        <!-- <img class="productbackground" src="../imgs/productsImg/bg.png" alt="" /> -->
+        <img class="productbackground" src="../imgs/productsImg/sparkling wine/Carl-Jung-Mousseux_subpages.png" alt="" />
+        <!-- <img class="productbackground2" src="../imgs/productsImg/bg.png" alt="" /> -->
       </article>
       <article class="details">
         <h1>{{ tabs[0].brand }}</h1>
@@ -28,7 +29,7 @@
     </section>
 
     <!-- 相關商品 -->
-    <section>
+    <section class="Related">
       <h3>相關商品</h3>
       <ul>
         <li v-for="(tab, index) in tabs.slice(0, 3)" :key="tab.id">
@@ -111,6 +112,21 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@mixin breakpoint($point) {
+  @if $point == pc {
+    @media (max-width: 1100px) {
+      @content;
+    }
+  } @else if $point == mobile {
+    @media (max-width: 768px) {
+      @content;
+    }
+  } @else if $point == mobile2 {
+    @media (max-width: 430px) {
+      @content;
+    }
+  }
+}
 body {
   main {
     font-family: $fontfamily;
@@ -136,6 +152,15 @@ body {
           font-size: 50px;
         }
         .car {
+          @include breakpoint(pc) {
+            font-size: 44px;
+          }
+          @include breakpoint(mobile) {
+            font-size: 39px;
+          }
+          @include breakpoint(mobile2) {
+            font-size: 33px;
+          }
           background-color: #fcf0d8;
           width: 100%;
 
@@ -151,6 +176,15 @@ body {
       justify-content: space-around;
       list-style: none;
       padding-bottom: 5%;
+      //   @include breakpoint(pc) {
+      //   font-size: 60px;
+      // }
+      // @include breakpoint(mobile) {
+      //   font-size: 55px;
+      // }
+      // @include breakpoint(mobile2) {
+      //   font-size: 50px;
+      // }
       li {
         width: 30%;
         font-size: 25px;
@@ -178,6 +212,15 @@ body {
     padding-bottom: 3%;
     font-size: 65px;
     font-weight: bolder;
+    @include breakpoint(pc) {
+      font-size: 60px;
+    }
+    @include breakpoint(mobile) {
+      font-size: 55px;
+    }
+    @include breakpoint(mobile2) {
+      font-size: 50px;
+    }
   }
   h3 {
     text-align: center;
@@ -189,7 +232,7 @@ body {
     padding-bottom: 3%;
   }
   h5 {
-    font-size: 22px;
+    font-size: 35px;
     color: rgb(187, 129, 57);
     font-weight: bolder;
   }
@@ -204,18 +247,30 @@ body {
   article {
     // width: 50%;
     img {
-      height: 60%;
+      // height: 60%;
     }
   }
-  .productbackground {
-    width: 170%;
-    // height: 65%;
-  }
+
   .productImg {
     width: 40%;
+    background-image: url('../imgs/productsImg/bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    .productbackground {
+      width: 100%;
+      padding-top: 10%;
+    }
+    // .productbackground2 {
+    //   width: 100%;
+    //   margin-top: -0%;
+    // }
   }
   li img:hover {
     filter: brightness(70%);
+  }
+  .Related {
+    padding: 0 2%;
   }
 }
 </style>

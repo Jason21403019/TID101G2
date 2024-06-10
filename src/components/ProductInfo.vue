@@ -1,6 +1,7 @@
 <template>
   <div class="product" v-if="currentTab === tab1">
-    <article class="a" v-for="(product, index) in infos.slice(0, infos.length)" :key="product.id">
+    <!-- <article class="a" v-for="(product, index) in infos.slice(0, infos.length)" :key="product.id"> -->
+    <article class="a" v-for="(product, index) in paginatedInfos" :key="product.id">
       <div class="content">
         <p><img :src="`/src/imgs/productsImg/${product.img}`" alt="" /></p>
       </div>
@@ -50,7 +51,7 @@ export default {
         },
         {
           id: 'tab2',
-          brand: 'Carl Jung 卡爾',
+          brand: 'Carl Jung 卡爾榮格2',
           name: 'Mousseux 穆瑟 無酒精氣',
           Specification: ' 75ML/瓶',
           serialNumber: 'P001',
@@ -129,6 +130,11 @@ export default {
     currentProduct() {
       const index = this.currentPage - 1
       return this.infos[index]
+    },
+    paginatedInfos() {
+      const startIndex = (this.currentPage - 1) * this.pageSize
+      const endIndex = this.currentPage * this.pageSize
+      return this.infos.slice(startIndex, endIndex)
     }
   },
   methods: {
