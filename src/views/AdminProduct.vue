@@ -44,7 +44,7 @@
   <div class="d-grid gap-2 d-md-flex justify-content-md-between">
     <admin-bulk-btn :handle-click="bulkCancel">
       <template #bulkicon>
-        <img src="../imgs/icon/icon_delete.svg" alt="cancelIcon" height="20" width="20" />
+        <img src="../imgs/icon/icon_delete.svg" alt="delIcon" height="20" width="20" />
       </template>
       <template #bulktext>多筆刪除</template>
     </admin-bulk-btn>
@@ -61,7 +61,9 @@
     <table class="table">
       <thead class="table-thead">
         <tr>
-          <th scope="col"></th>
+          <th scope="col">
+            <input v-model="selectAll" class="form-check-input" type="checkbox" @change="toggleAllCheckboxes" />
+          </th>
           <th scope="col">商品編號</th>
           <th scope="col">商品名稱</th>
           <th scope="col">商品類別</th>
@@ -77,7 +79,7 @@
       <tbody>
         <tr v-for="(product, index) in products" :key="product.id">
           <th scope="row">
-            <input class="form-check-input" type="checkbox" />
+            <input v-model="product.selected" class="form-check-input" type="checkbox" />
           </th>
           <td>{{ product.id }}</td>
           <td>{{ product.name }}</td>
@@ -125,10 +127,11 @@ import AdminBulkBtn from '../components/AdminBulkBtn.vue'
 import AdminDateInput from '../components/AdminDateInput.vue'
 import AdminSelectInput from '../components/AdminSelectInput.vue'
 import ModalProduct from '../components/AdminModalProduct.vue'
+import Swal from 'sweetalert2'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
-  name: 'AdminOrder',
+  name: 'AdminProduct',
   components: {
     AdminBreadcrumb,
     AdminSelectInput,
@@ -148,6 +151,7 @@ export default {
       ],
       currentActionType: '',
       currentProduct: {},
+      selectAll: false,
       products: [
         {
           id: 'P001',
@@ -157,7 +161,8 @@ export default {
           sales: 10,
           stock: 50,
           isHot: false,
-          isAvailable: true
+          isAvailable: true,
+          selected: false
         },
         {
           id: 'P002',
@@ -174,6 +179,15 @@ export default {
       selectedOption: '',
       inputValue: '',
       selectedCategory: ''
+    }
+  },
+  watch: {
+    products: {
+      handler() {
+        // 檢查是否所有的product.selected都是true時thead的框會全選
+        this.selectAll = this.products.every((product) => product.selected)
+      },
+      deep: true
     }
   },
   methods: {
@@ -193,14 +207,58 @@ export default {
         }
       }
     },
+    // 單顆按鈕點擊刪除時
     deleteProduct(index) {
-      this.products.splice(index, 1)
+      Swal.fire({
+        title: '確認刪除',
+        text: '您確定要刪除此項目嗎？',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '確定',
+        cancelButtonText: '取消'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.products.splice(index, 1)
+          Swal.fire('已刪除', '該項目已被刪除', 'success')
+        }
+      })
     },
     handleSelectChange() {
       if (this.selectedOption !== '1') {
         this.inputValue = '' // 清除普通輸入框的值
         this.selectedCategory = '' // 清除選擇類別的值
       }
+    },
+    // 當我的tbody中input全勾，全選勾會被勾起來
+    toggleAllCheckboxes() {
+      this.products.forEach((product) => {
+        product.selected = this.selectAll
+      })
+    },
+    // 當複選框勾起來時，是否刪除的警告訊息
+    bulkCancel() {
+      const selectedProducts = this.products.filter((product) => product.selected)
+
+      if (selectedProducts.length === 0) {
+        Swal.fire('未選擇任何項目', '請選擇要刪除的項目', 'warning')
+
+        return
+      }
+
+      Swal.fire({
+        title: '確認刪除',
+        text: `您確定要刪除選中的${selectedProducts.length}個項目嗎？`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '確定!',
+        cancelButtonText: '取消'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.products = this.products.filter((product) => !product.selected)
+          this.selectAll = false // 重置selectAll狀態
+          Swal.fire('已刪除', '選中的項目已被刪除', 'success')
+        }
+      })
     }
   }
 }

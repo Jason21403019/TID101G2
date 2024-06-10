@@ -53,7 +53,9 @@
     <table class="table">
       <thead class="table-thead">
         <tr>
-          <th scope="col"></th>
+          <th scope="col">
+            <input class="form-check-input" type="checkbox" v-model="selectAll" @change="toggleAllCheckboxes" />
+          </th>
           <th scope="col">訂單編號</th>
           <th scope="col">訂單日期</th>
           <th scope="col">會員姓名</th>
@@ -66,7 +68,9 @@
       </thead>
       <tbody>
         <tr v-for="order in orders" :key="order.orderId">
-          <th scope="row"></th>
+          <th scope="row">
+            <input class="form-check-input" type="checkbox" v-model="order.selected" @change="checkIfAllSelected" />
+          </th>
           <td>{{ order.orderId }}</td>
           <td>{{ order.orderDate }}</td>
           <td>{{ order.memberName }}</td>
@@ -79,7 +83,7 @@
             </button>
           </td>
           <td>
-            <button @click="openModal('cancel', selectedOrder)">
+            <button @click="confirmCancelOrder(order)">
               <img src="../imgs/icon/icon_admin-square.svg" alt="" width="20px" height="20px" />
             </button>
           </td>
@@ -108,6 +112,7 @@ import AdminBulkBtn from '../components/AdminBulkBtn.vue'
 import AdminDateInput from '../components/AdminDateInput.vue'
 import AdminInput from '../components/AdminInput.vue'
 import ModalOrder from '../components/AdminModalOrder.vue'
+import Swal from 'sweetalert2'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
@@ -133,17 +138,34 @@ export default {
       orders: [
         {
           orderId: '20210517379430',
-          orderDate: '2024/05/10',
-          memberName: '不熬夜',
-          recipientName: '不熬夜',
+          orderDate: '2024/06/09',
+          memberName: '張哲菘',
+          recipientName: '許阿mei',
           orderStatus: '處理中',
-          paymentStatus: '未付款'
+          paymentStatus: '已付款'
+        },
+        {
+          orderId: '20210517379431',
+          orderDate: '2024/06/10',
+          memberName: '張哲菘',
+          recipientName: '許阿mei',
+          orderStatus: '處理中',
+          paymentStatus: '已付款'
         }
-        // 其他訂單...
       ],
       currentActionType: '',
       currentOrder: {},
-      showCancelReason: false
+      showCancelReason: false,
+      selectAll: false
+    }
+  },
+  watch: {
+    orders: {
+      handler() {
+        // 檢查是否所有的 order.selected 都是 true，若是則勾選表頭的複選框
+        this.selectAll = this.orders.every((order) => order.selected)
+      },
+      deep: true
     }
   },
   methods: {
@@ -157,6 +179,58 @@ export default {
       // 編輯訂單的邏輯
       console.log('編輯訂單', order)
       // 更新訂單數據的邏輯
+    },
+    confirmCancelOrder(order) {
+      Swal.fire({
+        title: '確認取消',
+        text: '您確定要取消此訂單嗎？',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '是的，取消!',
+        cancelButtonText: '否'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // 更新訂單狀態
+          order.orderStatus = '已取消'
+          // 顯示已取消的確認消息
+          Swal.fire('已取消', '該訂單已被取消', 'success').then(() => {
+            // 打開模態窗口
+            this.openModal('cancel', order)
+          })
+        }
+      })
+    },
+    toggleAllCheckboxes() {
+      this.orders.forEach((order) => {
+        order.selected = this.selectAll
+      })
+    },
+    // 確認並更新選定的訂單狀態
+    bulkCancel() {
+      const selectedOrders = this.orders.filter((order) => order.selected)
+
+      if (selectedOrders.length === 0) {
+        Swal.fire('未選擇任何項目', '請選擇要取消的訂單', 'warning')
+
+        return
+      }
+
+      Swal.fire({
+        title: '確認取消',
+        text: `您確定要取消選中的${selectedOrders.length}個訂單嗎？`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '取消!',
+        cancelButtonText: '取消'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          selectedOrders.forEach((order) => {
+            order.orderStatus = '已取消'
+          })
+          this.selectAll = false // 重置selectAll狀態
+          Swal.fire('已取消', '選中的訂單狀態已更新為已取消', 'success')
+        }
+      })
     }
   }
 }
