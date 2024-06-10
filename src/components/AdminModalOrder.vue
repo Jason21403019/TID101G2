@@ -1,9 +1,9 @@
 <template>
-  <div class="modal modal-lg" id="orderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div id="orderModal" class="modal modal-lg" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">訂單資訊</h1>
+          <h1 id="exampleModalLabel" class="modal-title fs-5">訂單資訊</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
@@ -21,7 +21,7 @@
               </div>
               <div class="col-md-4 d-flex align-items-center">
                 <h4 class="col-form-label me-2">訂單狀態:</h4>
-                <select class="form-control" v-model="orderData.status">
+                <select v-model="orderData.status" class="form-control">
                   <option value="處理中">處理中</option>
                   <option value="已出貨">已出貨</option>
                   <option value="已完成">已完成</option>
@@ -44,7 +44,7 @@
             </div>
 
             <!-- 點擊取消時才會跳出 -->
-            <div class="mb-3 cancel" v-if="showCancelReason">
+            <div v-if="showCancelReason" class="mb-3 cancel">
               <div class="col-md-6 d-flex align-items-center">
                 <h4 class="col-form-label me-2">取消原因:</h4>
                 <span>價格太貴</span>
@@ -150,9 +150,9 @@
                 <div class="row mb-3">
                   <label class="col-md-2 col-form-label">收件人姓名:</label>
                   <input
+                    v-model="orderData.recipientName"
                     type="text"
                     class="form-control"
-                    v-model="orderData.recipientName"
                     :disabled="!isEditable"
                     :class="{ 'editable-input': isEditable }"
                   />
@@ -161,9 +161,9 @@
                 <div class="row mb-3">
                   <label class="col-md-2 col-form-label">收件人電話:</label>
                   <input
+                    v-model="orderData.recipientPhone"
                     type="text"
                     class="form-control"
-                    v-model="orderData.recipientPhone"
                     :disabled="!isEditable"
                     :class="{ 'editable-input': isEditable }"
                   />
@@ -172,9 +172,9 @@
                 <div class="row mb-3">
                   <label class="col-md-2 col-form-label">收件人地址:</label>
                   <input
+                    v-model="orderData.recipientAddress"
                     type="text"
                     class="form-control"
-                    v-model="orderData.recipientAddress"
                     :disabled="!isEditable"
                     :class="{ 'editable-input': isEditable }"
                   />
@@ -183,9 +183,9 @@
                 <div class="row mb-3">
                   <label class="col-md-2 col-form-label">付款方式:</label>
                   <input
+                    v-model="orderData.paymentMethod"
                     type="text"
                     class="form-control"
-                    v-model="orderData.paymentMethod"
                     :disabled="!isEditable"
                     :class="{ 'editable-input': isEditable }"
                   />
@@ -194,9 +194,9 @@
                 <div class="row mb-3">
                   <label class="col-md-2 col-form-label">運送方式:</label>
                   <input
+                    v-model="orderData.deliveryMethod"
                     type="text"
                     class="form-control"
-                    v-model="orderData.deliveryMethod"
                     :disabled="!isEditable"
                     :class="{ 'editable-input': isEditable }"
                   />
@@ -205,9 +205,9 @@
                 <div class="row mb-3">
                   <label class="col-md-2 col-form-label">訂單備註:</label>
                   <input
+                    v-model="orderData.orderNote"
                     type="text"
                     class="form-control"
-                    v-model="orderData.orderNote"
                     :disabled="!isEditable"
                     :class="{ 'editable-input': isEditable }"
                   />
@@ -278,21 +278,6 @@ export default {
       isEditable: false
     }
   },
-  methods: {
-    show() {
-      this.modal.show()
-    },
-    hide() {
-      this.modal.hide()
-    },
-    onSave() {
-      this.onSave(this.orderData)
-      this.hide()
-    },
-    toggleEdit() {
-      this.isEditable = !this.isEditable
-    }
-  },
   watch: {
     order: {
       immediate: true,
@@ -327,6 +312,21 @@ export default {
   },
   mounted() {
     this.modal = new bootstrap.Modal(document.getElementById('orderModal'))
+  },
+  methods: {
+    show() {
+      this.modal.show()
+    },
+    hide() {
+      this.modal.hide()
+    },
+    onSave() {
+      this.onSave(this.orderData)
+      this.hide()
+    },
+    toggleEdit() {
+      this.isEditable = !this.isEditable
+    }
   }
 }
 </script>
@@ -384,8 +384,8 @@ export default {
   }
   // 收件人的input框
   .editable-input {
-    border: 2px solid $campari; 
-    background-color: $babypowder; 
+    border: 2px solid $campari;
+    background-color: $babypowder;
   }
   input:disabled {
     background-color: #e9ecef; /* 禁用時的背景顏色 */
@@ -397,6 +397,7 @@ export default {
   .btn-primary {
     background-color: $campari;
     color: $ramos-gin-fizz;
+    border: 1px solid $campari;
   }
 }
 </style>

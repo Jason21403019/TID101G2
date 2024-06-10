@@ -1,32 +1,32 @@
 <template>
-  <div class="modal fade" ref="adminModal" id="adminModal" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
+  <div id="adminModal" ref="adminModal" class="modal fade" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="adminModalLabel">{{ modalTitle }}</h1>
+          <h1 id="adminModalLabel" class="modal-title fs-5">{{ modalTitle }}</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="handleSave">
             <div class="mb-3">
               <label for="admin-name" class="col-form-label">姓名:</label>
-              <input type="text" class="form-control" id="admin-name" v-model="admin.name" />
+              <input id="admin-name" v-model="admin.name" type="text" class="form-control" />
             </div>
             <div class="mb-3">
               <label for="admin-email" class="col-form-label">Email:</label>
-              <input type="email" class="form-control" id="admin-email" v-model="admin.email" />
+              <input id="admin-email" v-model="admin.email" type="email" class="form-control" />
             </div>
             <div class="mb-3">
               <label for="admin-phone" class="col-form-label">手機:</label>
-              <input type="tel" class="form-control" id="admin-phone" v-model="admin.phone" />
+              <input id="admin-phone" v-model="admin.phone" type="tel" class="form-control" />
             </div>
             <div class="mb-3">
               <label for="admin-password" class="col-form-label">設定密碼:</label>
-              <input type="password" class="form-control" id="admin-password" v-model="admin.password" />
+              <input id="admin-password" v-model="admin.password" type="password" class="form-control" />
             </div>
             <div class="mb-3">
               <label for="admin-position" class="col-form-label">職位:</label>
-              <select class="form-select" id="admin-position" v-model="admin.position">
+              <select id="admin-position" v-model="admin.position" class="form-select">
                 <option value="supervisor">主管</option>
                 <option value="employee">員工</option>
               </select>
@@ -34,7 +34,7 @@
             <div class="mb-3">
               <label for="admin-status" class="col-form-label">停用/啟用:</label>
               <div class="form-check form-switch">
-                <input id="flexSwitchCheckChecked" class="form-check-input" type="checkbox" v-model="admin.status" />
+                <input id="flexSwitchCheckChecked" v-model="admin.status" class="form-check-input" type="checkbox" />
               </div>
             </div>
             <div class="modal-footer">
@@ -87,6 +87,7 @@ export default {
   methods: {
     show() {
       const modalElement = this.$refs.adminModal
+
       if (modalElement) {
         this.myModal = new bootstrap.Modal(modalElement)
         this.myModal.show()

@@ -1,8 +1,8 @@
 <template>
   <div
-    class="modal fade"
-    ref="categoryModal"
     id="categoryModal"
+    ref="categoryModal"
+    class="modal fade"
     tabindex="-1"
     aria-labelledby="categoryModalLabel"
     aria-hidden="true"
@@ -10,18 +10,18 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="categoryModalLabel">{{ modalTitle }}</h1>
+          <h1 id="categoryModalLabel" class="modal-title fs-5">{{ modalTitle }}</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="handleSave">
             <div class="mb-3">
               <label for="category-name" class="form-label">名稱:</label>
-              <input type="text" class="form-control" id="category-name" v-model="category.name" />
+              <input id="category-name" v-model="category.name" type="text" class="form-control" />
             </div>
             <div class="mb-3">
               <label for="category-memo" class="form-label">備註:</label>
-              <textarea class="form-control" id="category-memo" v-model="category.memo"></textarea>
+              <textarea id="category-memo" v-model="category.memo" class="form-control"></textarea>
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn">{{ modalButtonText }}</button>
@@ -69,6 +69,7 @@ export default {
   methods: {
     show() {
       const modalElement = this.$refs.categoryModal
+
       if (modalElement) {
         this.myModal = new bootstrap.Modal(modalElement)
         this.myModal.show()

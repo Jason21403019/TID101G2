@@ -1,20 +1,20 @@
 <template>
-  <div class="modal fade" ref="typeModal" id="typeModal" tabindex="-1" aria-labelledby="typeModalLabel" aria-hidden="true">
+  <div id="typeModal" ref="typeModal" class="modal fade" tabindex="-1" aria-labelledby="typeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="typeModalLabel">{{ modalTitle }}</h1>
+          <h1 id="typeModalLabel" class="modal-title fs-5">{{ modalTitle }}</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="handleSave">
             <div class="mb-3">
               <label for="type-name" class="form-label">名稱:</label>
-              <input type="text" class="form-control" id="type-name" v-model="type.name" />
+              <input id="type-name" v-model="type.name" type="text" class="form-control" />
             </div>
             <div class="mb-3">
               <label for="type-memo" class="form-label">備註:</label>
-              <textarea class="form-control" id="type-memo" v-model="type.memo"></textarea>
+              <textarea id="type-memo" v-model="type.memo" class="form-control"></textarea>
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn">{{ modalButtonText }}</button>
@@ -62,6 +62,7 @@ export default {
   methods: {
     show() {
       const modalElement = this.$refs.typeModal
+
       if (modalElement) {
         this.myModal = new bootstrap.Modal(modalElement)
         this.myModal.show()
@@ -81,38 +82,37 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import '../../node_modules/bootstrap/scss/bootstrap.scss'; 
+@import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
-#typeModal{
+#typeModal {
   font-size: $fontSize_h4;
   color: $campari;
 
-  .modal-header{
+  .modal-header {
     background-color: $babypowder;
   }
 
-  .modal-body{
+  .modal-body {
     background-color: $babypowder;
 
-    .col-form-label{
+    .col-form-label {
       font-size: $fontSize_h4;
     }
 
-    .form-control{
+    .form-control {
       outline: 1px solid $campari;
     }
-    .form-check-input:checked{
+    .form-check-input:checked {
       background-color: $toggle-on;
       border: solid $toggle-on;
     }
   }
-  .btn{
+  .btn {
     background-color: $campari;
     color: $ramos-gin-fizz;
   }
-  .modal-footer{
+  .modal-footer {
     background-color: $babypowder;
   }
 }
-
 </style>
