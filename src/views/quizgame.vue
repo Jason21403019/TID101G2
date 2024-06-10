@@ -25,6 +25,7 @@
         <span aria-hidden="true" class="hover-text">&nbsp;開始&nbsp;</span>
       </button>
     </div>
+    <audio src="../imgs/quizGameImg/gamequiz_clouds-08.svg"></audio>
   </div>
 </template>
 
@@ -78,7 +79,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 * {
   margin: 0;
   padding: 0;
@@ -86,8 +87,10 @@ export default {
 }
 
 body {
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-}
+  font-family:$fontfamily;
+  line-height: $lineheight-en;
+  letter-spacing: $letterspacing;
+} 
 
 .heart {
   background: url(../imgs/quizGameImg/gamequiz_mbg-10.jpg) center center no-repeat;

@@ -1,10 +1,11 @@
 <template>
   <div class="result-wrapper">
+    <img src="../imgs/logo/logo-w.png" class="logo" alt="Logo" />
     <h1>最適合您的調酒</h1>
     <div class="result" v-if="result">
       <img :src="resultImage" alt="Result Image" />
       <div class="result-text">
-        <h1>{{ resultTitle }}</h1>
+        <h2>{{ resultTitle }}</h2>
         <p>{{ resultText }}</p>
         <button>領取優惠卷</button>
       </div>
@@ -12,7 +13,7 @@
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .result-wrapper {
   text-align: center;
   width: 100%;
@@ -25,6 +26,15 @@
   background-position: center;
   flex-direction: column;
   padding: 100px 0;
+  position: relative; /* 添加這行確保Logo定位有效 */
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 100px; /* 稍微調整Logo大小 */
+  height: auto;
 }
 
 .result {
@@ -44,9 +54,20 @@ img {
 }
 
 h1 {
-  font-size: 2rem;
-  color: whitesmoke;
+  font-size: $fontSize_h3;
+  color: $whitelady;
   margin: 10px;
+  line-height: $lineheight-en;
+  letter-spacing: $letterspacing;
+}
+
+h2 {
+  font-size: $fontSize_h3;
+  color: $whitelady;
+  font-family: $fontfamily-en2;
+  margin-bottom: 10px;
+  line-height: $lineheight-en;
+  letter-spacing: $letterspacing;
 }
 
 p {
@@ -57,7 +78,7 @@ p {
 }
 
 button {
-  background: #282936;
+  background: $blackvevet;
   padding: 10px 2rem;
   outline: 2.5px solid #12110e;
   outline-offset: 3px;
@@ -73,7 +94,7 @@ button {
 
 button:hover {
   outline-offset: 4.5px;
-  background: #febf00;
+  background: $irishcoffee;
   font-size: 1.1rem;
 }
 </style>

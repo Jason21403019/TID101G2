@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="container">
+      <img src="../imgs/logo/logo-w.png" alt="">
       <div class="question">
         <h1>{{ questions[currentQuestionIndex].question }}</h1>
         <div class="botones">
@@ -74,6 +75,7 @@ export default {
 .wrapper {
   font-family: $fontfamily;
   line-height: $lineheight;
+  letter-spacing: $letterspacing;
   width: 100%;
   height: 100vh;
   display: flex;
@@ -91,6 +93,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+
+  img {
+    width: 150px;
+    height: 150px;
+  }
 }
 
 .question {
