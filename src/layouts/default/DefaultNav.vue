@@ -7,7 +7,7 @@
     </div>
     <div class="header__btnarea">
       <div class="header__btnarea-icons">
-        <router-link to="/" class="header__icons-icon">
+        <router-link to="/member" class="header__icons-icon">
           <img class="header__icons-icon-img1" src="../../imgs/icon/icon_member-on-w.svg" alt="" />
         </router-link>
         <router-link to="/cart" class="header__icons-icon">
