@@ -154,7 +154,6 @@ export default {
           padding: 0.55rem 0;
           @include border-radius(8px);
           padding-left: 0.55rem;
-          border: 1px solid red;
           letter-spacing: $letterspacing;
           &:hover {
             background: $negroni;

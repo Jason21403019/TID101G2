@@ -143,9 +143,9 @@ const routes = [
   {
     path: '/quizgame',
     name: 'Quizgame',
-    component: () => import('../views/QuizGame.vue'),
+    component: () => import('../views/quizgame.vue'),
     meta: {
-      layout: 'default'
+      layout: 'defaultquizgame'
     }
   },
   // 測驗遊戲Q&A
@@ -154,7 +154,7 @@ const routes = [
     name: 'QuizgameQ&A',
     component: () => import('../views/QuizGameQ&A.vue'),
     meta: {
-      layout: 'default'
+      layout: 'defaultquizgame'
     }
   },
   // 測驗遊戲結果
@@ -163,7 +163,7 @@ const routes = [
     name: 'Resultpage',
     component: () => import('../views/Resultpage.vue'),
     meta: {
-      layout: 'default'
+      layout: 'defaultquizgame'
     }
   },
   // 註冊
@@ -184,15 +184,6 @@ const routes = [
       layout: 'default'
     }
   },
-  // 會員專區帳戶資訊
-  // {
-  //   path: '/member_account',
-  //   name: 'MemberAccount',
-  //   component: () => import('../views/MemberAccount.vue'),
-  //   meta: {
-  //     layout: 'default'
-  //   }
-  // },
   // 會員專區查看訂單
   // {
   //   path: '/member_order',
