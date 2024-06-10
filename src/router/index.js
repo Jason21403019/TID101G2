@@ -179,7 +179,7 @@ const routes = [
   {
     path: '/member',
     name: 'Member',
-    component: () => import('../views/MemberVoucher.vue'),
+    component: () => import('../views/Member.vue'),
     meta: {
       layout: 'default'
     }
@@ -197,7 +197,7 @@ const routes = [
   // {
   //   path: '/member_order',
   //   name: 'MemberOrder',
-  //   component: () => import('../views/MemberOrde.vue'),
+  //   component: () => import('../views/MemberOrder.vue'),
   //   meta: {
   //     layout: 'default'
   //   }
