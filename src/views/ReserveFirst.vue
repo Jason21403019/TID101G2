@@ -185,7 +185,7 @@ export default {
       color: $campari;
       font-family: $fontfamily;
       font-weight: bold;
-      outline:1px solid red;
+      // outline:1px solid red;
 
       @include breakpoint(430px){
         font-size: $fontSize_h2;
@@ -352,7 +352,7 @@ export default {
     font-weight: bold;
     color: $campari;
 
-    outline: 1px solid green;
+    // outline: 1px solid green;
 
     display: flex;
     justify-content: start;

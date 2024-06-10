@@ -420,7 +420,7 @@ export default {
 <style lang="scss" scoped>
 .wrapper {
   width: 100%;
-  background-color: $campari;
+//   background-color: $campari;
   display: flex;
   padding-top: 100px;
   margin: 0 auto;
@@ -434,6 +434,7 @@ export default {
       width: 50%;
       padding-top: 50px;
       margin-top: 30px;
+      background-color: $campari;
 
       @include breakpoint( 820px) {
            width: 100%;       
