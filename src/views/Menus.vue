@@ -59,6 +59,7 @@ export default {
 
     onMounted(() => {
       const container = document.querySelector('.warper')
+
       imagesLoaded(container, () => {
         // 圖片已經全部加載完成後執行 gsap 動畫
         gsap.to('#before-img1', {
@@ -156,7 +157,7 @@ export default {
   align-items: center;
   background: $negroni;
   padding: 100px;
-
+  
   .menu1,
   .menu2,
   .menu3,
@@ -164,10 +165,19 @@ export default {
     position: relative;
   }
 
+<<<<<<< HEAD
   #img1 #img2 #img3 #img4 {
     max-width: 100%;
     height: auto;
     /* 確保圖片按比例縮放 */
+=======
+  #img1
+  #img2
+  #img3
+  #img4 {
+    max-width: 100%;
+    height: auto; /* 確保圖片按比例縮放 */
+>>>>>>> 01fd710 ( test)
   }
 
   #before-img1 {
@@ -181,7 +191,11 @@ export default {
     position: absolute;
     right: -50rem;
     top: 30rem;
+<<<<<<< HEAD
     width: 100%;
+=======
+    width:100%;
+>>>>>>> 01fd710 ( test)
     height: auto;
     transform: rotate(-16deg);
   }
@@ -190,7 +204,11 @@ export default {
     position: absolute;
     right: 59rem;
     top: 2rem;
+<<<<<<< HEAD
     width: 100%;
+=======
+    width:100%;
+>>>>>>> 01fd710 ( test)
     height: auto;
   }
 
@@ -198,7 +216,11 @@ export default {
     position: absolute;
     right: 65rem;
     top: 10rem;
+<<<<<<< HEAD
     width: 100%;
+=======
+    width:100%;
+>>>>>>> 01fd710 ( test)
     height: auto;
     transform: rotate(25deg);
   }
@@ -207,7 +229,11 @@ export default {
     position: absolute;
     right: -42rem;
     top: 28rem;
+<<<<<<< HEAD
     width: 100%;
+=======
+    width:100%;
+>>>>>>> 01fd710 ( test)
     height: auto;
   }
 
@@ -215,7 +241,11 @@ export default {
     position: absolute;
     right: 35rem;
     top: 8rem;
+<<<<<<< HEAD
     width: 100%;
+=======
+    width:100%;
+>>>>>>> 01fd710 ( test)
     height: auto;
     transform: rotate(17deg);
   }
@@ -224,7 +254,11 @@ export default {
     position: absolute;
     right: -40rem;
     top: 25rem;
+<<<<<<< HEAD
     width: 100%;
+=======
+    width:100%;
+>>>>>>> 01fd710 ( test)
     height: auto;
     transform: rotate(-17deg);
   }
@@ -239,7 +273,10 @@ export default {
 }
 
 @media screen and (max-width: 820px) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 01fd710 ( test)
   #before-img1,
   #before-img2-1,
   #before-img2-2,
@@ -247,6 +284,7 @@ export default {
   #before-img3-2,
   #before-img4-1,
   #before-img4-2 {
+<<<<<<< HEAD
     display: none;
     /* 768px 以下隱藏動畫綁定物件 */
   }
@@ -254,3 +292,12 @@ export default {
   h1 {}
 }
 </style>
+=======
+    display: none; /* 768px 以下隱藏動畫綁定物件 */
+  }
+  h1{
+
+  }
+}
+</style>
+>>>>>>> 01fd710 ( test)

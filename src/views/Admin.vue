@@ -43,6 +43,8 @@
 import AdminIconManger from '../components/AdminIconManger.vue'
 import AdminLineChart from '../components/AdminLineChart.vue'
 import DefaultBkSidebar from '../layouts/default/AdminSlidebar.vue'
+import AdminLineChart from '../components/AdminLineChart.vue'
+import DefaultBkSidebar from '../layouts/default/AdminSlidebar.vue'
 
 export default {
   name: 'Admin',

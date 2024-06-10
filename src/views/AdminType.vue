@@ -17,22 +17,12 @@
     </admin-btn>
   </div>
 
-  <!-- 彈跳視窗 -->
-  <AdminModal
-    v-model:form-data="formData"
-    :title="modalTitle"
-    :fields="formFields"
-    :visible="isModalVisible"
-    @save="handleSave"
-    @close="closeModal"
-  />
-
   <!-- 列表 -->
   <section>
     <table class="table">
       <thead class="table-thead">
         <tr>
-          <th scope="col">類別名稱</th>
+          <th scope="col">名稱</th>
           <th scope="col">備註</th>
           <th scope="col"></th>
           <th scope="col"></th>
@@ -40,17 +30,17 @@
           <th scope="col">編輯</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <th scope="row">無酒精紅酒</th>
-          <td>後台在看：這頁只有做一個分類名稱,多一個備註讓列表不會太空</td>
+      <tbody class="table-tbody">
+        <tr v-for="type in types" :key="type.id">
+          <td>{{ type.name }}</td>
+          <td>{{ type.memo }}</td>
           <td></td>
           <td></td>
           <td></td>
           <td>
-            <a href="">
-              <img src="../imgs/icon/icon_admin-edit.svg" alt="" width="20px" height="20ox" />
-            </a>
+            <button @click="openModal('edit', type)">
+              <img src="../imgs/icon/icon_admin-edit.svg" alt="editIcon" width="20px" height="20px" />
+            </button>
           </td>
         </tr>
       </tbody>
@@ -60,12 +50,14 @@
       </caption>
     </table>
   </section>
+
+  <ModalType :actionType="currentActionType" ref="modal" :type="currentType" :onSave="handleSave"></ModalType>
 </template>
 
 <script>
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
-import AdminModal from '../components/AdminModal.vue'
+import ModalType from '../components/AdminModalType.vue'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
@@ -73,7 +65,7 @@ export default {
   components: {
     AdminBreadcrumb,
     AdminBtn,
-    AdminModal
+    ModalType
   },
   data() {
     return {
@@ -85,45 +77,38 @@ export default {
         { text: variables.productblock.typeList, link: '/admin_type', active: false }
       ],
 
-      actionType: 'add',
-      modalTitle: '類別新增',
-      formFields: [
-        { id: 'name', label: '名稱', type: 'input' },
-        { id: 'memo', label: '備註', type: 'textarea' }
-      ],
-      formData: {
+      currentActionType: 'add',
+      currentType: {
         name: '',
         memo: ''
       },
-      existingData: {
-        name: '無酒精紅酒',
-        memo: '後台在看：這頁只有做一個分類名稱,多一個備註讓列表不會太空'
-      },
-      isModalVisible: false
+      types: [
+        {
+          id: 1,
+          name: 'Type 1',
+          memo: '備註 1'
+        }
+      ]
     }
   },
   methods: {
-    openModal(action, data = null) {
-      this.actionType = action
-      this.modalTitle = action === 'add' ? '類別新增' : '類別編輯'
-      this.formData = data || {
-        name: '',
-        memo: ''
-      }
-      this.isModalVisible = true
-    },
-    closeModal() {
-      this.isModalVisible = false
+    openModal(action, type = null) {
+      this.currentActionType = action
+      this.currentType = type ? { ...type } : { name: '', memo: '' }
+      this.$refs.modal.show()
     },
     handleSave(formData) {
-      if (this.actionType === 'add') {
+      if (this.currentActionType === 'add') {
         // 新增邏輯
-        console.log('新增資料', formData)
+        const newType = { ...formData, id: this.types.length + 1 }
+        this.types.push(newType)
       } else {
         // 編輯邏輯
-        console.log('編輯資料', formData)
+        const index = this.types.findIndex((type) => type.id === formData.id)
+        if (index !== -1) {
+          this.types.splice(index, 1, { ...formData })
+        }
       }
-      this.closeModal()
     }
   }
 }
@@ -175,9 +160,9 @@ export default {
     background-color: $toggle-on;
     border: solid $toggle-on;
   }
-
-  .fa-solid.fa-pencil {
-    color: $campari;
+  button {
+    border: none;
+    background: none;
   }
 }
 </style>
