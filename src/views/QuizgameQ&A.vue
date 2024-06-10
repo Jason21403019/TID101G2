@@ -61,7 +61,7 @@ export default {
       } else {
         // 問答完成，導航至結果頁面並傳遞回答數據和結果
         this.$router.push({
-          path: '/result',
+          path: '/resultpage',
           query: { answers: this.userAnswers.join(','), result: this.result }
         })
       }
