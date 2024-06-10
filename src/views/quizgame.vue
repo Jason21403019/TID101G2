@@ -1,10 +1,10 @@
 <template>
   <div id="heart" class="heart">
     <div id="backgrounds" class="background-images">
-      <img src="@/imgs/quizGameImg/gamequiz_bg2-1.png" alt="" class="bg-img bg-img1" />
-      <img src="@/imgs/quizGameImg/gamequiz_bg2-2.png" alt="" class="bg-img bg-img2" />
-      <img src="@/imgs/quizGameImg/gamequiz_bg2-3.png" alt="" class="bg-img bg-img3" />
-      <img src="@/imgs/quizGameImg/gamequiz_bg2-4.png" alt="" class="bg-img bg-img4" />
+      <img src="../imgs/quizGameImg/gamequiz_bg2-1.png" alt="" class="bg-img bg-img1" />
+      <img src="../imgs/quizGameImg/gamequiz_bg2-2.png" alt="" class="bg-img bg-img2" />
+      <img src="../imgs/quizGameImg/gamequiz_bg2-3.png" alt="" class="bg-img bg-img3" />
+      <img src="../imgs/quizGameImg/gamequiz_bg2-4.png" alt="" class="bg-img bg-img4" />
     </div>
     <div id="logo" class="logo">
       <img src="@/imgs/logo/logo-w.png" alt="" />
@@ -87,7 +87,7 @@ body {
 }
 
 .heart {
-  background: url(@/imgs/quizGameImg/gamequiz_mbg-10.jpg) center center no-repeat;
+  background: url(../imgs/quizGameImg/gamequiz_mbg-10.jpg) center center no-repeat;
   background-size: cover;
   width: 100%;
   height: 100vh;
