@@ -39,7 +39,7 @@
           <td>{{ article.publishDate }}</td>
           <td>
             <div class="form-check form-switch">
-              <input :id="'flexSwitchCheckChecked' + index" class="form-check-input" type="checkbox" v-model="article.show" />
+              <input :id="'flexSwitchCheckChecked' + index" v-model="article.show" class="form-check-input" type="checkbox" />
             </div>
           </td>
           <td>
@@ -62,7 +62,7 @@
   </section>
 
   <!-- 彈跳視窗 -->
-  <ModalArticle :actionType="currentActionType" ref="modal" :article="currentArticle" :onSave="handleSave"></ModalArticle>
+  <ModalArticle ref="modal" :action-type="currentActionType" :article="currentArticle" :on-save="handleSave"></ModalArticle>
 </template>
 
 <script>
@@ -117,10 +117,12 @@ export default {
       if (this.currentActionType === 'add') {
         // 新增邏輯
         const newArticle = { ...formData, id: this.articles.length + 1 }
+
         this.articles.push(newArticle)
       } else {
         // 編輯邏輯
         const index = this.articles.findIndex((article) => article.id === formData.id)
+
         if (index !== -1) {
           this.articles.splice(index, 1, { ...formData })
         }
@@ -153,9 +155,11 @@ export default {
 }
 
 .d-grid {
-  margin-right: 95px;
+  margin-right: 55px;
   margin-top: 190px;
-
+  @include breakpoint(1280px) {
+    margin-right: 35px;
+  }
   img {
     margin-right: 5px;
   }

@@ -51,7 +51,7 @@
     </table>
   </section>
 
-  <ModalType :actionType="currentActionType" ref="modal" :type="currentType" :onSave="handleSave"></ModalType>
+  <ModalType ref="modal" :action-type="currentActionType" :type="currentType" :on-save="handleSave"></ModalType>
 </template>
 
 <script>
@@ -101,10 +101,12 @@ export default {
       if (this.currentActionType === 'add') {
         // 新增邏輯
         const newType = { ...formData, id: this.types.length + 1 }
+
         this.types.push(newType)
       } else {
         // 編輯邏輯
         const index = this.types.findIndex((type) => type.id === formData.id)
+
         if (index !== -1) {
           this.types.splice(index, 1, { ...formData })
         }
@@ -134,9 +136,11 @@ export default {
 }
 
 .d-grid {
-  margin-right: 95px;
+  margin-right: 55px;
   margin-top: 190px;
-
+  @include breakpoint(1280px) {
+    margin-right: 35px;
+  }
   img {
     margin-right: 5px;
   }

@@ -42,9 +42,9 @@
             <div class="form-check form-switch">
               <input
                 :id="'flexSwitchCheckChecked' + admin.id"
+                v-model="admin.status"
                 class="form-check-input"
                 type="checkbox"
-                v-model="admin.status"
               />
             </div>
           </td>
@@ -62,7 +62,7 @@
     </table>
   </section>
 
-  <ModalAccount :actionType="currentActionType" ref="modal" :admin="currentAdmin" :onSave="handleSave"></ModalAccount>
+  <ModalAccount ref="modal" :action-type="currentActionType" :admin="currentAdmin" :on-save="handleSave"></ModalAccount>
 </template>
 
 <script>
@@ -105,31 +105,33 @@ export default {
           phone: '1234567890',
           position: 'supervisor',
           status: true
-        },
+        }
       ]
-    };
+    }
   },
   methods: {
     openModal(action, admin = null) {
-      this.currentActionType = action;
-      this.currentAdmin = admin ? { ...admin } : { name: '', email: '', phone: '', password: '', position: '', status: false };
-      this.$refs.modal.show();
+      this.currentActionType = action
+      this.currentAdmin = admin ? { ...admin } : { name: '', email: '', phone: '', password: '', position: '', status: false }
+      this.$refs.modal.show()
     },
     handleSave(formData) {
       if (this.currentActionType === 'add') {
         // 新增邏輯
-        const newAdmin = { ...formData, id: this.admins.length + 1 };
-        this.admins.push(newAdmin);
+        const newAdmin = { ...formData, id: this.admins.length + 1 }
+
+        this.admins.push(newAdmin)
       } else {
         // 編輯邏輯
-        const index = this.admins.findIndex(admin => admin.id === formData.id);
+        const index = this.admins.findIndex((admin) => admin.id === formData.id)
+
         if (index !== -1) {
-          this.admins.splice(index, 1, { ...formData });
+          this.admins.splice(index, 1, { ...formData })
         }
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -139,7 +141,7 @@ export default {
   margin-top: 40px;
   margin-left: 160px;
   color: $campari;
-  
+
   &-h1 {
     display: inline;
     font-size: $fontSize_h3;
@@ -151,15 +153,19 @@ export default {
   }
 }
 .d-grid {
-  margin-right: 125px;
+  margin-right: 55px;
   margin-top: 190px;
+  @include breakpoint(1280px) {
+    margin-right: 35px;
+  }
 
   img {
     margin-right: 5px;
   }
 }
 
-.table td, .table th {
+.table td,
+.table th {
   vertical-align: middle;
 }
 .table {
@@ -177,7 +183,6 @@ export default {
     }
   }
   .table-tbody {
-    
     td {
       vertical-align: middle;
     }

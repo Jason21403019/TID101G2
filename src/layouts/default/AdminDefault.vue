@@ -66,6 +66,9 @@ main {
   .main-shifted {
     background-color: $whitelady;
     margin-left: 160px; /* 根據側邊欄的寬度調整這個值 */
+    @include breakpoint(1280px) {
+      margin-left: 110px;
+    }
   }
 }
 </style>

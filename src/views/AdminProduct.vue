@@ -12,7 +12,7 @@
     <admin-select-input input-id="formGroupExampleInput1" :selected-option="selectedOption">
       <template #label>查詢條件</template>
       <template #select>
-        <select class="form-select" v-model="selectedOption" @change="handleSelectChange" aria-label="Default select example">
+        <select v-model="selectedOption" class="form-select" aria-label="Default select example" @change="handleSelectChange">
           <option selected value="">全部商品</option>
           <option value="1">商品類別</option>
         </select>
@@ -20,8 +20,8 @@
 
       <!-- 如果切換到商品類別時，變更input視窗為下拉式 -->
       <template #input>
-        <input v-if="selectedOption !== '1'" :id="inputId" type="text" class="form-control" v-model="inputValue" />
-        <select v-else class="form-select" v-model="selectedCategory">
+        <input v-if="selectedOption !== '1'" :id="inputId" v-model="inputValue" type="text" class="form-control" />
+        <select v-else v-model="selectedCategory" class="form-select">
           <option value="">選擇商品類別</option>
           <option value="category1">無酒精白酒</option>
           <option value="category2">無酒精粉紅酒</option>
@@ -115,15 +115,15 @@
     </table>
   </section>
 
-  <ModalProduct ref="modal" :actionType="currentActionType" :product="currentProduct" @save="handleSave" />
+  <ModalProduct ref="modal" :action-type="currentActionType" :product="currentProduct" @save="handleSave" />
 </template>
 
 <script>
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
-import AdminSelectInput from '../components/AdminSelectInput.vue'
-import AdminDateInput from '../components/AdminDateInput.vue'
 import AdminBtn from '../components/AdminBtn.vue'
 import AdminBulkBtn from '../components/AdminBulkBtn.vue'
+import AdminDateInput from '../components/AdminDateInput.vue'
+import AdminSelectInput from '../components/AdminSelectInput.vue'
 import ModalProduct from '../components/AdminModalProduct.vue'
 import { variables } from '../js/AdminVariables.js'
 
@@ -187,6 +187,7 @@ export default {
         this.products.push(updatedProduct)
       } else {
         const index = this.products.findIndex((p) => p.id === updatedProduct.id)
+
         if (index !== -1) {
           this.products.splice(index, 1, updatedProduct)
         }
@@ -230,10 +231,13 @@ export default {
 .d-grid {
   margin-top: 100px;
   margin-left: 160px;
-  .admin_btn{
-    margin-right: 130px;
-  }
 
+  .admin_btn {
+    margin-right: 55px;
+    @include breakpoint(1280px) {
+      margin-right: 35px;
+    }
+  }
 }
 .table td,
 .table th {
@@ -254,7 +258,7 @@ export default {
     border: none;
     background: none;
   }
- 
+
   #flexSwitchCheckChecked:checked {
     background-color: $toggle-on;
     border: solid $toggle-on;

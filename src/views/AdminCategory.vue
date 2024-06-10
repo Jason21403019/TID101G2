@@ -46,7 +46,7 @@
   </section>
 
   <!-- 彈跳視窗 -->
-  <ModalCategory :actionType="currentActionType" ref="modal" :category="currentCategory" :onSave="handleSave"></ModalCategory>
+  <ModalCategory ref="modal" :action-type="currentActionType" :category="currentCategory" :on-save="handleSave"></ModalCategory>
 </template>
 
 <script>
@@ -101,10 +101,12 @@ export default {
       if (this.currentActionType === 'add') {
         // 新增邏輯
         const newCategory = { ...formData, id: this.categories.length + 1 }
+
         this.categories.push(newCategory)
       } else {
         // 編輯邏輯
         const index = this.categories.findIndex((category) => category.id === formData.id)
+
         if (index !== -1) {
           this.categories.splice(index, 1, { ...formData })
         }
@@ -115,7 +117,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../node_modules/bootstrap/scss/bootstrap.scss'; 
+@import '../../node_modules/bootstrap/scss/bootstrap.scss';
 
 .articleblock {
   margin-top: 40px;
@@ -131,8 +133,11 @@ export default {
   }
 }
 .d-grid {
-  margin-right: 95px;
+  margin-right: 55px;
   margin-top: 190px;
+  @include breakpoint(1280px) {
+    margin-right: 35px;
+  }
   img {
     margin-right: 5px;
   }
@@ -158,6 +163,5 @@ export default {
     background-color: $toggle-on;
     border: solid $toggle-on;
   }
- 
 }
 </style>
