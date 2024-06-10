@@ -24,19 +24,18 @@ export default {
 }
 </script>
 
-
 <style lang="scss" scoped>
-.inputBlock{
+.inputBlock {
   width: 50%;
   height: 40px;
   margin-top: 40px;
   margin-left: 170px;
   display: flex;
   align-items: center;
-  .form-label{
-    width: 20%;
+  .form-label {
+    width: 30%;
   }
-  .form-control{
+  .form-control {
     margin-left: 10px;
   }
 }
