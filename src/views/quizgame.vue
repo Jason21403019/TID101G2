@@ -7,72 +7,75 @@
       <img src="../imgs/quizGameImg/gamequiz_bg2-4.png" alt="" class="bg-img bg-img4" />
     </div>
     <div id="logo" class="logo">
-      <img src="@/imgs/logo/logo-w.png" alt="" />
+      <img src="../imgs/logo/logo-w.png" alt="" />
     </div>
     <div id="title" class="title">
       <h1>發掘你的調酒名單</h1>
     </div>
     <div id="text" class="text">
       <h2>
-        你今天首次來到酒吧 我們特地為你準備了這場不平凡的聲光饗宴。 可是，你知道你最適合的調酒是哪一款嗎？
-        讓我們來幫助你解答這個問題吧！ 一場發掘酒味與個人品味結合之旅 不再彷徨，也不再迷茫.... 品嚐屬於你的專屬饗宴
+        你今天首次來到酒吧 我們特地為你準備了這場不平凡的聲光饗宴。
+        可是，你知道你最適合的調酒是哪一款嗎？讓我們來幫助你解答這個問題吧！
+        一場發掘酒味與個人品味結合之旅 不再彷徨，也不再迷茫.... 品嚐屬於你的專屬饗宴
       </h2>
     </div>
     <div id="btn" class="btn">
-      <button class="button" data-text="Awesome">
+      <button class="button" @click="startQuiz" data-text="Awesome">
         <span class="actual-text">&nbsp;開始饗宴&nbsp;</span>
-        <span aria-hidden="true" class="hover-text">&nbsp;開始饗宴 &nbsp;</span>
+        <span aria-hidden="true" class="hover-text">&nbsp;開始&nbsp;</span>
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import gsap from 'gsap'
-import imagesLoaded from 'imagesloaded'
+import gsap from "gsap";
+import imagesLoaded from "imagesloaded";
 
 export default {
-  name: 'HeartAnimation',
   mounted() {
-    document.addEventListener('DOMContentLoaded', () => {
-      imagesLoaded('.bg-img', () => {
-        const images = document.querySelectorAll('.bg-img')
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 0 })
+    imagesLoaded(".bg-img", () => {
+      const images = document.querySelectorAll(".bg-img");
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 0 });
 
-        images.forEach((img, index) => {
-          tl.to(img, {
-            autoAlpha: 1,
-            duration: 2.5,
-            ease: 'power2.inOut',
-            onComplete: () => {
-              if (index === images.length - 1) {
-                gsap.to(images[0], {
-                  autoAlpha: 1,
-                  duration: 1.5,
-                  ease: 'power2.inOut',
-                  delay: 1
-                })
-                gsap.to(images[index], {
-                  autoAlpha: 0,
-                  duration: 1.5,
-                  delay: 4
-                })
-              }
+      images.forEach((img, index) => {
+        tl.to(img, {
+          autoAlpha: 1,
+          duration: 2.5,
+          ease: "power2.inOut",
+          onComplete: () => {
+            if (index === images.length - 1) {
+              gsap.to(images[0], {
+                autoAlpha: 1,
+                duration: 1.5,
+                ease: "power2.inOut",
+                delay: 1,
+              });
+              gsap.to(images[index], {
+                autoAlpha: 0,
+                duration: 1.5,
+                delay: 4,
+              });
             }
-          }).to(
-            img,
-            {
-              autoAlpha: 0,
-              duration: 1.5,
-              ease: 'power2.inOut'
-            },
-            '+=1.5'
-          )
-        })
-      })
-    })
-  }
-}
+          },
+        }).to(
+          img,
+          {
+            autoAlpha: 0,
+            duration: 1.5,
+            ease: "power2.inOut",
+          },
+          "+=1.5"
+        );
+      });
+    });
+  },
+  methods: {
+    startQuiz() {
+      this.$router.push("/quizgameQ&A");
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -143,8 +146,8 @@ body {
   border: none;
   cursor: pointer;
   --border-right: 6px;
-  --text-stroke-color: rgb(212, 51, 51);
-  --animation-color: #2ac32f;
+  --text-stroke-color: #cead82;
+  --animation-color: #f6f6f6;
   --fs-size: 2em;
   letter-spacing: 3px;
   text-decoration: none;
