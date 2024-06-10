@@ -94,9 +94,9 @@
 
   <ModalOrder
     ref="modal"
-    :actionType="currentActionType"
+    :action-type="currentActionType"
     :order="currentOrder"
-    :showCancelReason="showCancelReason"
+    :show-cancel-reason="showCancelReason"
     @save="handleSave"
   />
 </template>
@@ -206,4 +206,3 @@ export default {
   }
 }
 </style>
-

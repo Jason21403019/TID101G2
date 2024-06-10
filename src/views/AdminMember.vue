@@ -51,7 +51,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(member, index) in members" :key="member.id">
+        <tr v-for="member in members" :key="member.id">
           <th scope="row">{{ member.id }}</th>
           <td>{{ member.name }}</td>
           <td>{{ member.email }}</td>
@@ -62,9 +62,9 @@
             <div class="form-check form-switch">
               <input
                 :id="'flexSwitchCheckChecked' + member.id"
+                v-model="member.status"
                 class="form-check-input"
                 type="checkbox"
-                v-model="member.status"
               />
             </div>
           </td>
@@ -84,9 +84,9 @@
 
   <!-- 會員彈跳 -->
   <div
-    class="modal fade"
-    ref="memberModal"
     id="memberModal"
+    ref="memberModal"
+    class="modal fade"
     tabindex="-1"
     aria-labelledby="memberModalLabel"
     aria-hidden="true"
@@ -94,7 +94,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="memberModalLabel">會員查看</h1>
+          <h1 id="memberModalLabel" class="modal-title fs-5">會員查看</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -131,9 +131,9 @@
             <div class="form-check form-switch">
               <input
                 :id="'flexSwitchCheckChecked' + currentMember.id"
+                v-model="currentMember.status"
                 class="form-check-input"
                 type="checkbox"
-                v-model="currentMember.status"
               />
             </div>
           </div>
@@ -148,9 +148,9 @@
 
 <script>
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
-import AdminInput from '../components/AdminInput.vue'
-import AdminDateInput from '../components/AdminDateInput.vue'
 import AdminBtn from '../components/AdminBtn.vue'
+import AdminDateInput from '../components/AdminDateInput.vue'
+import AdminInput from '../components/AdminInput.vue'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
@@ -193,8 +193,10 @@ export default {
     },
     showModal() {
       const modalElement = this.$refs.memberModal
+
       if (modalElement) {
         const modal = new bootstrap.Modal(modalElement)
+
         modal.show()
       } else {
         console.error('memberModal reference is not found.')
