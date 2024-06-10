@@ -66,12 +66,12 @@
       <!-- 頁碼 -->
       <div class="page-normal">
         <span class="page-prev">&lt;</span>
-        <a @click="orderPage " >1</a>
-        <a @click="orderPage " >2</a>
-        <a @click="orderPage " >3</a>
-        <a @click="orderPage " >4</a>
-        <a @click="orderPage " >5</a>
-        <a @click="orderPage " >&gt;</a>
+        <a @click="orderPage">1</a>
+        <a @click="orderPage">2</a>
+        <a @click="orderPage">3</a>
+        <a @click="orderPage">4</a>
+        <a @click="orderPage">5</a>
+        <a @click="orderPage">&gt;</a>
       </div>
     </div>
   </section>
@@ -103,7 +103,7 @@ export default {
     aboutPage() {
       // window.location.href = '/about_us';
       this.$router.push('/member_order')
-    },
+    }
   }
 }
 </script>
