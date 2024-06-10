@@ -86,17 +86,26 @@ export default {
   padding: 50px;
   width: 50%;
   margin: 0 auto;
+  margin-top: 100px;
 
   @include breakpoint(1280px) {
     width: 60%;
   }
 
   @include breakpoint(820px) {
-    width: 80%;
+      width: 80%;
   }
 
   @include breakpoint(540px) {
-    width: 100%;
+      width: 100%;
+  }
+
+  @include breakpoint(430px){
+      padding: 20px;
+  }
+
+  @include breakpoint(375px){
+       padding: 10px;
   }
 
   p {
@@ -143,6 +152,10 @@ export default {
       text-align: center;
       padding: 20px;
 
+      @include breakpoint(430px){
+          padding: 10px;
+      }
+
       h3 {
         font-size: $fontSize_h3;
         font-family: $fontfamily;
@@ -153,7 +166,19 @@ export default {
       p {
         font-size: $fontSize_h5;
         margin-bottom: 10px;
+      
+
+        @include breakpoint(430px){
+            margin-bottom: 0;
+        }
+
+        @include breakpoint(375px){
+          font-size: $fontSize_p;
+          
+        }
+
       }
+
     }
 
     .data {
@@ -163,16 +188,20 @@ export default {
       padding: 30px;
       text-align: center;
 
-      @include breakpoint(430px) {
-        padding: 20px;
-      }
+        @include breakpoint(430px) {
+            padding: 10px;
+        }
+
+        @include breakpoint(375px){
+            width: 100%;
+        }
 
       .hello {
         font-size: $fontSize_p;
         margin-bottom: 10px;
 
         @include breakpoint(430px) {
-          font-size: $fontSize_h4;
+          font-size: $fontSize_p;
         }
       }
 
@@ -180,6 +209,10 @@ export default {
         font-size: $fontSize_h3;
         margin-bottom: 30px;
         font-weight: bold;
+
+        @include breakpoint(430px){
+          font-size: 1.5rem;
+        }
       }
 
       .r_time {
@@ -208,7 +241,11 @@ export default {
         line-height: 2;
         margin-bottom: 30px;
         font-weight: bold;
-      }
+
+          @include breakpoint(430px){
+            width: 40%;
+          }
+       }
 
       .btn_text {
         p {

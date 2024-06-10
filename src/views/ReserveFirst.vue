@@ -137,23 +137,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@mixin breakpoint($point) {
-  @media screen and (max-width: $point) {
-    @content;
-  }
-}
 
 .wrapper {
   margin: 0 auto;
   width: 100%;
   background-color: $whitelady;
+  padding-top: 130px;
   // border: 1px solid blue;
 
   .banner {
     width: 64%;
     height: 400px;
     margin: 0 auto;
-    margin-top: 50px;
+  
     // border: 1px solid green;
     background: url('../imgs/bookingImg/close-up-drink-bar2.jpg');
 
@@ -175,7 +171,7 @@ export default {
   }
 
   .title {
-    margin: 50px;
+    margin: 40px;
     text-align: center;
     // outline: 1px solid red;
 
@@ -189,6 +185,12 @@ export default {
       color: $campari;
       font-family: $fontfamily;
       font-weight: bold;
+      outline:1px solid red;
+
+      @include breakpoint(430px){
+        font-size: $fontSize_h2;
+      }
+
     }
 
     //captivate Intoxicat
@@ -197,14 +199,20 @@ export default {
       color: $campari;
       font-family: $fontfamily-en;
       font-weight: bold;
+
+      @include breakpoint(430px){
+        font-size: $fontSize_h4;
+      }
     }
   }
 
   //預約座位
   .reserve {
+    margin-bottom: 20px;
     .seat {
       display: flex;
       justify-content: center;
+      align-items: flex-end;
       margin: 0 auto;
       padding: 10px;
       // border: 1px solid blue;
@@ -234,8 +242,8 @@ export default {
         // border: 1px solid red;
 
         @include breakpoint(430px) {
-          width: 30px;
-          height: 30px;
+          width: 35px;
+          height: 35px;
         }
       }
 
@@ -246,6 +254,10 @@ export default {
         font-family: $fontfamily;
         font-weight: bold;
         margin-top: 10px;
+
+        @include breakpoint(430px){
+              font-size: 1.5rem;
+        }
       }
     }
   }
@@ -273,13 +285,18 @@ export default {
 
   @include breakpoint(430px) {
     width: 100%;
-    margin-top: 30px;
   }
+
+
   //提醒事項
   h1 {
     font-family: $fontfamily;
     font-size: $fontSize_h2;
     margin-bottom: 15px;
+
+    @include breakpoint(430px){
+      font-size: $fontSize_h3;
+    }
   }
 
   //消費方式細項
@@ -291,11 +308,13 @@ export default {
       line-height: 45px;
 
       @include breakpoint(430px) {
-        line-height: 30px;
+          font-size: $fontSize_h4;
+          line-height: 30px;
       }
 
       @include breakpoint(390px) {
-        line-height: 2;
+          font-size: 1rem;
+          line-height: 1.5;
       }
 
       @include breakpoint(375px) {
@@ -326,18 +345,29 @@ export default {
 
   p {
     font-family: $fontfamily;
-    //font-size:$fontSize_h2;
-    font-size: 2.625rem;
+    font-size:$fontSize_h2;
     margin: 10px 0 10px 0;
     text-align: left;
     letter-spacing: $letterspacing;
     font-weight: bold;
     color: $campari;
 
+    outline: 1px solid green;
+
     display: flex;
     justify-content: start;
     align-items: center;
-  }
+
+    @include breakpoint(430px){
+        font-size:$fontSize_h3;
+    }
+
+    @include breakpoint(375px){
+        font-size:$fontSize_h5;
+    }
+
+
+   }
 
   input {
     width: 100%;
@@ -347,8 +377,10 @@ export default {
     margin-bottom: 20px;
 
     @include breakpoint(540px) {
-      padding: 15px;
+        padding: 15px;
     }
+
+    
   }
 
   img {
@@ -383,7 +415,7 @@ export default {
       margin-bottom: 20px;
       font-size: $fontSize_h4;
       line-height: 1.5;
-      border-color: $campari;
+      border:2px solid $campari;
       border-radius: 8px;
       appearance: none;
       -webkit-appearance: none;
@@ -392,12 +424,22 @@ export default {
         no-repeat right 10px center;
       background-size: 20px 20px;
 
-      @include breakpoint(540px) {
-        padding: 15px;
-      }
-
+    
       @include breakpoint(820px) {
         font-size: $fontSize_h3;
+      }
+
+      @include breakpoint(540px) {
+         padding: 15px;
+      }
+
+      @include breakpoint(430px){
+         font-size:1.5rem;
+      }
+
+      @include breakpoint(375px){
+         font-size:$fontSize_h4;
+         
       }
     }
 
@@ -419,7 +461,7 @@ export default {
       }
 
       @include breakpoint(430px) {
-        font-size: $fontSize_h3;
+        font-size: $fontSize_h4;
       }
     }
 
@@ -446,7 +488,7 @@ export default {
       .time {
         width: 50%;
         input {
-          padding: 13px;
+          padding: 15px;
         }
 
         @include breakpoint(540px) {

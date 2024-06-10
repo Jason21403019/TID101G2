@@ -1181,7 +1181,7 @@ export default {
               align-items: center;
               padding: 20px 80px;
 
-              @include breakpoint( 1280px) {
+              @include breakpoint(1280px) {
                   padding: 20px 60px;
               }
 
