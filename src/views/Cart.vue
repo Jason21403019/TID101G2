@@ -651,7 +651,8 @@ export default {
                   }
 
                   @include breakpoint(390px){
-                      margin-left: 25px;
+                      margin-left: 15px;
+                      font-size: 1.5rem;
                   }
 
                   @include breakpoint(375px){
@@ -690,16 +691,21 @@ export default {
           .privacy {
               display: flex;
               align-items: center;
+              justify-content: center;
               margin-left: 30px;
               padding: 10px;
 
-              @include breakpoint( 1024px) {
+              @include breakpoint(1024px) {
                     padding: 0;             
-                }
+             }
 
-              @include breakpoint( 430px){
+              @include breakpoint(430px){
                     margin-left: 10px;
                     padding: 0;
+              }
+
+              @include breakpoint(375px){
+                    margin-left: 5px;
               }
 
               input {
@@ -710,6 +716,7 @@ export default {
                     width: 15px;
                     height: 15px;
                   }
+
               }
 
               p {
@@ -728,7 +735,9 @@ export default {
                    @include breakpoint( 430px){
                         font-size: $fontSize_p;
                         padding: 0;
+                        margin: 0 0 10px 5px;
                    }
+
               }
 
           }
@@ -933,7 +942,8 @@ export default {
                                       height: 20px;
                                   }
                                   @include breakpoint(390px){
-                                      height: 100%;
+                                      width: 25px;
+                                      height: 25px;
                                   }
                                  
                               }
@@ -1175,7 +1185,7 @@ export default {
                   }
               }
 
-          }
+           }
 
           .pay_method{
               display: flex;
@@ -1258,8 +1268,12 @@ export default {
               align-items: center;
               padding: 20px 80px;
 
-              @include breakpoint( 1280px) {
+              @include breakpoint(1280px) {
                   padding: 20px 50px;
+              }
+
+              @include breakpoint(430px){
+                   padding: 10px 30px;
               }
 
 
