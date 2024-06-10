@@ -16,7 +16,9 @@
                 <label for="password">密碼</label>
                 <input id="password" v-model="password" type="password" class="form-control" placeholder="請輸入密碼" />
               </div>
-              <button type="submit" class="btn btn-primary">登入</button>
+              <router-link to="/admin">
+                <button type="submit" class="btn btn-primary">登入</button>
+              </router-link>
             </form>
           </div>
         </div>
