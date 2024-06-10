@@ -1,11 +1,11 @@
 <template>
   <div>
     <nav>
-      <ul>
-        <li @click="currentView = 'accountInfo'">帳戶資訊</li>
-        <li @click="currentView = 'viewOrders'">查看訂單</li>
-        <li @click="currentView = 'viewReservations'">查看預約</li>
-        <li @click="currentView = 'coupons'">優惠卷</li>
+      <ul class="member_nav">
+        <li><router-link to="/member" class="link">帳戶資訊</router-link></li>
+        <li><router-link to="/member_order" class="link">查看訂單</router-link></li>
+        <li><router-link to="/member_reserve" class="link">查看預約</router-link></li>
+        <li><router-link to="/member_voucher" class="link">優惠卷</router-link></li>
       </ul>
     </nav>
   </div>
@@ -16,21 +16,25 @@ export default {
   name: 'MemberMenu',
   data() {
     return {
-      currentView: 'accountInfo'
+      currentView: 'member'
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.member_nav {
+  border-radius: 4px;
+  background-color: $ramos-gin-fizz;
+  margin: 20px 50px;
+}
 nav ul {
   list-style-type: none;
-  padding: 20px 50px;
+  
 }
-
-nav li {
-  background-color: $ramos-gin-fizz;
-  color: $blackvevet;
+.link {
+  display: block; /* 塊級顯示，方便整個 li 區域都能點擊 */
+  color: $blackvevet; /* 使用變量定義的顏色 */
   padding: 15px 16px;
   border-bottom: 1px solid $blackvevet;
   width: 20vw;
@@ -38,10 +42,10 @@ nav li {
   font-size: $fontSize_h4;
   font-family: $fontfamily;
   font-weight: bold;
-  
+  text-decoration: none; /* 移除下劃線 */
 }
 
-nav li:hover {
+.link:hover {
   color: $irishcoffee;
 }
 </style>

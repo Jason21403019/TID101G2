@@ -77,9 +77,24 @@ export default {
   }
   input {
     width: auto;
+    height: 5vh;
+    border: 0;
+    border-radius: 4px;
   }
   button {
-    width: 100px;
+    margin-top: 20px;
+    width: 13vw;
+    background-color: $ramos-gin-fizz;
+    color: $campari;
+    padding: 5px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-family: $fontfamily;
+    border: 0;
+  }
+  button:hover {
+    background-color: $irishcoffee;
+    color: $ramos-gin-fizz;
   }
 }
 </style>
