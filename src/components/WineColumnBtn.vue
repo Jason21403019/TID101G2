@@ -11,7 +11,7 @@ export default {
   name: 'ReadMoreButton',
   methods: {
     handleClick() {
-      console.log('Read More button clicked')
+      // console.log('Read More button clicked')
     }
   }
 }

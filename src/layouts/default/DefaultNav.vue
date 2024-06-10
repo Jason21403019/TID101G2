@@ -34,7 +34,9 @@
               <router-link to="/product" class="menu__link" @click="closeHamburger"
                 ><span class="item4">熱門商品</span></router-link
               >
-              <router-link to="/" class="menu__link" @click="closeHamburger"><span class="item5">測驗遊戲</span></router-link>
+              <router-link to="/quizgame" class="menu__link" @click="closeHamburger"
+                ><span class="item5">測驗遊戲</span></router-link
+              >
               <router-link to="/wine_column" class="menu__link" @click="closeHamburger"
                 ><span class="item6">酒品專欄</span></router-link
               >
@@ -62,7 +64,7 @@ export default {
   },
   computed: {
     currentPath() {
-      console.log(this.$route)
+      // console.log(this.$route)
 
       return this.$route.name
     },
@@ -236,7 +238,7 @@ export default {
         justify-content: center;
         align-items: center;
         margin: 0.15rem 14rem;
-        padding: 1.25rem 3rem;
+        // padding: 1.25rem 3rem;
         // border: 1px solid red;
         color: rgba($color: $whitelady, $alpha: 0.5);
 
@@ -272,8 +274,6 @@ export default {
         }
         .item1 {
           position: relative;
-          // top: -5rem;
-          // left: -5rem;
           &::before {
             content: 'About';
             position: absolute;
@@ -285,8 +285,6 @@ export default {
         }
         .item2 {
           position: relative;
-          // top: -4rem;
-          // left: 5rem;
           &::before {
             content: 'Menu';
             position: absolute;
@@ -298,8 +296,6 @@ export default {
         }
         .item3 {
           position: relative;
-          // top: -3rem;
-          // left: -5rem;
           &::before {
             content: 'Booking';
             position: absolute;
@@ -311,8 +307,6 @@ export default {
         }
         .item4 {
           position: relative;
-          // top: -2rem;
-          // left: 5rem;
           &::before {
             content: 'Product';
             position: absolute;
@@ -324,8 +318,6 @@ export default {
         }
         .item5 {
           position: relative;
-          // top: -1rem;
-          // left: -5rem;
           &::before {
             content: 'QuizGame';
             position: absolute;
@@ -337,8 +329,6 @@ export default {
         }
         .item6 {
           position: relative;
-          // top: 0rem;
-          // left: 5rem;
           &::before {
             content: 'WineColumn';
             position: absolute;
@@ -349,8 +339,6 @@ export default {
         }
         .item7 {
           position: relative;
-          // top: 2rem;
-          // left: -5rem;
           &::before {
             content: 'Q&A';
             position: absolute;

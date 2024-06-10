@@ -1,5 +1,5 @@
 <template>
-  <li class="wine__category-ul-item" data-aos="zoom-in">
+  <li class="wine__category-ul-item" :class="{ active: isActive }" data-aos="zoom-in" @click="handleClick">
     <router-link :to="item.link" class="wine__link">
       <div class="wine__link-img">
         <img :src="item.imgSrc" :alt="item.altText" />
@@ -16,6 +16,16 @@ export default {
     item: {
       type: Object,
       required: true
+    },
+    isActive: {
+      type: Boolean,
+      default: false
+    }
+  },
+  emits: ['item-clicked'],
+  methods: {
+    handleClick() {
+      this.$emit('item-clicked', this.item.link)
     }
   }
 }
@@ -46,7 +56,8 @@ export default {
     height: 230px;
     &-text {
       position: absolute;
-      font-size: $fontSize_h2;
+      font-size: $fontSize_h3;
+      letter-spacing: $letterspacing;
       font-family: $fontfamily-en;
       color: $ramos-gin-fizz;
       z-index: 2;
@@ -79,6 +90,9 @@ export default {
       }
     }
   }
+}
+.wine__category-ul-item.active {
+  background-color: #ffcc00 !important;
 }
 //   }
 // }

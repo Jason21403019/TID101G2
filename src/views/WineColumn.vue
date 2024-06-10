@@ -4,14 +4,19 @@
       <WineColumnTitle :title-cn="title_cn" :title-en="title_en" />
       <section class="wine__category">
         <ul class="wine__category-ul">
-          <WineColumnCategory v-for="(item, index) in wineCategories" :key="index" :item="item" />
+          <WineColumnCategory
+            v-for="(item, index) in wineCategories"
+            :key="index"
+            :item="item"
+            @item-clicked="handleItemClicked"
+          />
         </ul>
       </section>
       <div class="dropdown" @click="toggleDropdown">
         <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle" type="button" aria-expanded="false">
           {{ selectedOption }}
         </button>
-        <ul class="dropdown-menu" :class="{ show: isOpen }" aria-labelledby="dropdownMenuButton">
+        <ul class="dropdown-menu" :class="{ show: isOpen }">
           <li @click.stop="selectOption('最新文章', $event)"><a class="dropdown-item" href="">最新文章</a></li>
           <li @click.stop="selectOption('熱門文章', $event)"><a class="dropdown-item" href="">熱門文章</a></li>
           <li @click.stop="selectOption('本日熱門', $event)"><a class="dropdown-item" href="">本日熱門</a></li>
@@ -37,9 +42,8 @@ export default {
   components: { WineColumnMasonry, WineColumnTitle, WineColumnCategory },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      // 在路由變更後刷新 AOS
       vm.$nextTick(() => {
-        AOS.refreshHard() // 使用 refreshHard 確保 AOS 完全重新計算
+        AOS.refreshHard()
       })
     })
   },
@@ -51,13 +55,13 @@ export default {
       selectedOption: '最新文章',
       wineCategories: [
         {
-          link: '/',
+          link: '/wine_column_wk',
           imgSrc: bottleWine,
           altText: '',
-          text: '酒品知識'
+          text: '酒類知識'
         },
         {
-          link: '/',
+          link: '/wine_column_news',
           imgSrc: newsReport,
           altText: '',
           text: '國外報導'
@@ -93,6 +97,11 @@ export default {
     },
     toggleDropdown() {
       this.isOpen = !this.isOpen
+    },
+    handleItemClicked(link) {
+      console.log('Item clicked with link:', link)
+      this.activeLink = link
+      this.$router.push(link)
     }
   }
 }
@@ -129,13 +138,15 @@ export default {
     .btn {
       background: $ramos-gin-fizz;
       color: $campari;
+      letter-spacing: $letterspacing;
     }
     .dropdown-menu {
-      min-width: 128px;
+      min-width: 159px;
       position: absolute;
       top: 100%;
       right: 0;
       background: $ramos-gin-fizz;
+      letter-spacing: $letterspacing;
       li {
         padding: 0.2rem 0.2rem;
         .dropdown-item {
@@ -143,7 +154,8 @@ export default {
           padding: 0.55rem 0;
           @include border-radius(8px);
           padding-left: 0.55rem;
-
+          border: 1px solid red;
+          letter-spacing: $letterspacing;
           &:hover {
             background: $negroni;
             color: $ramos-gin-fizz;

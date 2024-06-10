@@ -33,14 +33,16 @@ export default {
   color: $ramos-gin-fizz;
   margin: 2rem 0;
   &-cn {
-    font-size: $fontSize_h1;
+    font-size: $fontSize_h2;
     font-family: $fontfamily;
     font-weight: bold;
+    letter-spacing: $letterspacing;
   }
   &-en {
-    font-size: $fontSize_h3;
+    font-size: $fontSize_h4;
     font-family: $fontfamily-en;
     align-self: end;
+    letter-spacing: $letterspacing;
     margin-left: 1rem;
     color: rgba($color: $ramos-gin-fizz, $alpha: 0.5);
   }

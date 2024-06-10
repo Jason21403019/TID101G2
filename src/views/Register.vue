@@ -7,68 +7,64 @@
         </button>
         <button class="ral__btns-btn ral__container-loginbtn" :class="{ active: !isRegister }" @click="showLogin">登入</button>
       </div>
-      <transition name="fade" mode="out-in">
-        <div v-if="isRegister" class="register__container">
-          <div class="register__container-title">
-            <h3>會員募集中 <br />免費註冊會員拿500元折價券</h3>
-          </div>
-          <div class="register__container-name">
-            <label for="name">姓名</label>
-            <input id="name" type="text" placeholder="請輸入姓名" />
-          </div>
-          <div class="register__container-phone">
-            <label for="phone">電話</label>
-            <input id="phone" type="tel" placeholder="請輸入電話" />
-          </div>
-          <div class="register__container-email">
-            <label for="email">電子郵件</label>
-            <input id="email" type="email" placeholder="請輸入電子郵件" />
-          </div>
-          <div class="register__container-password">
-            <label for="password">密碼</label>
-            <input id="password" type="password" placeholder="請輸入密碼" />
-          </div>
-          <div class="register__container-confirmpassword">
-            <label for="password">密碼</label>
-            <input id="password" type="password" placeholder="請輸入密碼" />
-          </div>
-          <div class="register__container-haveaccount">
-            <p>已經有帳號了嗎？<button @click="showLogin">登入</button></p>
-          </div>
-          <div class="register__container-submit">
-            <button>註冊</button>
-          </div>
+      <div v-if="isRegister" class="register__container">
+        <div class="register__container-title">
+          <h3>會員募集中 <br />免費註冊會員拿500元折價券</h3>
         </div>
-      </transition>
-      <transition name="fade" mode="in-out">
-        <div v-if="!isRegister" class="login__container">
-          <div class="login__container-title">
-            <h3>快速登入</h3>
-          </div>
-          <div class="login__container-googleaccount">
-            <button class="login__googleaccount-btn">
-              <img src="../imgs/icon/google.svg" alt="" />
-              <span>使用Google帳號登入</span>
-            </button>
-          </div>
-          <div class="login__container-email">
-            <label for="email">電子郵件</label>
-            <input id="email" type="email" placeholder="請輸入電子郵件" />
-          </div>
-          <div class="login__container-password">
-            <label for="password">密碼</label>
-            <input id="password" type="password" placeholder="請輸入密碼" />
-          </div>
-          <div class="login__container-noaccount">
-            <p>沒有帳號嗎？<button @click="showRegister">註冊</button></p>
-            <p>忘記密碼嗎？<button @click="showFirstPopup = true">重設密碼</button></p>
-            <ForgetPasswordPop :isvible="showFirstPopup" @close-popup="showFirstPopup = false" />
-          </div>
-          <div class="login__container-submit">
-            <button>登入</button>
-          </div>
+        <div class="register__container-name">
+          <label for="name">姓名</label>
+          <input id="name" type="text" placeholder="請輸入姓名" />
         </div>
-      </transition>
+        <div class="register__container-phone">
+          <label for="phone">電話</label>
+          <input id="phone" type="tel" placeholder="請輸入電話" />
+        </div>
+        <div class="register__container-email">
+          <label for="email">電子郵件</label>
+          <input id="email" type="email" placeholder="請輸入電子郵件" />
+        </div>
+        <div class="register__container-password">
+          <label for="password">密碼</label>
+          <input id="password" type="password" placeholder="請輸入密碼" />
+        </div>
+        <div class="register__container-confirmpassword">
+          <label for="password">確認密碼</label>
+          <input id="password" type="password" placeholder="請再次輸入密碼" />
+        </div>
+        <div class="register__container-haveaccount">
+          <p>已經有帳號了嗎？<button @click="showLogin">登入</button></p>
+        </div>
+        <div class="register__container-submit">
+          <button>註冊</button>
+        </div>
+      </div>
+      <div v-if="!isRegister" class="login__container">
+        <div class="login__container-title">
+          <h3>快速登入</h3>
+        </div>
+        <div class="login__container-googleaccount">
+          <button class="login__googleaccount-btn">
+            <img src="../imgs/icon/google.svg" alt="" />
+            <span>使用Google登入</span>
+          </button>
+        </div>
+        <div class="login__container-email">
+          <label for="email">電子郵件</label>
+          <input id="email" type="email" placeholder="請輸入電子郵件" />
+        </div>
+        <div class="login__container-password">
+          <label for="password">密碼</label>
+          <input id="password" type="password" placeholder="請輸入密碼" />
+        </div>
+        <div class="login__container-noaccount">
+          <p>沒有帳號嗎？<button @click="showRegister">註冊</button></p>
+          <p>忘記密碼嗎？<button @click="showFirstPopup = true">重設密碼</button></p>
+          <ForgetPasswordPop :isvible="showFirstPopup" @close-popup="showFirstPopup = false" />
+        </div>
+        <div class="login__container-submit">
+          <button>登入</button>
+        </div>
+      </div>
     </div>
   </body>
 </template>
@@ -103,7 +99,6 @@ export default {
   line-height: $lineheight;
   font-family: $fontfamily;
   padding-bottom: 3rem;
-
   .ral__container {
     // border: 1px solid red;
     width: 50%;
@@ -139,20 +134,14 @@ export default {
     &-registerbtn {
       // border: 1px solid blue !important;
       background: $irishcoffee;
+      letter-spacing: $letterspacing;
     }
     &-loginbtn {
       background: transparent;
       color: $campari;
+      letter-spacing: $letterspacing;
       // border: 1px solid red !important;
     }
-  }
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.1s;
-  }
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
   }
   .register__container {
     // border: 1px solid green;
@@ -173,6 +162,7 @@ export default {
         font-size: $fontSize_h4;
         font-family: $fontfamily;
         color: $campari;
+        letter-spacing: $letterspacing;
       }
     }
     &-name,
@@ -187,36 +177,46 @@ export default {
         font-size: $fontSize_h4;
         padding-bottom: 0.5rem;
         padding: 0.5rem 0.25rem;
+        letter-spacing: $letterspacing;
       }
       input {
         width: 350px;
-        height: 30px;
+        height: 20px;
         margin-bottom: 0.5rem;
         border: 1px solid green;
-        padding: 1.5rem 1rem;
+        padding: 1.15rem 1rem;
         border: none;
         outline: none;
         @include border-radius(8px);
         font-size: $fontSize_h4;
         background-color: $whitelady;
+        letter-spacing: $letterspacing;
+        &::placeholder {
+          color: rgba($color: $campari, $alpha: 0.5);
+        }
       }
       // border: 1px solid red;
     }
     &-haveaccount {
-      margin-right: 11rem;
-      margin-bottom: 2.5rem;
+      margin-right: 3rem;
+      margin-bottom: 2rem;
       // padding: 1rem 0;
       color: $campari;
 
       p {
+        letter-spacing: $letterspacing;
         font-size: $fontSize_p;
         button {
           color: $campari;
+          letter-spacing: $letterspacing;
+          display: inline-block;
+          text-align: center;
           outline: none;
           border: none;
           background: transparent;
           cursor: pointer;
           text-decoration: underline;
+          text-underline-offset: 3px;
         }
       }
     }
@@ -230,6 +230,7 @@ export default {
         line-height: 50px;
         font-size: $fontSize_h3;
         background: $whitelady;
+        letter-spacing: $letterspacing;
         @include border-radius(8px);
         cursor: pointer;
         margin-bottom: 2rem;
@@ -251,6 +252,7 @@ export default {
         // border: 1px solid red;
         text-align: center;
         font-size: $fontSize_h4;
+        letter-spacing: $letterspacing;
         font-family: $fontfamily;
       }
     }
@@ -269,13 +271,16 @@ export default {
         border: none;
         width: 350px;
         padding: 0.5rem 0.75rem;
-        font-size: $fontSize_h4;
+        font-size: $fontSize_p;
+        letter-spacing: $letterspacing;
         background: $whitelady;
         @include border-radius(8px);
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
+        letter-spacing: $letterspacing;
+        color: $campari;
         img {
           padding-top: 3px;
           width: 30px;
@@ -283,10 +288,10 @@ export default {
         }
         span {
           margin-left: 0.5rem;
+          color: $campari;
         }
       }
     }
-
     &-email,
     &-password {
       display: flex;
@@ -295,29 +300,35 @@ export default {
         font-size: $fontSize_h4;
         padding-bottom: 0.5rem;
         padding: 0.5rem 0.25rem;
+        letter-spacing: $letterspacing;
+        color: $campari;
       }
       input {
         width: 350px;
         height: 30px;
         margin-bottom: 0.5rem;
         // border: 1px solid green;
-        padding: 1.5rem 1rem;
+        padding: 1.15rem 1rem;
         border: none;
         outline: none;
         @include border-radius(8px);
         font-size: $fontSize_h4;
+        letter-spacing: $letterspacing;
+        color: $campari;
         background-color: $whitelady;
         &::placeholder {
-          color: $campari;
+          color: rgba($color: $campari, $alpha: 0.5);
         }
       }
       // border: 1px solid red;
     }
     &-noaccount {
-      margin-right: 11rem;
+      margin-right: 3rem;
       // padding: 1rem 0;
       p {
         font-size: $fontSize_p;
+        letter-spacing: $letterspacing;
+        color: $campari;
         button {
           color: $campari;
           outline: none;
@@ -325,6 +336,11 @@ export default {
           background: transparent;
           cursor: pointer;
           text-decoration: underline;
+          letter-spacing: $letterspacing;
+          color: $campari;
+          text-align: center;
+          text-decoration: underline;
+          text-underline-offset: 3px;
         }
       }
     }
@@ -337,6 +353,8 @@ export default {
         line-height: 50px;
         font-size: $fontSize_h3;
         background: $whitelady;
+        letter-spacing: $letterspacing;
+        color: $campari;
         @include border-radius(8px);
         cursor: pointer;
         margin: 2rem;

@@ -79,13 +79,13 @@ export default {
       category: '酒品知識',
       title2: '簡易草莓瑪莉調酒配方',
       category2: '調酒新世界',
-      title3: '介紹日本清酒歷史故事',
+      title3: '日本清酒歷史故事',
       category3: '酒品知識',
-      title4: '探索釀造葡萄酒的秘密',
+      title4: '探索葡萄酒的秘密',
       category4: '國外報導',
-      title5: '在四月份的櫻花樹下品嘗清酒',
+      title5: '在櫻花樹下品嘗清酒',
       category5: '國外報導',
-      title6: '一同品嚐來自世界各地調酒師的最佳調酒',
+      title6: '品嚐來自世界各地調酒師的最佳調酒',
       category6: '調酒新世界'
     }
   }
@@ -138,7 +138,8 @@ export default {
           top: 2rem;
           left: 1rem;
           z-index: 2;
-          font-size: $fontSize_h3;
+          font-size: $fontSize_h4;
+          letter-spacing: $letterspacing;
         }
         img {
           width: 100%;
@@ -150,7 +151,8 @@ export default {
           bottom: 1rem;
           right: 1rem;
           z-index: 2;
-          font-size: 1rem;
+          font-size: $fontSize_h5;
+          letter-spacing: $letterspacing;
           color: white;
         }
         &:hover .read-more-button {
@@ -181,7 +183,8 @@ export default {
           top: 2rem;
           left: 1rem;
           z-index: 2;
-          font-size: $fontSize_h3;
+          font-size: $fontSize_h4;
+          letter-spacing: $letterspacing;
         }
         img {
           width: 100%;
@@ -194,7 +197,8 @@ export default {
           bottom: 1rem;
           right: 1rem;
           z-index: 2;
-          font-size: 1rem;
+          font-size: $fontSize_h5;
+          letter-spacing: $letterspacing;
           color: white;
         }
         &:hover .read-more-button {
@@ -239,7 +243,8 @@ export default {
             top: 2rem;
             left: 1rem;
             z-index: 2;
-            font-size: $fontSize_h3;
+            font-size: $fontSize_h4;
+            letter-spacing: $letterspacing;
           }
           img {
             width: 100%;
@@ -252,7 +257,8 @@ export default {
             bottom: 1rem;
             right: 1rem;
             z-index: 2;
-            font-size: 1rem;
+            font-size: $fontSize_h5;
+            letter-spacing: $letterspacing;
             color: white;
           }
           &:hover .read-more-button {
@@ -283,7 +289,8 @@ export default {
             top: 2rem;
             left: 1rem;
             z-index: 2;
-            font-size: $fontSize_h3;
+            font-size: $fontSize_h4;
+            letter-spacing: $letterspacing;
           }
           img {
             width: 100%;
@@ -296,7 +303,8 @@ export default {
             bottom: 1rem;
             right: 1rem;
             z-index: 2;
-            font-size: 1rem;
+            font-size: $fontSize_h5;
+            letter-spacing: $letterspacing;
             color: white;
           }
           &:hover .read-more-button {
@@ -328,7 +336,8 @@ export default {
           top: 2rem;
           left: 1rem;
           z-index: 2;
-          font-size: $fontSize_h3;
+          font-size: $fontSize_h4;
+          letter-spacing: $letterspacing;
         }
         img {
           width: 100%;
@@ -341,7 +350,9 @@ export default {
           bottom: 1rem;
           right: 1rem;
           z-index: 2;
-          font-size: 1rem;
+          font-size: $fontSize_h5;
+          letter-spacing: $letterspacing;
+
           color: white;
         }
         &:hover .read-more-button {
@@ -374,7 +385,8 @@ export default {
       top: 2rem;
       left: 1rem;
       z-index: 2;
-      font-size: $fontSize_h3;
+      font-size: $fontSize_h4;
+      letter-spacing: $letterspacing;
     }
     img {
       width: 100%;
@@ -387,7 +399,9 @@ export default {
       bottom: 1rem;
       right: 1rem;
       z-index: 2;
-      font-size: 1rem;
+      font-size: $fontSize_h5;
+      letter-spacing: $letterspacing;
+
       color: white;
     }
     &:hover .read-more-button {

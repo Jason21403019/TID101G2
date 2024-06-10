@@ -66,6 +66,42 @@ const routes = [
       layout: 'default'
     }
   },
+  // 酒類知識
+  {
+    path: '/wine_column_wk',
+    name: 'WineColumnWK',
+    component: () => import('../views/WineColumnWK.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
+  // 國外報導
+  {
+    path: '/wine_column_news',
+    name: 'WineColumnNews',
+    component: () => import('../views/WineColumnNews.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
+  // 調酒新世界
+  {
+    path: '/wine_column_nc',
+    name: 'WineColumnNC',
+    component: () => import('../views/WineColumnNC.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
+  // 文章頁面
+  {
+    path: '/wine_article',
+    name: 'WineArticle',
+    component: () => import('../views/WineArticle.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
   // 熱門商品
   {
     path: '/product',
