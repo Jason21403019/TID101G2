@@ -120,6 +120,15 @@ const routes = [
       layout: 'default'
     }
   },
+  // 商品子頁面
+  {
+    path: '/product_subpages',
+    name: 'ProductSubpages',
+    component: () => import('../views/ProductSubpages.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
   // 購物車
   {
     path: '/cart',
@@ -139,11 +148,74 @@ const routes = [
       layout: 'default'
     }
   },
+  // 測驗遊戲Q&A
+  {
+    path: '/quizgameQ&A',
+    name: 'QuizgameQ&A',
+    component: () => import('../views/QuizGameQ&A.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
+  // 測驗遊戲結果
+  {
+    path: '/resultpage',
+    name: 'Resultpage',
+    component: () => import('../views/Resultpage.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
   // 註冊
   {
     path: '/register',
     name: 'Register',
     component: () => import('../views/Register.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
+  // 會員專區
+  {
+    path: '/member',
+    name: 'Member',
+    component: () => import('../views/MemberVoucher.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
+  // 會員專區帳戶資訊
+  // {
+  //   path: '/member_account',
+  //   name: 'MemberAccount',
+  //   component: () => import('../views/MemberAccount.vue'),
+  //   meta: {
+  //     layout: 'default'
+  //   }
+  // },
+  // 會員專區查看訂單
+  // {
+  //   path: '/member_order',
+  //   name: 'MemberOrder',
+  //   component: () => import('../views/MemberOrde.vue'),
+  //   meta: {
+  //     layout: 'default'
+  //   }
+  // },
+  // 會員專區查看預約
+  {
+    path: '/member_reserve',
+    name: 'MemberReserve',
+    component: () => import('../views/MemberReserve.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
+  // 會員專區優惠卷
+  {
+    path: '/member_voucher',
+    name: 'MemberVoucher',
+    component: () => import('../views/MemberVoucher.vue'),
     meta: {
       layout: 'default'
     }
