@@ -29,7 +29,7 @@ export default {
   display: flex;
   align-items: center;
   .form-label {
-    width: 20%;
+    width: 30%;
   }
   .form-control {
     margin-left: 10px;

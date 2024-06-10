@@ -43,7 +43,7 @@ export default {
     display: flex;
     flex-direction: column;
     margin-right: 10px;
-    width: 20%;
+    width: 30%;
     // align-items: center;
   }
   span {
