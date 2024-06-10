@@ -1,5 +1,5 @@
 <template>
-  <button class="admin_bulkbtn" type="button">
+  <button class="admin_bulkbtn" type="button" @click="handleClickEvent">
     <slot name="bulkicon"></slot>
     <slot name="bulktext"></slot>
   </button>
@@ -12,6 +12,13 @@ export default {
     handleClick: {
       type: Function,
       required: true
+    }
+  },
+  methods: {
+    handleClickEvent() {
+      if (this.handleClick && typeof this.handleClick === 'function') {
+        this.handleClick()
+      }
     }
   }
 }
