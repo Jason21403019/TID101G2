@@ -13,7 +13,7 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
           <li><router-link class="dropdown-item" to="/admin_panel">個人資料</router-link></li>
-          <li><a class="dropdown-item" href="#">登出</a></li>
+          <li><router-link class="dropdown-item" to="/admin_login">登出</router-link></li>
         </ul>
       </div>
     </div>
