@@ -3,7 +3,7 @@
     <div class="searchButton">
       <input type="text" v-model="search" placeholder="Search" />
       <button class="search" @click="searchData">
-        <img src="src/imgs/icon/icon_admin-search.svg" alt="" />
+        <img src="../imgs/icon/icon_admin-search.svg" alt="" />
       </button>
     </div>
     <section class="productInfo">
