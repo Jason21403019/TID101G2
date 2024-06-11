@@ -1,6 +1,7 @@
 <template>
   <main id="commodity_tab">
     <div class="searchButton">
+      <h4><router-link to="/">回首頁</router-link> > 全部商品</h4>
       <input type="text" v-model="search" placeholder="Search" />
       <button class="search" @click="searchData">
         <img src="../imgs/icon/icon_admin-search.svg" alt="" />
@@ -16,8 +17,14 @@
           @click="changeTab(tab.id)"
         >
           <!-- @click="currentTab = tab.id" -->
-          {{ tab.name }}
+          <h1>{{ tab.name }}</h1>
         </button>
+        <!-- <label></label> -->
+        <select>
+          <option v-for="tab in tabs">
+            <h1>{{ tab.name }}</h1>
+          </option>
+        </select>
       </section>
 
       <section class="test">
@@ -117,10 +124,15 @@ export default {
     changeTab(tabId) {
       this.currentTab = tabId
     }
-  },
-  created() {
-    // 動態註冊組件
-    /*
+  }
+  // created() {
+  //   // 根据屏幕宽度动态修改 tabs 数组，移除 tab1
+  //   if (window.innerWidth < 768) {
+  //     this.tabs = this.tabs.filter((tab) => tab.id !== 'tab1')
+  //   }
+  // }
+  // 動態註冊組件
+  /*
     const info = {}
     this.tabs.forEach((tab) => {
       info[`tab${tab.id}_content`] = {
@@ -143,7 +155,6 @@ export default {
     // 將動態生成的組件分配給組件對象
     this.$options.components = { ...this.$options.components, ...info }
     */
-  }
 }
 </script>
 
@@ -166,9 +177,37 @@ export default {
 #tabName {
   width: 300px;
   font-weight: bold;
+  border-radius: 10px;
   @include breakpoint(mobile) {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  button {
+    @include breakpoint(mobile) {
+      width: 33%;
+
+      display: none;
+    }
+  }
+  select {
+    width: 100%;
+    background-color: $ramos-gin-fizz;
+    font-size: 25px;
+    font-family: 'Noto Serif TC';
+    font-weight: bold;
+    display: none;
+
+    @include breakpoint(mobile) {
+      margin-right: 3%;
+      display: flex;
+    }
+
+    // option {
+    //   font-family: 'Noto Serif TC';
+    // }
   }
 }
 article {
@@ -179,21 +218,51 @@ main {
   background-color: #381b1d;
   padding-top: 5%;
 
+  @include breakpoint(mobile) {
+    padding-top: 20%;
+  }
+
   p {
     font-size: 22px;
     padding-top: 2%;
     color: white;
+  }
+  h1 {
+    border-bottom: 1px solid black;
+    padding: 6% 0%;
+    margin: 0 3%;
+    @include breakpoint(mobile) {
+      border-bottom: 0px;
+      border-right: 1px solid black;
+      padding: 0;
+    }
+    // padding-bottom: 1%;
   }
   h3 {
     color: #cead82;
     font-size: 35px;
     padding-bottom: 20%;
   }
+  h4 {
+    color: $whitelady;
+    font-size: 25px;
+    line-height: 60px;
+    margin-right: auto;
+    margin-left: 2.5%;
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    a:hover {
+      color: #cead82;
+    }
+  }
+
   button {
     background-color: #fcf0d8;
     border: 0px;
-    border-bottom: 1px solid black;
-    padding: 6% 5%;
+    // border-bottom: 1px solid black;
+
     font-size: 25px;
     font-weight: bold;
     width: 300px;
@@ -235,7 +304,7 @@ article div::before {
   top: 0;
   left: 0;
   width: 100%;
-  height: 99%;
+
   background-image: url(./圖片/Group.png);
   background-repeat: no-repeat;
   background-position: right bottom;

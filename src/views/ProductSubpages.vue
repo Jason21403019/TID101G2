@@ -168,6 +168,11 @@ body {
           letter-spacing: 0.3em;
           padding: 5% 0;
           margin-top: 5%;
+          border-radius: 10px;
+        }
+        .car:hover {
+          background-color: #cead82;
+          color: #f6f6f6;
         }
       }
     }

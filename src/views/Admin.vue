@@ -77,7 +77,7 @@ export default {
       } else if (page === '新增文章') {
         window.location.href = '#/admin_article'
       } else if (page === '預約管理') {
-        window.location.href = '#/admin_order'
+        window.location.href = '#/admin_res'
       }
     }
   }
