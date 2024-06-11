@@ -2,7 +2,7 @@
   <header class="header" :class="{ '-black': currentPath === 'Home' || currentPath === 'Home' }">
     <div class="header__logoarea">
       <router-link to="/" class="header__logoarea-logo">
-        <img src="../../imgs/logo/logo-w.png" alt="" />
+        <img :src="getLogoSrc" alt="" />
       </router-link>
     </div>
     <div class="header__btnarea">
@@ -55,11 +55,11 @@
 </template>
 
 <script>
-// import logoimg from '../../imgs/logo/logo-w.png'
-// import membertSrc from '../../imgs/icon/icon_member-on-w.svg'
+import logoimg from '../../imgs/logo/logo-w.png'
+import membertSrc from '../../imgs/icon/icon_member-on-w.svg'
 
 export default {
-  // inclouds: [logoimg, membertSrc],
+  inclouds: [logoimg, membertSrc],
   name: 'DefaultNav',
   data() {
     return {
@@ -72,12 +72,10 @@ export default {
 
       return this.$route.name
     },
-    // getLogoSrc() {
-    //   return this.currentPath === 'Home' ? 'logoimg' : '@/imgs/logo/logo.png'
-    // },
-    // membertSrc() {
-    //   return this.currentPath === 'Home' ? 'membertSrc' : '@/imgs/icon/icon_member-on.svg'
-    // },
+    getLogoSrc() {
+      return new URL('@/imgs/logo/logo-w.png', import.meta.url).href
+    },
+    membertSrc() {},
     hamburger__class() {
       return this.isHamburgerOpen === true ? 'active' : ''
     }
