@@ -6,8 +6,7 @@
           <h3>{{ title }}</h3>
           <img
             src="@/imgs/wineColumnImg/bartender-opens-bottle-red-wine-using-wine-opener-pour-lot-empty-glasses-bar-counter-blurred-background-wine-tasting-open-beverage-bartender-dinner-concept.jpg"
-            alt=""
-          />
+            alt="" />
           <ReadMoreButton />
           <div class="category-name">{{ category }}</div>
         </div>
@@ -15,8 +14,7 @@
           <h3>{{ title2 }}</h3>
           <img
             src="@/imgs/wineColumnImg/close-up-woman-s-hands-decorating-grapefruit-detox-healthy-smoothie-with-rosemary.jpg"
-            alt=""
-          />
+            alt="" />
           <ReadMoreButton />
           <div class="category-name">{{ category2 }}</div>
         </div>
@@ -102,6 +100,7 @@ export default {
   color: $ramos-gin-fizz;
   font-family: $fontfamily;
   padding-bottom: 6rem;
+
   @include breakpoint(430px) {
     display: grid;
     grid-template-columns: 1fr;
@@ -117,10 +116,12 @@ export default {
     // border: 1px solid green;
     margin: 0.5rem 0 1.5rem 0;
     padding-bottom: 2rem;
+
     @include breakpoint(430px) {
       flex-direction: column;
       height: auto;
     }
+
     &-lf,
     &-rg {
       @include breakpoint(430px) {
@@ -128,23 +129,29 @@ export default {
         margin: 0;
       }
     }
+
     &-lf {
       width: 35%;
       // border: 1px solid red;
       margin-right: 2rem;
+
       @include breakpoint(430px) {
         width: 100%;
         margin-right: 0;
       }
+
       &-tp {
         width: 100%;
         height: 40%;
         // border: 1px solid blue;
         margin-bottom: 2rem;
+
         @include breakpoint(430px) {
           height: auto;
         }
+
         position: relative;
+
         &::before {
           content: '';
           display: block;
@@ -156,9 +163,11 @@ export default {
           @include border-radius(8px);
           transition: all 0.3s ease;
         }
+
         &:hover::before {
           background-color: rgba($color: #000, $alpha: 0.8);
         }
+
         h3 {
           position: absolute;
           top: 2rem;
@@ -167,11 +176,13 @@ export default {
           font-size: $fontSize_h4;
           letter-spacing: $letterspacing;
         }
+
         img {
           width: 100%;
           height: 100%;
           @include border-radius(8px);
         }
+
         .category-name {
           position: absolute;
           bottom: 1rem;
@@ -181,18 +192,22 @@ export default {
           letter-spacing: $letterspacing;
           color: white;
         }
+
         &:hover .read-more-button {
           opacity: 1;
         }
       }
+
       &-bt {
         width: 100%;
         height: 60%;
         // border: 1px solid blue;
         position: relative;
+
         @include breakpoint(430px) {
           height: auto;
         }
+
         &::before {
           content: '';
           display: block;
@@ -204,9 +219,11 @@ export default {
           @include border-radius(8px);
           transition: all 0.3s ease;
         }
+
         &:hover::before {
           background-color: rgba($color: #000, $alpha: 0.8);
         }
+
         h3 {
           position: absolute;
           top: 2rem;
@@ -215,12 +232,14 @@ export default {
           font-size: $fontSize_h4;
           letter-spacing: $letterspacing;
         }
+
         img {
           width: 100%;
           height: 100%;
           @include border-radius(8px);
           object-fit: cover;
         }
+
         .category-name {
           position: absolute;
           bottom: 1rem;
@@ -230,6 +249,7 @@ export default {
           letter-spacing: $letterspacing;
           color: white;
         }
+
         &:hover .read-more-button {
           position: absolute;
           top: 3rem;
@@ -238,13 +258,16 @@ export default {
         }
       }
     }
+
     &-rg {
       width: 65%;
+
       // border: 1px solid blue;
       @include breakpoint(430px) {
         height: auto;
         width: 100%;
       }
+
       &-tp,
       &-bt {
         @include breakpoint(430px) {
@@ -253,12 +276,14 @@ export default {
           flex-direction: column;
         }
       }
+
       &-tp {
         width: 100%;
         height: 60%;
         // border: 1px solid yellow;
         display: flex;
         margin-bottom: 2rem;
+
         &-l,
         &-r {
           @include breakpoint(430px) {
@@ -267,12 +292,14 @@ export default {
             height: 100%;
           }
         }
+
         &-l {
           width: 100%;
           height: 100%;
           //   border: 1px solid palegoldenrod;
           position: relative;
           margin-right: 2rem;
+
           &::before {
             content: '';
             display: block;
@@ -284,9 +311,11 @@ export default {
             @include border-radius(8px);
             transition: all 0.3s ease;
           }
+
           &:hover::before {
             background-color: rgba($color: #000, $alpha: 0.8);
           }
+
           h3 {
             position: absolute;
             top: 2rem;
@@ -295,12 +324,14 @@ export default {
             font-size: $fontSize_h4;
             letter-spacing: $letterspacing;
           }
+
           img {
             width: 100%;
             height: 100%;
             @include border-radius(8px);
             object-fit: cover;
           }
+
           .category-name {
             position: absolute;
             bottom: 1rem;
@@ -310,18 +341,22 @@ export default {
             letter-spacing: $letterspacing;
             color: white;
           }
+
           &:hover .read-more-button {
             opacity: 1;
           }
         }
+
         &-r {
           width: 100%;
           height: 100%;
           // border: 1px solid palegoldenrod;
           position: relative;
+
           @include breakpoint(430px) {
             gap: 2rem;
           }
+
           &::before {
             content: '';
             display: block;
@@ -333,9 +368,11 @@ export default {
             @include border-radius(8px);
             transition: all 0.3s ease;
           }
+
           &:hover::before {
             background-color: rgba($color: #000, $alpha: 0.8);
           }
+
           h3 {
             position: absolute;
             top: 2rem;
@@ -344,12 +381,14 @@ export default {
             font-size: $fontSize_h4;
             letter-spacing: $letterspacing;
           }
+
           img {
             width: 100%;
             height: 100%;
             @include border-radius(8px);
             object-fit: cover;
           }
+
           .category-name {
             position: absolute;
             bottom: 1rem;
@@ -359,16 +398,19 @@ export default {
             letter-spacing: $letterspacing;
             color: white;
           }
+
           &:hover .read-more-button {
             opacity: 1;
           }
         }
       }
+
       &-bt {
         width: 100%;
         height: 40%;
         // border: 1px solid yellow;
         position: relative;
+
         &::before {
           content: '';
           display: block;
@@ -380,9 +422,11 @@ export default {
           @include border-radius(8px);
           transition: all 0.3s ease;
         }
+
         &:hover::before {
           background-color: rgba($color: #000, $alpha: 0.8);
         }
+
         h3 {
           position: absolute;
           top: 2rem;
@@ -391,12 +435,14 @@ export default {
           font-size: $fontSize_h4;
           letter-spacing: $letterspacing;
         }
+
         img {
           width: 100%;
           height: 100%;
           @include border-radius(8px);
           object-fit: cover;
         }
+
         .category-name {
           position: absolute;
           bottom: 1rem;
@@ -407,20 +453,24 @@ export default {
 
           color: white;
         }
+
         &:hover .read-more-button {
           opacity: 1;
         }
       }
     }
   }
+
   &-item2 {
     margin: 0.5rem 0;
     height: 25%;
     // border: 1px solid blue;
     position: relative;
+
     @include breakpoint(430px) {
       height: auto;
     }
+
     &::before {
       content: '';
       display: block;
@@ -432,9 +482,11 @@ export default {
       z-index: 1;
       transition: all 0.3s ease;
     }
+
     &:hover::before {
       background-color: rgba($color: #000, $alpha: 0.8);
     }
+
     h3 {
       position: absolute;
       top: 2rem;
@@ -443,12 +495,14 @@ export default {
       font-size: $fontSize_h4;
       letter-spacing: $letterspacing;
     }
+
     img {
       width: 100%;
       height: 100%;
       @include border-radius(8px);
       object-fit: cover;
     }
+
     .category-name {
       position: absolute;
       bottom: 1rem;
@@ -459,6 +513,7 @@ export default {
 
       color: white;
     }
+
     &:hover .read-more-button {
       opacity: 1;
     }
