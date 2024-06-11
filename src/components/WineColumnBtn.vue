@@ -1,5 +1,5 @@
 <template>
-  <router-link to="" class="read-more-button-link">
+  <router-link to="/wine_article" class="read-more-button-link">
     <button class="read-more-button">
       <span class="text">Read More</span>
     </button>

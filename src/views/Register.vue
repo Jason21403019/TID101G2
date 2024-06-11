@@ -62,7 +62,7 @@
           <ForgetPasswordPop :isvible="showFirstPopup" @close-popup="showFirstPopup = false" />
         </div>
         <div class="login__container-submit">
-          <button>登入</button>
+          <button @click="toMember">登入</button>
         </div>
       </div>
     </div>
@@ -87,6 +87,9 @@ export default {
     },
     showLogin() {
       this.isRegister = false
+    },
+    toMember() {
+      this.$router.push('/member')
     }
   }
 }

@@ -55,7 +55,11 @@
 </template>
 
 <script>
+// import logoimg from '../../imgs/logo/logo-w.png'
+// import membertSrc from '../../imgs/icon/icon_member-on-w.svg'
+
 export default {
+  // inclouds: [logoimg, membertSrc],
   name: 'DefaultNav',
   data() {
     return {
@@ -64,10 +68,16 @@ export default {
   },
   computed: {
     currentPath() {
-      // console.log(this.$route)
+      console.log(this.$route.name)
 
       return this.$route.name
     },
+    // getLogoSrc() {
+    //   return this.currentPath === 'Home' ? 'logoimg' : '@/imgs/logo/logo.png'
+    // },
+    // membertSrc() {
+    //   return this.currentPath === 'Home' ? 'membertSrc' : '@/imgs/icon/icon_member-on.svg'
+    // },
     hamburger__class() {
       return this.isHamburgerOpen === true ? 'active' : ''
     }
