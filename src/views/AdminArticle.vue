@@ -8,7 +8,14 @@
   </div>
 
   <!-- 按鈕 -->
-  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+  <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+    <admin-bulk-btn :handle-click="bulkCancel">
+      <template #bulkicon>
+        <img src="../imgs/icon/icon_delete.svg" alt="delIcon" height="20" width="20" />
+      </template>
+      <template #bulktext>多筆刪除</template>
+    </admin-bulk-btn>
+
     <admin-btn @click="openModal('add')">
       <template #icon>
         <img src="../imgs/icon/icon_expand-w-67.svg" alt="addIcon" height="20" width="20" />
@@ -22,8 +29,11 @@
     <table class="table">
       <thead class="table-thead">
         <tr>
-          <th scope="col">專欄標題</th>
+          <th scope="col">
+            <input v-model="selectAll" class="form-check-input" type="checkbox" @change="toggleAllCheckboxes" />
+          </th>
           <th scope="col">分類名稱</th>
+          <th scope="col">專欄標題</th>
           <th scope="col">點擊次數</th>
           <th scope="col">發布時間</th>
           <th scope="col">顯示</th>
@@ -33,8 +43,11 @@
       </thead>
       <tbody>
         <tr v-for="(article, index) in articles" :key="index">
-          <td>{{ article.title }}</td>
+          <th scope="row">
+            <input v-model="article.selected" class="form-check-input" type="checkbox" @change="checkIfAllSelected" />
+          </th>
           <td>{{ article.category }}</td>
+          <td>{{ article.title }}</td>
           <td>{{ article.clicks }}</td>
           <td>{{ article.publishDate }}</td>
           <td>
@@ -68,7 +81,9 @@
 <script>
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
+import AdminBulkBtn from '../components/AdminBulkBtn.vue'
 import ModalArticle from '../components/AdminModalArticle.vue'
+import Swal from 'sweetalert2'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
@@ -76,6 +91,7 @@ export default {
   components: {
     AdminBreadcrumb,
     AdminBtn,
+    AdminBulkBtn,
     ModalArticle
   },
   data() {
@@ -98,8 +114,8 @@ export default {
       },
       articles: [
         {
-          title: '文章標題 1',
-          category: '分類 1',
+          category: 'Wine Knowledge 酒類知識',
+          title: '威士忌釀造的藝術',
           clicks: 123,
           publishDate: '2023-05-01',
           show: true
@@ -107,10 +123,19 @@ export default {
       ]
     }
   },
+  watch: {
+    articles: {
+      handler() {
+        // 檢查是否所有的 article.selected 都是 true，若是則勾選表頭的複選框
+        this.selectAll = this.articles.every((article) => article.selected)
+      },
+      deep: true
+    }
+  },
   methods: {
     openModal(action, article = null) {
       this.currentActionType = action
-      this.currentArticle = article ? { ...article } : { title: '', category: '', clicks: 0, publishDate: '', show: true }
+      this.currentArticle = article ? { ...article } : { category: '', title: '', clicks: 0, publishDate: '', show: true }
       this.$refs.modal.show()
     },
     handleSave(formData) {
@@ -128,8 +153,58 @@ export default {
         }
       }
     },
+    // 單顆按鈕點刪除時
     deleteArticle(index) {
-      this.articles.splice(index, 1)
+      Swal.fire({
+        title: '確認刪除',
+        text: '您確定要刪除此項目嗎？',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '刪除!',
+        cancelButtonText: '取消'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.articles.splice(index, 1)
+          Swal.fire('已刪除', '該項目已被刪除', 'success')
+        }
+      })
+    },
+    // 當我的tbody中input全勾，全選勾會被勾起來
+    toggleAllCheckboxes() {
+      this.articles.forEach((article) => {
+        article.selected = this.selectAll
+      })
+    },
+    // 當複選框勾起來時，是否刪除的警告訊息
+    bulkCancel() {
+      const selectedArticles = this.articles.filter((article) => article.selected)
+
+      if (selectedArticles.length === 0) {
+        Swal.fire('未選擇任何項目', '請選擇要刪除的項目', 'warning')
+
+        return
+      }
+
+      Swal.fire({
+        title: '確認刪除',
+        text: `您確定要刪除選中的${selectedArticles.length}個項目嗎？`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '刪除!',
+        cancelButtonText: '取消'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          selectedArticles.forEach((article) => {
+            const index = this.articles.indexOf(article)
+
+            if (index !== -1) {
+              this.articles.splice(index, 1)
+            }
+          })
+          this.selectAll = false // 重置selectAll狀態
+          Swal.fire('已刪除', '選中的項目已被刪除', 'success')
+        }
+      })
     }
   }
 }
@@ -155,8 +230,9 @@ export default {
 }
 
 .d-grid {
-  margin-right: 55px;
   margin-top: 190px;
+  margin-left: 160px;
+  margin-right: 55px;
   @include breakpoint(1280px) {
     margin-right: 35px;
   }
