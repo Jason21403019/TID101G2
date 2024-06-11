@@ -220,7 +220,7 @@ export default {
         text: `您確定要取消選中的${selectedOrders.length}個訂單嗎？`,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: '取消!',
+        confirmButtonText: '確定!',
         cancelButtonText: '取消'
       }).then((result) => {
         if (result.isConfirmed) {
