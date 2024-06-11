@@ -1,7 +1,11 @@
 <template>
   <div class="wrapper">
+    <img src="../imgs/quizGameImg/gamequiz_bg2-1.png" alt="" class="corner corner-tl">
+    <img src="../imgs/quizGameImg/gamequiz_bg2-2.png" alt="" class="corner corner-tr">
+    <img src="../imgs/quizGameImg/gamequiz_bg2-3.png" alt="" class="corner corner-bl">
+    <img src="../imgs/quizGameImg/gamequiz_bg2-4.png" alt="" class="corner corner-br">
     <div class="container">
-      <img src="../imgs/logo/logo-w.png" alt="">
+      <img src="../imgs/logo/logo-w.png" alt="logo">
       <div class="question">
         <h1>{{ questions[currentQuestionIndex].question }}</h1>
         <div class="botones">
@@ -20,6 +24,8 @@
 </template>
 
 <script>
+import gsap from "gsap";
+
 export default {
   data() {
     return {
@@ -43,29 +49,40 @@ export default {
           question: '恭喜你!來揭曉你的第一杯酒吧！',
           options: ['公布答案']
         }
+      ],
+      images: [
+        '../imgs/quizGameImg/gamequiz_bg2-1.png',
+        '../imgs/quizGameImg/gamequiz_bg2-2.png',
+        '../imgs/quizGameImg/gamequiz_bg2-3.png',
+        '../imgs/quizGameImg/gamequiz_bg2-4.png'
       ]
-    }
+    };
+  },
+  mounted() {
+    this.animateImages();
   },
   methods: {
     handleOptionClick(option) {
-      this.userAnswers.push(option)
+      this.userAnswers.push(option);
 
-      // 根據特定題目的答案來決定結果
       if (this.currentQuestionIndex === 2) {
-        // 第三個問題的答案
-        this.result = option
+        this.result = option;
       }
 
-      // 移動到下一個問題
       if (this.currentQuestionIndex < this.questions.length - 1) {
-        this.currentQuestionIndex++
+        this.currentQuestionIndex++;
       } else {
-        // 問答完成，導航至結果頁面並傳遞回答數據和結果
         this.$router.push({
           path: '/resultpage',
           query: { answers: this.userAnswers.join(','), result: this.result }
-        })
+        });
       }
+    },
+    animateImages() {
+      gsap.fromTo(".corner-tl", {opacity: 0}, {opacity: 1, duration: 2, repeat: -1, yoyo: true});
+      gsap.fromTo(".corner-tr", {opacity: 0}, {opacity: 1, duration: 2, repeat: -1, yoyo: true, delay: 0.5});
+      gsap.fromTo(".corner-bl", {opacity: 0}, {opacity: 1, duration: 2, repeat: -1, yoyo: true, delay: 1});
+      gsap.fromTo(".corner-br", {opacity: 0}, {opacity: 1, duration: 2, repeat: -1, yoyo: true, delay: 1.5});
     }
   }
 }
@@ -83,21 +100,48 @@ export default {
   align-items: center;
   background-image: url('../imgs/quizGameImg/productsImg_bg.jpg');
   background-size: cover;
-  /* 使背景圖片覆蓋整個容器 */
   background-position: center;
-  /* 將背景圖片置中 */
-}
-.container {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
 
-  img {
-    width: 150px;
-    height: 150px;
+  .container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    img {
+      width: 150px;
+      height: 150px;
+    }
+  }
+
+  .corner {
+    position: absolute;
+    width: 10%;
+    height: auto;
+    opacity: 0;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .corner-tl { 
+    top: 0; 
+    left: 0; 
+  }
+  .corner-tr { 
+    top: 0; 
+    right: 0; 
+  }
+  .corner-bl { 
+    bottom: 0; 
+    left: 0; 
+  }
+  .corner-br { 
+    bottom: 0; 
+    right: 0; 
   }
 }
 
@@ -116,9 +160,9 @@ export default {
   }
 
   .botones {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
     gap: 10px;
   }
 
@@ -172,30 +216,15 @@ export default {
       }
 
       @keyframes glowing {
-        0% {
-          background-position: 0 0;
-        }
-        50% {
-          background-position: 400% 0;
-        }
-        100% {
-          background-position: 0 0;
-        }
+        0% { background-position: 0 0; }
+        50% { background-position: 400% 0; }
+        100% { background-position: 0 0; }
       }
 
       /* hover */
-      &:hover::before {
-        opacity: 1;
-      }
-
-      &:active::after {
-        background: transparent;
-      }
-
-      &:active {
-        color: #000;
-        font-weight: bold;
-      }
+      &:hover::before { opacity: 1; }
+      &:active::after { background: transparent; }
+      &:active { color: #000; font-weight: bold; }
     }
   }
 }
