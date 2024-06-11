@@ -165,7 +165,7 @@
                   <div class="item_details">
                       <!-- 照片 -->
                       <div class="pic">
-                          <img src="../imgs/productsImg/sparkling wine/Noughty.jpg" alt="">
+                          <img src="../imgs/productsImg/sparkling wine/PIERRE ZERO rose.png" alt="">
                       </div>
                       <!-- 標題&數量按鈕 -->
                       <div class="text">
@@ -173,15 +173,15 @@
                           <div class="text_down">
                               <p>750mL/瓶</p>
                               <div class="btn">
-                                  <button>－</button>
-                                  <p>1</p>
-                                  <button>＋</button>
+                                  <button  @click="decreaseQuantity">－</button>
+                                  <p>{{ quantity }}</p>
+                                  <button @click="increaseQuantity">＋</button>
                               </div>
                           </div>
                       </div>
                       <!-- 金額 -->
                       <div class="price">
-                          <p>$ 11,760</p>
+                          <p>$  {{ formattedPrice }}</p>
                       </div>
                   </div>
                   <!-- 刪除 -->
@@ -326,7 +326,7 @@ export default {
               "台東縣":["台東市","成功鎮","關山鎮","長濱鄉","海端鄉","池上鄉","東河鄉","鹿野鄉","延平鄉","卑南鄉","金峰鄉","大武鄉","達仁鄉","綠島鄉","蘭嶼鄉","太麻里鄉"],
               "金門縣":["金沙鎮","金湖鎮","金城鎮","烈嶼鄉","烏坵鄉"],
               "澎湖縣":["馬公市","湖西鄉","白沙鄉","西嶼鄉","望安鄉","七美鄉"],
-              "連江縣":["南竿鄉","北竿鄉","莒光鄉","東引鄉"]
+              "連江縣":["南竿鄉","北竿鄉","莒光鄉","東引鄉"],
           },
           selectedCounty: "",
           selectedDistrict: "",
@@ -340,9 +340,18 @@ export default {
           shipPhone: "",
           shipEmail: "",
           shipAddress: "",
-          privacyAccepted: false
+          privacyAccepted: false,
+
+          quantity: 1,
+          unitPrice:4560,
       };
   },
+
+  computed: {
+    formattedPrice() {
+        return (this.unitPrice * this.quantity).toLocaleString();
+     }
+ },
   methods: {
       fetchDistricts() {
           // 根據所選縣市加載對應的地區
@@ -409,10 +418,20 @@ export default {
       this.selectedCountyShip = this.selectedCounty;
       this.selectedDistrictShip = this.selectedDistrict;
       this.shipAddress = this.orderAddress;
-    }
+    },
 
-  }
-};
+    increaseQuantity() {
+        this.quantity++;
+        },
+    decreaseQuantity() {
+        if (this.quantity > 1) {
+            this.quantity--;
+        }
+
+    }
+  },
+
+}
 </script>
 
 
