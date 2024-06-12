@@ -12,16 +12,10 @@
           />
         </ul>
       </section>
-      <div class="dropdown" @click="toggleDropdown">
-        <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle" type="button" aria-expanded="false">
-          {{ selectedOption }}
-        </button>
-        <ul class="dropdown-menu" :class="{ show: isOpen }">
-          <li @click.stop="selectOption('最新文章', $event)"><a class="dropdown-item" href="">最新文章</a></li>
-          <li @click.stop="selectOption('熱門文章', $event)"><a class="dropdown-item" href="">熱門文章</a></li>
-          <li @click.stop="selectOption('本日熱門', $event)"><a class="dropdown-item" href="">本日熱門</a></li>
-        </ul>
-      </div>
+      <section class="news_title">
+        <h3>最新文章</h3>
+      </section>
+
       <WineColumnMasonry />
     </div>
   </body>
@@ -67,7 +61,7 @@ export default {
           text: '國外報導'
         },
         {
-          link: '/',
+          link: '/wine_column_nc',
           imgSrc: cotailWorld,
           altText: '',
           text: '調酒新世界'
@@ -88,16 +82,7 @@ export default {
   updated() {
     AOS.refresh()
   },
-
   methods: {
-    selectOption(option, event) {
-      this.selectedOption = option
-      this.isOpen = false
-      event.preventDefault()
-    },
-    toggleDropdown() {
-      this.isOpen = !this.isOpen
-    },
     handleItemClicked(link) {
       console.log('Item clicked with link:', link)
       this.activeLink = link
@@ -133,15 +118,15 @@ export default {
     // border: 1px solid red;
     &-ul {
       @include border-radius(8px);
-      display: flex;
-      justify-content: space-evenly;
-      //   border: 1px solid red;
       background: $ramos-gin-fizz;
-      padding: 2rem 0;
-      overflow-x: scroll;
-      @include breakpoint(860px) {
-        flex-direction: column;
-        align-items: center;
+      padding: 2rem;
+      gap: 1rem;
+      display: grid;
+      grid-template-rows: auto;
+      grid-template-columns: 1fr 1fr 1fr;
+
+      @include breakpoint(820px) {
+        grid-template-columns: 1fr;
       }
     }
   }
@@ -178,6 +163,21 @@ export default {
         }
       }
     }
+  }
+}
+.news_title {
+  width: 80%;
+  margin: 0 auto;
+  padding: 100px 0 50px 0;
+  @include breakpoint(430px) {
+    width: 90%;
+  }
+  h3 {
+    font-family: $fontfamily;
+    font-size: $fontSize_h3;
+    letter-spacing: $letterspacing;
+    color: $ramos-gin-fizz;
+    text-align: center;
   }
 }
 </style>

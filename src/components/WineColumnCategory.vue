@@ -2,7 +2,7 @@
   <li
     class="wine__category-ul-item"
     :class="{ active: isActive }"
-    :data-aos="windowWidth > 430 ? 'zoom-in' : ''"
+    :data-aos="windowWidth > 1024 ? 'zoom-in' : ''"
     @click="handleClick"
   >
     <router-link :to="item.link" class="wine__link">
@@ -62,44 +62,30 @@ export default {
 //     background: $ramos-gin-fizz;
 //     padding: 2rem 0;
 //     overflow-x: scroll;
+
 .wine__category-ul-item {
   // border: 1px solid blue;
+
   .wine__link {
     // border: 1px solid red;
     position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+    display: block;
     text-decoration: none;
-    width: 340px;
-    height: 230px;
-    @include breakpoint(1280px) {
-      width: 300px;
-      height: 200px;
+    width: 100%;
+    // height: 230px;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 100%;
+      // height: 100%;
+      padding-bottom: 70%;
     }
-    @include breakpoint(960px) {
-      width: 250px;
-      height: 200px;
-    }
-    @include breakpoint(820px) {
-      width: 780px;
-      &:nth-child(1) {
-        margin: 1rem;
-      }
-    }
-    @include breakpoint(430px) {
-      width: 350px;
-      &:nth-child(1) {
-        margin: 1rem;
-      }
-    }
-    @include breakpoint(375px) {
-      width: 300px;
-      &:nth-child(1) {
-        margin: 1rem;
-      }
-    }
+
     &-text {
       position: absolute;
       font-size: $fontSize_h3;
@@ -107,17 +93,27 @@ export default {
       font-family: $fontfamily-en;
       color: $ramos-gin-fizz;
       z-index: 2;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     &-img {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       img {
         width: 100%;
         height: 100%;
+        display: block;
         @include border-radius(8px);
         object-fit: cover;
         transition: all 0.5s ease;
-        position: relative;
         z-index: 0;
       }
       &::before {
@@ -127,6 +123,7 @@ export default {
         left: 0;
         width: 100%;
         height: 100%;
+        // padding-bottom: 70%;
         background: rgba($blackvevet, 0.8);
         @include border-radius(8px);
         z-index: 1;
@@ -138,6 +135,8 @@ export default {
   }
 }
 .wine__category-ul-item.active {
+  position: relative;
+  z-index: 100;
   background-color: #ffcc00 !important;
 }
 //   }

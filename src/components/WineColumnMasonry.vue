@@ -1,50 +1,63 @@
 <template>
   <section class="winecolumn__masonry">
-    <div class="winecolumn__masonry-item1">
-      <div class="winecolumn__masonry-item1-lf">
-        <div class="winecolumn__masonry-item1-lf-tp">
-          <h3>{{ title }}</h3>
+    <!-- <div class="winecolumn__masonry">
+      <div v-for="(item, key) in data" class="winecolumn__masonry-item" :key="key">
+        {{ item.title }}
+      </div>
+    </div> -->
+    <div class="winecolumn__masonry-item1 winecolumn__group-outer">
+      <div class="winecolumn__masonry-item1-lf winecolumn__group-outer">
+        <div class="winecolumn__masonry-item1-lf-tp winecolumn__group">
+          <h3 class="winecolumn__title">{{ title }}</h3>
           <img
+            class="winecolumn__img"
             src="@/imgs/wineColumnImg/bartender-opens-bottle-red-wine-using-wine-opener-pour-lot-empty-glasses-bar-counter-blurred-background-wine-tasting-open-beverage-bartender-dinner-concept.jpg"
-            alt="" />
+            alt=""
+          />
           <ReadMoreButton />
           <div class="category-name">{{ category }}</div>
         </div>
-        <div class="winecolumn__masonry-item1-lf-bt">
-          <h3>{{ title2 }}</h3>
+        <div class="winecolumn__masonry-item1-lf-bt winecolumn__group">
+          <h3 class="winecolumn__title">{{ title2 }}</h3>
           <img
+            class="winecolumn__img"
             src="@/imgs/wineColumnImg/close-up-woman-s-hands-decorating-grapefruit-detox-healthy-smoothie-with-rosemary.jpg"
-            alt="" />
+            alt=""
+          />
           <ReadMoreButton />
           <div class="category-name">{{ category2 }}</div>
         </div>
       </div>
-      <div class="winecolumn__masonry-item1-rg">
-        <div class="winecolumn__masonry-item1-rg-tp">
-          <div class="winecolumn__masonry-item1-rg-tp-l">
-            <h3>{{ title3 }}</h3>
-            <img src="@/imgs/wineColumnImg/105d2bb9d92254d478410275acb1e78f5394907e.jpg" alt="" />
+      <div class="winecolumn__masonry-item1-rg winecolumn__group-outer">
+        <div class="winecolumn__masonry-item1-rg-tp winecolumn__group-outer">
+          <div class="winecolumn__masonry-item1-rg-tp-l winecolumn__group">
+            <h3 class="winecolumn__title">{{ title3 }}</h3>
+            <img class="winecolumn__img" src="@/imgs/wineColumnImg/105d2bb9d92254d478410275acb1e78f5394907e.jpg" alt="" />
             <ReadMoreButton />
             <div class="category-name">{{ category3 }}</div>
           </div>
-          <div class="winecolumn__masonry-item1-rg-tp-r">
-            <h3>{{ title4 }}</h3>
-            <img src="@/imgs/wineColumnImg/Chateau-Latour.jpg" alt="" />
+          <div class="winecolumn__masonry-item1-rg-tp-r winecolumn__group">
+            <h3 class="winecolumn__title">{{ title4 }}</h3>
+            <img class="winecolumn__img" src="@/imgs/wineColumnImg/Chateau-Latour.jpg" alt="" />
             <ReadMoreButton />
             <div class="category-name">{{ category4 }}</div>
           </div>
         </div>
-        <div class="winecolumn__masonry-item1-rg-bt">
-          <h3>{{ title5 }}</h3>
-          <img src="@/imgs/wineColumnImg/a824168e245aebc8e62ef40c9fbcaf589e7c1fe7.jpg" alt="" />
+        <div class="winecolumn__masonry-item1-rg-bt winecolumn__group">
+          <h3 class="winecolumn__title">{{ title5 }}</h3>
+          <img class="winecolumn__img" src="@/imgs/wineColumnImg/a824168e245aebc8e62ef40c9fbcaf589e7c1fe7.jpg" alt="" />
           <ReadMoreButton />
           <div class="category-name">{{ category5 }}</div>
         </div>
       </div>
     </div>
-    <div class="winecolumn__masonry-item2">
-      <h3>{{ title6 }}</h3>
-      <img src="@/imgs/wineColumnImg/fresh-cocktails-with-ice-lemon-lime-fruits-generative-ai.jpg" alt="" />
+    <div class="winecolumn__masonry-item2 winecolumn__group">
+      <h3 class="winecolumn__title">{{ title6 }}</h3>
+      <img
+        class="winecolumn__img"
+        src="@/imgs/wineColumnImg/fresh-cocktails-with-ice-lemon-lime-fruits-generative-ai.jpg"
+        alt=""
+      />
       <ReadMoreButton />
       <div class="category-name">{{ category6 }}</div>
     </div>
@@ -91,23 +104,67 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// .winecolumn__masonry-item {
+//   &:nth-child(1) {
+//     font-size: 28px;
+//   }
+
+//   &:nth-child(2) {
+//     font-size: 40px;
+//   }
+// }
+.winecolumn {
+  &__title {
+    position: absolute;
+    top: 2rem;
+    left: 1rem;
+    z-index: 2;
+    font-size: $fontSize_h4;
+    letter-spacing: $letterspacing;
+  }
+
+  &__group {
+    @include breakpoint(767px) {
+      margin-top: 0 !important;
+      margin-bottom: 2rem !important;
+      margin-right: 0 !important;
+      width: 100% !important;
+      height: 200px !important;
+
+      &-outer {
+        margin-bottom: 0 !important;
+        height: auto !important;
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+    }
+  }
+}
+
+.category-name {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 2;
+  font-size: $fontSize_h5;
+  letter-spacing: $letterspacing;
+  color: white;
+}
 .winecolumn__masonry {
   //   border: 1px solid red;
   width: 100%;
-  height: 130vh;
+  height: 1000px;
   display: flex;
   flex-direction: column;
   color: $ramos-gin-fizz;
   font-family: $fontfamily;
   padding-bottom: 6rem;
 
-  @include breakpoint(430px) {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    gap: 2rem;
+  @include breakpoint(767px) {
+    display: block;
     height: auto;
-    padding-bottom: 1rem;
+    padding-bottom: 3rem;
   }
 
   &-item1 {
@@ -117,14 +174,14 @@ export default {
     margin: 0.5rem 0 1.5rem 0;
     padding-bottom: 2rem;
 
-    @include breakpoint(430px) {
+    @include breakpoint(767px) {
       flex-direction: column;
       height: auto;
     }
 
     &-lf,
     &-rg {
-      @include breakpoint(430px) {
+      @include breakpoint(767px) {
         width: 100%;
         margin: 0;
       }
@@ -135,7 +192,7 @@ export default {
       // border: 1px solid red;
       margin-right: 2rem;
 
-      @include breakpoint(430px) {
+      @include breakpoint(767px) {
         width: 100%;
         margin-right: 0;
       }
@@ -146,7 +203,7 @@ export default {
         // border: 1px solid blue;
         margin-bottom: 2rem;
 
-        @include breakpoint(430px) {
+        @include breakpoint(767px) {
           height: auto;
         }
 
@@ -183,16 +240,6 @@ export default {
           @include border-radius(8px);
         }
 
-        .category-name {
-          position: absolute;
-          bottom: 1rem;
-          right: 1rem;
-          z-index: 2;
-          font-size: $fontSize_h5;
-          letter-spacing: $letterspacing;
-          color: white;
-        }
-
         &:hover .read-more-button {
           opacity: 1;
         }
@@ -204,7 +251,7 @@ export default {
         // border: 1px solid blue;
         position: relative;
 
-        @include breakpoint(430px) {
+        @include breakpoint(767px) {
           height: auto;
         }
 
@@ -240,16 +287,6 @@ export default {
           object-fit: cover;
         }
 
-        .category-name {
-          position: absolute;
-          bottom: 1rem;
-          right: 1rem;
-          z-index: 2;
-          font-size: $fontSize_h5;
-          letter-spacing: $letterspacing;
-          color: white;
-        }
-
         &:hover .read-more-button {
           position: absolute;
           top: 3rem;
@@ -263,14 +300,14 @@ export default {
       width: 65%;
 
       // border: 1px solid blue;
-      @include breakpoint(430px) {
+      @include breakpoint(767px) {
         height: auto;
         width: 100%;
       }
 
       &-tp,
       &-bt {
-        @include breakpoint(430px) {
+        @include breakpoint(767px) {
           gap: 2rem;
           height: auto;
           flex-direction: column;
@@ -286,7 +323,7 @@ export default {
 
         &-l,
         &-r {
-          @include breakpoint(430px) {
+          @include breakpoint(767px) {
             gap: 1rem;
             margin-right: 0;
             height: 100%;
@@ -332,16 +369,6 @@ export default {
             object-fit: cover;
           }
 
-          .category-name {
-            position: absolute;
-            bottom: 1rem;
-            right: 1rem;
-            z-index: 2;
-            font-size: $fontSize_h5;
-            letter-spacing: $letterspacing;
-            color: white;
-          }
-
           &:hover .read-more-button {
             opacity: 1;
           }
@@ -353,7 +380,7 @@ export default {
           // border: 1px solid palegoldenrod;
           position: relative;
 
-          @include breakpoint(430px) {
+          @include breakpoint(767px) {
             gap: 2rem;
           }
 
@@ -387,16 +414,6 @@ export default {
             height: 100%;
             @include border-radius(8px);
             object-fit: cover;
-          }
-
-          .category-name {
-            position: absolute;
-            bottom: 1rem;
-            right: 1rem;
-            z-index: 2;
-            font-size: $fontSize_h5;
-            letter-spacing: $letterspacing;
-            color: white;
           }
 
           &:hover .read-more-button {
@@ -443,17 +460,6 @@ export default {
           object-fit: cover;
         }
 
-        .category-name {
-          position: absolute;
-          bottom: 1rem;
-          right: 1rem;
-          z-index: 2;
-          font-size: $fontSize_h5;
-          letter-spacing: $letterspacing;
-
-          color: white;
-        }
-
         &:hover .read-more-button {
           opacity: 1;
         }
@@ -467,7 +473,7 @@ export default {
     // border: 1px solid blue;
     position: relative;
 
-    @include breakpoint(430px) {
+    @include breakpoint(767px) {
       height: auto;
     }
 
@@ -501,17 +507,6 @@ export default {
       height: 100%;
       @include border-radius(8px);
       object-fit: cover;
-    }
-
-    .category-name {
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-      z-index: 2;
-      font-size: $fontSize_h5;
-      letter-spacing: $letterspacing;
-
-      color: white;
     }
 
     &:hover .read-more-button {

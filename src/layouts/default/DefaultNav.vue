@@ -1,23 +1,26 @@
 <template>
-  <header class="header" :class="{ '-black': currentPath === 'Home' || currentPath === 'Home' }">
+  <header class="header" :class="{ '-black': black }">
     <div class="header__logoarea">
       <router-link to="/" class="header__logoarea-logo">
-        <img :src="getLogoSrc" alt="" />
+        <img v-if="black" :src="getLogoSrc" alt="" />
+        <img v-else :src="getLogoSrc" alt="" />
       </router-link>
     </div>
     <div class="header__btnarea">
       <div class="header__btnarea-icons">
         <router-link to="/register" class="header__icons-icon">
-          <img class="header__icons-icon-img1" src="../../imgs/icon/icon_member-on-w.svg" alt="" />
+          <img v-if="black" class="header__icons-icon-img1" :src="getMemberSrc" alt="" />
+          <img v-else class="header__icons-icon-img1" :src="getMemberSrc" alt="" />
         </router-link>
         <router-link to="/cart" class="header__icons-icon">
-          <img class="header__icons-icon-img2" src="../../imgs/icon/icon_cart-shopping-w.svg" alt="" />
+          <img v-if="black" class="header__icons-icon-img2" :src="getCartSrc" alt="" />
+          <img v-else class="header__icons-icon-img2" :src="getCartSrc" alt="" />
         </router-link>
       </div>
       <button class="h__btn" :class="hamburger__class" @click="toggleHamburger">
-        <span class="hamburger__bar"></span>
-        <span class="hamburger__bar"></span>
-        <span class="hamburger__bar"></span>
+        <span class="hamburger__bar" :class="{ 'h-black': black }"></span>
+        <span class="hamburger__bar" :class="{ 'h-black': black }"></span>
+        <span class="hamburger__bar" :class="{ 'h-black': black }"></span>
       </button>
       <div class="circle" :class="hamburger__class"></div>
       <div :class="['menu__nav', { active: isHamburgerOpen }]">
@@ -72,10 +75,31 @@ export default {
 
       return this.$route.name
     },
-    getLogoSrc() {
-      return new URL('@/imgs/logo/logo-w.png', import.meta.url).href
+    black() {
+      const blackRoutes = ['Reserve_first', 'Reserve_sec', 'Cart', 'Register']
+
+      return blackRoutes.includes(this.currentPath)
     },
-    membertSrc() {},
+    getLogoSrc() {
+      return this.black
+        ? new URL('@/imgs/logo/logo.png', import.meta.url).href
+        : new URL('@/imgs/logo/logo-w.png', import.meta.url).href
+    },
+
+    getMemberSrc() {
+      console.log(this.black)
+
+      return this.black
+        ? new URL('@/imgs/icon/icon_member-on.svg', import.meta.url).href
+        : new URL('@/imgs/member/member-w.png', import.meta.url).href
+    },
+
+    getCartSrc() {
+      return this.black
+        ? new URL('@/imgs/icon/icon_cart-shopping.svg', import.meta.url).href
+        : new URL('@/imgs/icon/icon_cart-shopping-w.svg', import.meta.url).href
+    },
+
     hamburger__class() {
       return this.isHamburgerOpen === true ? 'active' : ''
     }
@@ -100,11 +124,10 @@ export default {
   display: flex;
   justify-content: space-between;
   z-index: 1000;
-  background: rgba(0, 0, 0, 0.07);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(8.2px);
-  -webkit-backdrop-filter: blur(8.2px);
   padding: 0.7rem 0.5rem;
+  .h-black {
+    background: $negroni;
+  }
   &__logoarea {
     width: 100px;
     height: 80px;
@@ -147,7 +170,7 @@ export default {
     background-color: transparent;
     // border: 1px solid red;
     margin-left: 15px;
-    margin-bottom: 2px;
+    margin-bottom: 5px;
     height: 35px;
     position: relative;
   }
