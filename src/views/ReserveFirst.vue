@@ -67,10 +67,16 @@
         <p><img src="../imgs/icon/icon_time.svg" alt="" />用餐日期與時間</p>
         <div class="select">
           <div class="date">
+            <!-- <label for="date">日期:</label> -->
+            <!-- <Datepicker v-model="date" id="date" :placeholder="placeholderText" 
+            style="width: 100%;padding:15px ;font-size: 1.5rem;"></Datepicker> -->
             <input id="date" v-model="date" type="date" required />
           </div>
           <div class="time">
             <input id="time" v-model="time" type="time" required />
+            <!-- <label for="time">時間:</label> -->
+            <!-- <vue-timepicker v-model="time" id="time" :placeholder="placeholderTime"  class="timepicker"></vue-timepicker> -->
+            
           </div>
         </div>
       </div>
@@ -90,17 +96,25 @@
 </template>
 
 <script>
+// import VueTimepicker from 'vue3-timepicker';
+// import 'vue3-timepicker/dist/VueTimepicker.css';
+// import Datepicker from 'vue3-datepicker'
+
+
 export default {
   data() {
     return {
       name: '',
       phone: '',
       guests: 1,
-      date: '',
-      time: '',
+      date: null,
+      time: null,
       note: '',
       showPopup: false,
-      errorMessage: ''
+      errorMessage: '',
+
+      // placeholderText: '請選擇日期',
+      // placeholderTime: '請選擇時間'
     }
   },
   methods: {
@@ -137,7 +151,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .wrapper {
   margin: 0 auto;
   width: 100%;
@@ -149,7 +162,7 @@ export default {
     width: 64%;
     height: 400px;
     margin: 0 auto;
-  
+
     // border: 1px solid green;
     background: url('../imgs/bookingImg/close-up-drink-bar2.jpg');
 
@@ -187,7 +200,7 @@ export default {
       font-weight: bold;
       // outline:1px solid red;
 
-      @include breakpoint(430px){
+      @include breakpoint(430px) {
         font-size: $fontSize_h2;
       }
 
@@ -200,7 +213,7 @@ export default {
       font-family: $fontfamily-en;
       font-weight: bold;
 
-      @include breakpoint(430px){
+      @include breakpoint(430px) {
         font-size: $fontSize_h4;
       }
     }
@@ -209,6 +222,7 @@ export default {
   //預約座位
   .reserve {
     margin-bottom: 20px;
+
     .seat {
       display: flex;
       justify-content: center;
@@ -255,8 +269,8 @@ export default {
         font-weight: bold;
         margin-top: 10px;
 
-        @include breakpoint(430px){
-              font-size: 1.5rem;
+        @include breakpoint(430px) {
+          font-size: 1.5rem;
         }
       }
     }
@@ -294,13 +308,14 @@ export default {
     font-size: $fontSize_h2;
     margin-bottom: 15px;
 
-    @include breakpoint(430px){
+    @include breakpoint(430px) {
       font-size: $fontSize_h3;
     }
   }
 
   //消費方式細項
   .sub_notice {
+    // border: 1px solid red;
     h5 {
       font-family: $fontfamily;
       font-size: 1.5rem;
@@ -308,18 +323,17 @@ export default {
       line-height: 45px;
 
       @include breakpoint(430px) {
-          font-size: $fontSize_h4;
-          line-height: 30px;
+        font-size: $fontSize_h4;
+        line-height: 30px;
+       
       }
 
       @include breakpoint(390px) {
-          font-size: 1rem;
-          line-height: 1.5;
+        font-size: 1rem;
+        line-height: 1.5;
       }
 
-      @include breakpoint(375px) {
-        font-size: 1.8rem;
-      }
+
     }
   }
 }
@@ -345,7 +359,7 @@ export default {
 
   p {
     font-family: $fontfamily;
-    font-size:$fontSize_h2;
+    font-size: $fontSize_h2;
     margin: 10px 0 10px 0;
     text-align: left;
     letter-spacing: $letterspacing;
@@ -358,16 +372,16 @@ export default {
     justify-content: start;
     align-items: center;
 
-    @include breakpoint(430px){
-        font-size:$fontSize_h3;
+    @include breakpoint(430px) {
+      font-size: $fontSize_h3;
     }
 
-    @include breakpoint(375px){
-        font-size:$fontSize_h5;
+    @include breakpoint(375px) {
+      font-size: $fontSize_h5;
     }
 
 
-   }
+  }
 
   input {
     width: 100%;
@@ -377,10 +391,10 @@ export default {
     margin-bottom: 20px;
 
     @include breakpoint(540px) {
-        padding: 15px;
+      padding: 15px;
     }
 
-    
+
   }
 
   img {
@@ -415,31 +429,30 @@ export default {
       margin-bottom: 20px;
       font-size: $fontSize_h4;
       line-height: 1.5;
-      border:2px solid $campari;
+      border: 2px solid $campari;
       border-radius: 8px;
       appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;
-      background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="292.362" height="292.362" viewBox="0 0 292.362 292.362"><path fill="%23333" d="M287.273 69.233L166.191 190.317c-7.592 7.589-17.748 11.781-28.49 11.781s-20.896-4.192-28.49-11.781L5.088 69.233C-1.696 62.44-1.696 51.426 5.088 44.631c6.789-6.789 17.803-6.789 24.591 0l112.021 112.02L262.681 44.631c6.789-6.789 17.803-6.789 24.591 0 6.784 6.789 6.784 17.803 0 24.602z"/></svg>')
-        no-repeat right 10px center;
+      background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="292.362" height="292.362" viewBox="0 0 292.362 292.362"><path fill="%23333" d="M287.273 69.233L166.191 190.317c-7.592 7.589-17.748 11.781-28.49 11.781s-20.896-4.192-28.49-11.781L5.088 69.233C-1.696 62.44-1.696 51.426 5.088 44.631c6.789-6.789 17.803-6.789 24.591 0l112.021 112.02L262.681 44.631c6.789-6.789 17.803-6.789 24.591 0 6.784 6.789 6.784 17.803 0 24.602z"/></svg>') no-repeat right 10px center;
       background-size: 20px 20px;
 
-    
+
       @include breakpoint(820px) {
         font-size: $fontSize_h3;
       }
 
       @include breakpoint(540px) {
-         padding: 15px;
+        padding: 15px;
       }
 
-      @include breakpoint(430px){
-         font-size:1.5rem;
+      @include breakpoint(430px) {
+        font-size: 1.5rem;
       }
 
-      @include breakpoint(375px){
-         font-size:$fontSize_h4;
-         
+      @include breakpoint(375px) {
+        font-size: $fontSize_h4;
+
       }
     }
 
@@ -467,12 +480,13 @@ export default {
 
     .select {
       display: flex;
-      justify-content: center;
+      // justify-content: center;
+      justify-content: space-between;
       width: 100%;
       margin: 0 auto;
       // outline: 1px solid blue;
 
-      @include breakpoint(540px) {
+      @include breakpoint(768px) {
         display: block;
       }
 
@@ -480,20 +494,24 @@ export default {
         width: 50%;
         margin-right: 10px;
 
-        @include breakpoint(540px) {
+
+
+
+        @include breakpoint(768px) {
           width: 100%;
         }
       }
 
       .time {
         width: 50%;
-        input {
-          padding: 15px;
-        }
 
-        @include breakpoint(540px) {
+        @include breakpoint(768px) {
           width: 100%;
         }
+        
+        }
+
+        
       }
     }
   }
@@ -501,6 +519,7 @@ export default {
   //其他備註 欄位
   .note {
     margin-bottom: 50px;
+
     textarea {
       width: 100%;
     }
@@ -515,10 +534,10 @@ export default {
 
       @include breakpoint(430px) {
         padding: 10px;
-      }
+    }
     }
   }
-}
+
 
 .btn {
   width: 100%;

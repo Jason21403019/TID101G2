@@ -47,15 +47,15 @@
                         <div class="text_down">
                             <p>750mL/瓶</p>
                             <div class="btn">
-                                <button  @click="decreaseQuantity">－</button>
-                                <p>{{ quantity }}</p>
-                                <button @click="increaseQuantity">＋</button>
+                                <button>－</button>
+                                <p>$4,560</p>
+                                <button>＋</button>
                             </div>
                         </div>
                     </div>
                     <!-- 金額 -->
                     <div class="price">
-                        <p>$  {{ formattedPrice }}</p>
+                        <p>$ 11,760</p>
                     </div>
                 </div>
                 <!-- 刪除 -->
@@ -162,7 +162,7 @@
             </div>
 
             <div class="btn_submit">
-                <button type="submit" @click="validateOrderForm">
+                <button type="submit">
                     提交訂單
                 </button>
             </div>
