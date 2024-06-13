@@ -332,7 +332,16 @@ const routes = [
 const router = createRouter({
   linkActiveClass: 'active',
   history,
-  routes
+  routes,
+  // 在底部切換頁面時，會有平滑滾動效果到top
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { left: 0, top: 0 }
+    }
+  }
+
 })
 
 export { router }
