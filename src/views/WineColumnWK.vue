@@ -156,11 +156,15 @@ nav {
   padding: 1rem 0;
   &-ul {
     @include border-radius(8px);
-    display: flex;
-    justify-content: space-evenly;
-    //   border: 1px solid red;
     background: $ramos-gin-fizz;
-    padding: 2rem 0;
+    padding: 2rem;
+    gap: 1rem;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr;
+    @include breakpoint(820px) {
+      grid-template-columns: 1fr;
+    }
     overflow-x: scroll;
   }
 }

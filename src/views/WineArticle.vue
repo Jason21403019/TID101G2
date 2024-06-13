@@ -87,6 +87,9 @@ export default {
     //   border: 1px solid red;
     margin: 0 auto;
     padding: 1rem 0;
+    @include breakpoint(430px) {
+      width: 95%;
+    }
   }
   .breadcrumb-item + .breadcrumb-item::before {
     content: '>';
@@ -112,6 +115,9 @@ export default {
   &-banner {
     width: 80%;
     margin: 0 auto;
+    @include breakpoint(430px) {
+      width: 95%;
+    }
     img {
       width: 100%;
       display: block;
@@ -122,6 +128,9 @@ export default {
     width: 80%;
     margin: 0 auto;
     padding: 30px 0;
+    @include breakpoint(430px) {
+      width: 95%;
+    }
     p {
       font-family: $fontfamily;
       font-size: $fontSize_h5;
@@ -141,6 +150,9 @@ export default {
     letter-spacing: $letterspacing;
     color: $ramos-gin-fizz;
     font-family: $fontfamily;
+    @include breakpoint(430px) {
+      width: 95%;
+    }
   }
   .article-grid {
     width: 80%;
@@ -150,6 +162,9 @@ export default {
     grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
     gap: 35px;
     place-items: stretch;
+    @include breakpoint(430px) {
+      width: 95%;
+    }
   }
 
   .article-card {

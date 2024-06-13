@@ -109,11 +109,23 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    @include breakpoint(920px) {
+      width: 80%;
+    }
+    @include breakpoint(570px) {
+      width: 90%;
+    }
+    @include breakpoint(500px) {
+      width: 100%;
+    }
     .ral__btns {
       display: flex;
       justify-content: space-evenly;
       width: 86%;
       margin: 0 auto;
+      @include breakpoint(500px) {
+        width: 100%;
+      }
       &-btn {
         outline: none;
         border: none;
@@ -152,11 +164,13 @@ export default {
     flex-direction: column;
     align-items: center;
     background: $irishcoffee;
-    width: 85%;
+    width: 86%;
     margin: 0 auto;
     transition: background 0.5s, color 0.5s;
     @include border-radius(8px);
-
+    @include breakpoint(500px) {
+      width: 98%;
+    }
     &-title {
       h3 {
         padding: 1.5rem 2rem;
@@ -249,6 +263,9 @@ export default {
     width: 85%;
     margin: 0 auto;
     @include border-radius(8px);
+    @include breakpoint(500px) {
+      width: 98%;
+    }
     &-title {
       h3 {
         padding: 1rem 2rem;
