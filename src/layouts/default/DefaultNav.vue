@@ -1,55 +1,43 @@
 <template>
-  <header class="header" :class="{ '-black': black }">
+  <header class="header">
     <div class="header__logoarea">
-      <router-link to="/" class="header__logoarea-logo">
-        <img v-if="black" :src="getLogoSrc" alt="" />
-        <img v-else :src="getLogoSrc" alt="" />
+      <router-link to="/" class="header__logoarea-logo" @click="closeHamburger">
+        <img v-if="black" :src="getNavLogoSrc" alt="" />
+        <img v-else :src="getNavLogoSrc" alt="" />
       </router-link>
     </div>
     <div class="header__btnarea">
       <div class="header__btnarea-icons">
-        <router-link to="/register" class="header__icons-icon">
-          <img v-if="black" class="header__icons-icon-img1" :src="getMemberSrc" alt="" />
-          <img v-else class="header__icons-icon-img1" :src="getMemberSrc" alt="" />
+        <router-link to="/register" class="header__icons-icon" @click="closeHamburger">
+          <img v-if="black" class="header__icons-icon-img1" :src="getNavMemberSrc" alt="" />
+          <img v-else class="header__icons-icon-img1" :src="getNavMemberSrc" alt="" />
         </router-link>
-        <router-link to="/cart" class="header__icons-icon">
-          <img v-if="black" class="header__icons-icon-img2" :src="getCartSrc" alt="" />
-          <img v-else class="header__icons-icon-img2" :src="getCartSrc" alt="" />
+        <router-link to="/cart" class="header__icons-icon" @click="closeHamburger">
+          <img v-if="black" class="header__icons-icon-img2" :src="getNavCartSrc" alt="" />
+          <img v-else class="header__icons-icon-img2" :src="getNavCartSrc" alt="" />
         </router-link>
       </div>
       <button class="h__btn" :class="hamburger__class" @click="toggleHamburger">
-        <span class="hamburger__bar" :class="{ 'h-black': black }"></span>
-        <span class="hamburger__bar" :class="{ 'h-black': black }"></span>
-        <span class="hamburger__bar" :class="{ 'h-black': black }"></span>
+        <span class="hamburger__bar" :class="hanburgerBarColor"></span>
+        <span class="hamburger__bar" :class="hanburgerBarColor"></span>
+        <span class="hamburger__bar" :class="hanburgerBarColor"></span>
       </button>
       <div class="circle" :class="hamburger__class"></div>
-      <div :class="['menu__nav', { active: isHamburgerOpen }]">
+      <div :class="['menu__nav', { active: isHamburgerOpen, 'nav-dark': isHamburgerOpen }]">
         <nav class="menu__nav-content">
           <ul class="menu__nav-ul">
             <li class="menu__nav-ul-item" :class="hamburger__class">
-              <router-link to="/about_us" class="menu__link" @click="closeHamburger"
-                ><span class="item1">關於我們</span></router-link
-              >
-              <router-link to="/menus" class="menu__link" @click="closeHamburger"><span class="item2">菜單</span></router-link>
-              <router-link to="/reserve_first" class="menu__link" @click="closeHamburger"
-                ><span class="item3">預約訂位</span></router-link
-              >
-              <router-link to="/product" class="menu__link" @click="closeHamburger"
-                ><span class="item4">熱門商品</span></router-link
-              >
-              <router-link to="/quizgame" class="menu__link" @click="closeHamburger"
-                ><span class="item5">測驗遊戲</span></router-link
-              >
-              <router-link to="/wine_column" class="menu__link" @click="closeHamburger"
-                ><span class="item6">酒品專欄</span></router-link
-              >
-              <router-link to="/questions" class="menu__link" @click="closeHamburger"
-                ><span class="item7">常見問題</span></router-link
-              >
+              <router-link to="/about_us" class="menu__link" @click="closeHamburger"><span>關於我們</span></router-link>
+              <router-link to="/menus" class="menu__link" @click="closeHamburger"><span>菜單</span></router-link>
+              <router-link to="/reserve_first" class="menu__link" @click="closeHamburger"><span>預約訂位</span></router-link>
+              <router-link to="/product" class="menu__link" @click="closeHamburger"><span>熱門商品</span></router-link>
+              <router-link to="/quizgame" class="menu__link" @click="closeHamburger"><span>測驗遊戲</span></router-link>
+              <router-link to="/wine_column" class="menu__link" @click="closeHamburger"><span>酒品專欄</span></router-link>
+              <router-link to="/questions" class="menu__link" @click="closeHamburger"><span>常見問題</span></router-link>
             </li>
           </ul>
           <div class="menu__nav-img">
-            <img src="../../imgs/burger.png" alt="" />
+            <img src="@/imgs/burger.png" alt="" />
           </div>
         </nav>
       </div>
@@ -87,11 +75,9 @@ export default {
     },
 
     getMemberSrc() {
-      console.log(this.black)
-
       return this.black
         ? new URL('@/imgs/icon/icon_member-on.svg', import.meta.url).href
-        : new URL('@/imgs/member/member-w.png', import.meta.url).href
+        : new URL('@/imgs/icon/icon_member-on-w.svg', import.meta.url).href
     },
 
     getCartSrc() {
@@ -99,9 +85,20 @@ export default {
         ? new URL('@/imgs/icon/icon_cart-shopping.svg', import.meta.url).href
         : new URL('@/imgs/icon/icon_cart-shopping-w.svg', import.meta.url).href
     },
-
+    getNavMemberSrc() {
+      return this.isHamburgerOpen ? new URL('@/imgs/icon/icon_member-on-w.svg', import.meta.url).href : this.getMemberSrc
+    },
+    getNavCartSrc() {
+      return this.isHamburgerOpen ? new URL('@/imgs/icon/icon_cart-shopping-w.svg', import.meta.url).href : this.getCartSrc
+    },
+    getNavLogoSrc() {
+      return this.isHamburgerOpen ? new URL('@/imgs/logo/logo-w.png', import.meta.url).href : this.getLogoSrc
+    },
     hamburger__class() {
       return this.isHamburgerOpen === true ? 'active' : ''
+    },
+    hanburgerBarColor() {
+      return this.isHamburgerOpen === true ? 'h-white' : 'h-black'
     }
   },
 
@@ -128,11 +125,16 @@ export default {
   .h-black {
     background: $negroni;
   }
+  .h-white {
+    background: $ramos-gin-fizz;
+  }
   &__logoarea {
     width: 100px;
     height: 80px;
     padding-left: 1rem;
     &-logo {
+      position: relative;
+      z-index: 1000;
       cursor: pointer;
       img {
         width: 100%;
@@ -152,7 +154,10 @@ export default {
       justify-content: space-around;
       align-items: center;
       // border: 1px solid red;
+      cursor: pointer;
       .header__icons-icon {
+        position: relative;
+        z-index: 1000;
         &-img1 {
           width: 30px;
         }
@@ -182,7 +187,7 @@ export default {
     right: 1.9rem;
     top: 2.2rem;
     transform: scale(0);
-    transition: transform 0.8s ease;
+    transition: transform 0.5s ease 0.2s;
     background: $negroni;
 
     z-index: -1;
@@ -229,12 +234,26 @@ export default {
   overflow-x: hidden;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 1s ease-in;
+  transition: opacity 0.5s ease-in;
+  background-image: url('@/imgs/burger.png');
+  background-size: 600px;
+  background-position: right;
+  background-repeat: no-repeat;
+  @include breakpoint(1024px) {
+    background-image: none;
+  }
 
   &.active {
     width: 100%;
     opacity: 1;
     pointer-events: auto;
+  }
+  &.nav-dark .header__icons-icon img {
+    content: url('@/imgs/icon/icon_member-on-w.svg');
+  }
+
+  &.nav-dark .header__icons-icon img {
+    content: url('@/imgs/icon/icon_cart-shopping-w.svg');
   }
   &-content {
     position: relative;
@@ -245,19 +264,26 @@ export default {
     height: 100%;
   }
   &-ul {
-    // flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    // border: 1px solid red;
+    width: 100%;
+    @include breakpoint(1024px) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     &-item {
-      // border: 1px solid red;
-      height: 70%;
-      // width: 100%;
+      height: 100%;
+      width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
       .menu__link {
+        width: fit-content;
         // border: 1px solid green;
         font-family: $fontfamily;
         font-size: $fontSize_h3;
@@ -265,12 +291,8 @@ export default {
         text-align: center;
         color: $whitelady;
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 0.15rem 14rem;
-        // padding: 1.25rem 3rem;
-        // border: 1px solid red;
         color: rgba($color: $whitelady, $alpha: 0.5);
 
         &:hover {
@@ -280,85 +302,58 @@ export default {
           transform: translateX(100px);
         }
         &:nth-child(odd) {
-          transform: translateX(-50px);
+          transform: translateX(-100px);
         }
         &:nth-child(1) {
-          transform: rotate(-8deg) translateX(-80px);
-        }
-        &:nth-child(2) {
-          transform: rotate(7deg) translateX(220px) translateY(-40px);
-        }
-        &:nth-child(3) {
-          transform: rotate(9deg) translate(-50px, 30px);
-        }
-        &:nth-child(4) {
-          transform: rotate(-6deg) translate(220px, 40px);
-        }
-        &:nth-child(5) {
-          transform: rotate(-9deg) translate(-60px, 10px);
-        }
-        &:nth-child(6) {
-          transform: rotate(4deg) translateX(230px) translateY(30px);
-        }
-        &:nth-child(7) {
-          transform: rotate(9deg) translateX(-60px) translateY(40px);
-        }
-        .item1 {
           position: relative;
           &::before {
             content: 'About';
             position: absolute;
             top: 2.4rem;
-            left: 2rem;
             font-size: $fontSize_h4;
           }
-          // border: 1px solid blue;
         }
-        .item2 {
+        &:nth-child(2) {
           position: relative;
           &::before {
             content: 'Menu';
             position: absolute;
             top: 2.4rem;
-            left: 0.2rem;
+
             font-size: $fontSize_h4;
           }
-          // border: 1px solid blue;
         }
-        .item3 {
+        &:nth-child(3) {
           position: relative;
           &::before {
             content: 'Booking';
             position: absolute;
             top: 2.4rem;
-            left: 1.3rem;
+
             font-size: $fontSize_h4;
           }
-          // border: 1px solid blue;
         }
-        .item4 {
+        &:nth-child(4) {
           position: relative;
           &::before {
             content: 'Product';
             position: absolute;
             top: 2.4rem;
-            left: 1.5rem;
+
             font-size: $fontSize_h4;
           }
-          // border: 1px solid blue;
         }
-        .item5 {
+        &:nth-child(5) {
           position: relative;
           &::before {
             content: 'QuizGame';
             position: absolute;
             top: 2.4rem;
-            left: 0.8rem;
+
             font-size: $fontSize_h4;
           }
-          // border: 1px solid blue;
         }
-        .item6 {
+        &:nth-child(6) {
           position: relative;
           &::before {
             content: 'WineColumn';
@@ -366,28 +361,44 @@ export default {
             top: 2.4rem;
             font-size: $fontSize_h4;
           }
-          // border: 1px solid blue;
         }
-        .item7 {
+        &:nth-child(7) {
           position: relative;
           &::before {
             content: 'Q&A';
             position: absolute;
             top: 2.4rem;
-            left: 2.3rem;
+
             font-size: $fontSize_h4;
           }
-          // border: 1px solid blue;
         }
       }
     }
   }
   &-img {
-    flex: 1;
-    padding-top: 7rem;
-    padding-left: 5rem;
-    width: 50%;
-    // border: 1px solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    @include breakpoint(1024px) {
+      opacity: 1;
+    }
+    img {
+      @include breakpoint(1024px) {
+        display: block;
+        position: absolute;
+        object-fit: contain;
+        opacity: 1;
+        top: 50%;
+        right: 50%;
+        transform: translate(50%, -50%);
+        width: 100%;
+        height: 100%;
+        border: 1px solid red;
+        z-index: -1;
+        filter: opacity(0.1);
+      }
+    }
   }
 }
 @keyframes shaked {
