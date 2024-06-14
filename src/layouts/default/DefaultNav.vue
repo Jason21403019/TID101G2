@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="header__logoarea">
-      <router-link to="/" class="header__logoarea-logo" @click="closeHamburger">
+      <router-link to="/home" class="header__logoarea-logo" @click="closeHamburger">
         <img v-if="black" :src="getNavLogoSrc" alt="" />
         <img v-else :src="getNavLogoSrc" alt="" />
       </router-link>
