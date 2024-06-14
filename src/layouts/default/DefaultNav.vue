@@ -98,7 +98,7 @@ export default {
       return this.isHamburgerOpen === true ? 'active' : ''
     },
     hanburgerBarColor() {
-      return this.isHamburgerOpen === true ? 'h-white' : 'h-black'
+      return this.isHamburgerOpen ? 'h-white' : this.black ? 'h-black' : 'h-black-on-light'
     }
   },
 
@@ -126,6 +126,9 @@ export default {
     background: $negroni;
   }
   .h-white {
+    background: $ramos-gin-fizz;
+  }
+  .h-black-on-light {
     background: $ramos-gin-fizz;
   }
   &__logoarea {
