@@ -318,15 +318,6 @@ const routes = [
     meta: {
       layout: 'logindefault'
     }
-  },
-  // 訂位確認
-  {
-    path: '/admin_panel',
-    name: 'AdminPanel',
-    component: () => import('../views/AdminPanel.vue'),
-    meta: {
-      layout: 'Admin'
-    }
   }
 ]
 const router = createRouter({
