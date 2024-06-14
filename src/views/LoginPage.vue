@@ -3,7 +3,7 @@
     <div class="loginpage">
       <div class="box">
         <div class="wrapper">
-          <a draggable="true" data-link="/" @dragstart="onDragStart">
+          <a draggable="true" data-link="/home" @dragstart="onDragStart">
             <img class="log_home" src="../imgs/loginImg/login_but-02.svg" width="125" height="125" />
           </a>
 
@@ -27,14 +27,8 @@ export default {
       // 拖移事件觸發後更換圖片
       // onImage: 'src/imgs/loginImg/login-on.jpg',
       // offImage: 'src/imgs/loginImg/login-off.jpg'
-      onImage: new URL(
-        `@/imgs/loginImg/login-on.jpg`,
-        import.meta.url
-      ).href,
-      offImage: new URL(
-        `@/imgs/loginImg/login-off.jpg`,
-        import.meta.url
-      ).href
+      onImage: new URL(`@/imgs/loginImg/login-on.jpg`, import.meta.url).href,
+      offImage: new URL(`@/imgs/loginImg/login-off.jpg`, import.meta.url).href
     }
   },
   methods: {
@@ -78,15 +72,16 @@ section {
       position: relative;
     }
   }
-  .log_home, .log_admin {
+  .log_home,
+  .log_admin {
     cursor: grab;
-    transition: transform 0.3s ease; 
-}
+    transition: transform 0.3s ease;
+  }
 
-.log_home:hover, .log_admin:hover {
-  cursor: grab;
-    transform: scale(1.1); 
-}
-
+  .log_home:hover,
+  .log_admin:hover {
+    cursor: grab;
+    transform: scale(1.1);
+  }
 }
 </style>
