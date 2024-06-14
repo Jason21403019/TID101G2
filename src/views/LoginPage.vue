@@ -25,8 +25,16 @@ export default {
   data() {
     return {
       // 拖移事件觸發後更換圖片
-      onImage: 'src/imgs/loginImg/login-on.jpg',
-      offImage: 'src/imgs/loginImg/login-off.jpg'
+      // onImage: 'src/imgs/loginImg/login-on.jpg',
+      // offImage: 'src/imgs/loginImg/login-off.jpg'
+      onImage: new URL(
+        `@/imgs/loginImg/login-on.jpg`,
+        import.meta.url
+      ).href,
+      offImage: new URL(
+        `@/imgs/loginImg/login-off.jpg`,
+        import.meta.url
+      ).href
     }
   },
   methods: {
