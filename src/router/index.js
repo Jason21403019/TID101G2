@@ -5,7 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   // 登入前後台頁面
   {
-    path: '/login_page',
+    path: '/',
     name: 'loginpage',
     component: () => import('../views/LoginPage.vue'),
     meta: {
@@ -14,7 +14,7 @@ const routes = [
   },
   // 首頁
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: () => import('../views/Home.vue'),
     meta: {
