@@ -1,167 +1,153 @@
 <template>
-  <main id="commodity_tab">
-    <div class="searchButton">
-      <h4><router-link to="/">回首頁</router-link> > 全部商品</h4>
-      <input type="text" v-model="search" placeholder="Search" />
-      <button class="search" @click="searchData">
-        <img src="../imgs/icon/icon_admin-search.svg" alt="" />
-      </button>
-    </div>
-    <section class="productInfo">
-      <section id="tabName">
-        <button
-          type="button"
-          v-for="tab in tabs"
-          :class="{ active: currentTab == tab.id }"
-          :key="tab.id"
-          @click="changeTab(tab.id)"
-        >
-          <!-- @click="currentTab = tab.id" -->
-          <h1>{{ tab.name }}</h1>
-        </button>
-        <!-- <label></label> -->
-        <select>
-          <option v-for="tab in tabs">
-            <h1>{{ tab.name }}</h1>
-          </option>
-        </select>
-      </section>
+  <main id="app">
+    <!-- 商品詳細資訊 -->
+    <section class="productInformation">
+      <article class="productImg">
+        <h4><router-link to="/">回首頁</router-link> > 全部商品</h4>
+        <img class="productbackground" :src="tabs[0].bigimg" alt="" />
+        <!-- <img class="productbackground2" src="../imgs/productsImg/bg.png" alt="" /> -->
+      </article>
+      <article class="details">
+        <h1>{{ tabs[tabsIndex].brand }}</h1>
 
-      <section class="test">
-        <!-- <component v-bind:is="current_tab_component" class="tab_content"> </component> -->
-        <component is="Tab2Content"></component>
-        <!-- <component :is="current_tab_component" is="Tab2Content" class="tab_content"></component> -->
-      </section>
+        <h1>{{ tabs[tabsIndex].name }}{{ tabs[tabsIndex].Specification }}</h1>
+
+        <h4>商品編號:{{ tabs[tabsIndex].serialNumber }}</h4>
+
+        <span v-html="tabs[tabsIndex].information" class="content"></span>
+        <div>
+          <h2>NT${{ tabs[tabsIndex].price }}</h2>
+
+          <button class="countIcon" @click="countminusSign">
+            {{ minusSign }}
+          </button>
+          <span class="counts">{{ count }}</span>
+          <button class="countIcon" @click="countPlus">{{ plus }}</button>
+          <span class="quantitys"> 還剩{{ quantity }}件</span>
+        </div>
+        <p>
+          <button class="car" @click="taskAdd()">{{ addToTheCart }}</button>
+        </p>
+      </article>
+    </section>
+
+    <!-- 相關商品 -->
+    <section class="Related">
+      <h3>相關商品</h3>
+      <ul>
+        <li v-for="(tab, index) in tabs.slice(1, 4)" :key="tab.id" @click="changeProduct(index)">
+          <img :src="tab.img" alt="" />
+          <p>{{ tab.brand }}</p>
+          <p v-html="tab.name"></p>
+          <p v-html="tab.Specification"></p>
+          <h5>NT${{ tab.price }}</h5>
+        </li>
+      </ul>
     </section>
   </main>
 </template>
-
 <script>
-import Tab2Content from '../components/ProductInfo.vue'
-
 export default {
-  // components: ['TabContent'],
-  components: { Tab2Content },
-
   data() {
     return {
-      currentTab: 'tab1',
+      count: 0,
+      tabsIndex: 0,
+      plus: '+',
+      minusSign: '-',
+      addToTheCart: '加入購物車',
+      productTasks: [],
       tabs: [
         {
-          id: 'tab1',
-          name: '全部商品'
+          id: '01',
+          brand: 'Carl Jung 卡爾榮格 ',
+          name: 'Mousseux 穆瑟 無酒精氣泡酒',
+          Specification: ' ' + '750ML/瓶',
+          serialNumber: ' ' + 'P001',
+          information:
+            '全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。',
+          price: '500',
+          img: 'src/imgs/productsImg/sparkling wine/Le Petit Etoile.png',
+          bigimg: 'src/imgs/productsImg/sparkling wine/Carl-Jung-Mousseux_subpages.png',
+          category: '無酒精紅酒'
         },
         {
           id: 'tab2',
-          name: '熱銷商品'
+          brand: '法國 Bel Normande',
+          name: '貝爾 諾曼第精選氣泡紅葡萄汁',
+          Specification: ' ' + '750ML/瓶',
+          serialNumber: ' ' + 'P001',
+          information:
+            '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
+          price: '700',
+          img: 'src/imgs/productsImg/juice/el Normande.png',
+          category: '無酒精白酒'
         },
         {
-          id: 'tab3',
-          name: '無酒精紅酒'
+          id: '03',
+          brand: 'J.Chadin',
+          name: '查帝麝香葡萄氣泡飲',
+          Specification: ' ' + '750ML/瓶',
+          serialNumber: ' ' + 'P001',
+          information:
+            '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
+          price: '300',
+          img: 'src/imgs/productsImg/juice/J.Chadin.png',
+          category: '無酒精紅酒'
         },
         {
-          id: 'tab4',
-          name: '無酒精白酒'
-        },
-        {
-          id: 'tab5',
-          name: '無酒精氣泡酒'
-        },
-        {
-          id: 'tab6',
-          name: '無酒精粉紅酒'
-        },
-        {
-          id: 'tab7',
-          name: '無酒精果汁'
+          id: '04',
+          brand: 'J.Chadin',
+          name: '查帝麝香葡萄氣泡飲',
+          Specification: ' ' + '750ML/瓶',
+          serialNumber: ' ' + 'P001',
+          information:
+            '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
+          price: '300',
+          img: 'src/imgs/productsImg/pink wine/plus & minus.png',
+          category: '無酒精紅酒'
         }
-      ],
-      // infos: [
-      //   {
-      //     id: '01',
-      //     brand: 'Carl Jung 卡爾榮格',
-      //     name: 'Mousseux 穆瑟 無酒精氣泡酒',
-      //     Specification: ' ' + '750ML/瓶',
-      //     serialNumber: ' ' + 'P001',
-      //     information:
-      //       '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
-      //     price: 'NT$900',
-      //     img: 'juice/Bel Normande.png'
-      //   },
-      //   {
-      //     id: 'tab2',
-      //     brand: 'Carl Jung 卡爾',
-      //     name: 'Mousseux 穆瑟 無酒精氣',
-      //     Specification: ' 75ML/瓶',
-      //     serialNumber: 'P001',
-      //     information:
-      //       '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
-      //     price: 'NT$900',
-      //     img: 'juice/el Normande redapple.png'
-      //   }
-      // ],
-      search: ''
+      ]
     }
   },
   computed: {
-    current_tab_component() {
-      return 'tab' + this.currentTab + '_content'
-    },
-
-    searchData() {
-      return this.infos.filter(
-        (info) =>
-          info.brand.includes(this.search) ||
-          info.name.includes(this.search) ||
-          info.Specification.includes(this.search) ||
-          info.price.includes(this.search)
-      )
+    quantity() {
+      return this.tabs.length
     }
   },
-
   methods: {
-    // 点击标签按钮时切换标签
-    changeTab(tabId) {
-      this.currentTab = tabId
+    countPlus() {
+      if (this.count < this.quantity) {
+        this.count++
+      }
+    },
+    countminusSign() {
+      if (this.count > 0) {
+        this.count--
+      }
+    },
+    taskAdd() {
+      this.productTasks.unshift({
+        id: Date.now(),
+        img: this.tabs[this.tabsIndex].img,
+        brand: this.tabs[this.tabsIndex].brand,
+        name: this.tabs[this.tabsIndex].name,
+        price: this.tabs[this.tabsIndex].price,
+        Specification: this.tabs[this.tabsIndex].Specification,
+        count: this.count,
+        totalprice: this.count * parseInt(this.tabs[this.tabsIndex].price)
+      })
+      localStorage.setItem('productTasks', JSON.stringify(this.productTasks))
+    },
+    changeProduct(index) {
+      this.tabsIndex = index + 1
     }
   }
-  // created() {
-  //   // 根据屏幕宽度动态修改 tabs 数组，移除 tab1
-  //   if (window.innerWidth < 768) {
-  //     this.tabs = this.tabs.filter((tab) => tab.id !== 'tab1')
-  //   }
-  // }
-  // 動態註冊組件
-  /*
-    const info = {}
-    this.tabs.forEach((tab) => {
-      info[`tab${tab.id}_content`] = {
-        template: `
-        <article class="a" v-for="index in 6">
-          <div class='content'>
-            <img src='./圖片/Rectangle 42.png'/>
-          </div>
-          <span>
-            <p>${tab.name}</p>
-            <p>貝爾 諾曼第氣泡紅肉蘋果汁</p>
-            <p>750ML/瓶</p>
-            <h3>NT$299</h3>
-          </span>
-        </article>
-      `
-      }
-    })
-
-    // 將動態生成的組件分配給組件對象
-    this.$options.components = { ...this.$options.components, ...info }
-    */
 }
 </script>
-
 <style lang="scss" scoped>
 @mixin breakpoint($point) {
   @if $point == pc {
-    @media (max-width: 1100px) {
+    @media (max-width: 1280px) {
       @content;
     }
   } @else if $point == mobile {
@@ -174,178 +160,212 @@ export default {
     }
   }
 }
-#tabName {
-  width: 300px;
-  font-weight: bold;
-  border-radius: 10px;
-  @include breakpoint(mobile) {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-  }
 
-  button {
-    @include breakpoint(mobile) {
-      width: 33%;
-
-      display: none;
-    }
-  }
-  select {
-    width: 100%;
-    background-color: $ramos-gin-fizz;
-    font-size: 25px;
-    font-family: 'Noto Serif TC';
-    font-weight: bold;
-    display: none;
-
-    @include breakpoint(mobile) {
-      margin-right: 3%;
-      display: flex;
-    }
-
-    // option {
-    //   font-family: 'Noto Serif TC';
-    // }
-  }
-}
-article {
-  margin: 0 3%;
-}
-
-main {
-  background-color: #381b1d;
-  padding-top: 5%;
-
-  @include breakpoint(mobile) {
-    padding-top: 20%;
-  }
-
-  p {
-    font-size: 22px;
-    padding-top: 2%;
+body {
+  main {
+    font-family: $fontfamily;
+    font-size: 23px;
     color: white;
+    background-color: #381b1d;
+    .productInformation {
+      display: flex;
+      // width: 100%;
+
+      .details {
+        padding-top: 7%;
+        padding-right: 2%;
+        width: 70%;
+        @include breakpoint(pc) {
+          padding-top: 10%;
+          width: 80%;
+        }
+        @include breakpoint(mobile) {
+          padding-top: 15%;
+        }
+        .content {
+          @include breakpoint(pc) {
+            font-size: 23px;
+            line-height: 40px;
+          }
+          @include breakpoint(mobile) {
+            font-size: 20px;
+          }
+        }
+        .countIcon {
+          font-size: 43px;
+          color: white;
+          background-color: transparent;
+          border: 1px solid white;
+        }
+
+        .counts {
+          padding: 0 5%;
+          font-size: 50px;
+          align-self: center;
+          @include breakpoint(pc) {
+            font-size: 40px;
+          }
+          @include breakpoint(mobile) {
+            font-size: 35px;
+          }
+        }
+        .quantitys {
+          padding-left: 5%;
+          padding-bottom: 0%;
+          font-size: 20px;
+          align-self: center;
+          @include breakpoint(pc) {
+            font-size: 16px;
+          }
+          @include breakpoint(mobile) {
+            margin: auto 0;
+          }
+        }
+        div {
+          display: flex;
+          @include breakpoint(mobile) {
+            display: block;
+          }
+          button {
+            // height: 40px;
+            align-self: center;
+          }
+        }
+        .car {
+          @include breakpoint(pc) {
+            font-size: 44px;
+          }
+          @include breakpoint(mobile) {
+            font-size: 39px;
+          }
+          @include breakpoint(mobile2) {
+            font-size: 33px;
+          }
+          background-color: #fcf0d8;
+          width: 100%;
+
+          font-size: 48px;
+          font-weight: bold;
+          letter-spacing: 0.3em;
+          padding: 2% 0;
+          margin-top: 3%;
+          border-radius: 10px;
+        }
+        .car:hover {
+          background-color: #cead82;
+          color: #f6f6f6;
+        }
+      }
+    }
+    ul {
+      display: flex;
+      justify-content: space-around;
+      list-style: none;
+      padding-bottom: 5%;
+      //   @include breakpoint(pc) {
+      //   font-size: 60px;
+      // }
+      // @include breakpoint(mobile) {
+      //   font-size: 55px;
+      // }
+      // @include breakpoint(mobile2) {
+      //   font-size: 50px;
+      // }
+      li {
+        width: 30%;
+        font-size: 25px;
+        line-height: 40px;
+
+        img {
+          width: 100%;
+          padding-bottom: 5%;
+        }
+        p {
+          padding-bottom: 3%;
+          font-size: 25px;
+        }
+      }
+    }
   }
   h1 {
-    border-bottom: 1px solid black;
-    padding: 6% 0%;
-    margin: 0 3%;
-    @include breakpoint(mobile) {
-      border-bottom: 0px;
-      border-right: 1px solid black;
-      padding: 0;
+    font-weight: bolder;
+    font-size: 33px;
+    padding-bottom: 1%;
+    color: #fcf0d8;
+    @include breakpoint(pc) {
+      font-size: 30px;
     }
-    // padding-bottom: 1%;
+    @include breakpoint(mobile) {
+      font-size: 28px;
+    }
+  }
+  h2 {
+    color: rgb(187, 129, 57);
+    padding-right: 8%;
+    // padding-bottom: 3%;
+    font-size: 65px;
+    font-weight: bolder;
+
+    @include breakpoint(pc) {
+      font-size: 57px;
+    }
+    @include breakpoint(mobile) {
+      font-size: 50px;
+    }
+    @include breakpoint(mobile2) {
+      font-size: 50px;
+    }
   }
   h3 {
-    color: #cead82;
-    font-size: 35px;
-    padding-bottom: 20%;
+    text-align: center;
+    font-size: 65px;
+    padding-bottom: 3%;
   }
   h4 {
-    color: $whitelady;
-    font-size: 25px;
-    line-height: 60px;
-    margin-right: auto;
-    margin-left: 2.5%;
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-    a:hover {
-      color: #cead82;
-    }
+    font-size: 23px;
+    padding-bottom: 3%;
   }
-
-  button {
-    background-color: #fcf0d8;
-    border: 0px;
-    // border-bottom: 1px solid black;
-
-    font-size: 25px;
-    font-weight: bold;
-    width: 300px;
+  h5 {
+    font-size: 40px;
+    color: rgb(187, 129, 57);
+    font-weight: bolder;
   }
-}
-.productInfo {
-  display: flex;
-  flex-direction: row;
-  margin-left: 3%;
-  @include breakpoint(mobile) {
-    flex-direction: column;
+  span {
+    font-size: 27px;
+    line-height: 50px;
+    padding-bottom: 3%;
   }
-}
-.test {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.tab_content {
-  border: 1px solid lightgray;
-  padding: 10px;
-  margin-top: 5px;
-}
-
-article div {
-  position: relative;
-}
-
-article div:hover::before {
-  opacity: 1; /* 鼠标悬停时显示遮罩层 */
-}
-
-article div::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-
-  background-image: url(./圖片/Group.png);
-  background-repeat: no-repeat;
-  background-position: right bottom;
-  background-color: rgba(0, 0, 0, 0.5); /* 遮罩层颜色，可根据需要调整透明度 */
-  opacity: 0; /* 初始时不显示 */
-  transition: opacity 0.3s ease; /* 添加过渡效果 */
-  cursor: pointer;
-}
-
-.searchButton {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 2%;
-  margin-right: 3%;
-  padding: 5% 0;
-  height: 60px;
-  margin-bottom: 3%;
-  padding: 0 0;
-  border-radius: 10px;
-  border: none;
-  input {
-    height: 100%;
-    background-color: #fcf0d8;
-    border-radius: 10px;
-    ::placeholder {
-      color: rgb(220, 218, 218);
-    }
+  p {
+    padding-bottom: 3%;
   }
-  button {
-    background-color: rgba(255, 255, 255, 0);
-    border: none;
-    border-radius: 10px;
-    width: 5%;
-    padding: 0;
-    margin-left: -4%;
+  article {
+    // width: 50%;
     img {
-      width: 20px;
+      // height: 60%;
     }
   }
-}
-.active {
-  color: #c7a979;
+
+  .productImg {
+    width: 400px;
+    background-image: url('../imgs/productsImg/bg.png');
+    // background-size: cover;
+    background-repeat: no-repeat;
+
+    .productbackground {
+      width: 100%;
+      padding-top: 10%;
+      background-size: contain;
+    }
+    // .productbackground2 {
+    //   width: 100%;
+    //   margin-top: -0%;
+    // }
+  }
+  li img:hover {
+    filter: brightness(70%);
+  }
+  .Related {
+    padding: 0 2%;
+  }
 }
 </style>

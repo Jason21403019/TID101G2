@@ -3,7 +3,9 @@
     <!-- <article class="a" v-for="(product, index) in infos.slice(0, infos.length)" :key="product.id"> -->
     <article class="a" v-for="(product, index) in paginatedInfos" :key="product.id">
       <div class="content">
-        <img :src="`/src/imgs/productsImg/${product.img}`" alt="" />
+        <div class="image-container">
+          <img :src="`/src/imgs/productsImg/${product.img}`" alt="" />
+        </div>
       </div>
       <span>
         <p>{{ product.brand }}</p>
@@ -158,7 +160,7 @@ export default {
 
           if (x > beforeWidth && y > rect.height - beforeHeight) {
             // 点击了 ::before 区域
-            window.location.href = '#/product' // 这里修改为您想要跳转的页面
+            window.location.href = '#/product_subpages' // 这里修改为您想要跳转的页面
           } else {
             // 点击了 div 区域
             window.location.href = '#/product_subpages'
@@ -171,17 +173,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// @mixin breakpoint($point) {
+//   @if $point == pc {
+//     @media (max-width: 1100px) {
+//       @content;
+//     }
+//   } @else if $point == mobile {
+//     @media (max-width: 768px) {
+//       @content;
+//     }
+//   } @else if $point == mobile2 {
+//     @media (max-width: 430px) {
+//       @content;
+//     }
+//   }
+// }
 @mixin breakpoint($point) {
   @if $point == pc {
-    @media (max-width: 1100px) {
+    @media (max-width: 1280px) {
       @content;
     }
   } @else if $point == mobile {
     @media (max-width: 768px) {
-      @content;
-    }
-  } @else if $point == mobile2 {
-    @media (max-width: 430px) {
       @content;
     }
   }
@@ -189,30 +202,45 @@ export default {
 .product {
   display: flex;
   flex-wrap: wrap;
-  padding: 0 5%;
-  justify-content: space-between;
+  // padding: 0 7%;
+  padding-right: 5%;
+  justify-content: space-evenly;
 }
 img {
   width: 286px;
+  box-sizing: border-box;
   // width: 33%;
   @include breakpoint(mobile) {
-    width: 240px;
+    width: 200px;
   }
-  @include breakpoint(mobile2) {
-    width: 150px;
-  }
+  // @include breakpoint(mobile2) {
+  //   width: 150px;
+  // }
 }
 p {
   font-size: 22px;
   padding-top: 2%;
+  width: 100%;
   color: white;
+
+  @include breakpoint(mobile) {
+    font-size: 17px;
+  }
+  // @include breakpoint(mobile2) {
+  //   width: 150px;
+  // }
 }
 h3 {
   color: #cead82;
   font-size: 35px;
   padding-bottom: 20%;
 }
-
+article {
+  // width: 286px;
+  span {
+    width: 100%;
+  }
+}
 article div {
   position: relative;
 }
@@ -227,7 +255,7 @@ article div::before {
   top: 0;
   left: 0;
   width: 100%;
-  height: 97.5%;
+  height: 98%;
   background-image: url(/src/imgs/icon/icon_cart-shopping-w.svg);
   background-size: 30%;
   background-repeat: no-repeat;
@@ -236,5 +264,14 @@ article div::before {
   opacity: 0; /* 初始时不显示 */
   transition: opacity 0.3s ease; /* 添加过渡效果 */
   cursor: pointer;
+  @include breakpoint(mobile) {
+    display: none;
+  }
+}
+
+.image-container img:hover {
+  @include breakpoint(mobile) {
+    background-color: blue;
+  }
 }
 </style>

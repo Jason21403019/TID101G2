@@ -13,13 +13,13 @@
         <h3 v-html="content"></h3>
       </span>
     </section>
-    <p class="paragraph">{{ englishText }}</p>
+    <!-- <p class="paragraph">{{ englishText }}</p> -->
     <!-- 跳轉心理測驗 -->
     <section ref="section3" class="aboutBackground_3">
       <span>
         <p>{{ englishText }}</p>
         <h2>{{ title2 }}</h2>
-        <button @click="commodityPage(buttonText)">{{ buttonText }}</button>
+        <button class="testbutton" @click="testPage">{{ buttonText }}</button>
       </span>
     </section>
 
@@ -28,7 +28,7 @@
       <iframe
         src="https://maps.google.com?output=embed&q=緯育TibaMe附設台北職訓中心"
         width="100%"
-        height="530vh"
+        height="50%"
         frameborder="0"
       ></iframe>
       <div>
@@ -54,7 +54,7 @@ export default {
       englishText: 'Fredericka the Great',
       title1: '紙醉金迷',
       content:
-        '「紙醉金迷」以浪漫、神秘的氛圍和美酒品味為主題，吸引消費者，提供來自世界各地的頂級美酒和美食，以專業的服務，營造出愉悅的用餐體驗。',
+        '「紙醉金迷」以浪漫、神秘的氛圍和美酒品味為主題，吸引消費者，<br>提供來自世界各地的頂級美酒和美食，以專業的服務，營造出愉悅的用餐體驗。',
       title2: '尋找屬於您自己的故事',
       buttonText: '開始測驗',
       businessHours: '營業時間：PM5:00~AM3:00',
@@ -65,38 +65,32 @@ export default {
   },
 
   mounted() {
-    const sections = [
-      this.$refs.section1,
-      // this.$refs.section2,
-      this.$refs.section3
-    ]
+    const sections = [this.$refs.section2]
 
-    // sections.forEach((section, i) => {
-    //   gsap.fromTo(
-    //     section,
-    //     {
-    //       backgroundPosition: () => `50% ${i ? -window.innerHeight * getRatio(section) : '0'}px`
-    //     },
-    //     {
-    //       backgroundPosition: () => `50% ${window.innerHeight * (1 - getRatio(section))}px`,
-    //       ease: 'ease-out',
-    //       ScrollTrigger: {
-    //         trigger: section,
-    //         start: () => (i ? 'top bottom' : 'top top'),
-    //         end: 'bottom top',
-    //         scrub: true,
-    //         invalidateOnRefresh: true,
-    //         markers: true
-    //       }
-    //     }
-    //   )
-    // })
+    sections.forEach((section, i) => {
+      gsap.fromTo(
+        section,
+        {
+          backgroundPosition: () => `50% ${i ? -window.innerHeight * this.getRatio(section) : '0'}px`
+        },
+        {
+          backgroundPosition: () => `50% ${window.innerHeight * (1 - this.getRatio(section))}px`,
+
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: () => (i ? 'top bottom' : 'top top'),
+            end: 'bottom top',
+            scrub: true,
+            invalidateOnRefresh: true
+          }
+        }
+      )
+    })
   },
   methods: {
-    commodityPage(page) {
-      if (page === '開始測驗') {
-        window.location.href = 'ˇ#/quizgame'
-      }
+    testPage() {
+      this.$router.push('/quizgame')
     },
     getRatio(element) {
       const rect = element.getBoundingClientRect()
@@ -109,21 +103,27 @@ export default {
 <style lang="scss" scoped>
 @mixin breakpoint($point) {
   @if $point == pc {
-    @media (max-width: 1100px) {
+    @media (max-width: 1280px) {
       @content;
     }
   } @else if $point == mobile {
     @media (max-width: 768px) {
       @content;
     }
-  } @else if $point == mobile2 {
-    @media (max-width: 430px) {
-      @content;
-    }
   }
 }
+// } @else if $point == mobile2 {
+//   @media (max-width: 430px) {
+//     @content;
+//   }
+// } @else if $point == mobile3 {
+//   @media (max-width: 375px) {
+//     @content;
+//   }
+// }
 
 body {
+  background-color: black;
   button {
     background-color: transparent;
     border-color: $irishcoffee;
@@ -132,30 +132,36 @@ body {
     font-size: 62px;
     padding: 1% 5%;
     letter-spacing: 10px;
+    margin: 0 auto;
   }
   h1 {
     color: $whitelady;
     font-size: 102px;
     padding-bottom: 4%;
+    font-weight: bold;
     @include breakpoint(mobile) {
-      font-size: 90px;
-    }
-    @include breakpoint(mobile2) {
       font-size: 75px;
     }
+    // @include breakpoint(mobile2) {
+    //   font-size: 75px;
+    // }
   }
   h2 {
     color: $whitelady;
     font-size: 92px;
     font-family: $fontfamily;
+    font-weight: bold;
     padding-bottom: 4%;
-
     @include breakpoint(mobile) {
-      font-size: 75px;
+      padding: 0 2%;
+      font-size: 48px;
     }
-    @include breakpoint(mobile2) {
-      font-size: 60px;
-    }
+    // @include breakpoint(mobile2) {
+    //   font-size: 55px;
+    // }
+    // @include breakpoint(mobile3) {
+    //   font-size: 50px;
+    // }
   }
   h3 {
     color: $whitelady;
@@ -163,110 +169,163 @@ body {
     font-family: $fontfamily;
     line-height: 50px;
     width: 70%;
-    // text-align: center;
+
     margin: 0 auto;
+
+    @include breakpoint(mobile) {
+      font-size: 22px;
+    }
   }
+
   p {
     color: $whitelady;
     text-align: center;
     font-size: 56px;
     font-family: $fontfamily-en2;
     padding-bottom: 2%;
+    padding: 0 1%;
     @include breakpoint(pc) {
       font-size: 50px;
     }
     @include breakpoint(mobile) {
-      font-size: 45px;
-    }
-    @include breakpoint(mobile2) {
       font-size: 40px;
     }
+    // @include breakpoint(mobile2) {
+    //   font-size: 40px;
+    // }
   }
   main {
     width: 100%;
-    // padding-top: 10%;
-    background-color: black;
-    section {
-      position: relative;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
-      width: 100%;
-      height: 100vh;
-      text-align: center;
-      /* line-height: 100px; */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      span {
-        // position: absolute;
-        // z-index: 1;
-      }
-    }
-    .aboutBackground_1 {
-      background-image: url(../imgs/aboutImg/about_pc01.png);
+    font-family: $fontfamily;
+  }
+  //   section {
+  //     position: relative;
+  //     background-repeat: no-repeat;
+  //     background-size: cover;
+  //     background-position: center;
+  //     width: 100%;
+  //     height: 100vh;
+  //     text-align: center;
+  //     /* line-height: 100px; */
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: center;
+  span {
+    position: absolute;
+    z-index: 1;
+  }
+}
+//   }
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      img {
-        @include breakpoint(pc) {
-          width: 500px;
-        }
-        @include breakpoint(mobile) {
-          width: 450px;
-        }
-        @include breakpoint(mobile2) {
-          width: 400px;
-        }
-        // width: 40%;
-      }
+section {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-position: center center;
+  background-size: cover;
+  // z-index: -1;
+}
+// .bg {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   z-index: -1;
+//   background-size: cover;
+//   background-position: center;
+//   background-repeat: no-repeat;
+// }
+
+.aboutBackground_1 {
+  background-image: url(../imgs/aboutImg/about_pc01.png);
+
+  // display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 550px;
+    @include breakpoint(pc) {
+      width: 450px;
     }
-    .aboutBackground_2 {
-      background-image: url(../imgs/aboutImg/about_pc02.png);
+    // @include breakpoint(pc2) {
+    //   width: 450px;
+    // }
+    @include breakpoint(mobile) {
+      width: 275px;
     }
-    .paragraph {
-      background-color: #381b1d;
-      padding: 5% 0;
+    // @include breakpoint(mobile2) {
+    //   width: 300px;
+    // }
+    // @include breakpoint(mobile3) {
+    //   width: 275px;
+    // }
+    // width: 40%;
+  }
+}
+.aboutBackground_2 {
+  background-image: url(../imgs/aboutImg/about_pc02.png);
+  text-align: center;
+}
+.paragraph {
+  background-color: #381b1d;
+  padding: 5% 0;
+}
+.aboutBackground_3 {
+  background-image: url(../imgs/aboutImg/about_pc03.png);
+  background-color: #381b1d;
+  opacity: 0.9;
+  text-align: center;
+  background-position: bottom;
+  .testbutton {
+  }
+}
+.aboutBackground_4 {
+  background-color: #381b1d;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 0 5%;
+  padding-top: 5%;
+  justify-content: left;
+  line-height: 50px;
+  border-radius: 10px;
+
+  @include breakpoint(mobile) {
+    height: 50vh;
+  }
+  h3 {
+    margin: 0;
+    width: 100%;
+    @include breakpoint(mobile) {
+      font-size: 17px;
+      // }
+      // @include breakpoint(mobile2) {
+      //   font-size: 20px;
+      // }
     }
-    .aboutBackground_3 {
-      background-image: url(../imgs/aboutImg/about_pc03.png);
-      background-color: #381b1d;
-      opacity: 0.9;
+  }
+  iframe {
+    border-radius: 10px;
+    @include breakpoint(pc) {
+      // height: '480vh';
     }
-    .aboutBackground_4 {
-      background-color: #381b1d;
-      display: flex;
-      flex-direction: column;
+
+    @include breakpoint(mobile) {
+      height: 30vh;
+    }
+  }
+  div {
+    width: 100%;
+    padding: 3% 0;
+    p {
+      display: unset;
       text-align: left;
-      padding: 0 5%;
-      padding-top: 5%;
-      // justify-content: left;
-      /* line-height: 50px; */
-      h3 {
-        margin: 0;
-        width: 100%;
-        @include breakpoint(mobile) {
-          font-size: 26px;
-        }
-        @include breakpoint(mobile2) {
-          font-size: 20px;
-        }
-      }
-      iframe {
-        border-radius: 10px;
-      }
-      div {
-        width: 100%;
-        padding: 3% 0;
-        p {
-          /* display: unset; */
-          text-align: left;
-          justify-content: left;
+      justify-content: left;
 
-          /* line-height: 50px; */
-        }
-      }
+      line-height: 50px;
     }
   }
 }
