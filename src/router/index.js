@@ -1,7 +1,7 @@
 // import AboutUs from '../views/AboutUs.vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
-const history = createWebHashHistory()
+// const history = createWebHashHistory()
 const routes = [
   // 登入前後台頁面
   {
@@ -331,7 +331,7 @@ const routes = [
 ]
 const router = createRouter({
   linkActiveClass: 'active',
-  history,
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   // 在底部切換頁面時，會有平滑滾動效果到top
   scrollBehavior(to, from, savedPosition) {
@@ -341,7 +341,6 @@ const router = createRouter({
       return { left: 0, top: 0 }
     }
   }
-
 })
 
 export { router }

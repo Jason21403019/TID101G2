@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
 export default defineConfig({
+  base: '/tid101/g2/',
   plugins: [
     vue(),
     createHtmlPlugin({
