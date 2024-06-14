@@ -72,38 +72,38 @@ export default {
         {
           text: variables.memberblock.member,
           icon: 'member',
-          subItems: [{ text: variables.memberblock.memberList, link: '/#/admin_member' }]
+          subItems: [{ text: variables.memberblock.memberList, link: '/admin_member' }]
         },
         {
           text: variables.productblock.product,
           icon: 'product',
           subItems: [
-            { text: variables.productblock.typeList, link: '/#/admin_type' },
-            { text: variables.productblock.productList, link: '/#/admin_product' }
+            { text: variables.productblock.typeList, link: '/admin_type' },
+            { text: variables.productblock.productList, link: '/admin_product' }
           ]
         },
         {
           text: variables.orderblock.order,
           icon: 'order',
-          subItems: [{ text: variables.orderblock.orderList, link: '/#/admin_order' }]
+          subItems: [{ text: variables.orderblock.orderList, link: '/admin_order' }]
         },
         {
           text: variables.articleblock.wine,
           icon: 'wine',
           subItems: [
-            { text: variables.articleblock.categoryList, link: '/#/admin_category' },
-            { text: variables.articleblock.articleList, link: '/#/admin_article' }
+            { text: variables.articleblock.categoryList, link: '/admin_category' },
+            { text: variables.articleblock.articleList, link: '/admin_article' }
           ]
         },
         {
           text: variables.resblock.reservation,
           icon: 'reservation',
-          subItems: [{ text: variables.resblock.bookingList, link: '/#/admin_res' }]
+          subItems: [{ text: variables.resblock.bookingList, link: '/admin_res' }]
         },
         {
           text: variables.adminblock.admin,
           icon: 'admin',
-          subItems: [{ text: variables.adminblock.account, link: '/#/admin_account' }]
+          subItems: [{ text: variables.adminblock.account, link: '/admin_account' }]
         }
       ],
       expandedIndex: null,
