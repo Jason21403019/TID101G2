@@ -82,6 +82,7 @@ section {
   .log_admin:hover {
     cursor: grab;
     transform: scale(1.1);
+    cursor: pointer;
   }
 }
 </style>

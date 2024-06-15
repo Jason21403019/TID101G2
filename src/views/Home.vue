@@ -175,6 +175,7 @@ section {
     justify-content: start;
     align-items: center;
     justify-items: center;
+    cursor: pointer;
 
     .story1_span4 {
       margin-bottom: 1200px;
@@ -233,10 +234,12 @@ section {
     background-size: cover;
     background-position: center;
     height: 200vh;
+    
   }
 
   .homeBackground_5 {
     transition: 0.5s ease-in-out;
+    cursor: pointer;
   }
   // 引導按鈕
   .homeBackground_6 {
@@ -244,20 +247,24 @@ section {
     background-size: cover;
     background-position: center;
     height: 250vh;
+
   }
   .homeBackground_7 {
     background-image: url(../imgs/homePageImg/homePage_story4_on.png);
     background-size: cover;
     background-position: center;
     height: 250vh;
+ 
   }
   // 按鈕範圍
   .box_btn {
     // border: 2px solid greenyellow;
     width: 100%;
+    cursor: pointer;
     button {
       // border: 2px solid greenyellow;
       width: 100%;
+      cursor: pointer;
     }
   }
 }
