@@ -25,7 +25,7 @@
         <div class="article-content">
           <h3>{{ article.title }}</h3>
         </div>
-        <ReadMoreButton />
+        <ReadMoreButton class="read-more-button" :custom-style="{ top: '3rem', right: '10px' }" />
       </div>
     </div>
     <div class="more_btn">
@@ -189,6 +189,10 @@ nav {
     height: 400px;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
+  }
+  .read-more-button {
+    position: absolute;
+    border: 1px solid red !important;
   }
 }
 

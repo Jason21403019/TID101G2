@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     handleItemClicked(link) {
-      console.log('Item clicked with link:', link)
+      // console.log('Item clicked with link:', link)
       this.activeLink = link
       this.$router.push(link)
     }

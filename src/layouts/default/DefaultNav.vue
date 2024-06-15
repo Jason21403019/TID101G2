@@ -126,10 +126,10 @@ export default {
     background: $negroni;
   }
   .h-white {
-    background: $ramos-gin-fizz;
+    background: $whitelady;
   }
   .h-black-on-light {
-    background: $ramos-gin-fizz;
+    background: $whitelady;
   }
   &__logoarea {
     width: 100px;

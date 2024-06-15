@@ -14,7 +14,7 @@
             src="@/imgs/wineColumnImg/bartender-opens-bottle-red-wine-using-wine-opener-pour-lot-empty-glasses-bar-counter-blurred-background-wine-tasting-open-beverage-bartender-dinner-concept.jpg"
             alt=""
           />
-          <ReadMoreButton />
+          <ReadMoreButton class="read-more-btn" />
           <div class="category-name">{{ category }}</div>
         </div>
         <div class="winecolumn__masonry-item1-lf-bt winecolumn__group">
@@ -113,6 +113,7 @@ export default {
 //     font-size: 40px;
 //   }
 // }
+
 .winecolumn {
   &__title {
     position: absolute;
@@ -121,6 +122,10 @@ export default {
     z-index: 2;
     font-size: $fontSize_h4;
     letter-spacing: $letterspacing;
+    @include breakpoint(767px) {
+      top: 1rem !important;
+      left: 0.5rem !important;
+    }
   }
 
   &__group {
@@ -130,6 +135,10 @@ export default {
       margin-right: 0 !important;
       width: 100% !important;
       height: 200px !important;
+      .category-name {
+        bottom: 0.5rem;
+        right: 0rem;
+      }
 
       &-outer {
         margin-bottom: 0 !important;
