@@ -25,6 +25,22 @@
         <li>{{ NumberOfPeople }}</li>
         <li>{{ Remark }}</li>
       </ul>
+      <section class="mobile">
+        <ul class="orderInfoMobile">
+          <li>成立時間:{{ establishedTime }}</li>
+          <li>訂位姓名:{{ orderName }}</li>
+          <li>預約時間:{{ orderTime }}</li>
+          <li>人數:{{ NumberOfPeople }}</li>
+          <li>備註:{{ Remark }}</li>
+        </ul>
+        <ul class="orderInfoMobile">
+          <li>成立時間:{{ establishedTime }}</li>
+          <li>訂位姓名:{{ orderName }}</li>
+          <li>預約時間:{{ orderTime }}</li>
+          <li>人數:{{ NumberOfPeople }}</li>
+          <li>備註:{{ Remark }}</li>
+        </ul>
+      </section>
     </section>
   </main>
 </template>
@@ -48,11 +64,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@mixin breakpoint($point) {
+  @if $point == pc {
+    @media (max-width: 1280px) {
+      @content;
+    }
+  } @else if $point == mobile {
+    @media (max-width: 768px) {
+      @content;
+    }
+  }
+}
 body {
-  background-color: #381b1d;
   main {
-    margin-top: 8%;
+    padding-top: 100px;
     display: flex;
+    background-color: $campari;
     section {
       font-family: 'Noto Serif TC';
       font-weight: bold;
@@ -62,6 +89,7 @@ body {
 
       margin-left: auto;
       margin-right: 5%;
+
       h1 {
         color: #fcf0d8;
         font-size: 45px;
@@ -84,11 +112,38 @@ body {
         background-color: #fcf0d8;
         margin-top: 2%;
         list-style-type: none;
+
         li {
           width: 20%;
           /* margin-top: 2%; */
           padding: 2% 0;
           padding-left: 1%;
+          @include breakpoint(pc) {
+            font-size: 11px;
+          }
+          @include breakpoint(mobile) {
+            display: none;
+          }
+        }
+      }
+      // 手機板
+      .mobile {
+        height: 250px;
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        .orderInfoMobile {
+          display: none;
+          width: 40%;
+          @include breakpoint(mobile) {
+            display: block;
+          }
+          background-color: #fcf0d8;
+          margin-top: 2%;
+          list-style-type: none;
+          li {
+            font-size: 17px;
+          }
         }
       }
     }
