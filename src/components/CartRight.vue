@@ -1,120 +1,55 @@
 <template>
     <section class="right">
         <!-- 商品卡片 -->
-        <div class="item_container">
-            <div class="product">
-                <div class="item_details">
-                    <!-- 照片 -->
-                    <div class="pic">
-                        <img src="../imgs/productsImg/sparkling wine/PIERRE ZERO.png" alt="">
-                    </div>
-                    <!-- 標題&數量按鈕 -->
-                    <div class="text">
-                        <h4>PIERRE ZERO <br />夏朵內無酒精氣泡白酒 12瓶</h4>
-                        <div class="text_down">
-                            <p>200mL/瓶</p>
-                            <div class="btn ">
-                                <button>－</button>
-                                <p>1</p>
-                                <button>＋</button>
+
+        <div class="scroll_container">
+            <div class="item_container">
+                <div class="product">
+                    <div class="item_details">
+                        <!-- 照片 -->
+                        <div class="pic">
+                            <img src="../imgs/productsImg/sparkling wine/PIERRE ZERO.png" alt="">
+                        </div>
+                        <!-- 標題&數量按鈕 -->
+                        <div class="text">
+                            <h4>PIERRE ZERO 夏朵內無酒精氣泡白酒 12瓶</h4>
+                            <div class="text_down">
+                                <p>200mL/瓶</p>
+                                <div class="btn ">
+                                    <button>－</button>
+                                    <p>1</p>
+                                    <button>＋</button>
+                                </div>
                             </div>
                         </div>
+                        <!-- 金額 -->
+                        <div class="price">
+                            <p>$ 4,560</p>
+                        </div>
                     </div>
-                    <!-- 金額 -->
-                    <div class="price">
-                        <p>$ 4,560</p>
+                    <!-- 刪除 -->
+                    <div class="delete">
+                        <button>
+                            <img class="img" src="../imgs/icon/icon_delete.svg" alt="">
+                        </button>
                     </div>
-                </div>
-                <!-- 刪除 -->
-                <div class="delete">
-                    <button>
-                        <img class="img" src="../imgs/icon/icon_delete.svg" alt="">
-                    </button>
                 </div>
             </div>
+
         </div>
 
-        <div class="item_container">
-            <div class="product">
-                <div class="item_details">
-                    <!-- 照片 -->
-                    <div class="pic">
-                        <img src="../imgs/productsImg/sparkling wine/PIERRE ZERO rose.png" alt="">
-                    </div>
-                    <!-- 標題&數量按鈕 -->
-                    <div class="text">
-                        <h4>PIERRE ZERO 夏凡酒莊 <br />義大利無酒精雞尾酒風味飲 12瓶</h4>
-                        <div class="text_down">
-                            <p>750mL/瓶</p>
-                            <div class="btn">
-                                <button>－</button>
-                                <p>$4,560</p>
-                                <button>＋</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 金額 -->
-                    <div class="price">
-                        <p>$ 11,760</p>
-                    </div>
-                </div>
-                <!-- 刪除 -->
-                <div class="delete">
-                    <button>
-                        <img class="img" src="../imgs/icon/icon_delete.svg" alt="">
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="item_container">
-            <div class="product">
-                <div class="item_details">
-                    <!-- 照片 -->
-                    <div class="pic">
-                        <img src="../imgs/productsImg/sparkling wine/Oddbird WHITE.png" alt="">
-                    </div>
-                    <!-- 標題&數量按鈕 -->
-                    <div class="text">
-                        <h4>Oddbird 非鳥<br/>解放白中白 無酒精氣泡酒 12瓶</h4>
-                        <div class="text_down">
-                            <p>750mL/瓶</p>
-                            <div class="btn">
-                                <button>－</button>
-                                <p>1</p>
-                                <button>＋</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 金額 -->
-                    <div class="price">
-                        <p>$ 14,460</p>
-                    </div>
-                </div>
-                <!-- 刪除 -->
-                <div class="delete">
-                    <button>
-                        <img class="img" src="../imgs/icon/icon_delete.svg" alt="">
-                    </button>
-                </div>
-            </div>
-        </div>
+        
 
         <!-- 優惠券 -->
         <div class="coupon">
             <div class="title">
                 <h3>優惠券</h3>
-                <a href="">選擇優惠券</a>
-            </div>
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                    <option selected>選擇優惠券</option>
+                    <option value="1">貼心免運券-折抵$250</option>
+                    <option value="2">註冊折扣券-折抵$500</option>
+                </select>
 
-            <div class="coupon_status">
-                <div class="status">
-                        <h4>已選取</h4>
-                    <div class="like_btn">
-                        <h5>貼心免運券</h5>
-                    </div>
-                </div>
-                <a href="">變更</a>    
             </div>
         </div>
 
@@ -167,701 +102,720 @@
                 </button>
             </div>
 
+            <div class="privacy">
+                  <!-- <input type="checkbox"> -->
+                  <p>確認付款後，即視為同意<a>條款與規則</a></p>
+              </div>
+
         </div>
 
     </section>
 
+    
 </template>
 
+<script>
 
+</script>
 
 
 <style lang="scss" scoped>
- .right {
-      width: 50%;
-      padding-top: 50px;
-      margin-top: 30px;
-      background-color: $whitelady;
+.right {
+    width: 50%;
+    padding-top: 50px;
+    margin-top: 30px;
+    background-color: $whitelady;
 
-      @include breakpoint( 820px) {
-           width: 100%;       
-      }
+    @include breakpoint(820px) {
+        width: 100%;
+    }
 
-      //商品
-      .item_container{
-          width: 100%;
-          margin-bottom: 60px;
-        //   outline: 1px solid #000;
+    .scroll_container {
+        overflow-y: scroll;
+        width: 85%;
+        height: 500px;
+        margin: 0 auto;
 
-        @include breakpoint(430px){
-            margin-bottom: 30px;
-        }
+        //商品
+        .item_container {
+            width: 100%;
+            margin-bottom: 60px;
+            //   outline: 1px solid #000;
+            
 
-         
-          .product {
-            //   outline: 1px solid yellow;
-              width: 80%;
-              display: flex;
-              align-items: center;
-              margin-left: 70px;
+            @include breakpoint(430px) {
+                margin-bottom: 30px;
+            }
 
-              @include breakpoint( 1280px) {
+            .product {
+                // outline: 1px solid yellow;
+                width: 90%;
+                display: flex;
+                align-items: center;
+                margin-left: 40px;
+
+                @include breakpoint(1280px) {
                     width: 85%;
-              }
+                }
 
-              @include breakpoint( 1024px) {
-                    width: 90%;
-                    margin-left: 30px;
-              }
+                @include breakpoint(1024px) {
+                    width: 100%;
+                    margin-left: 0px;
+                }
 
-              @include breakpoint(430px){
+                @include breakpoint(430px) {
                     width: 95%;
                     margin-left: 10px;
-              }
+                }
 
- 
-              .item_details{
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-                  width: 100%;
-                  background-color: #fff;
-                  border: 1px solid $irishcoffee;
-                  border-radius: 8px;
-                  padding: 10px;
-                //   outline: 1px solid red;
+                @include breakpoint(375px){
+                    width: 100%;
+                    margin-left: 0px;
+                }
 
-                   @include breakpoint(430px){
-                       padding: 5px;
-                   }
+                .item_details {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                    background-color: #fff;
+                    border: 1px solid $irishcoffee;
+                    border-radius: 8px;
+                    padding: 10px 0;
+                    // outline: 1px solid red;
 
-               
-                  //商品圖片
-                  .pic {
-                      width: 20%;
-                    //   outline: 1px solid purple;
+                    @include breakpoint(430px) {
+                        padding: 5px;
+                    }
 
 
-                      @include breakpoint( 1024px) {
-                           width: 30%;
-                       } 
+                    //商品圖片
+                    .pic {
+                        width: 20%;
+                        //   outline: 1px solid purple;
 
-                       @include breakpoint(430px){
-                           width: 35%; 
-                       }
 
-                       @include breakpoint(390px){
-                           width: 30%;
-                       }
-                      
+                        @include breakpoint(1024px) {
+                            width: 30%;
+                        }
 
-                      img {
-                          width: 100%;
+                        @include breakpoint(430px) {
+                            width: 35%;
+                        }
 
-                      }
-                  }
+                        @include breakpoint(390px) {
+                            width: 30%;
+                        }
 
-                  //商品名稱
-                  .text {
-                    //   outline: 1px solid yellowgreen;
-                      width: 60%;
-                      padding: 10px;
 
-                      @include breakpoint( 1280px) {
-                           padding: 0;
-                       }
+                        img {
+                            width: 100%;
 
-                       @include breakpoint( 820px) {
+                        }
+                    }
+
+                    //商品名稱
+                    .text {
+                        // outline: 1px solid yellowgreen;
+                        width: 60%;
+                        padding: 10px;
+
+                        @include breakpoint(1280px) {
+                            padding: 0;
+                        }
+
+                        @include breakpoint(820px) {
                             width: 70%;
-                       }
+                        }
 
-                       @include breakpoint(430px){
+                        @include breakpoint(430px) {
                             width: 80%;
-                       }
+                        }
 
 
 
-                      h4 {
-                          font-size:$fontSize_h4;
-                          font-family: $fontfamily;
-                          color: $blackvevet;
-                          line-height: 1.5;
-                          margin-bottom: 10px;
+                        h4 {
+                            font-size: $fontSize_h4;
+                            font-family: $fontfamily;
+                            color: $blackvevet;
+                            line-height: 1.5;
+                            margin-bottom: 10px;
 
-                          @include breakpoint( 1024px) {
-                              font-size: 1.1rem;
-                          } 
+                            @include breakpoint(1024px) {
+                                font-size: 1.1rem;
+                            }
 
-                          @include breakpoint( 820px){
-                              font-size:$fontSize_h4;
-                          }
+                            @include breakpoint(820px) {
+                                font-size: $fontSize_h4;
+                            }
 
-                          @include breakpoint( 430px){
-                              font-size:$fontSize_h5;
-                          }
+                            @include breakpoint(430px) {
+                                font-size: $fontSize_h5;
+                            }
 
-                          @include breakpoint(390px){
-                              font-size:$fontSize_p;
-                          }
-                      }
+                            @include breakpoint(390px) {
+                                font-size: $fontSize_p;
+                            }
+                        }
 
-                      .text_down {
-                          display: flex;
-                          justify-content: space-evenly;
-                          align-items: center;
-                        //   outline: 1px solid blue;
-                          width: 100%;
+                        .text_down {
+                            display: flex;
+                            justify-content: space-evenly;
+                            align-items: center;
+                            // outline: 1px solid blue;
+                            width: 100%;
 
-                          p {
-                              font-size: $fontSize_p;
-                              color: #d3d3d3;
-                          }
+                            p {
+                                font-size: $fontSize_p;
+                                color: #d3d3d3;
+                            }
 
                             // +1-1的按鈕
-                          .btn {
-                              display: flex;
-                              align-items: center;
-                              justify-content: space-between;
-                            //   outline: 1px solid blue;
-                              width: 30%;
-                              margin: 0 auto;
-                              margin-left: 100px;
+                            .btn {
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                //   outline: 1px solid blue;
+                                width: 30%;
+                                margin: 0 auto;
+                                margin-left: 80px;
 
-                              @include breakpoint( 1024px) {
-                                  margin-left: 50px;
-                              } 
+                                @include breakpoint(1024px) {
+                                    margin-left: 50px;
+                                }
 
-                              @include breakpoint(820px){
-                                  margin-left: 80px;
-                              }
+                                @include breakpoint(820px) {
+                                    margin-left: 80px;
+                                }
 
-                              @include breakpoint(430px){
-                                  margin-left: 50px;
-                              } 
+                                @include breakpoint(430px) {
+                                    margin-left: 30px;
+                                }
 
-                              @include breakpoint(390px){
-                                  width: 35%;
-                                  margin-left: 30px;
-                              }
+                                @include breakpoint(390px) {
+                                    width: 35%;
+                                    margin-left: 30px;
+                                }
 
-
-                              button {
-                                  width: 45px;
-                                  border: none;
-                                  border: 1px solid $blackvevet;
-                                  background-color: transparent;
-                                  font-size: $fontSize_p;
-                                  text-align: center;
-                                  margin: 0 auto; 
-
-                                  @include breakpoint(1024px){
-                                      padding: 0;
-                                  }
-
-                                  @include breakpoint(820px){
-                                      width: 30px;
-                                      height: 30px;
-                                  }
-
-                                  @include breakpoint(430px){
-                                      width: 25px;
-                                      height: 25px;
-                                  }
-
-                                  @include breakpoint(430px){
-                                      width: 20px;
-                                      height: 20px;
-                                  }
-                                  @include breakpoint(390px){
-                                      width: 25px;
-                                      height: 25px;
-                                  }
-                                 
-                              }
-
-                              p {  
-                                  width: 33.3%;
-                                  flex: none;
-                                //   border: 1px solid red;
-                                  text-align: center;
-                                  font-size: $fontSize_h4;
-                                  color: $blackvevet;
-                               
-                                  @include breakpoint(430px){
-                                      font-size: $fontSize_h5;
-                                  }
-                              }
-                          }
-                      }
-
-                  }
-
-                  .price {
-                      width: 20%;
-                    //   outline: 1px solid pink;
-
-                      @include breakpoint( 1280px) {
-                         width: 25%;
-                      }
-
-                      @include breakpoint(1024px){
-                          width: 30%;
-                      }
-
-                      @include breakpoint( 430px){
-                          width: 35%;
-                      }
-
-                     
-
-                      p {
-                          color:$blackvevet;
-                          font-size: $fontSize_h4;
-                          text-align: center;
-                          font-weight: bold;
-
-                          @include breakpoint( 1024px) {
-                              padding: 0;
-                              font-size: 1.2rem;
-                          } 
-
-                          @include breakpoint( 430px){
-                              font-size: $fontSize_h5;
-                          }
-
-                          @include breakpoint(375px){
-                              font-size: $fontSize_p;
-                          }
-                      }
-                  }
-              }
-          }
-
-          //垃圾桶
-          .delete {
-              // outline: 1px solid orange;
-              width: 10%;
-              text-align: center;
-              margin-left: 30px;
-
-              @include breakpoint(430px){
-                margin-left: 10px;
-              }
+                                @include breakpoint(375px){
+                                    margin-left: 20px;
+                                }
 
 
-              button {
-                  border: none;
-                  background-color: transparent;
+                                button {
+                                    width: 45px;
+                                    border: none;
+                                    border: 1px solid $blackvevet;
+                                    background-color: transparent;
+                                    font-size: $fontSize_p;
+                                    text-align: center;
+                                    margin: 0 auto;
+
+                                    @include breakpoint(1024px) {
+                                        padding: 0;
+                                    }
+
+                                    @include breakpoint(820px) {
+                                        width: 30px;
+                                        height: 30px;
+                                    }
+
+                                    @include breakpoint(430px) {
+                                        width: 25px;
+                                        height: 25px;
+                                    }
+
+                                    @include breakpoint(430px) {
+                                        width: 20px;
+                                        height: 20px;
+                                    }
+
+                                    @include breakpoint(390px) {
+                                        width: 25px;
+                                        height: 25px;
+                                    }
+
+                                }
+
+                                p {
+                                    width: 33.3%;
+                                    flex: none;
+                                    //   border: 1px solid red;
+                                    text-align: center;
+                                    font-size: $fontSize_h4;
+                                    color: $blackvevet;
+
+                                    @include breakpoint(430px) {
+                                        font-size: $fontSize_h5;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .price {
+                        width: 20%;
+                        //   outline: 1px solid pink;
+
+                        @include breakpoint(1280px) {
+                            width: 25%;
+                        }
+
+                        @include breakpoint(1024px) {
+                            width: 30%;
+                        }
+
+                        @include breakpoint(430px) {
+                            width: 35%;
+                        }
 
 
-                  img {
-                      width: 90%;
 
-                  }
-              }
-          }
-      }
+                        p {
+                            color: $blackvevet;
+                            font-size: $fontSize_h4;
+                            text-align: center;
+                            font-weight: bold;
 
-      //優惠券
-      .coupon{
-          width: 100%;
+                            @include breakpoint(1024px) {
+                                padding: 0;
+                                font-size: 1.2rem;
+                            }
+
+                            @include breakpoint(430px) {
+                                font-size: $fontSize_h5;
+                            }
+
+                            @include breakpoint(375px) {
+                                font-size: $fontSize_p;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //垃圾桶
+            .delete {
+                // outline: 1px solid orange;
+                width: 10%;
+                text-align: center;
+                margin-left: 80px;
+
+                @include breakpoint(430px) {
+                    margin-left: 10px;
+                }
+
+
+                button {
+                    border: none;
+                    background-color: transparent;
+
+
+                    img {
+                        width: 90%;
+
+                    }
+                }
+            }
+        }
+
+    }
+
+    //優惠券
+    .coupon {
+        width: 100%;
         //   outline: 1px solid red;
-          padding: 50px 0;
+        padding: 50px 0;
 
-          @include breakpoint(430px){
-              padding: 30px 0;
-          }
+        @include breakpoint(430px) {
+            padding: 30px 0;
+        }
 
-          .title{
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              border-bottom: 4px solid $blackvevet;
-              padding: 20px 80px;
-              margin-bottom: 10px;
+        .title {
+            padding: 20px 80px;
+            margin-bottom: 10px;
 
 
-              @include breakpoint( 1280px) {
-                  padding:10px 50px;
-              }
-
-              @include breakpoint(430px){
-                padding: 10px 30px;
-              }
-
-              h3{
-                  font-size: $fontSize_h3;
-                  font-family:$fontfamily;
-                  letter-spacing:$letterspacing;
-                  font-weight: bold;
-
-                  @include breakpoint(430px){
-                      font-size:1.5rem;
-                  }
-              }
-
-              a{
-                  font-size: 1.5rem;
-                  color:$irishcoffee;
-                  font-weight: bold;
-                  
-                  @include breakpoint(430px){
-                      font-size:1.2rem;
-                  }
-              }
-          }
-
-          .coupon_status{
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              padding: 20px 20px;
-
-
-              .status{
-                  display: flex;
-                  align-items: center;
-                  // outline: 1px solid orange;
-                  h4{
-                      font-size:1.5rem;
-                      font-family:$fontfamily;
-                      padding: 10px 0 10px 60px;
-
-                      @include breakpoint( 1280px) {
-                        padding: 0 0 0 35px;
-                      }
-
-                      @include breakpoint(430px){
-                          padding: 0 0 0 10px;
-                          font-size: 1.5rem;
-                      }
-
-                  }
-
-                  .like_btn{
-                      border:1px solid $blackvevet;
-                      background-color:$ramos-gin-fizz;
-                      padding: 10px;
-                      margin-left: 20px;
-                      border-radius: 4px;
-
-                      @include breakpoint(430px){
-                          padding:5px;
-                      }
-
-                      h5{
-                          font-size:$fontSize_h4;
-                          font-weight: bold;
-                          color:$campari;
-                          letter-spacing:$letterspacing;
-                          font-family:$fontfamily;
-
-                          @include breakpoint(430px){
-                              font-size: $fontSize_h5;
-                          }
-                      }
-                  }
-              }
-
-              a{
-              font-size: 1.5rem;
-              color:$irishcoffee;
-              font-weight: bold;
-              margin-right: 60px;
-
-              @include breakpoint(1280px) {
-                  margin-right: 30px;
-              }
-
-              @include breakpoint(430px){
-                  font-size:1.2rem;
-                  margin-right: 10px;
-              }
-             }
-          }
-      }
-
-      
-      .pay{
-          // outline: 1px solid orange;
-          width: 100%;
-          padding: 50px 0;
-
-          @include breakpoint( 430px){
-              padding: 30px 0;
-          }
-
-          .pay_title{
-              border-bottom:4px solid $blackvevet;
-              width: 100%;
-              padding: 20px 80px;
-
-              @include breakpoint(1280px) {
-                  padding: 10px 50px;
-              }
-
-              @include breakpoint(430px){
-                  padding: 10px 30px;
-              }
-
-              //付款方式
-              h3{
-                  font-size: $fontSize_h3;
-                  font-family:$fontfamily;
-                  font-weight: bold;
-                  letter-spacing: $letterspacing;
-
-                  @include breakpoint(430px){
-                      font-size:1.5rem;
-                  }
-              }
-
-           }
-
-          .pay_method{
-              display: flex;
-              align-items: center;
-              padding: 20px 80px;
-
-              @include breakpoint(1280px) {
-                  padding: 20px 60px;
-              }
-
-              @include breakpoint(430px){
-                  padding: 10px 30px;
-              }
-
-              input{
-                  // outline:1px solid red;
-                  width: 20px;
-                  height: 20px;
-                  margin-right: 20px;
-
-                  @include breakpoint(430px){
-                      margin-right: 10px;
-                  }
-              }
-
-
-              //信用卡
-              h5{
-                  font-family:$fontfamily;
-                  font-size:1.5rem;
-                  letter-spacing:$letterspacing;
-
-                  @include breakpoint(430px){
-                      font-size:1.5rem;
-                  }
-
-              }
-          }
-      }
-
-      //運送方式
-      .ship{
-          // outline: 1px solid orange;
-          width: 100%;
-          padding: 50px 0;
-
-          @include breakpoint(430px){
-              padding: 30px 0;
-          }
-
-          //物流方式
-          .ship_title{
-              border-bottom:4px solid $blackvevet;
-              width: 100%;
-              padding: 20px 80px; 
-
-              @include breakpoint( 1280px) {
-                  padding: 10px 50px;
-              }
-
-              @include breakpoint(430px){
-                  padding: 10px 30px;
-              }
-              
-              h3{
-                  font-size: $fontSize_h3;
-                  font-family:$fontfamily;
-                  font-weight: bold;
-                  letter-spacing: $letterspacing;
-
-                  @include breakpoint(430px){
-                      font-size:1.5rem;
-                  }
-              }
-
-          }
-
-          .ship_method{
-              display: flex;
-              align-items: center;
-              padding: 20px 80px;
-
-              @include breakpoint(1280px) {
-                  padding: 20px 60px;
-              }
-
-              @include breakpoint(430px){
-                   padding: 10px 30px;
-              }
-
-
-              input{
-                  // outline:1px solid red;
-                  width: 20px;
-                  height: 20px;
-                  margin-right: 20px;
-
-                  @include breakpoint(430px){
-                      margin-right: 10px;
-                  }
-              }
-              //宅配
-              h5{
-                  font-family:$fontfamily;
-                  font-size:1.5rem;
-                  letter-spacing:$letterspacing;
-
-                
-              }
-          }
-      }
-
-      //總計
-      .total{
-          // outline:1px solid red;
-          padding: 50px 0;
-
-          @include breakpoint(430px){
-              padding: 30px 0;
-          }
-
-          h5{
-              padding: 20px 80px;
-              font-size: 1.5rem;
-              font-weight: bold;
-              font-family:$fontfamily;
-              color:$blackvevet;
-
-              @include breakpoint( 1280px) {
+            @include breakpoint(1280px) {
                 padding: 10px 50px;
-              }
+            }
+
+            @include breakpoint(430px) {
+                padding: 10px 30px;
+            }
+
+            h3 {
+                font-size: $fontSize_h3;
+                font-family: $fontfamily;
+                letter-spacing: $letterspacing;
+                font-weight: bold;
+                margin-bottom: 15px;
+
+                @include breakpoint(430px) {
+                    font-size: 1.5rem;
+                }
+            }
+
+
+            .btn{
+                background-color:$irishcoffee;
+                font-family:$fontfamily;
+                color: $campari;
+                font-size: 1.5rem;
+                font-weight: bold;
+                // letter-spacing: $letterspacing;
+                text-align: center;
+            }
+        }
+
+    }
+
+
+    .pay {
+        // outline: 1px solid orange;
+        width: 100%;
+        padding: 50px 0;
+
+        @include breakpoint(430px) {
+            padding: 30px 0;
+        }
+
+        .pay_title {
+            border-bottom: 4px solid $blackvevet;
+            width: 100%;
+            padding: 20px 80px;
+
+            @include breakpoint(1280px) {
+                padding: 10px 50px;
+            }
+
+            @include breakpoint(430px) {
+                padding: 10px 30px;
+            }
+
+            //付款方式
+            h3 {
+                font-size: $fontSize_h3;
+                font-family: $fontfamily;
+                font-weight: bold;
+                letter-spacing: $letterspacing;
+
+                @include breakpoint(430px) {
+                    font-size: 1.5rem;
+                }
+            }
+
+        }
+
+        .pay_method {
+            display: flex;
+            align-items: center;
+            padding: 20px 80px;
+
+            @include breakpoint(1280px) {
+                padding: 20px 60px;
+            }
+
+            @include breakpoint(430px) {
+                padding: 10px 30px;
+            }
+
+            input {
+                // outline:1px solid red;
+                width: 20px;
+                height: 20px;
+                margin-right: 20px;
+
+                @include breakpoint(430px) {
+                    margin-right: 10px;
+                }
+            }
+
+
+            //信用卡
+            h5 {
+                font-family: $fontfamily;
+                font-size: 1.5rem;
+                letter-spacing: $letterspacing;
+
+                @include breakpoint(430px) {
+                    font-size: 1.5rem;
+                }
+
+            }
+        }
+    }
+
+    //運送方式
+    .ship {
+        // outline: 1px solid orange;
+        width: 100%;
+        padding: 50px 0;
+
+        @include breakpoint(430px) {
+            padding: 30px 0;
+        }
+
+        //物流方式
+        .ship_title {
+            border-bottom: 4px solid $blackvevet;
+            width: 100%;
+            padding: 20px 80px;
+
+            @include breakpoint(1280px) {
+                padding: 10px 50px;
+            }
+
+            @include breakpoint(430px) {
+                padding: 10px 30px;
+            }
+
+            h3 {
+                font-size: $fontSize_h3;
+                font-family: $fontfamily;
+                font-weight: bold;
+                letter-spacing: $letterspacing;
+
+                @include breakpoint(430px) {
+                    font-size: 1.5rem;
+                }
+            }
+
+        }
+
+        .ship_method {
+            display: flex;
+            align-items: center;
+            padding: 20px 80px;
+
+            @include breakpoint(1280px) {
+                padding: 20px 60px;
+            }
+
+            @include breakpoint(430px) {
+                padding: 10px 30px;
+            }
+
+
+            input {
+                // outline:1px solid red;
+                width: 20px;
+                height: 20px;
+                margin-right: 20px;
+
+                @include breakpoint(430px) {
+                    margin-right: 10px;
+                }
+            }
+
+            //宅配
+            h5 {
+                font-family: $fontfamily;
+                font-size: 1.5rem;
+                letter-spacing: $letterspacing;
+
+
+            }
+        }
+    }
+
+    //總計
+    .total {
+        // outline:1px solid red;
+        padding: 50px 0;
+
+        @include breakpoint(430px) {
+            padding: 30px 0;
+        }
+
+        h5 {
+            padding: 20px 80px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: $fontfamily;
+            color: $blackvevet;
+
+            @include breakpoint(1280px) {
+                padding: 10px 50px;
+            }
+
+            @include breakpoint(430px) {
+                padding: 10px 30px;
+            }
+
+            @include breakpoint(390px) {
+                font-size: 1.3rem;
+            }
+        }
+
+        h3 {
+            font-family: $fontfamily;
+            font-size: $fontSize_h3;
+            font-weight: bold;
+            padding: 20px 80px;
+
+            @include breakpoint(1280px) {
+                padding: 10px 50px;
+            }
+
+            @include breakpoint(430px) {
+                padding: 10px 30px;
+                font-size: 1.9rem;
+
+            }
+
+            @include breakpoint(414px){
+                font-size: 1.8rem;
+            }
+
+            @include breakpoint(390px) {
+                font-size: 1.7rem;
+            }
+
+            @include breakpoint(375px) {
+                font-size: 1.6rem;
+            }
+        }
+
+        .subtotal {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+        }
+
+        .ship_fee {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ship_discount {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total_price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .twd {
+                color: $irishcoffee;
+            }
+
+        }
+
+        .btn_submit {
+            border: none;
+            background-color: transparent;
+            width: 100%;
+            text-align: right;
+            padding: 30px 80px;
+
+            @include breakpoint(1280px) {
+                padding: 50px 50px;
+            }
+
+            @include breakpoint(430px) {
+                padding: 30px 30px;
+            }
+
+            button {
+                width: 40%;
+                background-color: $campari;
+                color: $whitelady;
+                font-size: $fontSize_h3;
+                letter-spacing: $letterspacing;
+                font-family: $fontfamily;
+                border-radius: 4px;
+                padding: 10px;
+
+
+                @include breakpoint(1024px) {
+                    width: 50%;
+                }
+
+                @include breakpoint(820px) {
+                    width: 40%;
+                }
+
+                @include breakpoint(430px) {
+                    width: 55%;
+                    font-size: 1.5rem;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    color: $blackvevet;
+                    background-color: $ramos-gin-fizz;
+                    transition: all ease-in-out .3s;
+                    border: none;
+                }
+            }
+        }
+
+        .privacy {
+            //   display: flex;
+            //   align-items: center;
+            //   justify-content: start;
+              text-align: center;
+              margin-left: 150px;
+              padding: 10px;
+           
+
+              @include breakpoint(1024px) {
+                  margin-left: 30px;
+                       
+             }
+
+             @include breakpoint(768px){
+                  margin-left: 200px;
+             } 
 
               @include breakpoint(430px){
-                  padding: 10px 30px;
-              }
-
-              @include breakpoint(390px){
-                  font-size: 1.3rem;
-              }
-          }
-
-          h3{
-              font-family:$fontfamily;
-              font-size:$fontSize_h3;
-              font-weight: bold;
-              padding: 20px 80px;
-
-              @include breakpoint( 1280px) {
-                  padding: 10px 50px;
-              }
-
-              @include breakpoint(430px){
-                  padding: 10px 30px;
-                  font-size: 1.9rem;
-              }
-
-              @include breakpoint(390px){
-                  font-size: 1.7rem;
+                    margin-left: 10px;
+                    padding: 0;
+                    width: 100%;
+                    align-items: start;
               }
 
               @include breakpoint(375px){
-                  font-size: 1.6rem;
-              }
-          }
-
-          .subtotal{
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-             
-          }
-
-          .ship_fee{
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-          }
-
-          .ship_discount{
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-          }
-
-          .total_price{
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-
-              .twd{
-                  color:$irishcoffee;
+                    margin-left: 20px;
+                    width: 90%;
               }
 
-          }
 
-          .btn_submit{
-              border: none;
-              background-color: transparent;
-              width: 100%;
-              text-align: right;
-              padding: 30px 80px;
-
-              @include breakpoint( 1280px) {
-                padding: 50px 50px;
-             }
-
-             @include breakpoint(430px){
-                padding: 30px 30px;
-             }
-
-              button{
-                  width: 40%;
-                  background-color:$campari;
-                  color:$whitelady;
-                  font-size: $fontSize_h3;
-                  letter-spacing:$letterspacing;
-                  font-family:$fontfamily;
-                  border-radius:4px;
-                  padding: 10px;
-
+              p {
+                  font-size: $fontSize_h4;
+                  letter-spacing: $letterspacing;
 
                   @include breakpoint( 1024px) {
-                      width: 50%;
-                  } 
-
-                  @include breakpoint( 820px) {
-                      width: 40%;
-                  } 
-
-                  @include breakpoint(430px){
-                      width: 55%;
-                      font-size: 1.5rem;
+                    font-size: $fontSize_h5;             
                   }
 
-                  &:hover{
-                      cursor: pointer;
-                      color:$blackvevet;
-                      background-color:$ramos-gin-fizz;
-                      transition: all ease-in-out .3s;
-                      border:none;
-                  }
+                  @include breakpoint(820px) {
+                      margin-left: 20px;
+                      font-size: $fontSize_h4;
+                   }
+
+                   @include breakpoint(430px){
+                        font-size: $fontSize_p;
+                        padding: 0;
+                        margin: 0 0 10px 5px;
+                   }
+
+                   @include breakpoint(375px){
+                        margin-left: 15px;
+                        letter-spacing: 2px;
+                   }
+
               }
+
           }
 
-      }
+    }
 
-  }
+}
 </style>

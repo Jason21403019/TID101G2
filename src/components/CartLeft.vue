@@ -1,5 +1,7 @@
 <template>
 
+    
+
     <section class="left">
           <!-- 訂單資訊 -->
           <div class="order">
@@ -113,10 +115,7 @@
                       <input type="text" id="ship_address" v-model="shipAddress" required>
                   </div>
               </div>
-              <div class="privacy">
-                  <input type="checkbox" v-model="privacyAccepted" required>
-                  <p>我已閱讀並同意<a href="">隱私權政策</a>及<a href="">服務條款</a>。</p>
-              </div>
+              
 
           </div>
 
@@ -508,72 +507,7 @@ export default {
               }
           }
 
-          .privacy {
-              display: flex;
-              align-items: center;
-              justify-content: start;
-              margin-left: 30px;
-              padding: 10px;
-           
-
-              @include breakpoint(1280px){
-                  margin-left: 20px;
-              }
-
-              @include breakpoint(1024px) {
-                    padding: 0;             
-             }
-
-             @include breakpoint(820px){
-                  margin-left: 40px;
-             } 
-
-              @include breakpoint(430px){
-                    margin-left: 10px;
-                    padding: 0;
-                    width: 100%;
-                    align-items: start;
-              }
-
-              @include breakpoint(375px){
-                    margin-left: 20px;
-                    width: 90%;
-              }
-
-              input {
-                  width: 20px;
-                  height: 20px;
-
-                  @include breakpoint( 430px){
-                    width: 15px;
-                    height: 15px;
-                    margin-top: 5px;
-                  }
-
-              }
-
-              p {
-                  font-size: $fontSize_h4;
-                  letter-spacing: $letterspacing;
-
-                  @include breakpoint( 1024px) {
-                    font-size: $fontSize_h5;             
-                  }
-
-                  @include breakpoint(820px) {
-                      margin-left: 20px;
-                      font-size: $fontSize_h4;
-                   }
-
-                   @include breakpoint(430px){
-                        font-size: $fontSize_p;
-                        padding: 0;
-                        margin: 0 0 10px 5px;
-                   }
-
-              }
-
-          }
+         
 
       }
   }
