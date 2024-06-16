@@ -1,10 +1,12 @@
 <template>
   <section class="memberorder">
     <MemberMenu />
+
     <div class="member_order">
       <div class="content">
         <h1>查看訂單</h1>
-        <ul class="title">
+
+        <!-- <ul class="title">
           <li>訂單編號</li>
           <li>日期</li>
           <li>預訂單狀態</li>
@@ -60,9 +62,9 @@
           <li>已出貨</li>
           <li class="unpaidbtn">已付款</li>
         </ul>
-        <button @click="handleButtonClick">再次購買</button>
+        <button @click="handleButtonClick">再次購買</button> -->
       </div>
-
+      <MemberOrderCard />
       <!-- 頁碼 -->
       <div class="page-normal">
         <span class="page-prev">&lt;</span>
@@ -79,11 +81,13 @@
 
 <script>
 import MemberMenu from '../components/MemberMenu.vue'
+import MemberOrderCard from '../components/MemberOrderCard.vue'
 
 export default {
   name: 'Member',
   components: {
-    MemberMenu
+    MemberMenu,
+    MemberOrderCard
   },
   data() {
     return {
@@ -125,7 +129,7 @@ export default {
 
 .content {
   width: 60vw;
-  margin-bottom: 50px;
+  // margin-bottom: 50px;
 }
 
 h1 {
@@ -174,6 +178,7 @@ button:hover {
 //頁籤
 .page-normal {
   text-align: center;
+  margin-top: 50px;
   padding-bottom: 50px;
 }
 
