@@ -149,29 +149,17 @@
 
             .product {
                 // outline: 1px solid yellow;
-                width: 90%;
+                width: 95%;
                 display: flex;
                 align-items: center;
-                margin-left: 40px;
+                margin-left: 20px;
 
-                @include breakpoint(1280px) {
-                    width: 85%;
-                }
 
                 @include breakpoint(1024px) {
                     width: 100%;
                     margin-left: 0px;
                 }
 
-                @include breakpoint(430px) {
-                    width: 95%;
-                    margin-left: 10px;
-                }
-
-                @include breakpoint(375px){
-                    width: 100%;
-                    margin-left: 0px;
-                }
 
                 .item_details {
                     display: flex;
@@ -207,6 +195,10 @@
                             width: 30%;
                         }
 
+                        @include breakpoint(375px){
+                            width: 25%;
+                        }
+
 
                         img {
                             width: 100%;
@@ -231,6 +223,8 @@
                         @include breakpoint(430px) {
                             width: 80%;
                         }
+
+                       
 
 
 
@@ -278,27 +272,29 @@
                                 //   outline: 1px solid blue;
                                 width: 30%;
                                 margin: 0 auto;
-                                margin-left: 80px;
+                                margin-left: 70px;
+
 
                                 @include breakpoint(1024px) {
                                     margin-left: 50px;
                                 }
 
                                 @include breakpoint(820px) {
-                                    margin-left: 80px;
+                                    margin-left: 130px;
                                 }
 
                                 @include breakpoint(430px) {
-                                    margin-left: 30px;
+                                    width: 25%;
+                                    margin-left: 20px;
                                 }
 
                                 @include breakpoint(390px) {
-                                    width: 35%;
-                                    margin-left: 30px;
+                                    width: 30%;
+                                    margin-left: 20px;
                                 }
 
                                 @include breakpoint(375px){
-                                    margin-left: 20px;
+                                    margin-left: 10px;
                                 }
 
 
@@ -325,14 +321,9 @@
                                         height: 25px;
                                     }
 
-                                    @include breakpoint(430px) {
-                                        width: 20px;
-                                        height: 20px;
-                                    }
-
-                                    @include breakpoint(390px) {
-                                        width: 25px;
-                                        height: 25px;
+                                    @include breakpoint(375px) {
+                                        // width: 20px;
+                                        // height: 20px;
                                     }
 
                                 }
@@ -357,16 +348,16 @@
                         width: 20%;
                         //   outline: 1px solid pink;
 
-                        @include breakpoint(1280px) {
-                            width: 25%;
-                        }
-
                         @include breakpoint(1024px) {
                             width: 30%;
                         }
 
                         @include breakpoint(430px) {
                             width: 35%;
+                        }
+
+                        @include breakpoint(390px){
+                            width: 30%;
                         }
 
 
@@ -386,6 +377,10 @@
                                 font-size: $fontSize_h5;
                             }
 
+                            @include breakpoint(390px){
+                                font-size: 1rem;
+                            }
+
                             @include breakpoint(375px) {
                                 font-size: $fontSize_p;
                             }
@@ -397,12 +392,26 @@
             //垃圾桶
             .delete {
                 // outline: 1px solid orange;
-                width: 10%;
+                width: 15%;
                 text-align: center;
-                margin-left: 80px;
+                margin-left: 60px;
+
+                @include breakpoint(1024px){
+                    margin-left: 30px;
+                }
+
+                @include breakpoint(820px){
+                    width: 10%;
+                    margin-left: 40px;
+                }
 
                 @include breakpoint(430px) {
-                    margin-left: 10px;
+                    margin-left: 20px;
+                    width: 15%;
+                }
+
+                @include breakpoint(390px){
+                    width: 10%;
                 }
 
 
@@ -413,6 +422,10 @@
 
                     img {
                         width: 90%;
+
+                        @include breakpoint(430px){
+                            width: 100%;
+                        }
 
                     }
                 }
