@@ -5,7 +5,7 @@
     <section>
       <h1>我的優惠券</h1>
       <article>
-        <img src="../imgs/voucherImg/free.png" alt="" />
+        <img class="carImg" src="../imgs/voucherImg/free.png" alt="" />
         <ul class="couponInfo">
           <li class="title">{{ coupon1.conponName }}</li>
           <li>有效日期:{{ coupon1.Time }}</li>
@@ -13,7 +13,7 @@
         </ul>
       </article>
       <article>
-        <img src="../imgs/voucherImg/sale.png" alt="" />
+        <img class="saleImg" src="../imgs/voucherImg/sale.png" alt="" />
         <ul class="couponInfo">
           <li class="title">{{ coupon2.conponName }}</li>
           <li>{{ coupon2.info }}</li>
@@ -22,23 +22,27 @@
         </ul>
       </article>
       <article>
-        <img src="../imgs/voucherImg/sale.png" alt="" />
+        <img class="saleImg" src="../imgs/voucherImg/sale.png" alt="" />
         <ul class="couponInfo">
           <li class="title">{{ coupon2.conponName }}</li>
           <li>{{ coupon2.info }}</li>
           <li>有效日期:{{ coupon2.Time }}</li>
-          <li>代碼:{{ coupon2.code }}</li>
-          <li class="invalid">{{ Invalid }}</li>
+          <li>
+            代碼:{{ coupon2.code }}
+            <h3 class="invalid">{{ Invalid }}</h3>
+          </li>
         </ul>
       </article>
       <article>
-        <img src="../imgs/voucherImg/sale.png" alt="" />
+        <img class="saleImg" src="../imgs/voucherImg/sale.png" alt="" />
         <ul class="couponInfo">
           <li class="title">{{ coupon2.conponName }}</li>
           <li>{{ coupon2.info }}</li>
           <li>有效日期:{{ coupon2.Time }}</li>
-          <li>代碼:{{ coupon2.code }}</li>
-          <li class="Use">{{ use }}</li>
+          <li>
+            代碼:{{ coupon2.code }}
+            <h3 class="invalid">{{ Invalid }}</h3>
+          </li>
         </ul>
       </article>
     </section>
@@ -74,11 +78,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@mixin breakpoint($point) {
+  @if $point == pc {
+    @media (max-width: 1280px) {
+      @content;
+    }
+  } @else if $point == mobile {
+    @media (max-width: 768px) {
+      @content;
+    }
+  }
+}
 body {
-  background-color: #381b1d;
   main {
-    margin-top: 8%;
+    padding-top: 100px;
     display: flex;
+    background-color: $campari;
     h1 {
       color: #fcf0d8;
       font-size: 45px;
@@ -91,7 +106,7 @@ body {
       font-family: 'Noto Serif TC';
       font-weight: bold;
       font-size: 20px;
-      margin-bottom: 30%;
+      margin-bottom: 10%;
       width: 75%;
       background-color: #fcf0d8;
       padding: 3% 2%;
@@ -107,9 +122,14 @@ body {
         display: flex;
         width: 38%;
         margin: 1% 1%;
+        margin-right: 5%;
         img {
           display: block;
           padding: 1% 1%;
+          width: 45%;
+        }
+        .saleImg {
+          width: 60%;
         }
         .couponInfo {
           display: flex;
@@ -127,8 +147,8 @@ body {
           .invalid {
             font-size: 30px;
             color: red;
-            margin-left: auto;
-            margin-top: -13%;
+            margin-left: 55%;
+            margin-top: -20%;
           }
           .Use {
             font-size: 30px;
