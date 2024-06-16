@@ -64,7 +64,21 @@
         </ul>
         <button @click="handleButtonClick">再次購買</button> -->
       </div>
-      <MemberOrderCard />
+      <div class="order-list">
+      <MemberOrderCard
+      v-for="order in orders"
+      :key="order.id"
+      :order-id="order.id"
+      :order-time="order.time"
+      :order-status="order.status"
+      :total-price="order.price"
+      :shipping-status="order.shippingStatus"
+      :payment-status="order.paymentStatus"
+      :fulfillment-status="order.fulfillmentStatus"
+      @cancel-order="handleCancelOrder"
+      @reorder="handleReorder"
+      @complete-order="handleCompleteOrder" />
+    </div>
       <!-- 頁碼 -->
       <div class="page-normal">
         <span class="page-prev">&lt;</span>
@@ -91,13 +105,66 @@ export default {
   },
   data() {
     return {
-      orderNumber: '20240517379430',
-      orderTime: '2021/05/17',
-      orderProcessing: '訂單處理',
-      orderPrice: '$18,999',
-      orderDelivery: '未出貨',
-      Unpaid: '未付款',
-      cancelorder: '取消訂單'
+      orders: [
+        //放假資料的位置
+      {
+          id: '1',
+          time: '2024-06-15 12:34',
+          status: 'Pending',
+          price: 99.99,
+          shippingStatus: 'Not Shipped',
+          paymentStatus: 'Paid',
+          fulfillmentStatus: 'Not Fulfilled'
+        },
+        {
+          id: '2',
+          time: '2024-06-14 15:20',
+          status: 'Completed',
+          price: 149.99,
+          shippingStatus: 'Shipped',
+          paymentStatus: 'Paid',
+          fulfillmentStatus: 'Fulfilled'
+        },
+        {
+          id: '3',
+          time: '2024-06-13 10:00',
+          status: 'Shipped',
+          price: 79.99,
+          shippingStatus: 'Shipped',
+          paymentStatus: 'Paid',
+          fulfillmentStatus: 'Not Fulfilled'
+        }
+        ,
+        {
+          id: '4',
+          time: '2024-06-13 10:00',
+          status: 'Shipped',
+          price: 79.99,
+          shippingStatus: 'Shipped',
+          paymentStatus: 'Paid',
+          fulfillmentStatus: 'Not Fulfilled'
+        }
+        ,
+        {
+          id: '5',
+          time: '2024-06-13 10:00',
+          status: 'Shipped',
+          price: 79.99,
+          shippingStatus: 'Shipped',
+          paymentStatus: 'Paid',
+          fulfillmentStatus: 'Not Fulfilled'
+        }
+        ,
+        {
+          id: '3',
+          time: '2024-06-13 10:00',
+          status: 'Shipped',
+          price: 79.99,
+          shippingStatus: 'Shipped',
+          paymentStatus: 'Paid',
+          fulfillmentStatus: 'Not Fulfilled'
+        }
+      ]
     }
   },
   methods: {
@@ -174,6 +241,15 @@ button {
 button:hover {
   background-color: $irishcoffee;
   color: $ramos-gin-fizz;
+}
+// grid設定
+.order-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-rows: repeat(auto-fill, 250px);
+  grid-gap: 20px;
+  align-items: stretch;
+  padding-right: 20px;
 }
 //頁籤
 .page-normal {
