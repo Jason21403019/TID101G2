@@ -152,34 +152,15 @@ export default {
       currentActionType: '',
       currentProduct: {},
       selectAll: false,
-      products: [
-        {
-          id: 'P001',
-          name: 'VINADA 無酒精氣泡酒',
-          category: '無酒精紅酒',
-          price: 800,
-          sales: 10,
-          stock: 50,
-          isHot: false,
-          isAvailable: true,
-          selected: false
-        },
-        {
-          id: 'P002',
-          name: 'Another Product',
-          category: 'Category',
-          price: 500,
-          sales: 5,
-          stock: 20,
-          isHot: true,
-          isAvailable: false
-        }
-      ],
+      products: [],
       // 回傳input
       selectedOption: '',
       inputValue: '',
       selectedCategory: ''
     }
+  },
+  created() {
+    this.fetchProducts();
   },
   watch: {
     products: {
@@ -191,6 +172,16 @@ export default {
     }
   },
   methods: {
+    fetchProducts() {
+      fetch('http://localhost/back/%e5%95%86%e5%93%81.php')
+        .then(response => response.json())
+        .then(data => {
+          this.products = data;
+        })
+        .catch(error => {
+          console.error('Error fetching products:', error);
+        });
+    },
     openModal(actionType, product = {}) {
       this.currentActionType = actionType
       this.currentProduct = product
@@ -226,7 +217,7 @@ export default {
     handleSelectChange() {
       if (this.selectedOption !== '1') {
         this.inputValue = '' // 清除普通輸入框的值
-        this.selectedCategory = '' // 清除選擇類別的值
+        this.selectedCategory = '' // 清除選擇類別        的值
       }
     },
     // 當我的tbody中input全勾，全選勾會被勾起來
