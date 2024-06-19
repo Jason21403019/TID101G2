@@ -186,7 +186,14 @@ function updateAdmin($data)
 function checkEmail($data) {
     try {
         $email = $data['email'];
-        $exists = checkEmailExists($email);
+        if (isset($data['id'])) {
+            
+            $excludeId = $data['id'];
+            $exists = checkEmailExists($email, $excludeId);
+        }else{
+
+            $exists = checkEmailExists($email);
+        }
         echo json_encode(['exists' => $exists]);
     } catch (Exception $e) {
 
@@ -210,6 +217,7 @@ function checkEmailExists($email, $excludeId = null) {
         }
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        // boolean
         return $result['count'] > 0;
     } catch (Exception $e) {
         return false;

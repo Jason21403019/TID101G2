@@ -119,7 +119,7 @@ export default {
       this.currentActionType = action
       this.currentAdmin = admin
         ? { ...admin }
-        : { id: 'null', name: '', email: '', phone: '', password: '', position: '', status: false }
+        : { id: null, name: '', email: '', phone: '', password: '', position: '', status: false }
       this.$refs.modal.show()
     },
 

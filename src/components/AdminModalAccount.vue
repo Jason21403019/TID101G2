@@ -131,6 +131,7 @@ export default {
       const params = {}
 
       params.email = this.admin.email
+      params.id = this.admin.id
 
       const isDuplicate = await adminStore.checkEmail(params)
 
