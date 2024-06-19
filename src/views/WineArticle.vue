@@ -10,6 +10,18 @@
     <div class="wine__article-banner">
       <img :src="article.src1" alt="banner" />
     </div>
+    <div class="ap">
+      <div class="wine__article-author">
+        <p>
+          {{ article.author }}
+        </p>
+      </div>
+      <div class="wine__article-publish_time">
+        <p>
+          {{ article.publish_time }}
+        </p>
+      </div>
+    </div>
     <div class="wine__article-textarea">
       <p>
         {{ article.p1 }}
@@ -21,7 +33,6 @@
     <div class="wine__article-banner">
       <img :src="article.src2" alt="banner" />
     </div>
-
     <div class="wine__article-textarea">
       <p>
         {{ article.p3 }}
@@ -60,6 +71,8 @@ export default {
   data() {
     return {
       article: {
+        author: 'MM站長',
+        publish_time: '2024-06-11',
         src1: img1,
         src2: img2,
         p1: '2020年初，一場突如其來的疫情，讓全世界陷入前所未有的變化，病毒阻絕了人與人之間的實體來往，也嚴重打擊了日本酒產業，愛媛縣政府面對這樣的困境，與東京農業大學、愛媛縣產業技術研究中心、愛媛縣酒造組合、伊台貿股份有限公司（台灣）等產官學通各界，投入近千萬日幣研發預算，由愛媛縣境內22家酒造共同進行實驗釀造，打造出由愛媛縣特有品種「翠雀花(Sakurahime)」所分離出之花酵母釀製之EhimeSakurahime系列，作為面對疫情後再次出發的強勢商品。',
@@ -122,6 +135,54 @@ export default {
       width: 100%;
       display: block;
       @include border-radius(8px);
+    }
+  }
+  .ap {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    border: 1px solid transparent;
+    @include breakpoint(430px) {
+      width: 95%;
+    }
+    p {
+      font-family: $fontfamily;
+      font-size: $fontSize_h5;
+      letter-spacing: $letterspacing;
+      color: $ramos-gin-fizz;
+    }
+  }
+  &-author {
+    width: 100%;
+    margin: 0 auto;
+    position: absolute;
+    @include breakpoint(430px) {
+      width: 95%;
+    }
+    p {
+      font-family: $fontfamily;
+      font-size: $fontSize_h5;
+      letter-spacing: $letterspacing;
+      color: $ramos-gin-fizz;
+    }
+  }
+  &-publish_time {
+    // border: 1px solid red;
+    position: absolute;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-end;
+    @include breakpoint(430px) {
+      width: 95%;
+    }
+    p {
+      font-family: $fontfamily;
+      font-size: $fontSize_h5;
+      letter-spacing: $letterspacing;
+      color: $ramos-gin-fizz;
     }
   }
   &-textarea {
