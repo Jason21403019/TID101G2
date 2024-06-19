@@ -80,7 +80,7 @@
       @complete-order="handleCompleteOrder" />
     </div>
       <!-- 頁碼 -->
-      <div class="page-normal">
+      <!-- <div class="page-normal">
         <span class="page-prev">&lt;</span>
         <a @click="orderPage">1</a>
         <a @click="orderPage">2</a>
@@ -88,7 +88,7 @@
         <a @click="orderPage">4</a>
         <a @click="orderPage">5</a>
         <a @click="orderPage">&gt;</a>
-      </div>
+      </div> -->
     </div>
   </section>
 </template>

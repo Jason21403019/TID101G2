@@ -10,7 +10,10 @@
           <p><strong>配送狀態:</strong> {{ shippingStatus }}</p>
           <p><strong>付款狀態:</strong> {{ paymentStatus }}</p>
           <p><strong>出貨狀態:</strong> {{ fulfillmentStatus }}</p>
-          <a href="https://codepen.io/collection/XdWJOQ/" class="btn btn-primary btn-block">Here's why</a>
+          <!-- 根據配送狀態 來判斷該出現的按鈕 delivery_status:已完成>完成訂單或是退換貨｜ status:未處理>取消訂單-->
+          <a  class="btn btn-primary btn-block">取消訂單</a>
+          <a  class="btn btn-primary btn-block">完成訂單</a>
+          <a  class="btn btn-primary btn-block">退換貨</a>
         </div>
       </article>
      
