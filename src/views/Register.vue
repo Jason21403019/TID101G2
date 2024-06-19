@@ -13,29 +13,29 @@
         </div>
         <div class="register__container-name">
           <label for="name">姓名</label>
-          <input id="name" type="text" placeholder="請輸入姓名" />
+          <input id="name" v-model="form.name" type="text" placeholder="請輸入姓名" />
         </div>
         <div class="register__container-phone">
           <label for="phone">電話</label>
-          <input id="phone" type="tel" placeholder="請輸入電話" />
+          <input id="phone" v-model="form.phone" type="tel" placeholder="請輸入電話" />
         </div>
         <div class="register__container-email">
           <label for="email">電子郵件</label>
-          <input id="email" type="email" placeholder="請輸入電子郵件" />
+          <input id="email" v-model="form.email" type="email" placeholder="請輸入電子郵件" />
         </div>
         <div class="register__container-password">
           <label for="password">密碼</label>
-          <input id="password" type="password" placeholder="請輸入密碼" />
+          <input id="password" v-model="form.password" type="password" placeholder="請輸入密碼" />
         </div>
         <div class="register__container-confirmpassword">
           <label for="password">確認密碼</label>
-          <input id="password" type="password" placeholder="請再次輸入密碼" />
+          <input id="confirmPassword" v-model="form.confirmPassword" type="password" placeholder="請再次輸入密碼" />
         </div>
         <div class="register__container-haveaccount">
           <p>已經有帳號了嗎？<button @click="showLogin">登入</button></p>
         </div>
         <div class="register__container-submit">
-          <button>註冊</button>
+          <button type="submit" @click.prevent="register">註冊</button>
         </div>
       </div>
       <div v-if="!isRegister" class="login__container">
@@ -50,11 +50,11 @@
         </div>
         <div class="login__container-email">
           <label for="email">電子郵件</label>
-          <input id="email" type="email" placeholder="請輸入電子郵件" />
+          <input id="email" v-model="email" type="email" placeholder="請輸入電子郵件" />
         </div>
         <div class="login__container-password">
           <label for="password">密碼</label>
-          <input id="password" type="password" placeholder="請輸入密碼" />
+          <input id="password" v-model="password" type="password" placeholder="請輸入密碼" />
         </div>
         <div class="login__container-noaccount">
           <p>沒有帳號嗎？<button @click="showRegister">註冊</button></p>
@@ -62,7 +62,7 @@
           <ForgetPasswordPop :isvible="showFirstPopup" @close-popup="showFirstPopup = false" />
         </div>
         <div class="login__container-submit">
-          <button @click="toMember">登入</button>
+          <button type="submit" @click.prevent="login">登入</button>
         </div>
       </div>
     </div>
@@ -71,6 +71,8 @@
 
 <script>
 import ForgetPasswordPop from '@/components/ForgetPasswordPop.vue'
+import { mapActions } from 'pinia'
+import { useUserStore } from '@/stores/user'
 
 export default {
   name: 'RegisterAndLogin',
@@ -78,18 +80,96 @@ export default {
   data() {
     return {
       isRegister: true,
-      showFirstPopup: false
+      showFirstPopup: false,
+      email: '',
+      password: '',
+      error: null,
+      form: {
+        name: '',
+        phone: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      }
     }
   },
   methods: {
+    ...mapActions(useUserStore, ['login']),
     showRegister() {
       this.isRegister = true
     },
     showLogin() {
       this.isRegister = false
     },
-    toMember() {
-      this.$router.push('/member')
+    async login() {
+      const userStore = useUserStore()
+
+      if (!this.email || !this.password) {
+        this.error = 'Email 和 Password 是必填的'
+
+        return
+      }
+
+      try {
+        const response = await fetch('/public/api/Login.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: this.email,
+            password: this.password
+          })
+        })
+        // const result = await response.json() // 將回應轉換為JSON
+
+        // if (result.success) {
+        //   this.error = null
+        //   userStore.login() // 使用 Pinia 的 login action
+        //   this.$router.push('/member') // 導向會員頁面
+        // } else {
+        //   this.error = result.message || 'Login failed' //
+        // }
+        if (response) {
+          this.error = null
+          console.log('Login successful')
+          userStore.login() // 使用 Pinia 的 login action
+          this.$router.push('/member') // 導向會員頁面
+        } else {
+          this.error = 'Login failed'
+        }
+      } catch (err) {
+        console.error('Error:', err)
+        this.error = 'An error occurred'
+      }
+    },
+    async register() {
+      // 簡單驗證
+      if (this.form.password !== this.form.confirmPassword) {
+        alert('密碼與確認密碼不一致')
+
+        return
+      }
+
+      try {
+        const response = await fetch('/public/api/Register.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.form)
+        })
+
+        const result = await response.json()
+
+        if (result.success) {
+          alert('註冊成功')
+        } else {
+          alert('註冊失敗: ' + result.message)
+        }
+      } catch (error) {
+        alert('註冊失敗: ' + error.message)
+      }
     }
   }
 }
@@ -332,7 +412,7 @@ export default {
         border: none;
         outline: none;
         @include border-radius(8px);
-        font-size: $fontSize_h4;
+        font-size: $fontSize_h5;
         letter-spacing: $letterspacing;
         color: $campari;
         background-color: $whitelady;

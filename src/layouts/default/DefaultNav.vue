@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" :style="{ top: navTop }">
     <div class="header__logoarea">
       <router-link to="/home" class="header__logoarea-logo" @click="closeHamburger">
         <img v-if="black" :src="getNavLogoSrc" alt="" />
@@ -8,10 +8,13 @@
     </div>
     <div class="header__btnarea">
       <div class="header__btnarea-icons">
-        <router-link to="/register" class="header__icons-icon" @click="closeHamburger">
+        <router-link v-if="!isLoggedIn" to="/register" class="header__icons-icon" @click="closeHamburger">
           <img v-if="black" class="header__icons-icon-img1" :src="getNavMemberSrc" alt="" />
           <img v-else class="header__icons-icon-img1" :src="getNavMemberSrc" alt="" />
         </router-link>
+        <button v-else class="header__icons-icon" @click="logout">
+          <img class="header__icons-icon-img1" :src="getLoginSrc" alt="Logout Icon" />
+        </button>
         <router-link to="/cart" class="header__icons-icon" @click="closeHamburger">
           <img v-if="black" class="header__icons-icon-img2" :src="getNavCartSrc" alt="" />
           <img v-else class="header__icons-icon-img2" :src="getNavCartSrc" alt="" />
@@ -30,7 +33,7 @@
               <router-link to="/about_us" class="menu__link" @click="closeHamburger"><span>關於我們</span></router-link>
               <router-link to="/menus" class="menu__link" @click="closeHamburger"><span>菜單</span></router-link>
               <router-link to="/reserve_first" class="menu__link" @click="closeHamburger"><span>預約訂位</span></router-link>
-              <router-link to="/product" class="menu__link" @click="closeHamburger"><span>熱門商品</span></router-link>
+              <router-link to="/product" class="menu__link" @click="closeHamburger"><span>全部商品</span></router-link>
               <router-link to="/quizgame" class="menu__link" @click="closeHamburger"><span>測驗遊戲</span></router-link>
               <router-link to="/wine_column" class="menu__link" @click="closeHamburger"><span>酒品專欄</span></router-link>
               <router-link to="/questions" class="menu__link" @click="closeHamburger"><span>常見問題</span></router-link>
@@ -48,16 +51,21 @@
 <script>
 import logoimg from '../../imgs/logo/logo-w.png'
 import membertSrc from '../../imgs/icon/icon_member-on-w.svg'
+import { mapActions, mapState } from 'pinia'
+import { useUserStore } from '@/stores/user'
 
 export default {
   inclouds: [logoimg, membertSrc],
   name: 'DefaultNav',
   data() {
     return {
-      isHamburgerOpen: false
+      isHamburgerOpen: false,
+      lastPos: 0,
+      navTop: '0px'
     }
   },
   computed: {
+    ...mapState(useUserStore, ['isLoggedIn']),
     currentPath() {
       // console.log(this.$route.name)
 
@@ -72,6 +80,11 @@ export default {
       return this.black
         ? new URL('@/imgs/logo/logo.png', import.meta.url).href
         : new URL('@/imgs/logo/logo-w.png', import.meta.url).href
+    },
+    getLoginSrc() {
+      return this.black
+        ? new URL('@/imgs/icon/icon_member-off.svg', import.meta.url).href
+        : new URL('@/imgs/icon/icon_member-off-w.svg', import.meta.url).href
     },
 
     getMemberSrc() {
@@ -101,13 +114,65 @@ export default {
       return this.isHamburgerOpen ? 'h-white' : this.black ? 'h-black' : 'h-black-on-light'
     }
   },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
 
   methods: {
+    ...mapActions(useUserStore, ['logout']),
     toggleHamburger() {
       this.isHamburgerOpen = !this.isHamburgerOpen
     },
     closeHamburger() {
       this.isHamburgerOpen = false
+    },
+
+    async logout() {
+      try {
+        const response = await fetch('/public/api/Logout.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        // const result = await response.json()
+
+        // if (result.success) {
+        //   this.logout() // 使用 Pinia 的 logout action
+        //   console.log('Logout successful')
+        //   this.$router.push('/home')
+        // } else {
+        //   this.error = 'Logout failed'
+        // }
+        if (response) {
+          this.logout() // 使用 Pinia 的 logout action
+          console.log('Logout successful')
+          this.$router.push('/home')
+        } else {
+          this.error = 'Logout failed'
+        }
+      } catch (err) {
+        console.error('Error:', err)
+        this.error = 'An error occurred'
+      }
+    },
+    handleScroll() {
+      const currentPos = window.scrollY
+
+      if (currentPos > this.lastPos) {
+        this.navTop = '-100px'
+      } else {
+        this.navTop = '0px'
+      }
+      this.lastPos = currentPos
     }
   }
 }
@@ -122,6 +187,7 @@ export default {
   justify-content: space-between;
   z-index: 1000;
   padding: 0.7rem 0.5rem;
+  transition: top 0.5s;
   .h-black {
     background: $negroni;
   }
@@ -158,9 +224,16 @@ export default {
       align-items: center;
       // border: 1px solid red;
       cursor: pointer;
+      button {
+        border: none;
+        background: none;
+        outline: none;
+        cursor: pointer;
+      }
       .header__icons-icon {
         position: relative;
         z-index: 1000;
+
         &-img1 {
           width: 30px;
         }
@@ -302,10 +375,10 @@ export default {
           color: $whitelady;
         }
         &:nth-child(even) {
-          transform: translateX(100px);
+          transform: translateX(140px);
         }
         &:nth-child(odd) {
-          transform: translateX(-100px);
+          transform: translateX(-160px);
         }
         &:nth-child(1) {
           position: relative;
