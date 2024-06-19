@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" :style="{ top: navTop }">
     <div class="header__logoarea">
       <router-link to="/home" class="header__logoarea-logo" @click="closeHamburger">
         <img v-if="black" :src="getNavLogoSrc" alt="" />
@@ -59,7 +59,9 @@ export default {
   name: 'DefaultNav',
   data() {
     return {
-      isHamburgerOpen: false
+      isHamburgerOpen: false,
+      lastPos: 0,
+      navTop: '0px'
     }
   },
   computed: {
@@ -112,6 +114,12 @@ export default {
       return this.isHamburgerOpen ? 'h-white' : this.black ? 'h-black' : 'h-black-on-light'
     }
   },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
 
   methods: {
     ...mapActions(useUserStore, ['logout']),
@@ -155,6 +163,16 @@ export default {
         console.error('Error:', err)
         this.error = 'An error occurred'
       }
+    },
+    handleScroll() {
+      const currentPos = window.scrollY
+
+      if (currentPos > this.lastPos) {
+        this.navTop = '-100px'
+      } else {
+        this.navTop = '0px'
+      }
+      this.lastPos = currentPos
     }
   }
 }
@@ -169,6 +187,7 @@ export default {
   justify-content: space-between;
   z-index: 1000;
   padding: 0.7rem 0.5rem;
+  transition: top 0.5s;
   .h-black {
     background: $negroni;
   }
