@@ -11,14 +11,15 @@
         <span v-if="isExpanded" class="logo-text">紙醉金迷後台</span>
       </router-link>
     </div>
+
     <ul v-if="!isExpanded" class="nav">
-      <li v-for="item in navItems" :key="item.text" class="nav-item">
+      <li v-for="item in filteredNavItems" :key="item.text" class="nav-item">
         <admin-icon-manger :icon="item.icon" :expanded="false" />
       </li>
     </ul>
 
     <ul v-else id="accordionFlushExample" class="accordion accordion-flush">
-      <li v-for="(item, index) in navItems" :key="item.text" class="accordion-item">
+      <li v-for="(item, index) in filteredNavItems" :key="item.text" class="accordion-item">
         <div :id="'flush-heading' + index" class="accordion-header">
           <button
             class="accordion-button collapsed"
@@ -52,6 +53,7 @@
 
 <script>
 import AdminIconManger from '../../components/AdminIconManger.vue'
+import { useAdminStore } from '../../stores/admin'
 import { variables } from '../../js/AdminVariables.js'
 
 export default {
@@ -61,7 +63,6 @@ export default {
   props: {
     isExpanded: {
       type: Boolean,
-      // required: true,
       default: false
     }
   },
@@ -103,6 +104,7 @@ export default {
         {
           text: variables.adminblock.admin,
           icon: 'admin',
+          roles: ['老闆', '主管'], // 角色限制老闆和主管
           subItems: [{ text: variables.adminblock.account, link: '/admin_account' }]
         }
       ],
@@ -110,11 +112,23 @@ export default {
       mouseOver: false
     }
   },
+  computed: {
+    filteredNavItems() {
+      const adminStore = useAdminStore()
+      const userRole = adminStore.adminUser?.job
+
+      return this.navItems.filter((item) => {
+        // 確保沒有角色限制的項目可見
+        if (!item.roles) {
+          return true
+        }
+
+        // 確保只有老闆和主管可以看到帳號管理
+        return item.roles.includes(userRole)
+      })
+    }
+  },
   methods: {
-    // toggleSidebar() {
-    //   this.isExpanded = !this.isExpanded;
-    // },
-    // icon的svg轉換
     handleMouseEnter() {
       if (!this.isExpanded) {
         this.mouseOver = true

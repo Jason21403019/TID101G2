@@ -34,15 +34,15 @@
       <tbody class="table-tbody">
         <tr v-for="(admin, index) in admins" :key="admin.id">
           <th scope="row">{{ index + 1 }}</th>
-          <td>{{ admin.name }}</td>
+          <td>{{ admin.employee_name }}</td>
           <td>{{ admin.email }}</td>
           <td>{{ admin.phone }}</td>
-          <td>{{ admin.position === 'supervisor' ? '主管' : '員工' }}</td>
+          <td>{{ admin.job }}</td>
           <td>
             <div class="form-check form-switch">
               <input
                 :id="'flexSwitchCheckChecked' + admin.id"
-                v-model="admin.status"
+                v-model="admin.admin_status"
                 class="form-check-input"
                 type="checkbox"
               />
@@ -69,6 +69,7 @@
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
 import ModalAccount from '../components/AdminModalAccount.vue'
+import { useAdminStore } from '../stores/admin'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
@@ -90,44 +91,77 @@ export default {
 
       currentActionType: 'add',
       currentAdmin: {
-        name: '',
+        employee_name: '',
         email: '',
         phone: '',
         password: '',
-        position: '',
+        job: '',
         status: false
       },
-      admins: [
-        {
-          id: 1,
-          name: 'John Doe',
-          email: 'john.doe@example.com',
-          phone: '1234567890',
-          position: 'supervisor',
-          status: true
-        }
-      ]
+      admins: []
     }
   },
+  async mounted() {
+    await this.loadAdmins()
+  },
   methods: {
+    // 讀取資料庫的資料渲染在table上
+    async loadAdmins() {
+      const adminStore = useAdminStore()
+      const result = await adminStore.fetchAdmins()
+
+      if (result.success) {
+        this.admins = result.admins
+      }
+    },
+    // 打開視窗時的初始
     openModal(action, admin = null) {
       this.currentActionType = action
-      this.currentAdmin = admin ? { ...admin } : { name: '', email: '', phone: '', password: '', position: '', status: false }
+      this.currentAdmin = admin
+        ? { ...admin }
+        : { id: 'null', name: '', email: '', phone: '', password: '', position: '', status: false }
       this.$refs.modal.show()
     },
-    handleSave(formData) {
+
+    async handleSave(formData) {
+      const adminStore = useAdminStore()
+      const params = { ...formData }
+
       if (this.currentActionType === 'add') {
         // 新增邏輯
-        const newAdmin = { ...formData, id: this.admins.length + 1 }
+        const result = await adminStore.createAdmin(params)
 
-        this.admins.push(newAdmin)
+        console.log(result)
+        if (result.success) {
+          this.admins.push(result.newAdmin)
+        } else {
+          console.error('Failed to create admin:', result.message)
+        }
       } else {
         // 編輯邏輯
-        const index = this.admins.findIndex((admin) => admin.id === formData.id)
+        const result = await adminStore.updateAdmin(params)
 
-        if (index !== -1) {
-          this.admins.splice(index, 1, { ...formData })
+        if (result.success) {
+          const index = this.admins.findIndex((admin) => admin.id === formData.id)
+
+          if (index !== -1) {
+            this.admins.splice(index, 1, result.updatedAdmin)
+          }
+        } else {
+          console.error('Failed to update admin:', result.message)
         }
+      }
+      this.$refs.modal.hide()
+    },
+    async toggleAdminStatus(admin) {
+      const adminStore = useAdminStore()
+      const updatedAdmin = { ...admin, admin_status: admin.admin_status ? 1 : 0 }
+      const result = await adminStore.updateAdmin(updatedAdmin)
+
+      if (!result.success) {
+        console.error('Failed to update admin status:', result.message)
+      } else {
+        this.admins = this.admins.map((a) => (a.id === updatedAdmin.id ? result.updatedAdmin : a))
       }
     }
   }

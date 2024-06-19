@@ -10,11 +10,12 @@
           <form @submit.prevent="handleSave">
             <div class="mb-3">
               <label for="admin-name" class="col-form-label">姓名:</label>
-              <input id="admin-name" v-model="admin.name" type="text" class="form-control" />
+              <input id="admin-name" v-model="admin.employee_name" type="text" class="form-control" />
             </div>
             <div class="mb-3">
               <label for="admin-email" class="col-form-label">Email:</label>
-              <input id="admin-email" v-model="admin.email" type="email" class="form-control" />
+              <input id="admin-email" v-model="admin.email" type="email" class="form-control" @blur="checkEmail" />
+              <div v-if="emailError" class="text-danger">{{ emailError }}</div>
             </div>
             <div class="mb-3">
               <label for="admin-phone" class="col-form-label">手機:</label>
@@ -25,16 +26,17 @@
               <input id="admin-password" v-model="admin.password" type="password" class="form-control" />
             </div>
             <div class="mb-3">
-              <label for="admin-position" class="col-form-label">職位:</label>
-              <select id="admin-position" v-model="admin.position" class="form-select">
-                <option value="supervisor">主管</option>
-                <option value="employee">員工</option>
+              <label for="admin-job" class="col-form-label">職位:</label>
+              <select id="admin-job" v-model="admin.job" class="form-select">
+                <option value="老闆">老闆</option>
+                <option value="主管">主管</option>
+                <option value="員工">員工</option>
               </select>
             </div>
             <div class="mb-3">
               <label for="admin-status" class="col-form-label">停用/啟用:</label>
               <div class="form-check form-switch">
-                <input id="flexSwitchCheckChecked" v-model="admin.status" class="form-check-input" type="checkbox" />
+                <input id="flexSwitchCheckChecked" v-model="admin.admin_status" class="form-check-input" type="checkbox" />
               </div>
             </div>
             <div class="modal-footer">
@@ -48,6 +50,8 @@
 </template>
 
 <script>
+import { useAdminStore } from '../stores/admin'
+
 export default {
   props: {
     actionType: {
@@ -58,12 +62,12 @@ export default {
       type: Object,
       required: true,
       default: () => ({
-        name: '',
+        employee_name: '',
         email: '',
         phone: '',
         password: '',
-        position: '',
-        status: false
+        job: '',
+        admin_status: false
       })
     },
     onSave: {
@@ -73,7 +77,9 @@ export default {
   },
   data() {
     return {
-      myModal: null
+      myModal: null,
+      errorMessage: '', // 用於儲存錯誤訊息
+      emailError: '' // 用於儲存Email錯誤訊息
     }
   },
   computed: {
@@ -89,18 +95,49 @@ export default {
       const modalElement = this.$refs.adminModal
 
       if (modalElement) {
+        this.errorMessage = '' // 用於儲存錯誤訊息
+        this.emailError = '' // 用於儲存Email錯誤訊息
         this.myModal = new bootstrap.Modal(modalElement)
         this.myModal.show()
       } else {
         console.error('adminModal reference is not found.')
       }
     },
-    handleSave() {
-      this.onSave(this.admin)
-      if (this.myModal) {
-        this.myModal.hide()
+    async handleSave() {
+      const result = await this.onSave(this.admin)
+
+      if (result.success) {
+        if (this.myModal) {
+          this.myModal.hide()
+        } else {
+          console.error('Modal instance is not available to hide.')
+        }
       } else {
-        console.error('Modal instance is not available to hide.')
+        this.errorMessage = result.message
+      }
+    },
+    async checkEmail() {
+      // 簡單的email格式檢查
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+      if (!emailPattern.test(this.admin.email)) {
+        this.emailError = '請輸入有效的Email地址'
+
+        return
+      }
+
+      // 呼叫Pinia store的檢查動作
+      const adminStore = useAdminStore()
+      const params = {}
+
+      params.email = this.admin.email
+
+      const isDuplicate = await adminStore.checkEmail(params)
+
+      if (isDuplicate) {
+        this.emailError = '該Email帳號已存在'
+      } else {
+        this.emailError = ''
       }
     }
   }
