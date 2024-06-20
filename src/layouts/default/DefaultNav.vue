@@ -143,22 +143,22 @@ export default {
           throw new Error(`HTTP error! status: ${response.status}`)
         }
 
-        // const result = await response.json()
+        const result = await response.json()
 
-        // if (result.success) {
-        //   this.logout() // 使用 Pinia 的 logout action
-        //   console.log('Logout successful')
-        //   this.$router.push('/home')
-        // } else {
-        //   this.error = 'Logout failed'
-        // }
-        if (response) {
+        if (result.success) {
           this.logout() // 使用 Pinia 的 logout action
           console.log('Logout successful')
           this.$router.push('/home')
         } else {
           this.error = 'Logout failed'
         }
+        // if (response) {
+        //   this.logout() // 使用 Pinia 的 logout action
+        //   console.log('Logout successful')
+        //   this.$router.push('/home')
+        // } else {
+        //   this.error = 'Logout failed'
+        // }
       } catch (err) {
         console.error('Error:', err)
         this.error = 'An error occurred'
@@ -188,6 +188,7 @@ export default {
   z-index: 1000;
   padding: 0.7rem 0.5rem;
   transition: top 0.5s;
+  pointer-events: none;
   .h-black {
     background: $negroni;
   }
@@ -201,9 +202,11 @@ export default {
     width: 100px;
     height: 80px;
     padding-left: 1rem;
+    pointer-events: auto;
     &-logo {
       position: relative;
       z-index: 1000;
+
       cursor: pointer;
       img {
         width: 100%;
@@ -217,6 +220,7 @@ export default {
     justify-content: space-around;
     align-items: center;
     padding-right: 1rem;
+    pointer-events: auto;
     &-icons {
       display: flex;
       flex-basis: 200px;

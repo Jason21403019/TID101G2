@@ -5,7 +5,11 @@ $member = json_decode(file_get_contents("php://input"), true);
 
 
 if (!isset($member['email']) || !isset($member['password'])) {
-    echo json_encode(['success' => false, 'message' => 'Email 和 Password 是必填的']);
+    $respBody=array(
+        'success' => false,
+        'message' => 'Email 和 Password 是必填的'
+    );
+    echo json_encode($respBody);
     exit;
 }
 
@@ -18,9 +22,13 @@ $pstmt->execute();
 $members = $pstmt->fetchAll();
 $success = count($members) == 1;
 
-header('Content-Type: application/json');
+// header('Content-Type: application/json');
 
-$respBody['success'] = $success;
+// $respBody['success'] = $success;
+
+$respBody=array(
+    'success'=>$success,
+);
 if ($success) {
     session_start();
     $_SESSION['member'] = $members[0];
@@ -29,6 +37,6 @@ if ($success) {
 }
 
 
+// print_r($respBody);
 echo json_encode($respBody);
 exit;
-?>

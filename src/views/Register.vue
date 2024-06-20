@@ -25,7 +25,14 @@
         </div>
         <div class="register__container-password">
           <label for="password">密碼</label>
-          <input id="password" v-model="form.password" type="password" placeholder="請輸入密碼" />
+          <input
+            @keyup="validatePasswords(form.password)"
+            id="password"
+            v-model="form.password"
+            type="password"
+            placeholder="請輸入密碼"
+          />
+          <p class="error-message" v-if="form.password && passwordError">密碼必須至少8位數，且包含英文及數字</p>
         </div>
         <div class="register__container-confirmpassword">
           <label for="password">確認密碼</label>
@@ -54,7 +61,14 @@
         </div>
         <div class="login__container-password">
           <label for="password">密碼</label>
-          <input id="password" v-model="password" type="password" placeholder="請輸入密碼" />
+          <input
+            @keyup="validatePasswords(password)"
+            id="password"
+            v-model="password"
+            type="password"
+            placeholder="請輸入密碼"
+          />
+          <p class="error-message" v-if="password && passwordError">密碼必須至少8位數，且包含英文及數字</p>
         </div>
         <div class="login__container-noaccount">
           <p>沒有帳號嗎？<button @click="showRegister">註冊</button></p>
@@ -90,7 +104,8 @@ export default {
         email: '',
         password: '',
         confirmPassword: ''
-      }
+      },
+      passwordError: false
     }
   },
   methods: {
@@ -111,7 +126,7 @@ export default {
       }
 
       try {
-        const response = await fetch('/public/api/Login.php', {
+        const response = await fetch(`${import.meta.env.VITE_PHP_PATH}Login.php`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -121,25 +136,26 @@ export default {
             password: this.password
           })
         })
-        // const result = await response.json() // 將回應轉換為JSON
+        const result = await response.json() // 將回應轉換為JSON
 
-        // if (result.success) {
-        //   this.error = null
-        //   userStore.login() // 使用 Pinia 的 login action
-        //   this.$router.push('/member') // 導向會員頁面
-        // } else {
-        //   this.error = result.message || 'Login failed' //
-        // }
-        if (response) {
+        if (result.success) {
           this.error = null
-          console.log('Login successful')
           userStore.login() // 使用 Pinia 的 login action
           this.$router.push('/member') // 導向會員頁面
         } else {
-          this.error = 'Login failed'
+          this.error = result.message || 'Login failed' //
         }
+        // if (response) {
+        //   this.error = null
+        //   console.log('Login successful')
+        //   userStore.login() // 使用 Pinia 的 login action
+        //   this.$router.push('/member') // 導向會員頁面
+        // } else {
+        //   this.error = 'Login failed'
+        // }
       } catch (err) {
-        console.error('Error:', err)
+        // console.error('Error:', err)
+        console.log(err)
         this.error = 'An error occurred'
       }
     },
@@ -170,6 +186,21 @@ export default {
       } catch (error) {
         alert('註冊失敗: ' + error.message)
       }
+    },
+    validatePasswords(value) {
+      const password = value
+      const minLength = 8
+      const hasNumber = /\d/
+      const hasLetter = /[a-zA-Z]/
+
+      this.passwordError = password.length < minLength || !hasNumber.test(password) || !hasLetter.test(password)
+    },
+    register() {
+      this.validatePasswords()
+      if (!this.passwordError) {
+        // 處理註冊邏輯
+        alert('註冊成功')
+      }
     }
   }
 }
@@ -178,7 +209,7 @@ export default {
 <style lang="scss" scoped>
 .ral__wrapper {
   padding-top: 120px;
-  background: rgba($color: $ramos-gin-fizz, $alpha: 0.5);
+  background: rgba($color: $ramos-gin-fizz, $alpha: 0.8);
   line-height: $lineheight;
   font-family: $fontfamily;
   padding-bottom: 3rem;
@@ -219,7 +250,7 @@ export default {
       }
       &-btn.active {
         background-color: $irishcoffee;
-        color: $campari;
+        color: $whitelady;
       }
       &-btn:not(.active) {
         background-color: $ramos-gin-fizz;
@@ -250,6 +281,9 @@ export default {
     @include border-radius(8px);
     @include breakpoint(500px) {
       width: 98%;
+    }
+    .error-message {
+      color: red;
     }
     &-title {
       h3 {
@@ -285,7 +319,7 @@ export default {
         border: none;
         outline: none;
         @include border-radius(8px);
-        font-size: $fontSize_h4;
+        font-size: $fontSize_h5;
         background-color: $whitelady;
         letter-spacing: $letterspacing;
         &::placeholder {
@@ -345,6 +379,9 @@ export default {
     @include border-radius(8px);
     @include breakpoint(500px) {
       width: 98%;
+    }
+    .error-message {
+      color: red;
     }
     &-title {
       h3 {
