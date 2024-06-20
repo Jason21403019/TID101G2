@@ -1,4 +1,10 @@
 <?php
+header("Access-Control-Allow-Origin: *"); // 允許特定的域名
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+
+// // 設置返回的內容類型
+header('Content-Type: application/json');
 // 資料庫連線設定
 $servername = "localhost";
 $username = "root";
