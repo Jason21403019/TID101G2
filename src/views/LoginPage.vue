@@ -6,7 +6,7 @@
           <a draggable="true" data-link="/home" @dragstart="onDragStart">
             <img class="log_home" src="../imgs/loginImg/login_but-02.svg" width="125" height="125" />
           </a>
-
+          <p style="color: #fff">請拖動冰塊到酒杯中，進入頁面</p>
           <a draggable="true" data-link="/admin_login" @dragstart="onDragStart">
             <img class="log_admin" src="../imgs/loginImg/login_but-03.svg" width="125" height="125" />
           </a>
