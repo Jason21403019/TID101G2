@@ -8,7 +8,7 @@
                     <div class="item_details">
                         <!-- 照片 -->
                         <div class="pic">
-                            <img :src="item.picture" alt="">
+                            <!-- <img :src="item.picture" alt=""> -->
                         </div>
                         <!-- 標題&數量按鈕 -->
                         <div class="text">
@@ -129,16 +129,14 @@ export default {
     },
     methods: {
         fetchCartItems() {
-            axios.get('/public/api/cartproduct.php', {
+            axios.get('http://localhost:8087/TID101G2/public/api/cartproduct.php', {
                 params: {
                     member_id: 'M001'
                 }
             })
             .then(response => {
-                // console.log(response.data);
-                // console.log(this.items = response.data);
-               this.items = response.data;
-
+                console.log(response.data); // 檢查接收到的數據
+                this.items = response.data;
             })
             .catch(error => {
                 console.error("There was an error fetching the cart items!", error);
@@ -146,9 +144,17 @@ export default {
         },
         decrement(itemId) {
             // 減少商品數量邏輯
+            const item = this.items.find(item => item.id === itemId);
+    if (item && item.count > 1) {
+        item.count--;
+    }
         },
         increment(itemId) {
             // 增加商品數量邏輯
+            const item = this.items.find(item => item.id === itemId);
+    if (item) {
+        item.count++;
+    }
         },
         removeItem(itemId) {
             // 移除商品邏輯
