@@ -1,5 +1,7 @@
 // import AboutUs from '../views/AboutUs.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+// 後台引入pinia
+import { useAdminStore } from '../stores/admin'
 
 // const history = createWebHashHistory()
 const routes = [
@@ -226,7 +228,8 @@ const routes = [
     name: 'AdminPanel',
     component: () => import('../views/AdminPanel.vue'),
     meta: {
-      layout: 'Admin'
+      layout: 'Admin',
+      requiresAuth: true
     }
   },
   // 後台首頁
@@ -235,7 +238,8 @@ const routes = [
     name: 'Admin',
     component: () => import('../views/Admin.vue'),
     meta: {
-      layout: 'Admin'
+      layout: 'Admin',
+      requiresAuth: true
     }
   },
   // 後台會員管理
@@ -244,7 +248,8 @@ const routes = [
     name: 'AdminMember',
     component: () => import('../views/AdminMember.vue'),
     meta: {
-      layout: 'Admin'
+      layout: 'Admin',
+      requiresAuth: true
     }
   },
   // 後台商品列別管理
@@ -253,7 +258,8 @@ const routes = [
     name: 'AdminType',
     component: () => import('../views/AdminType.vue'),
     meta: {
-      layout: 'Admin'
+      layout: 'Admin',
+      requiresAuth: true
     }
   },
   // 後台商品管理
@@ -262,7 +268,8 @@ const routes = [
     name: 'AdminProduct',
     component: () => import('../views/AdminProduct.vue'),
     meta: {
-      layout: 'Admin'
+      layout: 'Admin',
+      requiresAuth: true
     }
   },
   // 後台訂單管理
@@ -271,7 +278,8 @@ const routes = [
     name: 'AdminOrder',
     component: () => import('../views/AdminOrder.vue'),
     meta: {
-      layout: 'Admin'
+      layout: 'Admin',
+      requiresAuth: true
     }
   },
   // 後台文章分類管理
@@ -280,7 +288,8 @@ const routes = [
     name: 'AdminCategory',
     component: () => import('../views/AdminCategory.vue'),
     meta: {
-      layout: 'Admin'
+      layout: 'Admin',
+      requiresAuth: true
     }
   },
   // 後台文章管理
@@ -289,7 +298,8 @@ const routes = [
     name: 'AdminArticle',
     component: () => import('../views/AdminArticle.vue'),
     meta: {
-      layout: 'Admin'
+      layout: 'Admin',
+      requiresAuth: true
     }
   },
   // 後台訂位管理
@@ -298,7 +308,8 @@ const routes = [
     name: 'AdminRes',
     component: () => import('../views/AdminRes.vue'),
     meta: {
-      layout: 'Admin'
+      layout: 'Admin',
+      requiresAuth: true
     }
   },
   // 後台帳號管理
@@ -307,7 +318,9 @@ const routes = [
     name: 'AdminAccount',
     component: () => import('../views/AdminAccount.vue'),
     meta: {
-      layout: 'Admin'
+      layout: 'Admin',
+      requiresAuth: true,
+      role: ['老闆', '主管']
     }
   }
 ]
@@ -325,4 +338,36 @@ const router = createRouter({
   }
 })
 
+// 後台登入
+router.beforeEach((to, from, next) => {
+  const adminStore = useAdminStore()
+
+  const storedAdminUser = localStorage.getItem('admin_user')
+
+  if (storedAdminUser) {
+    adminStore.adminUser = JSON.parse(storedAdminUser)
+    adminStore.isLoggedIn = true
+  }
+
+  const isAdminLoggedIn = adminStore.isLoggedIn
+  const adminUser = adminStore.adminUser
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!isAdminLoggedIn) {
+      return next({ path: '/admin_login' }) // 未登入，如果用網址輸入其他後台頁面會被強行到登入頁
+    }
+    const matchedRecordWithRole = to.matched.find((record) => record.meta.role)
+
+    if (matchedRecordWithRole) {
+      const requiredRole = matchedRecordWithRole.meta.role
+
+      if (!adminUser || !requiredRole.includes(adminUser.job)) {
+        // 不做任何操作或根據需求做其他處理
+        return
+      }
+    }
+  }
+
+  next() // 放行
+})
 export { router }
