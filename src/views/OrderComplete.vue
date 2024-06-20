@@ -1,0 +1,213 @@
+<template>
+    <div class="popup">
+      <div class="popup__content">
+        <div class="order">
+          <img src="../imgs/icon/icon_checkbox-w.svg" alt="" />
+          <p>感謝您的訂購，以下是您本次購物的明細</p>
+        </div>
+  
+        <div class="place">
+          <h3>紙醉金迷 台北總店</h3>
+          <p>02-70638715</p>
+          <p>地址：台北市中山區南京東路三段219號</p>
+        </div>
+  
+        <div class="data">
+          <p class="hello">張哲菘 先生/女士您好</p>
+          <p class="hello">以下是您的訂位資訊</p>
+          <p class="r_date">2024年6月11日 星期二</p>
+          <p class="r_time">12:00</p>
+          <p class="r_guests">用餐人數 12 位</p>
+  
+         
+  
+          <button>取消訂位</button>
+  
+          <div class="btn_text">
+            <p>如需更改訂位資訊，或有其他訂位問題，請來電</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+<style lang="scss" scoped>
+.popup {
+  padding: 50px;
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 100px;
+
+  @include breakpoint(1280px) {
+    width: 60%;
+  }
+
+  @include breakpoint(820px) {
+      width: 80%;
+  }
+
+  @include breakpoint(540px) {
+      width: 100%;
+  }
+
+  @include breakpoint(430px){
+      padding: 20px;
+  }
+
+  @include breakpoint(375px){
+       padding: 10px;
+  }
+
+  p {
+    font-family: $fontfamily;
+    color: $campari;
+    //  text-align: center;
+  }
+
+  .popup__content {
+    background-color: $ramos-gin-fizz;
+    padding: 0 0 50px 0;
+
+    @include breakpoint(430px) {
+      padding: 0 0 30px 0;
+    }
+
+    .order {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $campari;
+      border-bottom: 10px solid #fff;
+      padding: 20px;
+
+      @include breakpoint(430px) {
+        padding: 10px;
+      }
+
+      img {
+        width: 30px;
+        height: 30px;
+        margin-right: 5px;
+      }
+
+      p {
+        line-height: 2;
+        color: $ramos-gin-fizz;
+        letter-spacing: $letterspacing;
+        font-size: $fontSize_h4;
+      }
+    }
+    .place {
+      // outline: 1px solid palegreen;
+      text-align: center;
+      padding: 20px;
+
+      @include breakpoint(430px){
+          padding: 10px;
+      }
+
+      h3 {
+        font-size: $fontSize_h3;
+        font-family: $fontfamily;
+        color: $campari;
+        margin-bottom: 10px;
+      }
+
+      p {
+        font-size: $fontSize_h5;
+        margin-bottom: 10px;
+      
+
+        @include breakpoint(430px){
+            margin-bottom: 0;
+        }
+
+        @include breakpoint(375px){
+          font-size: $fontSize_p;
+          
+        }
+
+      }
+
+    }
+
+    .data {
+      width: 80%;
+      margin: 0 auto;
+      border: 1px solid $irishcoffee;
+      padding: 30px;
+      text-align: center;
+
+        @include breakpoint(430px) {
+            padding: 10px;
+        }
+
+        @include breakpoint(375px){
+            width: 100%;
+        }
+
+      .hello {
+        font-size: $fontSize_p;
+        margin-bottom: 10px;
+
+        @include breakpoint(430px) {
+          font-size: $fontSize_p;
+        }
+      }
+
+      .r_date {
+        font-size: $fontSize_h3;
+        margin-bottom: 30px;
+        font-weight: bold;
+
+        @include breakpoint(430px){
+          font-size: 1.5rem;
+        }
+      }
+
+      .r_time {
+        font-size: $fontSize_h1;
+        color: rgb(248, 34, 34);
+        margin-bottom: 30px;
+        font-weight: bold;
+      }
+
+      .r_guests {
+        font-size: $fontSize_p;
+        margin-bottom: 30px;
+
+        @include breakpoint(430px) {
+          font-size: $fontSize_h4;
+        }
+      }
+
+      button {
+        width: 35%;
+        color: $irishcoffee;
+        font-size: $fontSize_h4;
+        background-color: $ramos-gin-fizz;
+        border: 1px solid $irishcoffee;
+        border-radius: 5px;
+        line-height: 2;
+        margin-bottom: 30px;
+        font-weight: bold;
+
+          @include breakpoint(430px){
+            width: 40%;
+          }
+       }
+
+      .btn_text {
+        p {
+          font-size: $fontSize_p;
+
+          @include breakpoint(430px) {
+            font-size: $fontSize_h5;
+            line-height: 2;
+          }
+        }
+      }
+    }
+  }
+}
+</style>

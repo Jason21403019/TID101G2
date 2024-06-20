@@ -8,7 +8,7 @@
                     <div class="item_details">
                         <!-- 照片 -->
                         <div class="pic">
-                            <!-- <img :src="item.picture" alt=""> -->
+                            <img :src="item.picture" alt="">
                         </div>
                         <!-- 標題&數量按鈕 -->
                         <div class="text">
@@ -97,7 +97,7 @@
             </div>
 
             <div class="btn_submit">
-                <button type="submit">
+                <button type="submit" @click="confirmOrder">
                     提交訂單
                 </button>
             </div>
@@ -117,50 +117,95 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import 'sweetalert2/src/sweetalert2.scss';
 
 export default {
-    data() {
-        return {
-            items: []
-        };
+  data() {
+    return {
+      items: []
+    };
+  },
+  created() {
+    this.fetchCartItems();
+  },
+  methods: {
+    fetchCartItems() {
+      axios
+        .get('http://localhost:8087/TID101G2/public/api/cartproduct.php', {
+          params: {
+            member_id: 'M001'
+          }
+        })
+        .then(response => {
+          console.log(response.data); // 檢查接收到的數據
+          this.items = response.data;
+        })
+        .catch(error => {
+          console.error('There was an error fetching the cart items!', error);
+        });
     },
-    created() {
-        this.fetchCartItems();
-    },
-    methods: {
-        fetchCartItems() {
-            axios.get('http://localhost:8087/TID101G2/public/api/cartproduct.php', {
-                params: {
-                    member_id: 'M001'
-                }
-            })
-            .then(response => {
-                console.log(response.data); // 檢查接收到的數據
-                this.items = response.data;
-            })
-            .catch(error => {
-                console.error("There was an error fetching the cart items!", error);
-            });
-        },
-        decrement(itemId) {
-            // 減少商品數量邏輯
-            const item = this.items.find(item => item.id === itemId);
-    if (item && item.count > 1) {
+    decrement(itemId) {
+      // 減少商品數量邏輯
+      const item = this.items.find(item => item.id === itemId);
+      if (item && item.count > 1) {
         item.count--;
-    }
-        },
-        increment(itemId) {
-            // 增加商品數量邏輯
-            const item = this.items.find(item => item.id === itemId);
-    if (item) {
+      }
+    },
+    increment(itemId) {
+      // 增加商品數量邏輯
+      const item = this.items.find(item => item.id === itemId);
+      if (item) {
         item.count++;
-    }
-        },
-        removeItem(itemId) {
-            // 移除商品邏輯
+      }
+    },
+    removeItem(itemId) {
+      // 移除商品邏輯
+      this.items = this.items.filter(item => item.id !== itemId);
+    },
+    confirmOrder() {
+      Swal.fire({
+        title: "提交訂單嗎?",
+        text: "請確認商品和訂單資訊無誤",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "確定",
+        cancelButtonText: "取消"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.submitOrder();
         }
+      });
+    },
+    submitOrder() {
+      let timerInterval;
+      Swal.fire({
+        title: '訂單處理中',
+        html: '頁面跳轉中...',
+        timer: 3000, // 計時器設定為 3000 毫秒
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+          const timer = Swal.getHtmlContainer().querySelector('b');
+          timerInterval = setInterval(() => {
+            timer.textContent = Swal.getTimerLeft();
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        }
+      }).then(result => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+            this.$router.push('/ordercomplete');
+        }
+      });
     }
+  }
 };
+
+
 </script>
 
 
@@ -197,12 +242,15 @@ export default {
                 width: 95%;
                 display: flex;
                 align-items: center;
-                margin-left: 20px;
 
 
                 @include breakpoint(1024px) {
                     width: 100%;
                     margin-left: 0px;
+                }
+
+                @include breakpoint(820px){
+                    width: 90%;
                 }
 
 
@@ -228,8 +276,8 @@ export default {
                         //   outline: 1px solid purple;
 
 
-                        @include breakpoint(1024px) {
-                            width: 30%;
+                        @include breakpoint(820px) {
+                            width: 25%;
                         }
 
                         @include breakpoint(430px) {
@@ -263,10 +311,11 @@ export default {
 
                         @include breakpoint(820px) {
                             width: 70%;
+                            margin-left: 20px;
                         }
 
                         @include breakpoint(430px) {
-                            width: 80%;
+                            width: 95%;
                         }
 
                        
@@ -285,7 +334,7 @@ export default {
                             }
 
                             @include breakpoint(820px) {
-                                font-size: $fontSize_h4;
+                                font-size:1.5rem;
                             }
 
                             @include breakpoint(430px) {
@@ -304,9 +353,25 @@ export default {
                             // outline: 1px solid blue;
                             width: 100%;
 
+                            @include breakpoint(820px){
+                                margin-top: 15px;
+                            }
+
+                            @include breakpoint(430px){
+                                margin-top: 10px;
+                            }
+
                             p {
                                 font-size: $fontSize_p;
                                 color: #d3d3d3;
+
+                                @include breakpoint(820px){
+                                    font-size: $fontSize_h5;
+                                }
+
+                                @include breakpoint(430px){
+                                    font-size: $fontSize_p;
+                                }
                             }
 
                             // +1-1的按鈕
@@ -317,7 +382,7 @@ export default {
                                 //   outline: 1px solid blue;
                                 width: 30%;
                                 margin: 0 auto;
-                                margin-left: 70px;
+                                margin-left: 90px;
 
 
                                 @include breakpoint(1024px) {
@@ -325,12 +390,12 @@ export default {
                                 }
 
                                 @include breakpoint(820px) {
-                                    margin-left: 130px;
+                                    margin-left: 100px;
                                 }
 
                                 @include breakpoint(430px) {
-                                    width: 25%;
-                                    margin-left: 20px;
+                                    width: 30%;
+                                    margin-left: 30px;
                                 }
 
                                 @include breakpoint(390px) {
@@ -344,7 +409,8 @@ export default {
 
 
                                 button {
-                                    width: 45px;
+                                    width: 35px;
+                                    height: 30px;
                                     border: none;
                                     border: 1px solid $blackvevet;
                                     background-color: transparent;
@@ -352,18 +418,24 @@ export default {
                                     text-align: center;
                                     margin: 0 auto;
 
+                                    @include breakpoint(1280px){
+                                        width: 25px;
+                                        height: 25px;
+                                        padding: 0;
+                                    }
+
                                     @include breakpoint(1024px) {
                                         padding: 0;
                                     }
 
                                     @include breakpoint(820px) {
-                                        width: 30px;
-                                        height: 30px;
+                                        width: 20px;
+                                        height: 20px;
                                     }
 
                                     @include breakpoint(430px) {
-                                        width: 25px;
-                                        height: 25px;
+                                        width: 15px;
+                                        height:15px;
                                     }
 
                                     @include breakpoint(375px) {
@@ -418,6 +490,10 @@ export default {
                                 font-size: 1.2rem;
                             }
 
+                            @include breakpoint(820px){
+                                font-size: $fontSize_h3;
+                            }
+
                             @include breakpoint(430px) {
                                 font-size: $fontSize_h5;
                             }
@@ -437,16 +513,15 @@ export default {
             //垃圾桶
             .delete {
                 // outline: 1px solid orange;
-                width: 15%;
+                width: 10%;
                 text-align: center;
-                margin-left: 60px;
+                margin-left: 40px;
 
                 @include breakpoint(1024px){
                     margin-left: 30px;
                 }
 
                 @include breakpoint(820px){
-                    width: 10%;
                     margin-left: 40px;
                 }
 
@@ -815,9 +890,6 @@ export default {
         }
 
         .privacy {
-            //   display: flex;
-            //   align-items: center;
-            //   justify-content: start;
               text-align: center;
               margin-left: 150px;
               padding: 10px;
@@ -833,14 +905,13 @@ export default {
              } 
 
               @include breakpoint(430px){
-                    margin-left: 10px;
+                    margin-left: 50px;
                     padding: 0;
                     width: 100%;
                     align-items: start;
               }
 
               @include breakpoint(375px){
-                    margin-left: 20px;
                     width: 90%;
               }
 

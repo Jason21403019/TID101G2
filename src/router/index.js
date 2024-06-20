@@ -141,6 +141,16 @@ const routes = [
     }
   },
 
+  //訂單成功
+  {
+    path: '/ordercomplete',
+    name: 'OrderComplete',
+    component: () => import('../views/OrderComplete.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
+
   // 測驗遊戲
   {
     path: '/quizgame',
