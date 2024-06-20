@@ -3,33 +3,33 @@
         <!-- 商品卡片 -->
 
         <div class="scroll_container">
-            <div class="item_container">
+            <div class="item_container" v-for="item in items" :key="item.id">
                 <div class="product">
                     <div class="item_details">
                         <!-- 照片 -->
                         <div class="pic">
-                            <img src="../imgs/productsImg/sparkling wine/PIERRE ZERO.png" alt="">
+                            <img :src="item.picture" alt="">
                         </div>
                         <!-- 標題&數量按鈕 -->
                         <div class="text">
-                            <h4>PIERRE ZERO 夏朵內無酒精氣泡白酒 12瓶</h4>
+                            <h4>{{ item.name }}</h4>
                             <div class="text_down">
-                                <p>200mL/瓶</p>
+                                <p>{{ item.details }}</p>
                                 <div class="btn ">
-                                    <button>－</button>
-                                    <p>1</p>
-                                    <button>＋</button>
+                                    <button @click="decrement(item.id)">－</button>
+                                    <p>{{ item.count }}</p>
+                                    <button @click="increment(item.id)">＋</button>
                                 </div>
                             </div>
                         </div>
                         <!-- 金額 -->
                         <div class="price">
-                            <p>$ 4,560</p>
+                            <p>$ {{ item.price }}</p>
                         </div>
                     </div>
                     <!-- 刪除 -->
                     <div class="delete">
-                        <button>
+                        <button  @click=" removeItem(item.id)">
                             <img class="img" src="../imgs/icon/icon_delete.svg" alt="">
                         </button>
                     </div>
@@ -114,8 +114,47 @@
     
 </template>
 
-<script>
 
+<script>
+import axios from 'axios';
+
+export default {
+    data() {
+        return {
+            items: []
+        };
+    },
+    created() {
+        this.fetchCartItems();
+    },
+    methods: {
+        fetchCartItems() {
+            axios.get('/public/api/cartproduct.php', {
+                params: {
+                    member_id: 'M001'
+                }
+            })
+            .then(response => {
+                // console.log(response.data);
+                // console.log(this.items = response.data);
+               this.items = response.data;
+
+            })
+            .catch(error => {
+                console.error("There was an error fetching the cart items!", error);
+            });
+        },
+        decrement(itemId) {
+            // 減少商品數量邏輯
+        },
+        increment(itemId) {
+            // 增加商品數量邏輯
+        },
+        removeItem(itemId) {
+            // 移除商品邏輯
+        }
+    }
+};
 </script>
 
 

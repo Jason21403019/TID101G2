@@ -4,7 +4,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "password";
-$dbname = "tid101_g2";
+$dbname = "TID101_G2";
 
 try {
     // 建立連線

@@ -13,6 +13,8 @@
 import CartLeft from '../components/CartLeft.vue';
 import CartRight from '../components/CartRight.vue';
 
+
+
 export default {
   components: {
     CartLeft,
