@@ -6,7 +6,6 @@
     <span class="productblock-pipe"> | </span>
     <h1 class="productblock-h1">{{ subTitle }}</h1>
   </div>
-
   <!-- 搜尋 -->
   <section class="d-flex align-items-center">
     <admin-select-input input-id="formGroupExampleInput1" :selected-option="selectedOption">
@@ -17,7 +16,6 @@
           <option value="1">商品類別</option>
         </select>
       </template>
-
       <!-- 如果切換到商品類別時，變更input視窗為下拉式 -->
       <template #input>
         <input v-if="selectedOption !== '1'" :id="inputId" v-model="inputValue" type="text" class="form-control" />
@@ -27,19 +25,17 @@
           <option value="category2">無酒精粉紅酒</option>
           <option value="category3">無酒精氣泡酒</option>
           <option value="category4">無酒精果汁</option>
-          <option value="category5">無酒精白酒</option>
+          <option value="category5">無酒精紅酒</option>
         </select>
       </template>
     </admin-select-input>
-
-    <admin-btn :handle-click="search" class="searchBtn">
+    <admin-btn @click="search" class="searchBtn">
       <template #icon>
         <img src="../imgs/icon/icon_admin-search-w.svg" alt="addIcon" height="20" width="20" />
       </template>
       <template #text>查詢</template>
     </admin-btn>
   </section>
-
   <!-- 按鈕 -->
   <div class="d-grid gap-2 d-md-flex justify-content-md-between">
     <admin-bulk-btn :handle-click="bulkCancel">
@@ -48,7 +44,6 @@
       </template>
       <template #bulktext>多筆刪除</template>
     </admin-bulk-btn>
-
     <admin-btn @click="openModal('add')">
       <template #icon>
         <img src="../imgs/icon/icon_expand-w-67.svg" alt="addIcon" height="20" width="20" />
@@ -56,7 +51,6 @@
       <template #text>新增</template>
     </admin-btn>
   </div>
-
   <section>
     <table class="table">
       <thead class="table-thead">
@@ -70,8 +64,6 @@
           <th scope="col">商品售價</th>
           <th scope="col">銷售數量</th>
           <th scope="col">庫存數</th>
-          <th scope="col">熱銷商品</th>
-          <th scope="col">下架/上架</th>
           <th scope="col">編輯</th>
           <th scope="col">刪除</th>
         </tr>
@@ -83,40 +75,27 @@
           </th>
           <td>{{ product.id }}</td>
           <td>{{ product.name }}</td>
-          <td>{{ product.category }}</td>
+          <td>{{ product.product_class_id }}</td>
           <td>NT$ {{ product.price }}</td>
           <td>{{ product.sales }}</td>
           <td>{{ product.stock }}</td>
           <td>
-            <div>
-              <input class="form-check-input" type="checkbox" />
-            </div>
-          </td>
-          <td>
-            <div class="form-check form-switch">
-              <input id="flexSwitchCheckChecked" class="form-check-input" type="checkbox" checked />
-            </div>
-          </td>
-          <td>
             <button @click="openModal('edit', product)">
-              <img src="../imgs/icon/icon_admin-edit.svg" alt="" width="20px" height="20px" />
+              <img src="../imgs/icon/icon_admin-edit.svg" alt="editIcon" width="20px" height="20px" />
             </button>
           </td>
           <td>
-            <button @click="deleteProduct(index)">
-              <img src="../imgs/icon/icon_delete.svg" alt="" width="20px" height="20px" />
+            <button @click="deleteProduct(index, product.id)">
+              <img src="../imgs/icon/icon_delete.svg" alt="deleteIcon" width="20px" height="20px" />
             </button>
           </td>
         </tr>
       </tbody>
-
       <caption>
-        每頁列表顯示<span class="main__list-number">6</span
-        >筆
+        每頁列表顯示<span class="main__list-number">6</span>筆
       </caption>
     </table>
   </section>
-
   <ModalProduct ref="modal" :action-type="currentActionType" :product="currentProduct" @save="handleSave" />
 </template>
 
@@ -124,18 +103,17 @@
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
 import AdminBulkBtn from '../components/AdminBulkBtn.vue'
-import AdminDateInput from '../components/AdminDateInput.vue'
 import AdminSelectInput from '../components/AdminSelectInput.vue'
 import ModalProduct from '../components/AdminModalProduct.vue'
 import Swal from 'sweetalert2'
 import { variables } from '../js/AdminVariables.js'
+import axios from 'axios'
 
 export default {
   name: 'AdminProduct',
   components: {
     AdminBreadcrumb,
     AdminSelectInput,
-    AdminDateInput,
     AdminBtn,
     AdminBulkBtn,
     ModalProduct
@@ -153,9 +131,9 @@ export default {
       currentProduct: {},
       selectAll: false,
       products: [],
-      // 回傳input
-      selectedOption: '',
       inputValue: '',
+      inputId: 'formGroupExampleInput1',
+      selectedOption: '',
       selectedCategory: ''
     }
   },
@@ -165,41 +143,60 @@ export default {
   watch: {
     products: {
       handler() {
-        // 檢查是否所有的product.selected都是true時thead的框會全選
-        this.selectAll = this.products.every((product) => product.selected)
+        this.selectAll = this.products.every(product => product.selected);
       },
       deep: true
     }
   },
   methods: {
-    fetchProducts() {
-      fetch('http://localhost/back/%e5%95%86%e5%93%81.php')
-        .then(response => response.json())
-        .then(data => {
-          this.products = data;
+    fetchProducts(name = '', product_class_id = '') {
+      let url = `http://localhost/TID101G2-dev/public/api/adminProduct.php?name=${encodeURIComponent(name)}`;
+      if (product_class_id) {
+        url += `&product_class_id=${encodeURIComponent(product_class_id)}`;
+      }
+      console.log('Fetching products with URL:', url);
+      axios.get(url)
+        .then(response => {
+          const data = response.data;
+          console.log('API response data:', data);
+          if (Array.isArray(data)) {
+            this.products = data;
+          } else {
+            console.error('返回的數據不是一個陣列:', data);
+            this.products = [];
+            if (data.message) {
+              Swal.fire('提示', data.message, 'info');
+            }
+          }
         })
         .catch(error => {
           console.error('Error fetching products:', error);
+          this.products = [];
+          Swal.fire('錯誤', '無法獲取產品數據。', 'error');
         });
     },
+    search() {
+      const name = this.selectedOption === '1' ? '' : this.inputValue;
+      const product_class_id = this.selectedOption === '1' ? this.selectedCategory : '';
+      console.log('Searching with name:', name, 'and selectedCategory:', product_class_id);
+      this.fetchProducts(name, product_class_id);
+    },
     openModal(actionType, product = {}) {
-      this.currentActionType = actionType
-      this.currentProduct = product
-      this.$refs.modal.show()
+      this.currentActionType = actionType;
+      this.currentProduct = product;
+      this.$refs.modal.show();
     },
     handleSave(updatedProduct) {
       if (this.currentActionType === 'add') {
-        this.products.push(updatedProduct)
+        this.products.push(updatedProduct);
       } else {
-        const index = this.products.findIndex((p) => p.id === updatedProduct.id)
-
+        const index = this.products.findIndex(p => p.id === updatedProduct.id);
         if (index !== -1) {
-          this.products.splice(index, 1, updatedProduct)
+          this.products.splice(index, 1, updatedProduct);
         }
       }
     },
-    // 單顆按鈕點擊刪除時
-    deleteProduct(index) {
+    deleteProduct(index, productId) {
       Swal.fire({
         title: '確認刪除',
         text: '您確定要刪除此項目嗎？',
@@ -207,54 +204,76 @@ export default {
         showCancelButton: true,
         confirmButtonText: '確定',
         cancelButtonText: '取消'
-      }).then((result) => {
+      }).then(result => {
         if (result.isConfirmed) {
-          this.products.splice(index, 1)
-          Swal.fire('已刪除', '該項目已被刪除', 'success')
+          axios.delete(`http://localhost/TID101G2-dev/public/api/adminProduct.php`, {
+            data: { id: productId }
+          })
+          .then(response => {
+            const data = response.data;
+            if (data.message === "Product deleted successfully.") {
+              this.products.splice(index, 1);
+              Swal.fire('已刪除', '產品已成功刪除。', 'success');
+            } else {
+              Swal.fire('錯誤', data.error || '刪除失敗。', 'error');
+            }
+          })
+          .catch(error => {
+            console.error('Error deleting product:', error);
+            Swal.fire('錯誤', '刪除失敗。', 'error');
+          });
         }
-      })
+      });
+    },
+    bulkCancel() {
+      const selectedProducts = this.products.filter(product => product.selected);
+      if (selectedProducts.length === 0) {
+        Swal.fire('錯誤', '請選擇至少一個產品進行刪除。', 'error');
+        return;
+      }
+      Swal.fire({
+        title: '確認刪除',
+        text: '您確定要刪除選中的項目嗎？',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '確定',
+        cancelButtonText: '取消'
+      }).then(result => {
+        if (result.isConfirmed) {
+          const deletePromises = selectedProducts.map(product => {
+            return axios.delete(`http://localhost/TID101G2-dev/public/api/adminProduct.php`, { data: { id: product.id } });
+          });
+          Promise.all(deletePromises)
+            .then(responses => responses.map(res => res.data))
+            .then(results => {
+              const successResults = results.filter(result => result.message === "Product deleted successfully.");
+              if (successResults.length > 0) {
+                this.products = this.products.filter(product => !product.selected);
+                Swal.fire('已刪除', '選中的產品已成功刪除。', 'success');
+              } else {
+                Swal.fire('錯誤', '刪除失敗。', 'error');
+              }
+            })
+            .catch(error => {
+              console.error('Error deleting products:', error);
+              Swal.fire('錯誤', '刪除失敗。', 'error');
+            });
+        }
+      });
+    },
+    toggleAllCheckboxes() {
+      this.products.forEach(product => {
+        product.selected = this.selectAll;
+      });
     },
     handleSelectChange() {
       if (this.selectedOption !== '1') {
-        this.inputValue = '' // 清除普通輸入框的值
-        this.selectedCategory = '' // 清除選擇類別        的值
+        this.selectedCategory = '';
       }
-    },
-    // 當我的tbody中input全勾，全選勾會被勾起來
-    toggleAllCheckboxes() {
-      this.products.forEach((product) => {
-        product.selected = this.selectAll
-      })
-    },
-    // 當複選框勾起來時，是否刪除的警告訊息
-    bulkCancel() {
-      const selectedProducts = this.products.filter((product) => product.selected)
-
-      if (selectedProducts.length === 0) {
-        Swal.fire('未選擇任何項目', '請選擇要刪除的項目', 'warning')
-
-        return
-      }
-
-      Swal.fire({
-        title: '確認刪除',
-        text: `您確定要刪除選中的${selectedProducts.length}個項目嗎？`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: '確定!',
-        cancelButtonText: '取消'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.products = this.products.filter((product) => !product.selected)
-          this.selectAll = false // 重置selectAll狀態
-          Swal.fire('已刪除', '選中的項目已被刪除', 'success')
-        }
-      })
     }
   }
 }
 </script>
-
 <style lang="scss" scoped>
 @import '../../node_modules/bootstrap/scss/bootstrap.scss'; // 確保這一行在最上面
 
