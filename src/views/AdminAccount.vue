@@ -45,6 +45,7 @@
                 v-model="admin.admin_status"
                 class="form-check-input"
                 type="checkbox"
+                @change="toggleAdminStatus(admin)"
               />
             </div>
           </td>
@@ -131,12 +132,14 @@ export default {
         // 新增邏輯
         const result = await adminStore.createAdmin(params)
 
-        console.log(result)
         if (result.success) {
           this.admins.push(result.newAdmin)
         } else {
           console.error('Failed to create admin:', result.message)
         }
+        this.$refs.modal.myModal.hide()
+
+        return result
       } else {
         // 編輯邏輯
         const result = await adminStore.updateAdmin(params)
@@ -150,16 +153,26 @@ export default {
         } else {
           console.error('Failed to update admin:', result.message)
         }
+        this.$refs.modal.myModal.hide()
+
+        return result
       }
-      this.$refs.modal.hide()
     },
     async toggleAdminStatus(admin) {
       const adminStore = useAdminStore()
+
+      if (!adminStore.canSuspend(admin)) {
+        alert('您無權停權此用戶')
+        admin.admin_status = !admin.admin_status // 恢復原狀態
+
+        return
+      }
       const updatedAdmin = { ...admin, admin_status: admin.admin_status ? 1 : 0 }
       const result = await adminStore.updateAdmin(updatedAdmin)
 
       if (!result.success) {
         console.error('Failed to update admin status:', result.message)
+        alert('更新管理員狀態失敗: ' + result.message)
       } else {
         this.admins = this.admins.map((a) => (a.id === updatedAdmin.id ? result.updatedAdmin : a))
       }

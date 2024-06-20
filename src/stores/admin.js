@@ -4,6 +4,7 @@ export const useAdminStore = defineStore('admin', {
   state: () => ({
     adminUser: null,
     isLoggedIn: false,
+    isSuspended: false, // 權限
     admins: []
   }),
   actions: {
@@ -31,6 +32,7 @@ export const useAdminStore = defineStore('admin', {
 
           this.adminUser = adminUserContent
           this.isLoggedIn = true
+          this.isSuspended = adminUserContent.admin_status === 0 // 根據 admin_status 設置 isSuspended
           localStorage.setItem('admin_user', JSON.stringify(adminUserContent))
 
           return { success: true, adminUser: adminUserContent }
@@ -48,7 +50,25 @@ export const useAdminStore = defineStore('admin', {
       this.isLoggedIn = false
       localStorage.removeItem('admin_user')
     },
+    // 停權權限檢查
+    canSuspend(targetUser) {
+      if (!this.adminUser) return false
+      const currentUserRole = this.adminUser.job
+      const targetUserRole = targetUser.job
 
+      // 不允許停權自己
+      if (this.adminUser.id === targetUser.id) {
+        return false
+      }
+      // 主管可以停權員工，但不能停權老闆
+      const roleHierarchy = {
+        員工: 1,
+        主管: 2,
+        老闆: 3
+      }
+
+      return roleHierarchy[currentUserRole] > roleHierarchy[targetUserRole]
+    },
     // 管理者列表
     async fetchAdmins() {
       try {
@@ -122,6 +142,21 @@ export const useAdminStore = defineStore('admin', {
 
     // 編輯管理者
     async updateAdmin(params) {
+      // 先處理老闆編輯自己的資料，但不能停權自己
+      if (this.adminUser.job === '老闆' && this.adminUser.id === params.id) {
+        if (params.admin_status === 0) {
+          return { success: false, message: '您無權停權自己' }
+        }
+      } else if (this.adminUser.job === '主管' && this.adminUser.id === params.id) {
+        // 主管編輯自己的資料，但不能停權自己
+        if (params.admin_status === 0) {
+          return { success: false, message: '您無權停權自己' }
+        }
+      } else if (!this.canSuspend(params)) {
+        // 檢查是否有權限停權其他人
+        return { success: false, message: '您無權停權此用戶' }
+      }
+
       try {
         const protocol = window.location.protocol
         const hostname = window.location.hostname
@@ -131,6 +166,7 @@ export const useAdminStore = defineStore('admin', {
         // 將booylean轉換數字
         params.admin_status = params.admin_status ? 1 : 0
         params.action = 'update'
+        params.currentAdminId = this.adminUser.id // 傳遞當前操作用戶的 ID
 
         const response = await fetch(url, {
           method: 'POST',
@@ -185,6 +221,10 @@ export const useAdminStore = defineStore('admin', {
 
         return false
       }
+    },
+    // 新增 setSuspended 方法
+    setSuspended(status) {
+      this.isSuspended = status
     }
   }
 })

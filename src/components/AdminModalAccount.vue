@@ -1,5 +1,5 @@
 <template>
-  <div id="adminModal" ref="adminModal" class="modal fade" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
+  <div id="adminModal" ref="modal" class="modal fade" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -36,7 +36,14 @@
             <div class="mb-3">
               <label for="admin-status" class="col-form-label">停用/啟用:</label>
               <div class="form-check form-switch">
-                <input id="flexSwitchCheckChecked" v-model="admin.admin_status" class="form-check-input" type="checkbox" />
+                <input
+                  id="flexSwitchCheckChecked"
+                  v-model="admin.admin_status"
+                  class="form-check-input"
+                  type="checkbox"
+                  @change="checkPermissionAndToggle"
+                />
+                <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
               </div>
             </div>
             <div class="modal-footer">
@@ -92,7 +99,7 @@ export default {
   },
   methods: {
     show() {
-      const modalElement = this.$refs.adminModal
+      const modalElement = this.$refs.modal
 
       if (modalElement) {
         this.errorMessage = '' // 用於儲存錯誤訊息
@@ -113,7 +120,8 @@ export default {
           console.error('Modal instance is not available to hide.')
         }
       } else {
-        this.errorMessage = result.message
+        // this.errorMessage = result.message
+        this.errorMessage = result ? result.message : 'Unknown error occurred'
       }
     },
     async checkEmail() {
@@ -139,6 +147,14 @@ export default {
         this.emailError = '該Email帳號已存在'
       } else {
         this.emailError = ''
+      }
+    },
+    checkPermissionAndToggle() {
+      const adminStore = useAdminStore()
+
+      if (!adminStore.canSuspend(this.admin)) {
+        alert('您無權停權此用戶')
+        this.admin.admin_status = !this.admin.admin_status // 恢復原狀態
       }
     }
   }

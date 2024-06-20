@@ -149,36 +149,74 @@ function updateAdmin($data)
     $phone = $data['phone'];
     $position = $data['job'];
     $status = $data['admin_status'] ? 1 : 0;
+    $currentAdminId = $data['currentAdminId']; // 當前操作用戶的 ID
 
-    // 如果密碼不為空則更新密碼
-    if (!empty($data['password'])) {
-        $password = $data['password'];
-        $sql = "UPDATE administrator SET employee_name = :name, email = :email, phone = :phone, password = :password, job = :position, admin_status = :status WHERE id = :id";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-    } else {
-        $sql = "UPDATE administrator SET employee_name = :name, email = :email, phone = :phone, job = :position, admin_status = :status WHERE id = :id";
-        $stmt = $conn->prepare($sql);
-    }
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    $stmt->bindParam(':name', $name, PDO::PARAM_STR);
-    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-    $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
-    $stmt->bindParam(':position', $position, PDO::PARAM_STR);
-    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+    
+    try {
+        // 獲取當前操作的管理者信息
+        $query = $conn->prepare("SELECT * FROM administrator WHERE id = :id");
+        $query->bindParam(':id', $currentAdminId, PDO::PARAM_INT);
+        $query->execute();
+        $currentAdmin = $query->fetch(PDO::FETCH_ASSOC);
 
-    if ($stmt->execute()) {
-        $updatedAdmin = [
-            'id' => $id,
-            'employee_name' => $name,
-            'email' => $email,
-            'phone' => $phone,
-            'job' => $position,
-            'admin_status' => $status
-        ];
-        echo json_encode(['success' => true, 'updatedAdmin' => $updatedAdmin]);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Error updating admin']);
+        // 獲取目標管理者信息
+        $query = $conn->prepare("SELECT * FROM administrator WHERE id = :id");
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->execute();
+        $targetAdmin = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($currentAdmin && $targetAdmin) {
+            // 不允許停權自己
+            if ($currentAdmin['id'] == $targetAdmin['id'] && $status === 0) {
+                throw new Exception('您不能停權自己的帳號');
+            }
+
+            $roleHierarchy = [
+                '員工' => 1,
+                '主管' => 2,
+                '老闆' => 3
+            ];
+
+            if ($roleHierarchy[$currentAdmin['job']] >= $roleHierarchy[$targetAdmin['job']]) {
+                // 當前操作的管理者權限高於目標管理者或同級但不是老闆，允許執行操作
+                if (!empty($data['password'])) {
+                    $password = $data['password'];
+                    $sql = "UPDATE administrator SET employee_name = :name, email = :email, phone = :phone, password = :password, job = :position, admin_status = :status WHERE id = :id";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+                } else {
+                    $sql = "UPDATE administrator SET employee_name = :name, email = :email, phone = :phone, job = :position, admin_status = :status WHERE id = :id";
+                    $stmt = $conn->prepare($sql);
+                }
+                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+                $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+                $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
+                $stmt->bindParam(':position', $position, PDO::PARAM_STR);
+                $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+
+                if ($stmt->execute()) {
+                    $updatedAdmin = [
+                        'id' => $id,
+                        'employee_name' => $name,
+                        'email' => $email,
+                        'phone' => $phone,
+                        'job' => $position,
+                        'admin_status' => $status
+                    ];
+                    echo json_encode(['success' => true, 'updatedAdmin' => $updatedAdmin]);
+                } else {
+                    throw new Exception('Error executing update statement');
+                }
+            } else {
+                // 當前操作的管理者權限不夠，禁止操作
+                throw new Exception('您無權停權此用戶');
+            }
+        } else {
+            throw new Exception('用戶不存在');
+        }
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => 'Error updating admin', 'error' => $e->getMessage()]);
     }
 }
 
