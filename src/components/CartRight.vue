@@ -137,26 +137,42 @@ export default {
             member_id: 'M001'
           }
         })
+
         .then(response => {
           console.log(response.data); // 檢查接收到的數據
           this.items = response.data;
+
+          //初始化價格
+          this.items.forEach(item => {
+            if (typeof item.unitPrice === 'undefined' || item.unitPrice === null) {
+              console.error('unitPrice not found for item:', item);
+              // 这里你可以根据需要处理这种情况，例如设置默认值或抛出错误
+              item.unitPrice = 0; // 设置默认值为0
+            }
+            item.price = item.unitPrice * item.count;
+          });
         })
+
         .catch(error => {
           console.error('There was an error fetching the cart items!', error);
         });
     },
+
     decrement(itemId) {
       // 減少商品數量邏輯
       const item = this.items.find(item => item.id === itemId);
       if (item && item.count > 1) {
         item.count--;
+        item.price = item.unitPrice * item.count;
       }
     },
+    
     increment(itemId) {
       // 增加商品數量邏輯
       const item = this.items.find(item => item.id === itemId);
       if (item) {
         item.count++;
+        item.price = item.unitPrice * item.count;
       }
     },
     removeItem(itemId) {
