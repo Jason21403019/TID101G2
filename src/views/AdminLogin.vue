@@ -7,6 +7,12 @@
             <h3 class="text-center">後台登入</h3>
           </div>
           <div class="card-body">
+            <div v-if="isSuspended" class="alert alert-danger d-flex align-items-center" role="alert">
+              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                <use xlink:href="#exclamation-triangle-fill" />
+              </svg>
+              <div>您的帳戶目前無法登入後台系統，如有問題請洽後台管理員。</div>
+            </div>
             <form @submit.prevent="handleSubmit">
               <div class="form-group">
                 <label for="email">電子郵件</label>
@@ -36,6 +42,13 @@ export default {
       password: ''
     }
   },
+  computed: {
+    isSuspended() {
+      const adminStore = useAdminStore()
+
+      return adminStore.isSuspended
+    }
+  },
   methods: {
     async handleSubmit() {
       const adminStore = useAdminStore()
@@ -51,8 +64,17 @@ export default {
         if (response.success) {
           const adminUser = response.adminUser
 
+          // 檢查 admin_status
+          if (adminUser.admin_status === 0) {
+            adminStore.setSuspended(true)
+            localStorage.removeItem('admin_user')
+
+            return
+          }
+
           adminStore.adminUser = adminUser // 確保設置正確的 管理者 物件
           adminStore.isLoggedIn = true // 設置為已登入
+          adminStore.setSuspended(false) // 清除停權標記
 
           if (adminUser.job === '老闆' || adminUser.job === '主管') {
             this.$router.push({ path: '/admin_account' }) // 老闆、主管導向管理者帳號頁面

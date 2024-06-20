@@ -357,15 +357,23 @@ router.beforeEach((to, from, next) => {
   if (storedAdminUser) {
     adminStore.adminUser = JSON.parse(storedAdminUser)
     adminStore.isLoggedIn = true
+    adminStore.isSuspended = adminStore.adminUser.admin_status === 0
   }
 
   const isAdminLoggedIn = adminStore.isLoggedIn
   const adminUser = adminStore.adminUser
 
+  if (adminStore.isSuspended) {
+    adminStore.setSuspended(true)
+
+    return next({ path: '/admin_login' }) // 停權，強制跳轉到登入頁
+  }
+
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!isAdminLoggedIn) {
       return next({ path: '/admin_login' }) // 未登入，如果用網址輸入其他後台頁面會被強行到登入頁
     }
+
     const matchedRecordWithRole = to.matched.find((record) => record.meta.role)
 
     if (matchedRecordWithRole) {
