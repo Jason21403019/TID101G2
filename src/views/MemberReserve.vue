@@ -86,13 +86,15 @@
         <a @click="orderPage">5</a>
         <a @click="orderPage">&gt;</a>
       </div> -->
-      <Paginator
-        :totalItems="phpdata.length"
-        :currentPage="currentPage"
-        :pageSize="pageSize"
-        @next-page="nextPageHandler"
-        @previous-page="previousPageHandler"
-      ></Paginator>
+      <div class="page-normal">
+        <Paginator
+          :totalItems="phpdata.length"
+          :currentPage="currentPage"
+          :pageSize="pageSize"
+          @next-page="nextPageHandler"
+          @previous-page="previousPageHandler"
+        ></Paginator>
+      </div>
     </div>
   </section>
 </template>
@@ -246,7 +248,7 @@ button:hover {
 //頁籤
 .page-normal {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 100px;
   padding-bottom: 50px;
 }
 
