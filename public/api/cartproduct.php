@@ -18,8 +18,8 @@ include './conn.php';
 
 $member_id = "M001"; // 假設會員ID從GET參數獲取
 
-$sql = "SELECT cart.id, cart.product_id, cart.count, product.name, product.price AS unitPrice, product.details, product.picture FROM cart JOIN product ON cart.product_id = product.id WHERE cart.member_id = \"".$member_id . "\"";
-
+// $sql = "SELECT cart.id, cart.product_id, cart.count, product.name, product.price AS unitPrice, product.details, product.picture FROM cart JOIN product ON cart.product_id = product.id WHERE cart.member_id = \"".$member_id . "\"";
+$sql = "SELECT cart.id, cart.product_id, cart.count, product.name, product.price AS unitPrice, product.stock, product.details, product.picture FROM cart JOIN product ON cart.product_id = product.id WHERE cart.member_id = '".$member_id."'";
 
 
 // print_r("============\r\n");
@@ -46,7 +46,7 @@ if ($result->rowCount() > 0) {
 
 echo json_encode($items);
 
-// $conn = null;
+$conn = null;
 
 ?>
 

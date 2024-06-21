@@ -44,8 +44,8 @@
         <div class="coupon">
             <div class="title">
                 <h3>優惠券</h3>
-                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                    <option selected>選擇優惠券</option>
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="selectedCoupon" @change="applyDiscount">
+                    <option value="0">選擇優惠券</option>
                     <option value="1">貼心免運券-折抵$250</option>
                     <option value="2">註冊折扣券-折抵$500</option>
                 </select>
@@ -59,7 +59,7 @@
             </div>
 
             <div class="pay_method">
-                <input type="radio">
+                <input type="radio" checked>
                 <h5>信用卡</h5>
             </div>
         </div>
@@ -70,7 +70,7 @@
             </div>
 
             <div class="ship_method">
-                <input type="radio">
+                <input type="radio" checked>
                 <h5>宅配</h5>
             </div>
         </div>
@@ -78,7 +78,7 @@
         <div class="total">
             <div class="subtotal">
                 <h5>小計</h5>
-                <h5>$45,000</h5>
+                <h5>${{ subtotal }}</h5>
             </div>
 
             <div class="ship_fee">
@@ -87,13 +87,13 @@
             </div>
 
             <div class="ship_discount">
-                <h5>運費折抵</h5>
-                <h5>-$250</h5>
+                <h5>折抵</h5>
+                <h5>-${{ discount }}</h5>
             </div>
 
             <div class="total_price">
                 <h3>總計額</h3>
-                <h3 class="twd">TWD $45,000</h3>
+                <h3 class="twd">TWD ${{ total }}</h3>
             </div>
 
             <div class="btn_submit">
@@ -123,102 +123,113 @@ import 'sweetalert2/src/sweetalert2.scss';
 export default {
   data() {
     return {
-      items: []
+        items: [],
+        subtotal: 0,  // 商品總額
+        total: 0,  // 折扣後的總金額
+        discount: 0,
+        shippingFee: 250,  // 優惠券折扣的金額
+        selectedCoupon: '0',  // 保存選擇的優惠券ID
     };
   },
   created() {
     this.fetchCartItems();
   },
+
   methods: {
-    fetchCartItems() {
-      axios
-        .get('http://localhost:8087/TID101G2/public/api/cartproduct.php', {
-          params: {
-            member_id: 'M001'
-          }
-        })
-
-        .then(response => {
-          console.log(response.data); // 檢查接收到的數據
-          this.items = response.data;
-
-          //初始化價格
-          this.items.forEach(item => {
-            if (typeof item.unitPrice === 'undefined' || item.unitPrice === null) {
-              console.error('unitPrice not found for item:', item);
-              // 这里你可以根据需要处理这种情况，例如设置默认值或抛出错误
-              item.unitPrice = 0; // 设置默认值为0
-            }
-            item.price = item.unitPrice * item.count;
-          });
-        })
-
-        .catch(error => {
-          console.error('There was an error fetching the cart items!', error);
-        });
-    },
-
-    decrement(itemId) {
-      // 減少商品數量邏輯
-      const item = this.items.find(item => item.id === itemId);
-      if (item && item.count > 1) {
-        item.count--;
-        item.price = item.unitPrice * item.count;
+  fetchCartItems() {
+    axios.get('http://localhost:8087/TID101G2/public/api/cartproduct.php', {
+      params: {
+        member_id: 'M001'
       }
-    },
-    
-    increment(itemId) {
-      // 增加商品數量邏輯
-      const item = this.items.find(item => item.id === itemId);
-      if (item) {
+    })
+    .then(response => {
+      this.items = response.data;
+      this.items.forEach(item => {
+        item.price = item.unitPrice * item.count;
+      });
+      this.calculateTotal();
+    })
+    .catch(error => {
+      console.error('There was an error fetching the cart items!', error);
+    });
+  },
+
+  calculateTotal() {
+    this.subtotal = this.items.reduce((sum, item) => sum + item.price, 0);
+    this.total = this.subtotal + this.shippingFee - this.discount;// 更新總金額以反映任何折扣
+  },
+
+  applyDiscount() {
+    const couponDiscounts = { '1': 250, '2': 500 };
+    this.discount = couponDiscounts[this.selectedCoupon] || 0;
+    this.total = this.subtotal - this.discount; // 直接從小計減去折扣來更新總計
+    this.calculateTotal();  // 重新計算總金額以反映折扣
+  },
+
+  increment(itemId) {
+    const item = this.items.find(item => item.id === itemId);
+    if (item) {
+      if (item.count < item.stock) {
         item.count++;
         item.price = item.unitPrice * item.count;
+        this.calculateTotal();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: '錯誤',
+          text: '已超過庫存數量!',
+        });
       }
-    },
-    removeItem(itemId) {
-      // 移除商品邏輯
-      this.items = this.items.filter(item => item.id !== itemId);
-    },
-    confirmOrder() {
-      Swal.fire({
-        title: "提交訂單嗎?",
-        text: "請確認商品和訂單資訊無誤",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "確定",
-        cancelButtonText: "取消"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.submitOrder();
-        }
-      });
-    },
-    submitOrder() {
-      let timerInterval;
-      Swal.fire({
-        title: '訂單處理中',
-        html: '頁面跳轉中...',
-        timer: 3000, // 計時器設定為 3000 毫秒
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-          const timer = Swal.getHtmlContainer().querySelector('b');
-          timerInterval = setInterval(() => {
-            timer.textContent = Swal.getTimerLeft();
-          }, 100);
-        },
-        willClose: () => {
-          clearInterval(timerInterval);
-        }
-      }).then(result => {
-        if (result.dismiss === Swal.DismissReason.timer) {
-            this.$router.push('/ordercomplete');
-        }
-      });
     }
+  },
+
+  decrement(itemId) {
+    const item = this.items.find(item => item.id === itemId);
+    if (item && item.count > 1) {
+      item.count--;
+      item.price = item.unitPrice * item.count;
+      this.calculateTotal();
+    }
+  },
+
+  removeItem(itemId) {
+    this.items = this.items.filter(item => item.id !== itemId);
+    this.calculateTotal();
+  },
+
+  confirmOrder() {
+    Swal.fire({
+      title: "提交訂單嗎?",
+      text: "請確認商品和訂單資訊無誤",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "確定",
+      cancelButtonText: "取消"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.submitOrder();
+      }
+    });
+  },
+
+  submitOrder() {
+    Swal.fire({
+      title: '訂單處理中',
+      html: '頁面跳轉中...',
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    }).then(result => {
+      if (result.dismiss === Swal.DismissReason.timer) {
+        this.$router.push('/ordercomplete');
+      }
+    });
   }
+ }
 };
 
 
@@ -912,7 +923,7 @@ export default {
            
 
               @include breakpoint(1024px) {
-                  margin-left: 30px;
+                  margin-left: 130px;
                        
              }
 
