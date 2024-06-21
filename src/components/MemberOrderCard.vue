@@ -41,17 +41,35 @@ import axios from 'axios';
 
 export default {
   name: 'MemberOrderCard',
-
+  props: {
+    order: Object // 此設定是為了接受父層的傳過來得值，在memberorder中收到:order="order" 得值，傳到了該元件的orders: []中
+  },
   data() {
     return {
-      order: [],
+      orders: [],
     };
   },
 
-}
+  // mounted() {
+  //   this.fetchOrders();
+  // },
+
+  // methods: {
+  //   fetchOrders() {
+  //     axios.get('http://localhost/TID101G2/public/api/MemberOrder.php')
+  //       .then(response => {
+  //         this.orders = response.data;
+  //       })
+  //       .catch(error => {
+  //         console.error("There was an error fetching the orders!", error);
+  //       });
+  //   },
+  // },
+};
 </script>
 
 <style lang="scss" scoped>
+
 
 .grid > article {
   border: 1px solid $ramos-gin-fizz;
@@ -60,10 +78,13 @@ export default {
   border-radius: 8px;
   transition: 0.3s;
   // padding-top: 20px;
+
 }
 
 .grid .text {
-  padding: 20px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
   color: $blackvevet;
   font-family: $fontfamily;
   font-weight: bold;
@@ -80,7 +101,10 @@ export default {
   margin-right: 5px;
   margin-top: 5px;
 }
-
+p{
+  font-size: $fontSize_p;
+  letter-spacing: 2px
+}
 
 
 </style>

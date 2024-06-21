@@ -42,6 +42,9 @@ export default {
     MemberOrderCard,
     Paginator
   },
+  props: {
+    order: Object // 
+  },
   data() {
     return {
       orders: [], // 訂單數據
@@ -66,7 +69,7 @@ export default {
       axios.get('http://localhost/TID101G2/public/api/MemberOrder.php')
         .then(response => {
           this.orders = response.data;
-          console.log(response.data);
+           console.log(response.data);
         })
         .catch(error => {
           console.error("Error fetching data:", error);
@@ -157,6 +160,6 @@ button:hover {
   grid-template-rows: repeat(auto-fill, 250px);
   grid-gap: 20px;
   align-items: stretch;
-  padding-right: 20px;
+  // padding-right: 20px;
 }
 </style>
