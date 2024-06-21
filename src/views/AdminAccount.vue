@@ -67,6 +67,7 @@
     ref="modal"
     :action-type="currentActionType"
     :admin="currentAdmin"
+    :original-admin="originalAdmin"
     :roles="filteredRoles"
     :on-save="handleSave"
   ></ModalAccount>
@@ -107,6 +108,7 @@ export default {
         status: false
       },
       admins: [],
+      originalAdmin: null,
       roles: ['老闆', '主管', '員工'], // 所有角色選項
       filteredRoles: ['老闆', '主管', '員工'] // 根據條件過濾後的角色選項
     }
@@ -140,6 +142,13 @@ export default {
         })
 
         return
+      }
+
+      // 如果是編輯操作，找到 originalAdmin
+      if (action === 'edit') {
+        this.originalAdmin = this.admins.find((a) => a.id === admin.id)
+      } else {
+        this.originalAdmin = null
       }
 
       this.currentActionType = action

@@ -66,11 +66,10 @@
               <select id="admin-job" v-model="admin.job" class="form-select" @blur="checkJob">
                 <option disabled value="">請選擇職位</option>
                 <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
-                <!-- <option value="老闆">老闆</option>
-                <option value="主管">主管</option>
-                <option value="員工">員工</option> -->
               </select>
               <div v-if="jobError" class="text-danger">{{ jobError }}</div>
+              <!-- 降級提示 -->
+              <div v-if="permissionError" class="text-danger">{{ permissionError }}</div>
             </div>
             <div class="mb-3">
               <label for="admin-status" class="col-form-label"><span class="text-danger">*</span>停用/啟用:</label>
@@ -121,6 +120,11 @@ export default {
         admin_status: false
       })
     },
+    originalAdmin: {
+      type: Object,
+      required: false,
+      default: null
+    },
     onSave: {
       type: Function,
       required: true
@@ -136,7 +140,8 @@ export default {
       emailError: '',
       phoneError: '',
       passwordError: '',
-      jobError: ''
+      jobError: '',
+      permissionError: ''
     }
   },
   computed: {
@@ -174,13 +179,12 @@ export default {
       this.phoneError = ''
       this.passwordError = ''
       this.jobError = ''
+      this.permissionError = ''
     },
     show() {
       const modalElement = this.$refs.modal
 
       if (modalElement) {
-        // this.errorMessage = '' // 用於儲存錯誤訊息
-        // this.emailError = '' // 用於儲存Email錯誤訊息
         this.myModal = new bootstrap.Modal(modalElement)
         this.myModal.show()
       } else {
@@ -212,6 +216,9 @@ export default {
     },
     // Double check
     checkRequiredFields() {
+      const adminStore = useAdminStore()
+      const currentUser = adminStore.adminUser
+
       if (!this.admin.employee_name) {
         Swal.fire({
           title: '錯誤',
@@ -261,6 +268,21 @@ export default {
         })
 
         return false
+      }
+      // 檢查是否在編輯模式中進行降級檢查
+      if (this.actionType === 'edit') {
+        const permissionResult = this.checkPermissions(currentUser, this.admin, this.originalAdmin)
+
+        if (!permissionResult.success) {
+          Swal.fire({
+            title: '錯誤',
+            text: permissionResult.message,
+            icon: 'error',
+            confirmButtonText: '確定'
+          })
+
+          return false
+        }
       }
 
       return true
@@ -319,12 +341,49 @@ export default {
       }
     },
     checkJob() {
+      const adminStore = useAdminStore()
+      const currentUser = adminStore.adminUser
+
+      if (!this.checkPermissions(currentUser, this.admin, this.originalAdmin)) {
+        return
+      }
       // 檢查是否選擇職位
       if (this.admin.job && this.admin.job !== '') {
         this.jobError = ''
       } else {
         this.jobError = '請選擇職位'
       }
+    },
+    checkPermissions(currentUser, admin, originalAdmin) {
+      if (this.actionType === 'edit') {
+        if (currentUser.job === '老闆') {
+          if (currentUser.id === originalAdmin.id && admin.job !== '老闆') {
+            this.permissionError = '您不能降級自己'
+
+            return { success: false, message: '您不能降級自己' }
+          }
+          if (originalAdmin.job === '老闆' && originalAdmin.id === 1 && currentUser.id !== 1) {
+            this.permissionError = '您不能降級最高權限者'
+
+            return { success: false, message: '您不能降級最高權限者' }
+          }
+        }
+
+        if (currentUser.job === '主管') {
+          if (currentUser.id === originalAdmin.id && admin.job !== '主管') {
+            this.permissionError = '您不能降級自己'
+
+            return { success: false, message: '您不能降級自己' }
+          }
+          if (originalAdmin.job === '主管' && originalAdmin.id !== currentUser.id && admin.job !== '主管') {
+            this.permissionError = '您不能降級其他主管'
+
+            return { success: false, message: '您不能降級其他主管' }
+          }
+        }
+      }
+
+      return { success: true }
     },
     checkPermissionAndToggle() {
       const adminStore = useAdminStore()

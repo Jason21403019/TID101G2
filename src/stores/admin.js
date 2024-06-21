@@ -137,18 +137,20 @@ export const useAdminStore = defineStore('admin', {
     // 編輯管理者
     async updateAdmin(params) {
       // 先處理老闆編輯自己的資料，但不能停權自己
-      if (this.adminUser.job === '老闆' && this.adminUser.id === params.id) {
-        if (params.admin_status === 0) {
-          return { success: false, message: '您無權停權自己' }
+      if (!params.admin_status && this.originalAdmin.admin_status) {
+        if (this.adminUser.job === '老闆' && this.adminUser.id === params.id) {
+          if (params.admin_status === 0) {
+            return { success: false, message: '您無權停權自己' }
+          }
+        } else if (this.adminUser.job === '主管' && this.adminUser.id === params.id) {
+          // 主管編輯自己的資料，但不能停權自己
+          if (params.admin_status === 0) {
+            return { success: false, message: '您無權停權自己' }
+          }
+        } else if (!this.canSuspend(params)) {
+          // 檢查是否有權限停權其他人
+          return { success: false, message: '您無權停權此用戶' }
         }
-      } else if (this.adminUser.job === '主管' && this.adminUser.id === params.id) {
-        // 主管編輯自己的資料，但不能停權自己
-        if (params.admin_status === 0) {
-          return { success: false, message: '您無權停權自己' }
-        }
-      } else if (!this.canSuspend(params)) {
-        // 檢查是否有權限停權其他人
-        return { success: false, message: '您無權停權此用戶' }
       }
 
       try {
