@@ -10,10 +10,8 @@ export const useAdminStore = defineStore('admin', {
   actions: {
     async login(params) {
       try {
-        const protocol = window.location.protocol
-        const hostname = window.location.hostname
-        const apiUrl = `${protocol}//${hostname}/TID101G2/public/api`
-        const url = `${apiUrl}/adminaccount.php` // 動態設置 URL,對應該資料表.php
+        const apiUrl = import.meta.env.VITE_PHP_PATH
+        const url = `${apiUrl}adminaccount.php`
 
         params.action = 'login'
 
@@ -72,10 +70,8 @@ export const useAdminStore = defineStore('admin', {
     // 管理者列表
     async fetchAdmins() {
       try {
-        const protocol = window.location.protocol
-        const hostname = window.location.hostname
-        const apiUrl = `${protocol}//${hostname}/TID101G2/public/api`
-        const url = `${apiUrl}/adminaccount.php` // 動態設置 URL,對應該資料表.php
+        const apiUrl = import.meta.env.VITE_PHP_PATH
+        const url = `${apiUrl}adminaccount.php`
 
         const response = await fetch(url, {
           method: 'POST',
@@ -107,10 +103,8 @@ export const useAdminStore = defineStore('admin', {
     // 新增管理者
     async createAdmin(params) {
       try {
-        const protocol = window.location.protocol
-        const hostname = window.location.hostname
-        const apiUrl = `${protocol}//${hostname}/TID101G2/public/api/adminaccount.php`
-        const url = `${apiUrl}/adminaccount.php` // 動態設置 URL,對應該資料表.php
+        const apiUrl = import.meta.env.VITE_PHP_PATH
+        const url = `${apiUrl}adminaccount.php`
 
         // 將 boolean 轉換為數字
         params.admin_status = params.admin_status ? 1 : 0
@@ -158,10 +152,8 @@ export const useAdminStore = defineStore('admin', {
       }
 
       try {
-        const protocol = window.location.protocol
-        const hostname = window.location.hostname
-        const apiUrl = `${protocol}//${hostname}/TID101G2/public/api`
-        const url = `${apiUrl}/adminaccount.php` // 動態設置 URL,對應該資料表.php
+        const apiUrl = import.meta.env.VITE_PHP_PATH
+        const url = `${apiUrl}adminaccount.php`
 
         // 將booylean轉換數字
         params.admin_status = params.admin_status ? 1 : 0
@@ -194,10 +186,8 @@ export const useAdminStore = defineStore('admin', {
     // 檢查Email
     async checkEmail(params) {
       try {
-        const protocol = window.location.protocol
-        const hostname = window.location.hostname
-        const apiUrl = `${protocol}//${hostname}/TID101G2/public/api` // 到時候改路徑
-        const url = `${apiUrl}/adminaccount.php`
+        const apiUrl = import.meta.env.VITE_PHP_PATH
+        const url = `${apiUrl}adminaccount.php`
 
         params.action = 'checkEmail'
 
@@ -222,7 +212,7 @@ export const useAdminStore = defineStore('admin', {
         return false
       }
     },
-    // 新增 setSuspended 方法
+    // 接收router呼叫
     setSuspended(status) {
       this.isSuspended = status
     }

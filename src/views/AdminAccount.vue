@@ -63,13 +63,20 @@
     </table>
   </section>
 
-  <ModalAccount ref="modal" :action-type="currentActionType" :admin="currentAdmin" :on-save="handleSave"></ModalAccount>
+  <ModalAccount
+    ref="modal"
+    :action-type="currentActionType"
+    :admin="currentAdmin"
+    :roles="filteredRoles"
+    :on-save="handleSave"
+  ></ModalAccount>
 </template>
 
 <script>
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
 import ModalAccount from '../components/AdminModalAccount.vue'
+import Swal from 'sweetalert2'
 import { useAdminStore } from '../stores/admin'
 import { variables } from '../js/AdminVariables.js'
 
@@ -99,7 +106,9 @@ export default {
         job: '',
         status: false
       },
-      admins: []
+      admins: [],
+      roles: ['老闆', '主管', '員工'], // 所有角色選項
+      filteredRoles: ['老闆', '主管', '員工'] // 根據條件過濾後的角色選項
     }
   },
   async mounted() {
@@ -117,10 +126,43 @@ export default {
     },
     // 打開視窗時的初始
     openModal(action, admin = null) {
+      const adminStore = useAdminStore()
+      // 抓當前登入者
+      const currentUser = adminStore.adminUser
+
+      // 檢查權限：如果當前用戶是主管，且要編輯的用戶是老闆
+      if (action === 'edit' && currentUser.job === '主管' && admin.job === '老闆') {
+        Swal.fire({
+          title: '操作失敗',
+          text: '您無權編輯此用戶',
+          icon: 'error',
+          confirmButtonText: '確定'
+        })
+
+        return
+      }
+
       this.currentActionType = action
       this.currentAdmin = admin
         ? { ...admin }
         : { id: null, name: '', email: '', phone: '', password: '', position: '', status: false }
+      // 重置isEditing和isAdding的狀態
+      this.$refs.modal.resetStatus()
+      // 過濾角色選項
+      if (currentUser.job === '老闆') {
+        this.filteredRoles = this.roles
+        // console.log(this.filteredRoles)
+      } else if (currentUser.job === '主管') {
+        this.filteredRoles = this.roles.filter((role) => role !== '老闆')
+      }
+
+      if (action === 'edit' && currentUser.job === '主管' && currentUser.id === this.currentAdmin.id) {
+        this.filteredRoles = this.filteredRoles.filter((role) => role !== '員工')
+      }
+      // 重置職位選項
+      if (action === 'add') {
+        this.currentAdmin.job = '' // 確保職位選項初始化為空
+      }
       this.$refs.modal.show()
     },
 
@@ -160,21 +202,75 @@ export default {
     },
     async toggleAdminStatus(admin) {
       const adminStore = useAdminStore()
+      const currentUser = adminStore.adminUser
 
-      if (!adminStore.canSuspend(admin)) {
-        alert('您無權停權此用戶')
+      if (currentUser.id === admin.id) {
+        await Swal.fire({
+          title: '操作失敗',
+          text: '您無權停權自己',
+          icon: 'error',
+          confirmButtonText: '確定'
+        })
         admin.admin_status = !admin.admin_status // 恢復原狀態
 
         return
       }
-      const updatedAdmin = { ...admin, admin_status: admin.admin_status ? 1 : 0 }
-      const result = await adminStore.updateAdmin(updatedAdmin)
 
-      if (!result.success) {
-        console.error('Failed to update admin status:', result.message)
-        alert('更新管理員狀態失敗: ' + result.message)
+      if (currentUser.job === admin.job) {
+        await Swal.fire({
+          title: '操作失敗',
+          text: '您無權停權他人',
+          icon: 'error',
+          confirmButtonText: '確定'
+        })
+        admin.admin_status = !admin.admin_status // 恢復原狀態
+
+        return
+      }
+
+      if (!adminStore.canSuspend(admin)) {
+        await Swal.fire({
+          title: '操作失敗',
+          text: '您無權停權此用戶',
+          icon: 'error',
+          confirmButtonText: '確定'
+        })
+        admin.admin_status = !admin.admin_status // 恢復原狀態
+
+        return
+      }
+
+      const action = admin.admin_status ? '啟用' : '停用'
+      const confirmation = await Swal.fire({
+        title: `您確定要${action}此帳號嗎？`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '確定',
+        cancelButtonText: '取消'
+      })
+
+      if (confirmation.isConfirmed) {
+        const updatedAdmin = { ...admin, admin_status: admin.admin_status ? 1 : 0 }
+        const result = await adminStore.updateAdmin(updatedAdmin)
+
+        if (!result.success) {
+          await Swal.fire({
+            title: '更新失敗',
+            text: '更新管理員狀態失敗: ' + result.message,
+            icon: 'error',
+            confirmButtonText: '確定'
+          })
+        } else {
+          this.admins = this.admins.map((a) => (a.id === updatedAdmin.id ? result.updatedAdmin : a))
+          await Swal.fire({
+            title: `${action}成功`,
+            text: `此帳號已成功${action}`,
+            icon: 'success',
+            confirmButtonText: '確定'
+          })
+        }
       } else {
-        this.admins = this.admins.map((a) => (a.id === updatedAdmin.id ? result.updatedAdmin : a))
+        admin.admin_status = !admin.admin_status // 恢復原狀態
       }
     }
   }

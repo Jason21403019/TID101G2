@@ -1,9 +1,4 @@
 <?php
-
-header("Content-Type: application/json");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS"); // 允許的 HTTP 方法
-header("Access-Control-Allow-Headers: Content-Type"); // 允許的標頭
-header("Access-Control-Allow-Origin: *");
 require_once 'conn.php';
 
 // 獲取 POST 請求體並解析 JSON
