@@ -5,180 +5,88 @@
     <div class="member_order">
       <div class="content">
         <h1>查看訂單</h1>
-
-        <!-- <ul class="title">
-          <li>訂單編號</li>
-          <li>日期</li>
-          <li>預訂單狀態</li>
-          <li>總價</li>
-          <li>配送狀態</li>
-          <li>付款狀態</li>
-        </ul>
-        <ul class="orderInfo">
-          <li>{{ orderNumber }}</li>
-          <li>{{ orderTime }}</li>
-          <li>{{ orderProcessing }}</li>
-          <li>{{ orderPrice }}</li>
-          <li>{{ orderDelivery }}</li>
-          <li class="unpaidbtn">{{ Unpaid }}</li>
-        </ul>
-        <button @click="handleButtonClick">取消訂單</button>
-
-        <ul class="orderInfo">
-          <li>{{ orderNumber }}</li>
-          <li>{{ orderTime }}</li>
-          <li>{{ orderProcessing }}</li>
-          <li>{{ orderPrice }}</li>
-          <li>已出貨</li>
-          <li class="unpaidbtn">已付款</li>
-        </ul>
-        <button @click="handleButtonClick">再次購買</button>
-
-        <ul class="orderInfo">
-          <li>{{ orderNumber }}</li>
-          <li>{{ orderTime }}</li>
-          <li>{{ orderProcessing }}</li>
-          <li>{{ orderPrice }}</li>
-          <li>已出貨</li>
-          <li class="unpaidbtn">已付款</li>
-        </ul>
-        <button @click="handleButtonClick">再次購買</button>
-
-        <ul class="orderInfo">
-          <li>{{ orderNumber }}</li>
-          <li>{{ orderTime }}</li>
-          <li>{{ orderProcessing }}</li>
-          <li>{{ orderPrice }}</li>
-          <li>已出貨</li>
-          <li class="unpaidbtn">已付款</li>
-        </ul>
-        <button @click="handleButtonClick">再次購買</button>
-
-        <ul class="orderInfo">
-          <li>{{ orderNumber }}</li>
-          <li>{{ orderTime }}</li>
-          <li>{{ orderProcessing }}</li>
-          <li>{{ orderPrice }}</li>
-          <li>已出貨</li>
-          <li class="unpaidbtn">已付款</li>
-        </ul>
-        <button @click="handleButtonClick">再次購買</button> -->
       </div>
+    
       <div class="order-list">
-      <MemberOrderCard
-      v-for="order in orders"
-      :key="order.id"
-      :order-id="order.id"
-      :order-time="order.time"
-      :order-status="order.status"
-      :total-price="order.price"
-      :shipping-status="order.shippingStatus"
-      :payment-status="order.paymentStatus"
-      :fulfillment-status="order.fulfillmentStatus"
-      @cancel-order="handleCancelOrder"
-      @reorder="handleReorder"
-      @complete-order="handleCompleteOrder" />
-    </div>
-      <!-- 頁碼 -->
-      <!-- <div class="page-normal">
-        <span class="page-prev">&lt;</span>
-        <a @click="orderPage">1</a>
-        <a @click="orderPage">2</a>
-        <a @click="orderPage">3</a>
-        <a @click="orderPage">4</a>
-        <a @click="orderPage">5</a>
-        <a @click="orderPage">&gt;</a>
-      </div> -->
+        <MemberOrderCard
+          v-for="(order, index) in paginatedOrders"
+          :key="index"
+          :order="order"
+        />
+      </div>
+
+      <!-- 分頁 -->
+      <div class="page-normal">
+        <Paginator
+          :totalItems="orders.length"
+          :currentPage="currentPage"
+          :pageSize="pageSize"
+          @next-page="nextPageHandler"
+          @previous-page="previousPageHandler"
+        ></Paginator>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
-import MemberMenu from '../components/MemberMenu.vue'
-import MemberOrderCard from '../components/MemberOrderCard.vue'
+import MemberMenu from '../components/MemberMenu.vue'; 
+import MemberOrderCard from '../components/MemberOrderCard.vue'; 
+import Paginator from '../components/tabs/Paginator.vue'; 
+import axios from 'axios';
 
 export default {
-  name: 'Member',
+  name: 'MemberOrder',
   components: {
     MemberMenu,
-    MemberOrderCard
+    MemberOrderCard,
+    Paginator
   },
   data() {
     return {
-      orders: [
-        //放假資料的位置
-      {
-          id: '1',
-          time: '2024-06-15 12:34',
-          status: 'Pending',
-          price: 99.99,
-          shippingStatus: 'Not Shipped',
-          paymentStatus: 'Paid',
-          fulfillmentStatus: 'Not Fulfilled'
-        },
-        {
-          id: '2',
-          time: '2024-06-14 15:20',
-          status: 'Completed',
-          price: 149.99,
-          shippingStatus: 'Shipped',
-          paymentStatus: 'Paid',
-          fulfillmentStatus: 'Fulfilled'
-        },
-        {
-          id: '3',
-          time: '2024-06-13 10:00',
-          status: 'Shipped',
-          price: 79.99,
-          shippingStatus: 'Shipped',
-          paymentStatus: 'Paid',
-          fulfillmentStatus: 'Not Fulfilled'
-        }
-        ,
-        {
-          id: '4',
-          time: '2024-06-13 10:00',
-          status: 'Shipped',
-          price: 79.99,
-          shippingStatus: 'Shipped',
-          paymentStatus: 'Paid',
-          fulfillmentStatus: 'Not Fulfilled'
-        }
-        ,
-        {
-          id: '5',
-          time: '2024-06-13 10:00',
-          status: 'Shipped',
-          price: 79.99,
-          shippingStatus: 'Shipped',
-          paymentStatus: 'Paid',
-          fulfillmentStatus: 'Not Fulfilled'
-        }
-        ,
-        {
-          id: '3',
-          time: '2024-06-13 10:00',
-          status: 'Shipped',
-          price: 79.99,
-          shippingStatus: 'Shipped',
-          paymentStatus: 'Paid',
-          fulfillmentStatus: 'Not Fulfilled'
-        }
-      ]
+      orders: [], // 訂單數據
+      currentPage: 1, // 當前頁碼
+      pageSize: 4, // 每頁顯示的單數量
+    };
+  },
+  computed: {
+    // 計算屬性：分頁後的訂單數據
+    paginatedOrders() {
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      return this.orders.slice(startIndex, startIndex + this.pageSize);
     }
   },
+  //資料庫渲染
+  async mounted() {
+    await this.fetchOrders();
+  },
   methods: {
-    handleButtonClick(item) {
-      cthis[item] = ''
+    // 從後端獲取訂單數據的方法
+    fetchOrders() {
+      axios.get('http://localhost/TID101G2/public/api/MemberOrder.php')
+        .then(response => {
+          this.orders = response.data;
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error("Error fetching data:", error);
+        });
     },
-    aboutPage() {
-      // window.location.href = '/about_us';
-      this.$router.push('/member_order')
+    // 下一頁的事件處理方法
+    nextPageHandler() {
+      if (this.currentPage < Math.ceil(this.orders.length / this.pageSize)) {
+        this.currentPage++;
+      }
+    },
+    // 上一頁的事件處理方法
+    previousPageHandler() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
     }
   }
-}
+};
 </script>
-
 <style lang="scss" scoped>
 .memberorder {
   background-color: $campari;
@@ -250,33 +158,5 @@ button:hover {
   grid-gap: 20px;
   align-items: stretch;
   padding-right: 20px;
-}
-//頁籤
-.page-normal {
-  text-align: center;
-  margin-top: 50px;
-  padding-bottom: 50px;
-}
-
-.page-normal a {
-  // background-color: $ramos-gin-fizz;
-  padding: 5px 7px;
-  color: $ramos-gin-fizz;
-  margin-left: 20px;
-  text-decoration: none;
-  font-family: 'Noto Sans TC', sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-}
-
-.page-normal a:hover,
-.page-normal .page-prev:hover {
-  background-color: $ramos-gin-fizz;
-  color: $campari;
-}
-
-/*設置左單括號 < 的css樣式*/
-.page-normal .page-prev {
-  color: $ramos-gin-fizz;
 }
 </style>
