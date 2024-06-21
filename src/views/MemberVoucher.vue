@@ -1,164 +1,204 @@
 <template>
-  <main>
+  <section class="memberorder">
     <MemberMenu />
 
-    <section>
-      <h1>我的優惠券</h1>
-      <article>
-        <img class="carImg" src="../imgs/voucherImg/free.png" alt="" />
-        <ul class="couponInfo">
-          <li class="title">{{ coupon1.conponName }}</li>
-          <li>有效日期:{{ coupon1.Time }}</li>
-          <li>代碼:{{ coupon1.code }}</li>
-        </ul>
-      </article>
-      <article>
-        <img class="saleImg" src="../imgs/voucherImg/sale.png" alt="" />
-        <ul class="couponInfo">
-          <li class="title">{{ coupon2.conponName }}</li>
-          <li>{{ coupon2.info }}</li>
-          <li>有效日期:{{ coupon2.Time }}</li>
-          <li>代碼:{{ coupon2.code }}</li>
-        </ul>
-      </article>
-      <article>
-        <img class="saleImg" src="../imgs/voucherImg/sale.png" alt="" />
-        <ul class="couponInfo">
-          <li class="title">{{ coupon2.conponName }}</li>
-          <li>{{ coupon2.info }}</li>
-          <li>有效日期:{{ coupon2.Time }}</li>
-          <li>
-            代碼:{{ coupon2.code }}
-            <h3 class="invalid">{{ Invalid }}</h3>
-          </li>
-        </ul>
-      </article>
-      <article>
-        <img class="saleImg" src="../imgs/voucherImg/sale.png" alt="" />
-        <ul class="couponInfo">
-          <li class="title">{{ coupon2.conponName }}</li>
-          <li>{{ coupon2.info }}</li>
-          <li>有效日期:{{ coupon2.Time }}</li>
-          <li>
-            代碼:{{ coupon2.code }}
-            <h3 class="invalid">{{ Invalid }}</h3>
-          </li>
-        </ul>
-      </article>
-    </section>
-  </main>
+    <div class="member_order">
+      <div class="content">
+        <h1>我的優惠券</h1>
+      </div>
+      <div class="order-list">
+        <MemberOrderCard
+          v-for="data in filteredPhpdata"
+          :key="data.id"
+          :name="data.name"
+          :discount="data.discount"
+          :use="data.use"
+        />
+      </div>
+      <!-- 頁碼 -->
+      <!-- <div class="page-normal">
+        <span class="page-prev">&lt;</span>
+        <a @click="orderPage">1</a>
+        <a @click="orderPage">2</a>
+        <a @click="orderPage">3</a>
+        <a @click="orderPage">4</a>
+        <a @click="orderPage">5</a>
+        <a @click="orderPage">&gt;</a>
+      </div> -->
+    </div>
+  </section>
 </template>
 
 <script>
 import MemberMenu from '../components/MemberMenu.vue'
+import MemberOrderCard from '../components/MemberVoucherCard.vue'
+
 export default {
+  name: 'Member',
   components: {
-    MemberMenu
+    MemberMenu,
+    MemberOrderCard
   },
   data() {
     return {
-      use: '已使用',
-      Invalid: '已失效',
-      coupon1: {
-        conponName: '貼心免運券',
-        Time: '2024.06.09',
-        code: 'WS24T00',
-        img: 'src/imgs/voucherImg/free.png'
-      },
-      coupon2: {
-        conponName: '註冊折扣券',
-        info: '折抵$4000，消費滿$60000可使用',
-        Time: '2024.06.09',
-        code: 'WS24T03',
-        img: 'src/imgs/voucherImg/free.png'
-      }
+      phpdata: [],
+
+      voucher: [
+        //放假資料的位置
+        // {
+        //   id: '1',
+        //   name: '免運券',
+        //   date: '2024/05/20',
+        //   status: '未使用'
+        // },
+        // {
+        //   id: '2',
+        //   name: '免運券',
+        //   date: '2024/05/20',
+        //   status: '已使用'
+        // },
+        // {
+        //   id: '3',
+        //   name: '註冊折扣券',
+        //   date: '2024/05/20',
+        //   status: '已使用'
+        // },
+        // {
+        //   id: '4',
+        //   name: '註冊折扣券',
+        //   date: '2024/05/20',
+        //   status: '未使用'
+        // }
+      ]
+    }
+  },
+  mounted() {
+    this.fetchMemberVoucherData()
+  },
+  computed: {
+    // 過濾後的 phpdata，只包含 status 為 1 的數據
+    // filteredPhpdata() {
+    //   return this.phpdata.filter((item) => item.status === 1)
+
+    // }
+    filteredPhpdata() {
+      return this.phpdata.map((item) => ({
+        ...item,
+        use: item.status === 1 ? '未使用' : '已使用'
+      }))
+    }
+  },
+  methods: {
+    fetchMemberVoucherData() {
+      fetch('http://localhost/TID101G2sql/src/components/MemberVoucher.php')
+        .then((response) => response.json())
+        .then((data) => {
+          this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中
+        })
+        .catch((error) => console.error('Error fetching data:', error))
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@mixin breakpoint($point) {
-  @if $point == pc {
-    @media (max-width: 1280px) {
-      @content;
-    }
-  } @else if $point == mobile {
-    @media (max-width: 768px) {
-      @content;
-    }
+.memberorder {
+  background-color: $campari;
+  padding-top: 100px;
+  display: flex;
+  .member_account {
+    flex: 1;
+    margin-left: 20px;
   }
 }
-body {
-  main {
-    padding-top: 100px;
-    display: flex;
-    background-color: $campari;
-    h1 {
-      color: #fcf0d8;
-      font-size: 45px;
-      margin-top: -15%;
-      margin-bottom: 3%;
-      margin-left: -4.5%;
-      width: 80%;
-    }
-    section {
-      font-family: 'Noto Serif TC';
-      font-weight: bold;
-      font-size: 20px;
-      margin-bottom: 10%;
-      width: 75%;
-      background-color: #fcf0d8;
-      padding: 3% 2%;
-      margin-left: auto;
-      margin-right: 8%;
-      margin-top: 6%;
-      display: flex;
-      flex-wrap: wrap;
-      article {
-        border: 1px solid black;
-        border-radius: 5px;
-        background-color: #f6f6f6;
-        display: flex;
-        width: 38%;
-        margin: 1% 1%;
-        margin-right: 5%;
-        img {
-          display: block;
-          padding: 1% 1%;
-          width: 45%;
-        }
-        .saleImg {
-          width: 60%;
-        }
-        .couponInfo {
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-          list-style-type: none;
-          li {
-            /* margin-top: 2%; */
-            padding: 2% 0;
-            font-size: 11px;
-          }
-          .title {
-            font-size: 32px;
-          }
-          .invalid {
-            font-size: 30px;
-            color: red;
-            margin-left: 55%;
-            margin-top: -20%;
-          }
-          .Use {
-            font-size: 30px;
-            color: red;
-            margin-left: auto;
-            margin-top: -13%;
-          }
-        }
-      }
-    }
+
+.menu {
+  position: fixed;
+}
+
+.content {
+  width: 60vw;
+  // margin-bottom: 50px;
+}
+
+h1 {
+  font-family: $fontfamily;
+  color: $ramos-gin-fizz;
+  font-size: $fontSize_h2;
+  margin-bottom: 30px;
+}
+
+.title {
+  display: flex;
+  color: #f6f6f6;
+  background-color: #cead82;
+  li {
+    width: 20%;
+    padding: 1% 0;
+    padding-left: 1%;
   }
+}
+
+.orderInfo {
+  display: flex;
+  background-color: #fcf0d8;
+  margin-top: 20px;
+  li {
+    width: 20%;
+    padding: 22px 0;
+    padding-left: 10px;
+  }
+}
+button {
+  margin-top: 5px;
+  width: 8vw;
+  background-color: $ramos-gin-fizz;
+  color: $campari;
+  padding: 5px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-family: $fontfamily;
+  border: 0;
+}
+button:hover {
+  background-color: $irishcoffee;
+  color: $ramos-gin-fizz;
+}
+// grid設定
+.order-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-rows: repeat(auto-fill, 150px);
+  grid-gap: 20px;
+  align-items: stretch;
+  padding-right: 20px;
+}
+//頁籤
+.page-normal {
+  text-align: center;
+  margin-top: 50px;
+  padding-bottom: 50px;
+}
+
+.page-normal a {
+  // background-color: $ramos-gin-fizz;
+  padding: 5px 7px;
+  color: $ramos-gin-fizz;
+  margin-left: 20px;
+  text-decoration: none;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+}
+
+.page-normal a:hover,
+.page-normal .page-prev:hover {
+  background-color: $ramos-gin-fizz;
+  color: $campari;
+}
+
+/*設置左單括號 < 的css樣式*/
+.page-normal .page-prev {
+  color: $ramos-gin-fizz;
 }
 </style>

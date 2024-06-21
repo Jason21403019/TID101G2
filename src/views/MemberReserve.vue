@@ -1,152 +1,274 @@
 <template>
-  <main>
+  <section class="memberorder">
     <MemberMenu />
 
-    <section>
-      <h1>我的預約</h1>
-      <ul class="title">
-        <li>成立時間</li>
-        <li>訂位姓名</li>
-        <li>預約時間</li>
-        <li>人數</li>
-        <li>備註</li>
-      </ul>
-      <ul class="orderInfo">
-        <li>{{ establishedTime }}</li>
-        <li>{{ orderName }}</li>
-        <li>{{ orderTime }}</li>
-        <li>{{ NumberOfPeople }}</li>
-        <li>{{ Remark }}</li>
-      </ul>
-      <ul class="orderInfo">
-        <li>{{ establishedTime }}</li>
-        <li>{{ orderName }}</li>
-        <li>{{ orderTime }}</li>
-        <li>{{ NumberOfPeople }}</li>
-        <li>{{ Remark }}</li>
-      </ul>
-      <section class="mobile">
-        <ul class="orderInfoMobile">
-          <li>成立時間:{{ establishedTime }}</li>
-          <li>訂位姓名:{{ orderName }}</li>
-          <li>預約時間:{{ orderTime }}</li>
-          <li>人數:{{ NumberOfPeople }}</li>
-          <li>備註:{{ Remark }}</li>
+    <div class="member_order">
+      <div class="content">
+        <h1>我的預約</h1>
+
+        <!-- <ul class="title">
+          <li>訂單編號</li>
+          <li>日期</li>
+          <li>預訂單狀態</li>
+          <li>總價</li>
+          <li>配送狀態</li>
+          <li>付款狀態</li>
         </ul>
-        <ul class="orderInfoMobile">
-          <li>成立時間:{{ establishedTime }}</li>
-          <li>訂位姓名:{{ orderName }}</li>
-          <li>預約時間:{{ orderTime }}</li>
-          <li>人數:{{ NumberOfPeople }}</li>
-          <li>備註:{{ Remark }}</li>
+        <ul class="orderInfo">
+          <li>{{ orderNumber }}</li>
+          <li>{{ orderTime }}</li>
+          <li>{{ orderProcessing }}</li>
+          <li>{{ orderPrice }}</li>
+          <li>{{ orderDelivery }}</li>
+          <li class="unpaidbtn">{{ Unpaid }}</li>
         </ul>
-      </section>
-    </section>
-  </main>
+        <button @click="handleButtonClick">取消訂單</button>
+
+        <ul class="orderInfo">
+          <li>{{ orderNumber }}</li>
+          <li>{{ orderTime }}</li>
+          <li>{{ orderProcessing }}</li>
+          <li>{{ orderPrice }}</li>
+          <li>已出貨</li>
+          <li class="unpaidbtn">已付款</li>
+        </ul>
+        <button @click="handleButtonClick">再次購買</button>
+
+        <ul class="orderInfo">
+          <li>{{ orderNumber }}</li>
+          <li>{{ orderTime }}</li>
+          <li>{{ orderProcessing }}</li>
+          <li>{{ orderPrice }}</li>
+          <li>已出貨</li>
+          <li class="unpaidbtn">已付款</li>
+        </ul>
+        <button @click="handleButtonClick">再次購買</button>
+
+        <ul class="orderInfo">
+          <li>{{ orderNumber }}</li>
+          <li>{{ orderTime }}</li>
+          <li>{{ orderProcessing }}</li>
+          <li>{{ orderPrice }}</li>
+          <li>已出貨</li>
+          <li class="unpaidbtn">已付款</li>
+        </ul>
+        <button @click="handleButtonClick">再次購買</button>
+
+        <ul class="orderInfo">
+          <li>{{ orderNumber }}</li>
+          <li>{{ orderTime }}</li>
+          <li>{{ orderProcessing }}</li>
+          <li>{{ orderPrice }}</li>
+          <li>已出貨</li>
+          <li class="unpaidbtn">已付款</li>
+        </ul>
+        <button @click="handleButtonClick">再次購買</button> -->
+      </div>
+      <div class="order-list">
+        <MemberOrderCard
+          v-for="(phpdata, index) in paginatedProducts"
+          :key="phpdata.id"
+          :id="phpdata.id"
+          :name="phpdata.full_name"
+          :booking_date="phpdata.booking_date"
+          :booking_time="phpdata.booking_time"
+          :guest_count="phpdata.guest_count"
+          :bookingNote="phpdata.booking_note"
+        />
+      </div>
+      <!-- 頁碼 -->
+      <!-- <div class="page-normal">
+        <span class="page-prev">&lt;</span>
+        <a @click="orderPage">1</a>
+        <a @click="orderPage">2</a>
+        <a @click="orderPage">3</a>
+        <a @click="orderPage">4</a>
+        <a @click="orderPage">5</a>
+        <a @click="orderPage">&gt;</a>
+      </div> -->
+      <Paginator
+        :totalItems="phpdata.length"
+        :currentPage="currentPage"
+        :pageSize="pageSize"
+        @next-page="nextPageHandler"
+        @previous-page="previousPageHandler"
+      ></Paginator>
+    </div>
+  </section>
 </template>
 
 <script>
 import MemberMenu from '../components/MemberMenu.vue'
+import MemberOrderCard from '../components/MemberReserveCard.vue'
+import Paginator from '../components/tabs/Paginator.vue'
 export default {
+  name: 'Member',
   components: {
-    MemberMenu
+    MemberMenu,
+    MemberOrderCard,
+    Paginator
   },
   data() {
     return {
-      establishedTime: '2024/05/09',
-      orderName: '張哲菘',
-      orderTime: '2024/05/20 17:00',
-      NumberOfPeople: '6人',
-      Remark: '希望靠角落'
+      currentPage: 1,
+      pageSize: 2,
+      phpdata: []
+      // reserve: [
+      //   //放假資料的位置
+      //   {
+      //     id: '1',
+      //     name: 'xxx',
+      //     booking_date: '2024/05/20',
+      //     booking_time: '17:00',
+      //     guest_count: 6,
+      //     bookingNote: '希望靠角落'
+      //   },
+      //   {
+      //     id: '2',
+      //     name: 'aaa',
+      //     booking_date: '2024/05/21',
+      //     booking_time: '18:00',
+      //     guest_count: 4,
+      //     bookingNote: '希望靠角落'
+      //   },
+      //   {
+      //     id: '3',
+      //     name: 'bbb',
+      //     booking_date: '2024/05/22',
+      //     booking_time: '19:00',
+      //     guest_count: 5,
+      //     bookingNote: '希望靠角落'
+      //   }
+      // ]
+    }
+  },
+  mounted() {
+    this.fetchMemberReserverData()
+  },
+  methods: {
+    fetchMemberReserverData() {
+      fetch('http://localhost/TID101G2sql/src/components/MemberReserve.php')
+        .then((response) => response.json())
+        .then((data) => {
+          this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中
+        })
+        .catch((error) => console.error('Error fetching data:', error))
+    },
+    nextPageHandler(page) {
+      this.currentPage = page
+    },
+    previousPageHandler(page) {
+      this.currentPage = page
+    }
+  },
+  computed: {
+    paginatedProducts() {
+      const startIndex = (this.currentPage - 1) * this.pageSize
+      const endIndex = startIndex + this.pageSize
+      return this.phpdata.slice(startIndex, endIndex)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@mixin breakpoint($point) {
-  @if $point == pc {
-    @media (max-width: 1280px) {
-      @content;
-    }
-  } @else if $point == mobile {
-    @media (max-width: 768px) {
-      @content;
-    }
+.memberorder {
+  background-color: $campari;
+  padding-top: 100px;
+  display: flex;
+  .member_account {
+    flex: 1;
+    margin-left: 20px;
   }
 }
-body {
-  main {
-    padding-top: 100px;
-    display: flex;
-    background-color: $campari;
-    section {
-      font-family: 'Noto Serif TC';
-      font-weight: bold;
-      font-size: 20px;
-      height: 1000px;
-      width: 80%;
 
-      margin-left: auto;
-      margin-right: 5%;
+.menu {
+  position: fixed;
+}
 
-      h1 {
-        color: #fcf0d8;
-        font-size: 45px;
-        margin-bottom: 3%;
-      }
+.content {
+  width: 60vw;
+  // margin-bottom: 50px;
+}
 
-      .title {
-        display: flex;
-        color: #f6f6f6;
-        background-color: #cead82;
-        list-style-type: none;
-        li {
-          width: 20%;
-          padding: 1% 0;
-          padding-left: 1%;
-        }
-      }
-      .orderInfo {
-        display: flex;
-        background-color: #fcf0d8;
-        margin-top: 2%;
-        list-style-type: none;
+h1 {
+  font-family: $fontfamily;
+  color: $ramos-gin-fizz;
+  font-size: $fontSize_h2;
+  margin-bottom: 30px;
+}
 
-        li {
-          width: 20%;
-          /* margin-top: 2%; */
-          padding: 2% 0;
-          padding-left: 1%;
-          @include breakpoint(pc) {
-            font-size: 11px;
-          }
-          @include breakpoint(mobile) {
-            display: none;
-          }
-        }
-      }
-      // 手機板
-      .mobile {
-        height: 250px;
-        display: flex;
-        width: 100%;
-        justify-content: space-around;
-        .orderInfoMobile {
-          display: none;
-          width: 40%;
-          @include breakpoint(mobile) {
-            display: block;
-          }
-          background-color: #fcf0d8;
-          margin-top: 2%;
-          list-style-type: none;
-          li {
-            font-size: 17px;
-          }
-        }
-      }
-    }
+.title {
+  display: flex;
+  color: #f6f6f6;
+  background-color: #cead82;
+  li {
+    width: 20%;
+    padding: 1% 0;
+    padding-left: 1%;
   }
+}
+
+.orderInfo {
+  display: flex;
+  background-color: #fcf0d8;
+  margin-top: 20px;
+  li {
+    width: 20%;
+    padding: 22px 0;
+    padding-left: 10px;
+  }
+}
+button {
+  margin-top: 5px;
+  width: 8vw;
+  background-color: $ramos-gin-fizz;
+  color: $campari;
+  padding: 5px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-family: $fontfamily;
+  border: 0;
+}
+button:hover {
+  background-color: $irishcoffee;
+  color: $ramos-gin-fizz;
+}
+// grid設定
+.order-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-rows: repeat(auto-fill, 150px);
+  grid-gap: 20px;
+  align-items: stretch;
+  padding-right: 20px;
+}
+//頁籤
+.page-normal {
+  text-align: center;
+  margin-top: 50px;
+  padding-bottom: 50px;
+}
+
+.page-normal a {
+  // background-color: $ramos-gin-fizz;
+  padding: 5px 7px;
+  color: $ramos-gin-fizz;
+  margin-left: 20px;
+  text-decoration: none;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+}
+
+.page-normal a:hover,
+.page-normal .page-prev:hover {
+  background-color: $ramos-gin-fizz;
+  color: $campari;
+}
+
+/*設置左單括號 < 的css樣式*/
+.page-normal .page-prev {
+  color: $ramos-gin-fizz;
 }
 </style>

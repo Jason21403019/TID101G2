@@ -2,8 +2,8 @@
   <main id="commodity_tab">
     <div class="searchButton">
       <h4><router-link to="/home">首頁</router-link> > 商品</h4>
-      <input type="text" v-model="search" placeholder="Search" />
-      <button class="search" @click="searchData">
+      <input type="text" class="searchText" v-model="search" placeholder="Search" />
+      <button class="search" @click="fetchProductSearch(search)">
         <img src="../imgs/icon/icon_admin-search.svg" alt="" />
       </button>
     </div>
@@ -12,16 +12,16 @@
         <button
           type="button"
           v-for="tab in tabs"
-          :class="{ active: currentTab == tab.id }"
+          :class="{ active: currentTab == tab.name }"
           :key="tab.id"
-          @click="changeTab(tab.id)"
+          @click="changeTab(tab.name)"
         >
           <!-- @click="currentTab = tab.id" -->
           <h1>{{ tab.name }}</h1>
         </button>
         <!-- <label></label> -->
-        <select>
-          <option v-for="tab in tabs">
+        <select v-model="currentTab" @change="changeTab(currentTab)">
+          <option v-for="tab in tabs" :key="tab.id" :value="tab.name">
             <h1>{{ tab.name }}</h1>
           </option>
         </select>
@@ -29,7 +29,8 @@
 
       <section class="test">
         <!-- <component v-bind:is="current_tab_component" class="tab_content"> </component> -->
-        <component is="Tab2Content"></component>
+        <!-- <component is="Tab2Content"></component> -->
+        <Tab2Content :currentTab="currentTab" :phpdataSearch="phpdataSearch"></Tab2Content>
         <!-- <component :is="current_tab_component" is="Tab2Content" class="tab_content"></component> -->
       </section>
     </section>
@@ -45,7 +46,8 @@ export default {
 
   data() {
     return {
-      currentTab: 'tab1',
+      phpdataSearch: [],
+      currentTab: '全部商品',
       tabs: [
         {
           id: 'tab1',
@@ -104,57 +106,47 @@ export default {
     }
   },
   computed: {
-    current_tab_component() {
-      return 'tab' + this.currentTab + '_content'
-    },
-
-    searchData() {
-      return this.infos.filter(
-        (info) =>
-          info.brand.includes(this.search) ||
-          info.name.includes(this.search) ||
-          info.Specification.includes(this.search) ||
-          info.price.includes(this.search)
-      )
-    }
+    // current_tab_component() {
+    //   return 'tab' + this.currentTab + '_content'
+    // }
+    // searchData() {
+    //   return this.infos.filter(
+    //     (info) =>
+    //       info.brand.includes(this.search) ||
+    //       info.name.includes(this.search) ||
+    //       info.Specification.includes(this.search) ||
+    //       info.price.includes(this.search)
+    //   )
+    // }
   },
 
   methods: {
     // 点击标签按钮时切换标签
     changeTab(tabId) {
       this.currentTab = tabId
+    },
+    fetchProductSearch(search) {
+      fetch('http://localhost/TID101G2sql/src/components/ProductNameSearch.php', {
+        method: 'POST',
+
+        body: JSON.stringify({ account: search }) // 发送选项卡 ID 到后端
+        // body: { account: tabName } // 发送选项卡 ID 到后端
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.phpdataSearch = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中
+          // this.currentPage = 1 // Reset current page when data changes
+        })
+      // .catch((error) => console.error('Error fetching data:', error))
     }
   }
-  // created() {
-  //   // 根据屏幕宽度动态修改 tabs 数组，移除 tab1
-  //   if (window.innerWidth < 768) {
-  //     this.tabs = this.tabs.filter((tab) => tab.id !== 'tab1')
+  // watch: {
+  //   search(newValue, oldValue) {
+  //     if (newValue !== oldValue) {
+  //       this.fetchProductSearch(newValue)
+  //     }
   //   }
   // }
-  // 動態註冊組件
-  /*
-    const info = {}
-    this.tabs.forEach((tab) => {
-      info[`tab${tab.id}_content`] = {
-        template: `
-        <article class="a" v-for="index in 6">
-          <div class='content'>
-            <img src='./圖片/Rectangle 42.png'/>
-          </div>
-          <span>
-            <p>${tab.name}</p>
-            <p>貝爾 諾曼第氣泡紅肉蘋果汁</p>
-            <p>750ML/瓶</p>
-            <h3>NT$299</h3>
-          </span>
-        </article>
-      `
-      }
-    })
-
-    // 將動態生成的組件分配給組件對象
-    this.$options.components = { ...this.$options.components, ...info }
-    */
 }
 </script>
 

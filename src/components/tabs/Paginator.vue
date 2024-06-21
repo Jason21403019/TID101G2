@@ -9,18 +9,32 @@
 
 <script>
 export default {
-  data() {
-    return {
-      productCount: [],
+  // data() {
+  //   return {
+  //     productCount: [],
 
-      currentPage: 1,
-      pageSize: 6 // 每頁顯示的項目數
+  //     currentPage: 1,
+  //     pageSize: 6 // 每頁顯示的項目數
+  //   }
+  // },
+  props: {
+    totalItems: {
+      type: Number,
+      required: true
+    },
+    pageSize: {
+      type: Number,
+      default: 6
+    },
+    currentPage: {
+      type: Number,
+      required: true
     }
   },
   computed: {
-    totalItems() {
-      return this.productCount.length // 计算 totalItems 的值为 productCount 数组的长度
-    },
+    // totalItems() {
+    //   return this.productCount.length // 计算 totalItems 的值为 productCount 数组的长度
+    // },
     totalPages() {
       return Math.ceil(this.totalItems / this.pageSize)
     }
@@ -28,23 +42,28 @@ export default {
   methods: {
     nextPage() {
       if (this.currentPage < this.totalPages) {
-        this.currentPage++
-        this.$emit('next-page', this.currentPage)
+        // this.currentPage++
+        this.$emit('next-page', this.currentPage + 1)
       }
     },
     previousPage() {
       if (this.currentPage > 1) {
-        this.currentPage--
-        this.$emit('previous-page', this.currentPage)
+        // this.currentPage--
+        this.$emit('previous-page', this.currentPage - 1)
+      }
+    },
+    goToPage(page) {
+      if (page !== this.currentPage) {
+        this.$emit('next-page', page)
       }
     }
-  },
-
-  mounted() {
-    for (let i = 0; i < 12; i++) {
-      this.productCount.push(i)
-    }
   }
+
+  // mounted() {
+  //   for (let i = 0; i < 12; i++) {
+  //     this.productCount.push(i)
+  //   }
+  // }
 }
 </script>
 

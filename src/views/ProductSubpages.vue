@@ -68,6 +68,7 @@ export default {
       minusSign: '-',
       addToTheCart: '加入購物車',
       productTasks: [],
+      phpdata: [],
       tabs: [
         {
           id: '01',
@@ -79,8 +80,8 @@ export default {
           information:
             '全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。',
           price: '500',
-          img: 'src/imgs/productsImg/sparkling wine/Le Petit Etoile.png',
-          bigimg: 'src/imgs/productsImg/sparkling wine/Carl-Jung-Mousseux_subpages.png',
+          img: 'src/imgs/productsImg/sparkling wine/Oddbird-WHITE.jpg',
+          bigimg: 'src/imgs/productsImg/sparkling wine/Oddbird-WHITE.png',
           category: '無酒精紅酒'
         },
         {
@@ -93,7 +94,7 @@ export default {
           information:
             '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
           price: '700',
-          img: 'src/imgs/productsImg/juice/el Normande.png',
+          img: 'src/imgs/productsImg/juice/HenryandLotte.jpg',
           category: '無酒精白酒'
         },
         {
@@ -106,7 +107,7 @@ export default {
           information:
             '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
           price: '300',
-          img: 'src/imgs/productsImg/juice/J.Chadin.png',
+          img: 'src/imgs/productsImg/wine/Carl-Jung.jpg',
           category: '無酒精紅酒'
         },
         {
@@ -119,7 +120,7 @@ export default {
           information:
             '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
           price: '300',
-          img: 'src/imgs/productsImg/pink wine/plus & minus.png',
+          img: 'src/imgs/productsImg/pink wine/Le-Petit-Chavin.jpg',
           category: '無酒精紅酒'
         }
       ]
@@ -141,22 +142,33 @@ export default {
         this.count--
       }
     },
-    taskAdd() {
-      this.productTasks.unshift({
-        id: Date.now(),
-        img: this.tabs[this.tabsIndex].img,
-        brand: this.tabs[this.tabsIndex].brand,
-        name: this.tabs[this.tabsIndex].name,
-        price: this.tabs[this.tabsIndex].price,
-        Specification: this.tabs[this.tabsIndex].Specification,
-        count: this.count,
-        totalprice: this.count * parseInt(this.tabs[this.tabsIndex].price)
-      })
-      localStorage.setItem('productTasks', JSON.stringify(this.productTasks))
-    },
+    // taskAdd() {
+    //   this.productTasks.unshift({
+    //     id: Date.now(),
+    //     img: this.tabs[this.tabsIndex].img,
+    //     brand: this.tabs[this.tabsIndex].brand,
+    //     name: this.tabs[this.tabsIndex].name,
+    //     price: this.tabs[this.tabsIndex].price,
+    //     Specification: this.tabs[this.tabsIndex].Specification,
+    //     count: this.count,
+    //     totalprice: this.count * parseInt(this.tabs[this.tabsIndex].price)
+    //   })
+    //   localStorage.setItem('productTasks', JSON.stringify(this.productTasks))
+    // },
     changeProduct(index) {
       this.tabsIndex = index + 1
+    },
+    fetchAllProductData() {
+      fetch('http://localhost/TID101G2sql/src/components/getData.php')
+        .then((response) => response.json())
+        .then((data) => {
+          this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中
+        })
+        .catch((error) => console.error('Error fetching data:', error))
     }
+  },
+  mounted() {
+    this.fetchAllProductData()
   }
 }
 </script>
@@ -186,7 +198,9 @@ body {
     .productInformation {
       display: flex;
       // width: 100%;
-
+      background-image: url('../imgs/productsImg/bg.png');
+      background-size: cover;
+      background-repeat: no-repeat;
       .details {
         padding-right: 2%;
         width: 70%;
@@ -201,6 +215,7 @@ body {
             line-height: 40px;
           }
           @include breakpoint(mobile) {
+            // display: none;
             font-size: 15px;
             line-height: 20px;
           }
@@ -428,18 +443,23 @@ body {
 
   .productImg {
     width: 400px;
-    background-image: url('../imgs/productsImg/bg.png');
+    // background-image: url('../imgs/productsImg/bg.png');
     // background-size: cover;
-    background-repeat: no-repeat;
+    // background-repeat: no-repeat;
+
     @include breakpoint(mobile) {
       width: 200px;
     }
     .productbackground {
-      width: 100%;
+      width: 130%;
+      display: block;
       padding-top: 10%;
-      background-size: contain;
+
+      // background-size: contain;
       @include breakpoint(mobile) {
-        height: 500px;
+        width: 40vw;
+        height: 30vh;
+        float: left;
       }
     }
     // .productbackground2 {

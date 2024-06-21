@@ -1,272 +1,270 @@
 <template>
-  <div class="product" v-if="currentTab === tab1">
+  <div class="product">
     <!-- <article class="a" v-for="(product, index) in infos.slice(0, infos.length)" :key="product.id"> -->
-    <article class="a" v-for="(product, index) in paginatedInfos" :key="product.id">
+    <article class="a" v-for="(product, index) in paginatedProducts" :key="product.id">
       <div class="content">
-        <img :src="`/src/imgs/productsImg/${product.img}`" alt="" />
+        <!-- <img :src="`/src/imgs/productsImg/juice/Bel-Normande.jpg`" alt="" /> -->
+        <img :src="product.picture" alt="" />
+        <div class="overlay" @click="handleOverlayClick($event, product)"></div>
       </div>
       <span>
         <p>{{ product.brand }}</p>
         <p>{{ product.name }}</p>
-        <p>{{ product.Specification }}</p>
-        <h3>{{ product.price }}</h3>
+        <p>{{ product.details }}</p>
+        <h3 @click="handleOverlayClickMobile($event, product)">NT${{ product.price }}</h3>
       </span>
     </article>
   </div>
 
-  <!-- <div class="product" style="border: 2px solid green">
-    <article class="b" v-for="index in 5">
-      <div class="content">
-        <p><img src="/src/imgs/productsImg/juice/Bel Normande.png" alt="" /></p>
-      </div>
-      <span>
-        <p>{{ currentProduct.brand }}</p>
-        <p>{{ currentProduct.name }}</p>
-        <p>{{ currentProduct.Specification }}</p>
-        <h3>{{ currentProduct.price }}</h3>
-      </span>
-    </article>
-  </div> -->
-  <Paginatort @next-page="nextPageHandler" @previous-page="previousPageHandler"></Paginatort>
+  <!-- 分頁器 -->
+  <Paginator
+    :totalItems="phpdata.length"
+    :currentPage="currentPage"
+    @next-page="nextPageHandler"
+    @previous-page="previousPageHandler"
+  ></Paginator>
 </template>
-<!-- <img src="../imgs/productsImg/sparkling wine/Le Petit Etoile.png" alt=""> -->
+
 <script>
-import Paginatort from './tabs/Paginator.vue'
+import Paginator from './tabs/Paginator.vue'
 export default {
-  components: { Paginatort },
+  props: ['currentTab', 'phpdataSearch'],
+  components: { Paginator },
   data() {
     return {
-      infos: [
-        {
-          id: '01',
-          brand: 'Carl Jung 卡爾榮格',
-          name: 'Mousseux 穆瑟 無酒精氣泡酒',
-          Specification: ' ' + '750ML/瓶',
-          serialNumber: ' ' + 'P001',
-          information:
-            '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
-          price: 'NT$800',
-          img: 'juice/Bel Normande.png',
-          // img: new URL('@/juice/Bel Normande.png', import.meta.url).href,
-          category: '無酒精紅酒'
-        },
-        {
-          id: 'tab2',
-          brand: 'J.Chadin',
-          name: '查帝麝香葡萄氣泡飲',
-          Specification: ' 550ML/瓶',
-          serialNumber: 'P001',
-          information:
-            '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
-          price: 'NT$950',
-          img: 'juice/el Normande redapple.png',
-          category: '無酒精白酒'
-        },
-        {
-          id: '03',
-          brand: '六十四十氣泡葡萄果汁',
-          name: '萊茵黑森葡萄',
-          Specification: ' ' + '330ML/瓶',
-          serialNumber: ' ' + 'P001',
-          information:
-            '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
-          price: 'NT$650',
-          img: 'liquor/PIERRE ZERO.png',
-          category: '無酒精氣泡酒'
-        },
-        {
-          id: '01',
-          brand: '法國 Bel Normande',
-          name: '貝爾 諾曼第精選氣泡紅葡萄汁',
-          Specification: ' ' + '750ML/瓶',
-          serialNumber: ' ' + 'P001',
-          information:
-            '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
-          price: 'NT$530',
-          img: '/wine/plus & minus  VEGAN.png',
-          category: '無酒精氣泡酒'
-        },
-        {
-          id: '01',
-          brand: 'J.Chadin',
-          name: 'Mousseux  無酒精氣泡酒',
-          Specification: ' ' + '550ML/瓶',
-          serialNumber: ' ' + 'P001',
-          information:
-            '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
-          price: 'NT$700',
-          img: 'pink wine/plus & minus.png',
-          category: '無酒精紅酒'
-        },
-        {
-          id: '01',
-          brand: 'Carl Jung 卡爾榮格',
-          name: 'Mousseux 穆瑟 無酒精氣',
-          Specification: ' ' + '650ML/瓶',
-          serialNumber: ' ' + 'P001',
-          information:
-            '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
-          price: 'NT$850',
-          img: 'sparkling wine/Le Petit Etoile.png',
-          category: '無酒精粉紅酒'
-        },
-        {
-          id: '01',
-          brand: 'Carl Jung 卡爾榮格7',
-          name: 'Mousseux 穆瑟 無酒精氣泡酒',
-          Specification: ' ' + '750ML/瓶',
-          serialNumber: ' ' + 'P001',
-          information:
-            '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
-          price: 'NT$900',
-          img: 'juice/Bel Normande.png',
-          category: '無酒精白酒'
-        }
-      ],
+      phpdata: [],
+      phpindex: -1,
       currentPage: 1,
-      pageSize: 6
+      pageSize: 6,
+      count: 1,
+      total: 740
     }
   },
   computed: {
-    currentProduct() {
-      const index = this.currentPage - 1
-      return this.infos[index]
+    filteredProducts() {
+      // 根据当前选项卡和搜索内容过滤商品数据
+      let filtered = this.phpdata
+      if (this.currentTab !== '全部商品') {
+        // 根据选项卡 ID 过滤数据
+        filtered = filtered.filter((product) => product.tabName === this.currentTab)
+      }
+
+      return filtered
     },
-    paginatedInfos() {
+
+    paginatedProducts() {
       const startIndex = (this.currentPage - 1) * this.pageSize
-      const endIndex = this.currentPage * this.pageSize
-      return this.infos.slice(startIndex, endIndex)
+      const endIndex = startIndex + this.pageSize
+      return this.phpdata.slice(startIndex, endIndex)
     }
   },
+
   methods: {
     nextPageHandler(page) {
       this.currentPage = page
     },
     previousPageHandler(page) {
       this.currentPage = page
+    },
+    fetchAllProductData() {
+      fetch('http://localhost/TID101G2sql/src/components/getData.php')
+        .then((response) => response.json())
+        .then((data) => {
+          this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中
+        })
+        .catch((error) => console.error('Error fetching data:', error))
+    },
+    fetchProducts(tabName) {
+      fetch('http://localhost/TID101G2sql/src/components/changeProductClass.php', {
+        method: 'POST',
+
+        body: JSON.stringify({ account: tabName }) // 发送选项卡 ID 到后端
+        // body: { account: tabName } // 发送选项卡 ID 到后端
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中
+          this.currentPage = 1 // Reset current page when data changes
+        })
+        .catch((error) => console.error('Error fetching data:', error))
+    },
+    fetchProductsCar(product) {
+      fetch('http://localhost/TID101G2sql/src/components/ProductCart.php', {
+        method: 'POST',
+
+        body: JSON.stringify({
+          id: product.id,
+          brand: product.brand,
+          name: product.name,
+          details: product.details,
+          price: product.price,
+          count: this.count,
+          total: product.price
+        }) // 发送选项卡 ID 到后端
+      })
+      // .then((response) => response.json())
+      // .then((data) => {
+      //   console.log('Insert successful:', data) // 輸出成功信息
+      //   // 可以在這裡進行一些成功後的處理，如果有需要的話
+      // })
+      // .catch((error) => console.error('Error inserting data:', error))
+    },
+    goToProductDetails(product) {
+      // 在这里处理跳转逻辑，可以根据需要修改路径
+      this.$router.push('/product_subpages')
+    },
+    handleOverlayClick(event, product) {
+      // 判断点击的具体区域
+      const rect = event.target.getBoundingClientRect()
+      const x = event.clientX - rect.left
+      const y = event.clientY - rect.top
+      // 根据点击位置判断是哪个部分
+      if (x > rect.width * 0.7 && y > rect.height * 0.7) {
+        // 点击了右下角区域
+        this.fetchProductsCar(product)
+      } else {
+        // 点击了其他区域
+        this.goToProductDetails(product)
+      }
+      this.phpindex = index
+    },
+    handleOverlayClickMobile(event, product) {
+      // 判断点击的具体区域
+      const rect = event.target.getBoundingClientRect()
+      const x = event.clientX - rect.left
+      const y = event.clientY - rect.top
+      // 根据点击位置判断是哪个部分
+      if (x > rect.width * 0.7 && y > rect.height * 0.1) {
+        // 点击了右下角区域
+        this.fetchProductsCar(product)
+      }
+    }
+  },
+  watch: {
+    // 监听当前选项卡 ID 的变化，更新商品数据
+    currentTab(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        if (newValue === '全部商品') {
+          // 当选项卡为 '全部商品' 时重新获取全部商品数据
+          this.fetchAllProductData()
+        } else {
+          // 否则根据选项卡获取对应数据
+          this.fetchProducts(newValue)
+        }
+      }
+    },
+    phpdataSearch(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        // 处理从父组件中 phpdata 属性发生变化的情况
+        this.phpdata = newValue // 更新本地数据
+        this.currentPage = 1 // 数据变化时重置当前页
+      }
     }
   },
   mounted() {
-    // 使用mounted鉤子
-    this.$nextTick(() => {
-      document.querySelectorAll('article div').forEach((div) => {
-        div.addEventListener('click', (event) => {
-          const rect = div.getBoundingClientRect()
-          const x = event.clientX - rect.left
-          const y = event.clientY - rect.top
-          const beforeWidth = rect.width * 0.75
-          const beforeHeight = rect.height * 0.3
-
-          if (x > beforeWidth && y > rect.height - beforeHeight) {
-            // 点击了 ::before 区域
-            this.$router.push('/product_subpages') // 这里修改为您想要跳转的页面
-          } else {
-            // 点击了 div 区域
-            this.$router.push('/product_subpages')
-          }
-        })
-      })
-    })
+    this.fetchAllProductData()
   }
 }
 </script>
 
 <style lang="scss" scoped>
-// @mixin breakpoint($point) {
-//   @if $point == pc {
-//     @media (max-width: 1100px) {
-//       @content;
-//     }
-//   } @else if $point == mobile {
-//     @media (max-width: 768px) {
-//       @content;
-//     }
-//   } @else if $point == mobile2 {
-//     @media (max-width: 430px) {
-//       @content;
-//     }
-//   }
-// }
 @mixin breakpoint($point) {
   @if $point == pc {
-    @media (max-width: 1280px) {
+    @media (max-width: 1100px) {
       @content;
     }
   } @else if $point == mobile {
     @media (max-width: 768px) {
       @content;
     }
+  } @else if $point == mobile2 {
+    @media (max-width: 430px) {
+      @content;
+    }
   }
 }
+
 .product {
   display: flex;
   flex-wrap: wrap;
-  // padding: 0 7%;
   padding-right: 5%;
   justify-content: space-evenly;
 }
+
 img {
   width: 286px;
+  // width: 100%;
   box-sizing: border-box;
-  // width: 33%;
   @include breakpoint(mobile) {
-    width: 200px;
+    width: 190px;
   }
-  // @include breakpoint(mobile2) {
-  //   width: 150px;
-  // }
 }
+
 p {
   font-size: 22px;
   padding-top: 2%;
   width: 100%;
   color: white;
-
-  @include breakpoint(mobile) {
-    font-size: 15px;
-  }
-  // @include breakpoint(mobile2) {
-  //   width: 150px;
-  // }
+  // width: 27.5%;
 }
+
 h3 {
   color: #cead82;
   font-size: 35px;
   padding-bottom: 20%;
   @include breakpoint(mobile) {
-    font-size: 30px;
-    background-image: url(/src/imgs/icon/icon_cart-shopping-w.svg);
-    background-size: 30%;
-    background-repeat: no-repeat;
-    background-position: right top;
+    cursor: pointer;
   }
 }
+
 article {
+  position: relative;
+  width: min-content;
+  // width: 18.6vw;
 }
-article div {
+.content {
   position: relative;
 }
 
-article div:hover::before {
-  opacity: 1; /* 鼠标悬停时显示遮罩层 */
-}
-
-article div::before {
-  content: '';
+.overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 98%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
   background-image: url(/src/imgs/icon/icon_cart-shopping-w.svg);
   background-size: 30%;
   background-repeat: no-repeat;
   background-position: right bottom;
-  background-color: rgba(0, 0, 0, 0.5); /* 遮罩层颜色，可根据需要调整透明度 */
-  opacity: 0; /* 初始时不显示 */
-  transition: opacity 0.3s ease; /* 添加过渡效果 */
-  cursor: pointer;
-  @include breakpoint(mobile) {
+}
+
+.overlay:hover {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  img {
+    width: 200px;
+  }
+
+  p {
+    font-size: 15px;
+  }
+
+  h3 {
+    font-size: 30px;
+    background-image: url('/src/imgs/icon/icon_cart-shopping-w.svg');
+    background-size: 30%;
+    background-repeat: no-repeat;
+    background-position: right top;
+    padding-right: 30px;
+  }
+
+  .overlay {
     background-image: none;
   }
 }
