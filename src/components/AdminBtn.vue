@@ -3,6 +3,7 @@
     class="admin_btn"
     type="button"
     v-bind="$attrs"
+    @click="$emit('click')"
     :data-bs-toggle="modal ? 'modal' : null"
     :data-bs-target="modal ? modalTarget : null"
     :data-bs-whatever="modal ? modalWhatever : null"

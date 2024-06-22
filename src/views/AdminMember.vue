@@ -8,31 +8,30 @@
   </div>
 
   <!-- 搜尋 -->
-  <div>
-    <admin-input input-id="formGroupExampleInput1">
+  <div class="d-flex align-items-center">
+    <!-- 下拉式選單組件 -->
+    <admin-input input-id="formGroupExampleInput1" v-model="searchQuery">
       <template #label>查詢條件</template>
       <template #select>
-        <select class="form-select" aria-label="Default select example">
-          <option selected>會員姓名</option>
-          <option value="1">會員編號</option>
-          <option value="2">會員手機</option>
+        <select class="form-select" aria-label="Default select example" v-model="searchField">
+          <option value="full_name">會員姓名</option>
+          <option value="id">會員編號</option>
+          <option value="phone">會員手機</option>
+          <option value="email">會員E-mail</option>
         </select>
       </template>
     </admin-input>
-
-    <!-- 日期 -->
-    <div class="d-flex align-items-center">
-      <admin-date-input start-date-id="dateInputField1" end-date-id="dateInputField2">
-        <template #label>選擇日期</template>
-      </admin-date-input>
-
-      <admin-btn :handle-click="search">
-        <template #icon>
-          <img src="../imgs/icon/icon_admin-search-w.svg" alt="addIcon" height="20" width="20" />
-        </template>
-        <template #text>查詢</template>
-      </admin-btn>
-    </div>
+    <!-- 查詢組件 -->
+    <admin-btn @click="search">
+      <template #icon>
+        <img src="../imgs/icon/icon_admin-search-w.svg" alt="addIcon" height="20" width="20" />
+      </template>
+      <template #text>查詢</template>
+    </admin-btn>
+    <!-- 清除條件 -->
+    <admin-bulk-btn :handleClick="clearSearch">
+      <template #bulktext>清除條件</template>
+    </admin-bulk-btn>
   </div>
 
   <!-- table欄位 -->
@@ -45,112 +44,31 @@
           <th scope="col">E-mail</th>
           <th scope="col">手機</th>
           <th scope="col">地址</th>
-          <th scope="col">最後登入時間</th>
-          <th scope="col">停用/啟用</th>
-          <th scope="col">查看</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="member in members" :key="member.id">
           <th scope="row">{{ member.id }}</th>
-          <td>{{ member.name }}</td>
+          <td>{{ member.full_name }}</td>
           <td>{{ member.email }}</td>
           <td>{{ member.phone }}</td>
           <td>{{ member.address }}</td>
-          <td>{{ member.lastLogin }}</td>
-          <td>
-            <div class="form-check form-switch">
-              <input
-                :id="'flexSwitchCheckChecked' + member.id"
-                v-model="member.status"
-                class="form-check-input"
-                type="checkbox"
-              />
-            </div>
-          </td>
-          <td>
-            <button @click="viewMember(member)">
-              <img src="../imgs/icon/icon_admin-eye.svg" alt="" width="20px" height="20px" />
-            </button>
-          </td>
         </tr>
       </tbody>
-      <caption>
+      <!-- <caption>
         每頁列表顯示<span class="main__list-number">6</span
         >筆
-      </caption>
+      </caption> -->
     </table>
   </section>
-
-  <!-- 會員彈跳 -->
-  <div
-    id="memberModal"
-    ref="memberModal"
-    class="modal fade"
-    tabindex="-1"
-    aria-labelledby="memberModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 id="memberModalLabel" class="modal-title fs-5">會員查看</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <h4 class="col-form-label">姓名:</h4>
-            <p class="form-control">{{ currentMember.name }}</p>
-          </div>
-          <div class="mb-3">
-            <h4 class="col-form-label">生日:</h4>
-            <p class="form-control">{{ currentMember.birthday }}</p>
-          </div>
-          <div class="mb-3">
-            <h4 class="col-form-label">手機:</h4>
-            <p class="form-control">{{ currentMember.phone }}</p>
-          </div>
-          <div class="mb-3">
-            <h4 class="col-form-label">Email:</h4>
-            <p class="form-control">{{ currentMember.email }}</p>
-          </div>
-          <div class="mb-3">
-            <h4 class="col-form-label">地址:</h4>
-            <p class="form-control">{{ currentMember.address }}</p>
-          </div>
-          <div class="mb-3">
-            <h4 class="col-form-label">建立時間:</h4>
-            <p class="form-control">{{ currentMember.createdAt }}</p>
-          </div>
-          <div class="mb-3">
-            <h4 class="col-form-label">最後登入:</h4>
-            <p class="form-control">{{ currentMember.lastLogin }}</p>
-          </div>
-          <div class="mb-3">
-            <h4 class="col-form-label">停用/啟用:</h4>
-            <div class="form-check form-switch">
-              <input
-                :id="'flexSwitchCheckChecked' + currentMember.id"
-                v-model="currentMember.status"
-                class="form-check-input"
-                type="checkbox"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
-import AdminDateInput from '../components/AdminDateInput.vue'
+import AdminBulkBtn from '../components/AdminBulkBtn.vue'
 import AdminInput from '../components/AdminInput.vue'
+import { useAdminMemberStore } from '../stores/adminMember'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
@@ -158,8 +76,8 @@ export default {
   components: {
     AdminBreadcrumb,
     AdminInput,
-    AdminDateInput,
-    AdminBtn
+    AdminBtn,
+    AdminBulkBtn
   },
   data() {
     return {
@@ -170,37 +88,41 @@ export default {
         { text: variables.memberblock.member, link: '', active: true },
         { text: variables.memberblock.memberList, link: '/admin_member', active: false }
       ],
-      currentMember: {},
-      members: [
-        {
-          id: 'M001',
-          name: 'AAA',
-          email: 'AAA@gmail.com',
-          phone: '09123456789',
-          address: '這裡是地址',
-          lastLogin: '2024/06/01/13:11',
-          status: true,
-          birthday: '1990-01-01',
-          createdAt: '2024/01/01/12:00'
-        }
-      ]
+      searchField: 'full_name',
+      searchQuery: '',
+      members: []
     }
   },
+  async mounted() {
+    console.log('Component mounted')
+    await this.loadMembers()
+  },
   methods: {
-    viewMember(member) {
-      this.currentMember = member
-      this.showModal()
-    },
-    showModal() {
-      const modalElement = this.$refs.memberModal
+    // 讀取資料庫的資料渲染在table上
+    async loadMembers() {
+      const adminMemberStore = useAdminMemberStore()
+      const result = await adminMemberStore.fetchMembers()
 
-      if (modalElement) {
-        const modal = new bootstrap.Modal(modalElement)
-
-        modal.show()
-      } else {
-        console.error('memberModal reference is not found.')
+      if (result.success) {
+        this.members = result.members
       }
+    },
+    async search() {
+      const adminMemberStore = useAdminMemberStore()
+
+      // console.log('Search with:', this.searchField, this.searchQuery)
+      const result = await adminMemberStore.searchMembers(this.searchField, this.searchQuery)
+
+      // console.log('search result:', result)
+
+      if (result.success) {
+        this.members = result.members
+      }
+    },
+    async clearSearch() {
+      this.searchField = 'full_name'
+      this.searchQuery = ''
+      await this.loadMembers()
     }
   }
 }
@@ -222,7 +144,15 @@ export default {
     margin: 0 20px;
   }
 }
-
+.admin_btn {
+  margin-top: 39px;
+  margin-left: 5px;
+  height: 35px;
+}
+.admin_bulkbtn {
+  margin-top: 39px;
+  margin-left: 5px;
+}
 // table
 .table td,
 .table th {
@@ -249,29 +179,29 @@ export default {
     border-color: $toggle-on;
   }
 }
-#memberModal {
-  .modal-header {
-    font-size: $fontSize_h4;
-    background-color: $babypowder;
-    color: $campari;
-  }
-  .modal-body {
-    font-size: $fontSize_h4;
-    background-color: $babypowder;
-    color: $campari;
+// #memberModal {
+//   .modal-header {
+//     font-size: $fontSize_h4;
+//     background-color: $babypowder;
+//     color: $campari;
+//   }
+//   .modal-body {
+//     font-size: $fontSize_h4;
+//     background-color: $babypowder;
+//     color: $campari;
 
-    // 彈跳視窗的toggle
-    .form-check-input:checked {
-      background-color: $toggle-on;
-      border: solid $toggle-on;
-    }
-  }
-  .modal-footer {
-    background-color: $babypowder;
-    .btn-primary {
-      background-color: $campari;
-      color: $ramos-gin-fizz;
-    }
-  }
-}
+//     // 彈跳視窗的toggle
+//     .form-check-input:checked {
+//       background-color: $toggle-on;
+//       border: solid $toggle-on;
+//     }
+//   }
+//   .modal-footer {
+//     background-color: $babypowder;
+//     .btn-primary {
+//       background-color: $campari;
+//       color: $ramos-gin-fizz;
+//     }
+//   }
+// }
 </style>

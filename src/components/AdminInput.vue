@@ -4,7 +4,7 @@
       <slot name="label"></slot>
     </label>
     <slot name="select"></slot>
-    <input :id="inputId" type="text" class="form-control" />
+    <input :id="inputId" type="text" class="form-control" v-model="inputValue" />
   </div>
 </template>
 
@@ -15,6 +15,20 @@ export default {
     inputId: {
       type: String,
       required: true
+    },
+    modelValue: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    inputValue: {
+      get() {
+        return this.modelValue
+      },
+      set(value) {
+        this.$emit('update:modelValue', value)
+      }
     }
   }
 }
