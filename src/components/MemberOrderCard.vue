@@ -6,17 +6,14 @@
           <p><strong>訂單編號:</strong> {{ order.id }}</p>
           <p><strong>成立時間:</strong> {{ order.order_date }}</p>
           <p><strong>訂單狀態:</strong> {{ order.status }}</p>
-          <p><strong>購買產品:</strong> {{ order.product_details}}</p>
+          <p><strong>購買產品:</strong> {{ order.product_details }}</p>
           <p><strong>總價:</strong> {{ order.total_amount }}</p>
           <p><strong>付款狀態:</strong> {{ order.payment_status }}</p>
           <p><strong>出貨狀態:</strong> {{ order.delivery_status }}</p>
-          <!-- 根據配送狀態 來判斷該出現的按鈕 delivery_status:已完成>完成訂單或是退換貨｜ status:未處理>取消訂單-->
-          <!-- <button class="btn btn-primary btn-block">取消訂單</button> -->
-          <!-- Button trigger modal -->
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">取消訂單</button>
 
           <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="modal">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -25,7 +22,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                  <button type="button" class="btn btn-primary">確定取消</button>
+                  <button type="button" class="btn btn-primary" @click="cancelOrder">確定取消</button>
                 </div>
               </div>
             </div>
@@ -42,43 +39,42 @@ import axios from 'axios';
 export default {
   name: 'MemberOrderCard',
   props: {
-    order: Object // 此設定是為了接受父層的傳過來得值，在memberorder中收到:order="order" 得值，傳到了該元件的orders: []中
+    order: Object
   },
   data() {
     return {
       orders: [],
     };
   },
-
-  // mounted() {
-  //   this.fetchOrders();
-  // },
-
-  // methods: {
-  //   fetchOrders() {
-  //     axios.get('http://localhost/TID101G2/public/api/MemberOrder.php')
-  //       .then(response => {
-  //         this.orders = response.data;
-  //       })
-  //       .catch(error => {
-  //         console.error("There was an error fetching the orders!", error);
-  //       });
-  //   },
-  // },
+  methods: {
+    cancelOrder() {
+      axios.post('./api/MemberOrder.php', { orderId: this.order.id })
+        .then(response => {
+          console.log('訂單取消成功', response);
+          this.order.status = '取消中'; // 更新訂單狀態
+          // 關閉模態視窗
+          const modalElement = this.$refs.modal;
+          const modalInstance = bootstrap.Modal.getInstance(modalElement);
+          if (modalInstance) {
+            modalInstance.hide();
+          }
+        })
+        .catch(error => {
+          console.error('取消訂單失敗', error);
+        });
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-
-
+/* Your styles */
 .grid > article {
   border: 1px solid $ramos-gin-fizz;
   box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
   background-color: $ramos-gin-fizz;
   border-radius: 8px;
   transition: 0.3s;
-  // padding-top: 20px;
-
 }
 
 .grid .text {
@@ -97,14 +93,12 @@ export default {
   font-weight: bold;
   background-color: $irishcoffee;
   border: none;
-  // padding-right: 10px;
   margin-right: 5px;
   margin-top: 5px;
 }
+
 p{
   font-size: $fontSize_p;
   letter-spacing: 2px
 }
-
-
 </style>

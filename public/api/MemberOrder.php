@@ -1,48 +1,58 @@
 <?php
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-    //引入資料庫
-       include("conn.php");
+// 引入資料庫
+include("conn.php");
 
-       //---------------------------------------------------
+// 判斷請求方法
+$method = $_SERVER['REQUEST_METHOD'];
 
+if ($method === 'GET') {
+    // GET 請求處理邏輯
+    $sql = "SELECT * FROM TID101_G2.order;";
 
-    //    $keyword = $_POST["keyword"];
-
-       //建立SQL語法
-       $sql = "SELECT * FROM TID101_G2.order;";
-
-       try {
-       //執行並查詢，會回傳查詢結果的物件，必須使用fetch、fetchAll...等方式取得資料
+    try {
+        // 執行並查詢，會回傳查詢結果的物件，必須使用 fetch、fetchAll...等方式取得資料
         $statement = $conn->query($sql);
         $statement->execute();
 
-
-       //抓出全部且依照順序封裝成一個二維陣列
-       $data = $statement->fetchAll();
-
-       //將二維陣列取出顯示其值
-    //    foreach($data as $index => $row){
-    //           echo $row["id"];   //訂單編號
-    //           echo " / ";
-    //           echo $row["order_date"];    //成立時間
-    //           echo " / ";
-    //           echo $row["status"];    //訂單狀態
-    //           echo " / ";
-    //           echo $row["product_details"];    //購買產品
-    //           echo " / ";
-    //           echo $row["total_amount"];    //總價
-    //           echo " / ";
-    //           echo $row["payment_status"];    //付款狀態
-    //           echo " / ";
-    //           echo $row["delivery_status"];    //出貨狀態
-    //           echo " / ";
-    //           echo "<br>";
-    //    }
+        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($data);
-} catch (PDOException $e) {
-    echo json_encode(['error' => $e->getMessage()]);
+    } catch (PDOException $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+} elseif ($method === 'POST') {
+    // POST 請求處理邏輯
+    $data = json_decode(file_get_contents("php://input"), true);
+    $orderId = $data['id'] ?? null;
+
+    if ($orderId === null) {
+        http_response_code(400); // Bad Request
+        echo json_encode(["message" => "缺少訂單 ID"]);
+        exit();
+    }
+
+    // 更新訂單狀態
+    $sql = "UPDATE TID101_G2.order SET status = '取消中' WHERE id = :orderId";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':orderId', $orderId, PDO::PARAM_INT);
+
+    try {
+        if ($stmt->execute()) {
+            echo json_encode(["message" => "訂單取消成功"]);
+        } else {
+            http_response_code(500); // Internal Server Error
+            echo json_encode(["message" => "取消訂單失敗"]);
+        }
+    } catch (PDOException $e) {
+        http_response_code(500); // Internal Server Error
+        echo json_encode(["message" => "取消訂單失敗: " . $e->getMessage()]);
+    }
+} else {
+    http_response_code(405); // Method Not Allowed
+    echo json_encode(["message" => "不支援的請求方法"]);
 }
 ?>
