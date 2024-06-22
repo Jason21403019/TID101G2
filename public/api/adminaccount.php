@@ -26,7 +26,8 @@ switch ($action) {
   case 'update':
     updateAdmin($input);
     break;  
-//   檢查email
+    
+  // 檢查email
   case 'checkEmail':
     checkEmail($input);
     break;
