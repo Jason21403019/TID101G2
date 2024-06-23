@@ -200,21 +200,30 @@ export default {
   },
 
   confirmOrder() {
-    Swal.fire({
-      title: "提交訂單嗎?",
-      text: "請確認商品和訂單資訊無誤",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "確定",
-      cancelButtonText: "取消"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.submitOrder();
-      }
-    });
-  },
+    if (this.$parent.$refs.cartLeft.validateFields()) {
+        Swal.fire({
+        title: "提交訂單嗎?",
+        text: "請確認商品和訂單資訊無誤",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "確定",
+        cancelButtonText: "取消"
+        }).then((result) => {
+        if (result.isConfirmed) {
+            this.submitOrder();
+         }
+      });
+    }else {
+            Swal.fire({
+                icon: 'error',
+                title: '未完成',
+                text: '請填寫所有必填欄位!',
+            });
+         }
+       }
+    },
 
   submitOrder() {
     Swal.fire({
@@ -231,8 +240,7 @@ export default {
       }
     });
   }
- }
-};
+ };
 
 
 </script>
@@ -977,3 +985,6 @@ export default {
 
 }
 </style>
+
+
+

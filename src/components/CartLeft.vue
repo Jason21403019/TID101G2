@@ -6,7 +6,6 @@
               <div class="order-title">
                   <h2>訂單資訊</h2>
               </div>
-            <!-- <div v-if="orderName && orderPhone && orderEmail && orderAddress"> -->
               <!-- 姓名和電話 -->
               <div class="first">
                   <div class="name">
@@ -29,7 +28,6 @@
                   <p>地址 *</p>
                   <input type="text" id="address" v-model="orderAddress" required> 
               </div>
-            <!-- </div> -->
           </div>
 
 
@@ -40,31 +38,31 @@
               <div class="order-title2">
                   <h2>收件人資訊：</h2>
                   <div class="same">
-                      <input type="radio" @click="copyOrderInfo">
-                      <p>同訂購人資訊</p>
+                    <input type="checkbox" id="syncCheckbox" v-model="isSyncActive" @change="copyOrderInfo">
+                    <label for="syncCheckbox">同訂購人資訊</label>
                   </div>
               </div>
               <!-- 姓名和電話 -->
               <div class="first">
                   <div class="name">
                       <p>姓名 *</p>
-                      <input type="text" id="ship_name" v-model="shipName" required>
+                      <input type="text" id="ship_name" v-model="shipName" @blur="validateName" required>
                   </div>
 
                   <div class="phone">
                       <p>連絡電話 *</p>
-                      <input type="text" id="ship_phone" v-model="shipPhone" required>
+                      <input type="text" id="ship_phone" v-model="shipPhone" @blur="validatePhone" required>
                   </div>
               </div>
 
               <div class="email">
                   <p>電子郵件 *</p>
-                  <input type="text" id="ship_email" v-model="shipEmail" required>
+                  <input type="text" id="ship_email" v-model="shipEmail" @blur="validateEmail" required>
               </div>
 
               <div class="address_info">
                   <p>收件地址 *</p>
-                  <input type="text" id="ship_address" v-model="shipAddress" required>
+                  <input type="text" id="ship_address" v-model="shipAddress" @blur="validateAddress" required>
               </div>
 
               <div class="order_note">
@@ -91,10 +89,11 @@ export default {
             orderPhone: '',
             orderEmail: '',
             orderAddress: '',
-            // shipName: '',     
-            // shipPhone: '',
-            // shipEmail: '',
-            // shipAddress: ''
+            shipName: '',     
+            shipPhone: '',
+            shipEmail: '',
+            shipAddress: '',
+            isSyncActive: false
         };
     },
     mounted() {
@@ -115,7 +114,47 @@ export default {
             } catch (error) {
                 console.error('Error fetching member info:', error);
             }
+        },
+        copyOrderInfo() {
+            if (this.isSyncActive) {
+                // 同步資料
+                this.shipName = this.orderName;
+                this.shipPhone = this.orderPhone;
+                this.shipEmail = this.orderEmail;
+                this.shipAddress = this.orderAddress;
+            } else {
+                // 重置收件人資訊
+                this.shipName = '';
+                this.shipPhone = '';
+                this.shipEmail = '';
+                this.shipAddress = '';
+            }
+        },
+
+        validateName() {
+            if (!/^[a-zA-Z\s\-\u4e00-\u9fff]+$/.test(this.shipName)) {
+                alert('姓名不能含有數字及特殊符號！');
+            } 
+        },
+        validatePhone() {
+            if (!/^\d+$/.test(this.shipPhone)) {
+                alert('電話必須為數字！');
+            }
+        },
+        validateEmail() {
+            if (this.shipEmail && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.shipEmail)) {
+                alert('電子郵件格式不正確！');
+            }
+        },
+
+        validateFields() {
+        if (!this.orderName || !this.orderPhone || !this.orderEmail || !this.orderAddress ||
+            !this.shipName || !this.shipPhone || !this.shipEmail || !this.shipAddress) {
+            return false;  // 如果任何一個欄位是空的，返回false
+            }
+        return true;  // 所有欄位都被正確填寫
         }
+
     }
 };
 </script>
@@ -311,6 +350,7 @@ export default {
                   input {
                       width: 20px;
                       height: 20px;
+                      margin-right: 10px;
 
                       @include breakpoint( 430px){
                         width: 15px;
@@ -318,7 +358,7 @@ export default {
                       }
                   }
 
-                  p {
+                  label{
                       font-family: $fontfamily;
                       font-size: $fontSize_h3;
                       color: $campari;
@@ -336,3 +376,12 @@ export default {
 
     
 </style>
+
+
+
+
+
+
+
+
+

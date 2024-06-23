@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
       <!-- 左邊區塊 -->
-      <CartLeft />
+      <CartLeft ref="cartLeft" />
       <!-- 右邊區塊 -->
       <CartRight />
    
@@ -43,3 +43,8 @@ export default {
 
 }
 </style>
+
+
+
+
+
