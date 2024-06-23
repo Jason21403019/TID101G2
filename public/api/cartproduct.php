@@ -1,16 +1,8 @@
 <?php
 
-// 設置CORS頭部
-header("Access-Control-Allow-Origin: http://localhost:5173"); // 允許特定的域名
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-// 原本的
-// header("Access-Control-Allow-Headers: Content-Type");
-
 // 允許所有的標頭
 header("Access-Control-Allow-Headers: *");
 
-// 設置返回的內容類型
-header('Content-Type: application/json');
 
 
 

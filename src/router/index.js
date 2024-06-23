@@ -141,6 +141,15 @@ const routes = [
     }
   },
 
+  {
+    path: '/creditcard',
+    name: 'CreditCard',
+    component: () => import('../views/CreditCard.vue'),
+    meta: {
+      layout: 'default'
+    }
+  },
+
   //訂單成功
   {
     path: '/ordercomplete',

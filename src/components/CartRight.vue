@@ -137,6 +137,8 @@ export default {
 
   methods: {
   fetchCartItems() {
+    // axios.get('/public/api/cartproduct.php', {
+
     axios.get('http://localhost:8087/TID101G2/public/api/cartproduct.php', {
       params: {
         member_id: 'M001'
@@ -225,7 +227,7 @@ export default {
       }
     }).then(result => {
       if (result.dismiss === Swal.DismissReason.timer) {
-        this.$router.push('/ordercomplete');
+        this.$router.push('/creditcard');
       }
     });
   }

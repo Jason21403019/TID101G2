@@ -6,6 +6,7 @@
               <div class="order-title">
                   <h2>訂單資訊</h2>
               </div>
+            <!-- <div v-if="orderName && orderPhone && orderEmail && orderAddress"> -->
               <!-- 姓名和電話 -->
               <div class="first">
                   <div class="name">
@@ -25,9 +26,10 @@
               </div>
 
               <div class="address_info">
-                  <p>收件地址 *</p>
+                  <p>地址 *</p>
                   <input type="text" id="address" v-model="orderAddress" required> 
               </div>
+            <!-- </div> -->
           </div>
 
 
@@ -80,83 +82,44 @@
 
 
 <script>
+import axios from 'axios';
 
 export default {
-  data() {
-      return {
-          selectedCounty: "",
-          selectedDistrict: "",
-          orderName: "",
-          orderPhone: "",
-          orderEmail: "",
-          orderAddress: "",
-          selectedCountyShip: "",
-          selectedDistrictShip: "",
-          shipName: "",
-          shipPhone: "",
-          shipEmail: "",
-          shipAddress: "",
-          privacyAccepted: false,
-
-      };
-  },
-
-  methods: {
-
-      validateOrderForm() {
-      if (!this.orderName) {
-        alert("未填寫姓名!");
-        return;
-      }
-      if (!this.orderPhone) {
-        alert("未填寫連絡電話!");
-        return;
-      }
-      if (!this.orderEmail) {
-        alert("未填寫電子郵件!");
-        return;
-      }
-      if (!this.selectedCounty || !this.selectedDistrict || !this.orderAddress) {
-        alert("未填寫完整收件地址!");
-        return;
-      }
-      if (!this.shipName) {
-        alert("未填寫收件人姓名!");
-        return;
-      }
-      if (!this.shipPhone) {
-        alert("未填寫收件人連絡電話!");
-        return;
-      }
-      if (!this.shipEmail) {
-        alert("未填寫收件人電子郵件!");
-        return;
-      }
-      if (!this.selectedCountyShip || !this.selectedDistrictShip || !this.shipAddress) {
-        alert("未填寫完整收件人地址!");
-        return;
-      }
-      if (!this.privacyAccepted) {
-        alert("請閱讀並同意隱私權政策及服務條款!");
-        return;
-      }
-
-      // 所有驗證通過，可以提交表單
-      alert("訂單已提交!");
+    data() {
+        return {
+            orderName: '',
+            orderPhone: '',
+            orderEmail: '',
+            orderAddress: '',
+            // shipName: '',     
+            // shipPhone: '',
+            // shipEmail: '',
+            // shipAddress: ''
+        };
     },
-    copyOrderInfo() {
-      this.shipName = this.orderName;
-      this.shipPhone = this.orderPhone;
-      this.shipEmail = this.orderEmail;
-      this.selectedCountyShip = this.selectedCounty;
-      this.selectedDistrictShip = this.selectedDistrict;
-      this.shipAddress = this.orderAddress;
+    mounted() {
+        this.fetchMemberData();
     },
-
-  },
-
-}
+    methods: {
+        async fetchMemberData() {
+            try {
+                const response = await axios.get('http://localhost:8087/TID101G2/public/api/cartreceiver.php', {
+                    params: {
+                        member_id: 'M001'  // 替換為特定會員ID或通過某種方式動態獲取
+                    }
+                });
+                this.orderName = response.data.full_name;
+                this.orderPhone = response.data.phone;
+                this.orderEmail = response.data.email;
+                this.orderAddress = response.data.address;
+            } catch (error) {
+                console.error('Error fetching member info:', error);
+            }
+        }
+    }
+};
 </script>
+
 
 
 
