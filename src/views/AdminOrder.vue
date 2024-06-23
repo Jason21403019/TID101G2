@@ -9,19 +9,28 @@
 
   <!-- 搜尋 -->
   <section>
-    <admin-input input-id="formGroupExampleInput1">
+    <admin-select-input input-id="formGroupExampleInput1" :selected-option="selectedOption">
       <template #label>查詢條件</template>
       <template #select>
-        <select class="form-select" aria-label="Default select example">
-          <option selected>訂單編號</option>
+        <select v-model="selectedOption" class="form-select" aria-label="Default select example">
+          <option selected value="">訂單編號</option>
           <option value="1">會員姓名</option>
-          <option value="2">未付款</option>
-          <option value="3">已付款</option>
-          <option value="4">未出貨</option>
-          <option value="5">已出貨</option>
+          <option value="2">訂單狀態</option>
         </select>
       </template>
-    </admin-input>
+      <!-- 如果切換到訂單狀態時，變更input視窗為下拉式 -->
+      <template #input="{ inputId }">
+        <input v-if="selectedOption !== '2'" :id="inputId" v-model="inputValue" type="text" class="form-control" />
+        <select v-else v-model="selectedOrderStatus" class="form-select">
+          <option value="">選擇訂單狀態</option>
+          <option value="processing">處理中</option>
+          <option value="shipped">已出貨</option>
+          <option value="completed">已完成</option>
+          <option value="cancelled">已取消</option>
+          <option value="returns_exchanges">退換貨</option>
+        </select>
+      </template>
+    </admin-select-input>
 
     <!-- 查詢日期 -->
     <div class="d-flex align-items-center">
@@ -30,7 +39,7 @@
         <template #info>(最多查詢100天)</template>
       </admin-date-input>
 
-      <admin-btn :handle-click="search">
+      <admin-btn>
         <template #icon>
           <img src="../imgs/icon/icon_admin-search-w.svg" alt="addIcon" height="20" width="20" />
         </template>
@@ -71,12 +80,12 @@
           <th scope="row">
             <input class="form-check-input" type="checkbox" v-model="order.selected" @change="checkIfAllSelected" />
           </th>
-          <td>{{ order.orderId }}</td>
-          <td>{{ order.orderDate }}</td>
-          <td>{{ order.memberName }}</td>
-          <td>{{ order.recipientName }}</td>
-          <td>{{ order.orderStatus }}</td>
-          <td>{{ order.paymentStatus }}</td>
+          <td>{{ order.id }}</td>
+          <td>{{ order.order_date }}</td>
+          <td>{{ order.full_name }}</td>
+          <td>{{ order.receiver }}</td>
+          <td>{{ order.status }}</td>
+          <td>{{ order.payment_status }}</td>
           <td>
             <button @click="openModal('edit', selectedOrder)">
               <img src="../imgs/icon/icon_admin-edit.svg" alt="" width="20px" height="20px" />
@@ -89,10 +98,10 @@
           </td>
         </tr>
       </tbody>
-      <caption>
+      <!-- <caption>
         每頁列表顯示<span class="main__list-number">6</span
         >筆
-      </caption>
+      </caption> -->
     </table>
   </section>
 
@@ -110,16 +119,19 @@ import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
 import AdminBulkBtn from '../components/AdminBulkBtn.vue'
 import AdminDateInput from '../components/AdminDateInput.vue'
-import AdminInput from '../components/AdminInput.vue'
+// import AdminInput from '../components/AdminInput.vue'
+import AdminSelectInput from '../components/AdminSelectInput.vue'
 import ModalOrder from '../components/AdminModalOrder.vue'
 import Swal from 'sweetalert2'
+import { useAdminOrderStore } from '../stores/adminOrder'
 import { variables } from '../js/AdminVariables.js'
 
 export default {
   name: 'AdminOrder',
   components: {
     AdminBreadcrumb,
-    AdminInput,
+    // AdminInput,
+    AdminSelectInput,
     AdminDateInput,
     AdminBtn,
     AdminBulkBtn,
@@ -134,29 +146,16 @@ export default {
         { text: variables.orderblock.order, link: '', active: true },
         { text: variables.orderblock.orderList, link: '/admin_order', active: false }
       ],
-      // 假資料
-      orders: [
-        {
-          orderId: '20210517379430',
-          orderDate: '2024/06/09',
-          memberName: '張哲菘',
-          recipientName: '許阿mei',
-          orderStatus: '處理中',
-          paymentStatus: '已付款'
-        },
-        {
-          orderId: '20210517379431',
-          orderDate: '2024/06/10',
-          memberName: '張哲菘',
-          recipientName: '許阿mei',
-          orderStatus: '處理中',
-          paymentStatus: '已付款'
-        }
-      ],
+      orders: [],
       currentActionType: '',
       currentOrder: {},
       showCancelReason: false,
-      selectAll: false
+      selectAll: false,
+      selectedOrder: {},
+      // 訂單狀態
+      selectedOption: '',
+      inputValue: '',
+      selectedOrderStatus: ''
     }
   },
   watch: {
@@ -168,7 +167,22 @@ export default {
       deep: true
     }
   },
+  async mounted() {
+    console.log('Component mounted')
+    await this.loadOrders()
+  },
   methods: {
+    // 讀取資料庫的資料渲染在table上
+    async loadOrders() {
+      const adminOrderStore = useAdminOrderStore()
+      const result = await adminOrderStore.fetchOrders()
+      // 沒有收件人欄位
+      // console.log(result)
+
+      if (result.success) {
+        this.orders = result.orders
+      }
+    },
     openModal(actionType, order) {
       this.currentActionType = actionType
       this.currentOrder = order

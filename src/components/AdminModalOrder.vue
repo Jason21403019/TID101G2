@@ -30,7 +30,17 @@
                 </select>
               </div>
             </div>
-
+            <!-- 付款方式/物流方式 -->
+            <div class="mb-3 d-flex align-items-center">
+              <div class="col-md-5 d-flex align-items-center">
+                <h4 class="col-form-label me-2">付款方式:</h4>
+                <span>信用卡</span>
+              </div>
+              <div class="col-md-5 d-flex align-items-center">
+                <h4 class="col-form-label me-2">運送方式:</h4>
+                <span>宅配</span>
+              </div>
+            </div>
             <!-- 付款狀態 -->
             <div class="mb-3 d-flex payment-status-section">
               <div class="col-md-6 d-flex align-items-center">
@@ -148,7 +158,7 @@
 
               <div class="mb-3">
                 <div class="row mb-3">
-                  <label class="col-md-2 col-form-label">收件人姓名:</label>
+                  <label class="col-md-2 col-form-label me-3">收件人姓名:</label>
                   <input
                     v-model="orderData.recipientName"
                     type="text"
@@ -159,7 +169,7 @@
                 </div>
 
                 <div class="row mb-3">
-                  <label class="col-md-2 col-form-label">收件人電話:</label>
+                  <label class="col-md-2 col-form-label me-3">收件人電話:</label>
                   <input
                     v-model="orderData.recipientPhone"
                     type="text"
@@ -170,7 +180,18 @@
                 </div>
 
                 <div class="row mb-3">
-                  <label class="col-md-2 col-form-label">收件人地址:</label>
+                  <label class="col-md-2 col-form-label text-nowrap me-3">收件人Email:</label>
+                  <input
+                    v-model="orderData.recipientEmail"
+                    type="text"
+                    class="form-control"
+                    :disabled="!isEditable"
+                    :class="{ 'editable-input': isEditable }"
+                  />
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-md-2 col-form-label me-3">收件人地址:</label>
                   <input
                     v-model="orderData.recipientAddress"
                     type="text"
@@ -181,29 +202,7 @@
                 </div>
 
                 <div class="row mb-3">
-                  <label class="col-md-2 col-form-label">付款方式:</label>
-                  <input
-                    v-model="orderData.paymentMethod"
-                    type="text"
-                    class="form-control"
-                    :disabled="!isEditable"
-                    :class="{ 'editable-input': isEditable }"
-                  />
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-md-2 col-form-label">運送方式:</label>
-                  <input
-                    v-model="orderData.deliveryMethod"
-                    type="text"
-                    class="form-control"
-                    :disabled="!isEditable"
-                    :class="{ 'editable-input': isEditable }"
-                  />
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-md-2 col-form-label">訂單備註:</label>
+                  <label class="col-md-2 col-form-label me-3">訂單備註:</label>
                   <input
                     v-model="orderData.orderNote"
                     type="text"
@@ -219,7 +218,7 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-          <button type="button" class="btn btn-primary" @click="onSave">儲存</button>
+          <button type="button" class="btn btn-primary" @click="handleSave">儲存</button>
         </div>
       </div>
     </div>
@@ -229,10 +228,22 @@
 <script>
 export default {
   props: {
-    actionType: String,
-    order: Object,
-    onSave: Function,
-    showCancelReason: Boolean
+    actionType: {
+      type: String,
+      required: true
+    },
+    order: {
+      type: Object,
+      required: true
+    },
+    onSave: {
+      type: Function,
+      required: true
+    },
+    showCancelReason: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -251,6 +262,7 @@ export default {
         totalAmount: '',
         recipientName: '',
         recipientPhone: '',
+        recipientEmail: '',
         recipientAddress: '',
         paymentMethod: '',
         deliveryMethod: '',
@@ -300,6 +312,7 @@ export default {
             totalAmount: '',
             recipientName: '',
             recipientPhone: '',
+            recipientEmail: '',
             recipientAddress: '',
             paymentMethod: '',
             deliveryMethod: '',
@@ -320,11 +333,12 @@ export default {
     hide() {
       this.modal.hide()
     },
-    onSave() {
+    handleSave() {
       this.onSave(this.orderData)
       this.hide()
     },
     toggleEdit() {
+      event.preventDefault() // 防止默認行為
       this.isEditable = !this.isEditable
     }
   }

@@ -4,13 +4,13 @@
       <slot name="label"></slot>
     </label>
     <slot name="select"></slot>
-    <slot name="input"></slot>
+    <slot name="input" :input-id="inputId"></slot>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'AdminInput',
+  name: 'AdminSelectInput',
   props: {
     inputId: {
       type: String,
