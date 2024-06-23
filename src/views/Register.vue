@@ -51,11 +51,11 @@
         </div>
         <div class="login__container-email">
           <label for="email">電子郵件</label>
-          <input id="email" v-model="email" type="email" placeholder="請輸入電子郵件" />
+          <input id="email" v-model="loginForm.email" type="email" placeholder="請輸入電子郵件" />
         </div>
         <div class="login__container-password">
           <label for="password">密碼</label>
-          <input id="password" v-model="form.password" type="password" placeholder="請輸入密碼" />
+          <input id="password" v-model="loginForm.password" type="password" placeholder="請輸入密碼" />
           <p class="error-message" v-if="password && passwordError">密碼必須至少8位數，且包含英文及數字</p>
         </div>
         <div class="login__container-noaccount">
@@ -95,6 +95,10 @@ export default {
         birth: '',
         address: ''
       },
+      loginForm: {
+        email: '',
+        password: ''
+      },
       passwordError: false
     }
   },
@@ -112,23 +116,25 @@ export default {
     async login() {
       const userStore = useUserStore()
 
-      if (!this.form.email || !this.form.password) {
+      // alert('ttt')
+
+      if (!this.loginForm.email || !this.loginForm.password) {
         this.passwordError = 'Email 和 Password 是必填的'
         return
       }
 
       try {
-        const response = await fetch('/public/api/Login.php', {
-          method: 'POST',
+        const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}Login.php`, this.loginForm, {
           headers: {
             'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.form)
+          }
         })
 
-        console.log('Response:', response)
+        console.log('aaa')
 
-        const result = await response.json()
+        const result = response.data
+
+        console.log(result)
 
         if (result.success) {
           this.passwordError = null
@@ -138,9 +144,12 @@ export default {
           this.passwordError = result.message || 'Login failed'
         }
       } catch (err) {
+        console.error('Error:', error)
         this.passwordError = 'An error occurred'
+        alert(err)
       }
     },
+
     validatePasswords() {
       const password = this.form.password
       const minLength = 8
@@ -175,12 +184,12 @@ export default {
       }
 
       try {
-        const response = await axios.post('http://localhost/TID101_g2/public/api/Register.php', this.form, {
+        const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}Register.php`, this.form, {
           headers: {
             'Content-Type': 'application/json'
           }
         })
-        console.log('Response:', response)
+        // console.log('Response:', response)
 
         const data = response.data
         // console.log('Registration response:', data)
@@ -191,7 +200,9 @@ export default {
           this.passwordError = data.message
         }
       } catch (error) {
-        console.error('Error during registration:', error)
+        console.error('Error:', error)
+
+        // console.error('Error during registration:', error)
         alert('An error occurred during registration. Please try again later.')
       }
     }

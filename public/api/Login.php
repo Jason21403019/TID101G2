@@ -3,7 +3,6 @@
 include("./conn.php");
 $member = json_decode(file_get_contents("php://input"), true);
 
-
 if (!isset($member['email']) || !isset($member['password'])) {
     $respBody=array(
         'success' => false,
@@ -13,22 +12,29 @@ if (!isset($member['email']) || !isset($member['password'])) {
     exit;
 }
 
-
 $sql = 'SELECT * FROM member WHERE email = :email AND password = :password';
 $pstmt = $pdo->prepare($sql);
+
+if (!$pstmt) {
+    echo json_encode(['success' => false, 'message' => '無法準備語句']);
+    exit;
+}
+
 $pstmt->bindValue(':email', $member['email']);
 $pstmt->bindValue(':password', $member['password']);
-$pstmt->execute();
+
+if (!$pstmt->execute()) {
+    echo json_encode(['success' => false, 'message' => '執行查詢失敗']);
+    exit;
+}
+
 $members = $pstmt->fetchAll();
 $success = count($members) == 1;
-
-// header('Content-Type: application/json');
-
-// $respBody['success'] = $success;
 
 $respBody=array(
     'success'=>$success,
 );
+
 if ($success) {
     session_start();
     $_SESSION['member'] = $members[0];
@@ -36,7 +42,5 @@ if ($success) {
     $respBody['message'] = 'email或password錯誤';
 }
 
-
-// print_r($respBody);
 echo json_encode($respBody);
 exit;

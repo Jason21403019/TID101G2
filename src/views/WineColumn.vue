@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import AOS from 'aos'
 import WineColumnCategory from '../components/WineColumnCategory.vue'
 import WineColumnMasonry from '../components/WineColumnMasonry.vue'
@@ -87,6 +88,16 @@ export default {
       // console.log('Item clicked with link:', link)
       this.activeLink = link
       this.$router.push(link)
+    },
+    fetchCategories() {
+      axios
+        .get('http://yourserver.com/fetchWineCategories.php')
+        .then((response) => {
+          this.categories = response.data
+        })
+        .catch((error) => {
+          console.error('There was an error fetching the categories: ', error)
+        })
     }
   }
 }

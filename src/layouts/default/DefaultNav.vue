@@ -14,16 +14,10 @@
           <img v-else class="header__icons-icon-img1" :src="getNavMemberSrc" alt="" />
         </button>
 
-        <!-- -->
-        <!-- <button v-else class="header__icons-icon" @click="logout">
-          <img class="header__icons-icon-img1" :src="getLoginSrc" alt="Logout Icon" />
-        </button> -->
-
-        <!-- 會員中心與登出 -->
-        <div v-if="dropdownVisible" class="dropdown-menu">
-          <router-link to="/member" class="dropdown-item" @click="closeDropdown"> 會員中心 </router-link>
-          <button @click="logout" class="dropdown-item">登出</button>
-        </div>
+        <!-- 登入後顯示的按鈕 -->
+        <button v-else class="header__icons-icon" @click="toggleSubmenu">
+          <img :src="black ? '@/imgs/icon/icon_member-off.svg' : '@/imgs/icon/icon_member-off-w.svg'" alt="Logout Icon" />
+        </button>
 
         <!-- 購物車 -->
         <router-link to="/cart" class="header__icons-icon carts" @click="closeHamburger">
@@ -31,10 +25,15 @@
           <img v-else class="header__icons-icon-img2" :src="getNavCartSrc" alt="" />
         </router-link>
       </div>
+      <!-- 會員中心與登出 -->
+      <div class="dropdown-menu logoutMenu">
+        <router-link to="/member" class="dropdown-item" @click="closeDropdown"> 會員中心 </router-link>
+        <button @click="logout" class="dropdown-item">登出</button>
+      </div>
 
       <!-- 登入 -->
-      <div v-if="showSubmenu" class="header__icons-icon submenu" @click="toggleSubmenu">
-        <router-link to="/register" class="header__icons-icon-img1 login" @click="closeHamburger"> 登入 </router-link>
+      <div v-show="showSubmenu" class="header__icons-icon submenu" @click="toggleSubmenu">
+        <router-link to="/register" class="header__icons-icon-img1 login" @click.stop="closeHamburger"> 登入 </router-link>
       </div>
 
       <!-- hamburger -->
@@ -137,10 +136,7 @@ export default {
     hanburgerBarColor() {
       return this.isHamburgerOpen ? 'h-white' : this.black ? 'h-black' : 'h-black-on-light'
     },
-    toggleSubmenu() {
-      alert('尚未開放')
-      this.showSubmenu = !this.showSubmenu
-    },
+
     closeDropdown() {
       this.dropdownVisible = !this.dropdownVisible
     }
@@ -160,21 +156,23 @@ export default {
     closeHamburger() {
       this.isHamburgerOpen = false
     },
+    toggleSubmenu() {
+      this.showSubmenu = !this.showSubmenu
+    },
 
     async logout() {
       try {
-        const response = await fetch('/public/api/Logout.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
+        const response = await axios.post(
+          '/public/api/Logout.php',
+          {},
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
           }
-        })
+        )
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-
-        const result = await response.json()
+        const result = response.data
 
         if (result.success) {
           this.logout() // 使用 Pinia 的 logout action
@@ -183,13 +181,6 @@ export default {
         } else {
           this.error = 'Logout failed'
         }
-        // if (response) {
-        //   this.logout() // 使用 Pinia 的 logout action
-        //   console.log('Logout successful')
-        //   this.$router.push('/home')
-        // } else {
-        //   this.error = 'Logout failed'
-        // }
       } catch (err) {
         console.error('Error:', err)
         this.error = 'An error occurred'
@@ -292,6 +283,23 @@ export default {
           padding-top: 2px;
         }
       }
+      .dropdown-menu {
+        position: absolute;
+        top: 60px;
+        left: -75px;
+        width: 120px !important;
+        height: 50px;
+        background: $negroni;
+        @include border-radius(8px);
+        color: $ramos-gin-fizz;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        font-size: $fontSize_p;
+        z-index: 1000;
+      }
     }
     .login {
       position: absolute;
@@ -326,8 +334,7 @@ export default {
     height: 30px;
     border-radius: 50%;
     position: absolute;
-    right: 1.9rem;
-    top: 2.2rem;
+    right: 1.35rem;
     transform: scale(0);
     transition: transform 0.5s ease 0.2s;
     background: $negroni;

@@ -1,6 +1,6 @@
 <template>
   <body class="winecolumnwk">
-    <div class="wk__wrapper">
+    <div class="nc__wrapper">
       <WineColumnTitle :title-cn="title_cn" :title-en="title_en" />
     </div>
     <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
@@ -112,17 +112,41 @@ export default {
   padding-top: 100px;
   padding-bottom: 100px;
   background: $negroni;
+  // border: 1px solid red;
 }
-.wk__wrapper {
+.nc__wrapper {
   margin: 0 auto;
   width: 80%;
-  //   border: 1px solid red;
+  @include breakpoint(1280px) {
+    width: 85%;
+  }
+  @include breakpoint(1130px) {
+    width: 95%;
+  }
+  @include breakpoint(1000px) {
+    width: 98%;
+  }
+  @include breakpoint(430px) {
+    width: 90%;
+  }
 }
 nav {
   width: 80%;
-  //   border: 1px solid red;
+  // border: 1px solid red;
   margin: 0 auto;
   padding: 1rem 0;
+  @include breakpoint(1280px) {
+    width: 85%;
+  }
+  @include breakpoint(1130px) {
+    width: 95%;
+  }
+  @include breakpoint(1000px) {
+    width: 98%;
+  }
+  @include breakpoint(430px) {
+    width: 90%;
+  }
 }
 .breadcrumb-item + .breadcrumb-item::before {
   content: '>';
@@ -149,6 +173,18 @@ nav {
   width: 80%;
   margin: 0 auto;
   padding: 1rem 0;
+  @include breakpoint(1280px) {
+    width: 85%;
+  }
+  @include breakpoint(1130px) {
+    width: 95%;
+  }
+  @include breakpoint(1000px) {
+    width: 98%;
+  }
+  @include breakpoint(430px) {
+    width: 90%;
+  }
   &-ul {
     @include border-radius(8px);
     background: $ramos-gin-fizz;
