@@ -19,31 +19,37 @@ if ($method === 'GET') {
         $statement = $conn->query($sql);
         $statement->execute();
 
+
         $data = $statement->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($data);
     } catch (PDOException $e) {
         echo json_encode(['error' => $e->getMessage()]);
     }
-} elseif ($method === 'POST') {
-    // POST 請求處理邏輯
+}  
+    //訂單狀態轉換
+    elseif ($method === 'POST') {
+    // POST 邏輯
     $data = json_decode(file_get_contents("php://input"), true);
-    $orderId = $data['id'] ?? null;
+    $orderId = $data[$orderId] ?? null;
 
     if ($orderId === null) {
         http_response_code(400); // Bad Request
-        echo json_encode(["message" => "缺少訂單 ID"]);
+        echo json_encode(["message" => "缺少orderId"]);
         exit();
     }
 
     // 更新訂單狀態
-    $sql = "UPDATE TID101_G2.order SET status = '取消中' WHERE id = :orderId";
+    $sql = "UPDATE TID101_G2.order SET status = 'bbb' WHERE id = :orderId";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':orderId', $orderId, PDO::PARAM_INT);
 
+    //執行SQL
     try {
         if ($stmt->execute()) {
-            echo json_encode(["message" => "訂單取消成功"]);
-        } else {
+            echo json_encode(["$orderId"]);
+        } 
+        //失敗得話
+        else {
             http_response_code(500); // Internal Server Error
             echo json_encode(["message" => "取消訂單失敗"]);
         }
