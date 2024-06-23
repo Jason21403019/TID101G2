@@ -10,11 +10,11 @@
           <form @submit.prevent="handleSave">
             <div class="mb-3">
               <label for="type-name" class="form-label">名稱:</label>
-              <input id="type-name" v-model="type.name" type="text" class="form-control" />
+              <input id="type-name" v-model="type.id" type="text" class="form-control" />
             </div>
             <div class="mb-3">
               <label for="type-memo" class="form-label">備註:</label>
-              <textarea id="type-memo" v-model="type.memo" class="form-control"></textarea>
+              <textarea id="type-memo" v-model="type.note" class="form-control"></textarea>
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn">{{ modalButtonText }}</button>
@@ -37,8 +37,8 @@ export default {
       type: Object,
       required: true,
       default: () => ({
-        name: '',
-        memo: ''
+        id: '',
+        note: ''
       })
     },
     onSave: {

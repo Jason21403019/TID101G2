@@ -32,8 +32,8 @@
       </thead>
       <tbody class="table-tbody">
         <tr v-for="type in types" :key="type.id">
-          <td>{{ type.name }}</td>
-          <td>{{ type.memo }}</td>
+          <td>{{ type.id }}</td>
+          <td>{{ type.note }}</td>
           <td></td>
           <td></td>
           <td></td>
@@ -55,10 +55,12 @@
 </template>
 
 <script>
-import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
-import AdminBtn from '../components/AdminBtn.vue'
-import ModalType from '../components/AdminModalType.vue'
-import { variables } from '../js/AdminVariables.js'
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import AdminBreadcrumb from '../components/AdminBreadcrumb.vue';
+import AdminBtn from '../components/AdminBtn.vue';
+import ModalType from '../components/AdminModalType.vue';
+import { variables } from '../js/AdminVariables.js';
 
 export default {
   name: 'AdminType',
@@ -76,41 +78,86 @@ export default {
         { text: variables.productblock.product, link: '', active: true },
         { text: variables.productblock.typeList, link: '/admin_type', active: false }
       ],
-
       currentActionType: 'add',
       currentType: {
-        name: '',
-        memo: ''
+        id: '',
+        note: ''
       },
-      types: [
-        {
-          id: 1,
-          name: 'Type 1',
-          memo: '備註 1'
-        }
-      ]
-    }
+      types: []
+    };
+  },
+  created() {
+    this.fetchTypes();
   },
   methods: {
+    fetchTypes() {
+      let url = 'http://localhost/TID101G2/public/api/test.php';
+      console.log('Fetching types with URL:', url);
+      axios.get(url)
+        .then(response => {
+          const data = response.data;
+          console.log('API response data:', data);
+          if (Array.isArray(data)) {
+            this.types = data;
+          } else {
+            console.error('返回的數據不是一個陣列:', data);
+            this.types = [];
+            if (data.message) {
+              Swal.fire('提示', data.message, 'info');
+            }
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching types:', error);
+          this.types = [];
+          Swal.fire('錯誤', '無法獲取類型數據。', 'error');
+        });
+    },
     openModal(action, type = null) {
-      this.currentActionType = action
-      this.currentType = type ? { ...type } : { name: '', memo: '' }
-      this.$refs.modal.show()
+      this.currentActionType = action;
+      this.currentType = type ? { ...type } : { id: '', note: '' };
+      this.$refs.modal.show();
     },
     handleSave(formData) {
       if (this.currentActionType === 'add') {
         // 新增邏輯
-        const newType = { ...formData, id: this.types.length + 1 }
-
-        this.types.push(newType)
+        axios.post('http://localhost/TID101G2/public/api/test.php', formData)
+          .then(response => {
+            const data = response.data;
+            this.types.push(data);
+          })
+          .catch(error => {
+            console.error('Error adding type:', error);
+            Swal.fire('錯誤', '無法新增類型。', 'error');
+          });
       } else {
         // 編輯邏輯
-        const index = this.types.findIndex((type) => type.id === formData.id)
-
-        if (index !== -1) {
-          this.types.splice(index, 1, { ...formData })
-        }
+        axios.put('http://localhost/TID101G2/public/api/test.php', formData)
+          .then(response => {
+            const data = response.data;
+            const index = this.types.findIndex(type => type.id === data.id);
+            if (index !== -1) {
+              this.types[index] = data; // 直接修改陣列中的元素
+            }
+          })
+          .catch(error => {
+            console.error('Error updating type:', error);
+            Swal.fire('錯誤', '無法更新類型。', 'error');
+          });
       }
+    },
+    handleDelete(typeId) {
+      axios.delete('http://localhost/TID101G2/public/api/test.php', { data: { id: typeId } })
+        .then(response => {
+          const data = response.data;
+          if (data.status === 'success') {
+            this.types = this.types.filter(type => type.id !== typeId);
+          }
+        })
+        .catch(error => {
+          console.error('Error deleting type:', error);
+          Swal.fire('錯誤', '無法刪除類型。', 'error');
+        });
     }
   }
 }
