@@ -13,7 +13,7 @@
         </div>
         <div class="register__container-name">
           <label for="name">姓名</label>
-          <input id="name" v-model="form.name" type="text" placeholder="請輸入姓名" />
+          <input id="name" v-model="form.full_name" type="text" placeholder="請輸入姓名" />
         </div>
         <div class="register__container-phone">
           <label for="phone">電話</label>
@@ -25,13 +25,7 @@
         </div>
         <div class="register__container-password">
           <label for="password">密碼</label>
-          <input
-            @keyup="validatePasswords(form.password)"
-            id="password"
-            v-model="form.password"
-            type="password"
-            placeholder="請輸入密碼"
-          />
+          <input id="password" v-model="form.password" type="password" placeholder="請輸入密碼" />
           <p class="error-message" v-if="form.password && passwordError">密碼必須至少8位數，且包含英文及數字</p>
         </div>
         <div class="register__container-confirmpassword">
@@ -61,13 +55,7 @@
         </div>
         <div class="login__container-password">
           <label for="password">密碼</label>
-          <input
-            @keyup="validatePasswords(password)"
-            id="password"
-            v-model="password"
-            type="password"
-            placeholder="請輸入密碼"
-          />
+          <input id="password" v-model="form.password" type="password" placeholder="請輸入密碼" />
           <p class="error-message" v-if="password && passwordError">密碼必須至少8位數，且包含英文及數字</p>
         </div>
         <div class="login__container-noaccount">
@@ -84,6 +72,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import ForgetPasswordPop from '@/components/ForgetPasswordPop.vue'
 import { mapActions } from 'pinia'
 import { useUserStore } from '@/stores/user'
@@ -99,14 +88,18 @@ export default {
       password: '',
       error: null,
       form: {
-        name: '',
+        full_name: '',
         phone: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        birth: '',
+        address: ''
       },
       passwordError: false
     }
+  },
+  watch: {
+    'form.password': 'validatePasswords'
   },
   methods: {
     ...mapActions(useUserStore, ['login']),
@@ -119,56 +112,13 @@ export default {
     async login() {
       const userStore = useUserStore()
 
-      if (!this.email || !this.password) {
-        this.error = 'Email 和 Password 是必填的'
-
+      if (!this.form.email || !this.form.password) {
+        this.passwordError = 'Email 和 Password 是必填的'
         return
       }
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_PHP_PATH}Login.php`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: this.email,
-            password: this.password
-          })
-        })
-        const result = await response.json() // 將回應轉換為JSON
-
-        if (result.success) {
-          this.error = null
-          userStore.login() // 使用 Pinia 的 login action
-          this.$router.push('/member') // 導向會員頁面
-        } else {
-          this.error = result.message || 'Login failed' //
-        }
-        // if (response) {
-        //   this.error = null
-        //   console.log('Login successful')
-        //   userStore.login() // 使用 Pinia 的 login action
-        //   this.$router.push('/member') // 導向會員頁面
-        // } else {
-        //   this.error = 'Login failed'
-        // }
-      } catch (err) {
-        // console.error('Error:', err)
-        console.log(err)
-        this.error = 'An error occurred'
-      }
-    },
-    async register() {
-      // 簡單驗證
-      if (this.form.password !== this.form.confirmPassword) {
-        alert('密碼與確認密碼不一致')
-
-        return
-      }
-
-      try {
-        const response = await fetch('/public/api/Register.php', {
+        const response = await fetch('/public/api/Login.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -176,30 +126,73 @@ export default {
           body: JSON.stringify(this.form)
         })
 
+        console.log('Response:', response)
+
         const result = await response.json()
 
         if (result.success) {
-          alert('註冊成功')
+          this.passwordError = null
+          userStore.login()
+          this.$router.push('/member')
         } else {
-          alert('註冊失敗: ' + result.message)
+          this.passwordError = result.message || 'Login failed'
         }
-      } catch (error) {
-        alert('註冊失敗: ' + error.message)
+      } catch (err) {
+        this.passwordError = 'An error occurred'
       }
     },
-    validatePasswords(value) {
-      const password = value
+    validatePasswords() {
+      const password = this.form.password
       const minLength = 8
       const hasNumber = /\d/
       const hasLetter = /[a-zA-Z]/
 
-      this.passwordError = password.length < minLength || !hasNumber.test(password) || !hasLetter.test(password)
+      if (typeof password !== 'string') {
+        this.passwordError = 'Password must be a valid string'
+        return
+      }
+
+      if (password.length < minLength) {
+        this.passwordError = 'Password must be at least 8 characters long'
+      } else if (!hasNumber.test(password)) {
+        this.passwordError = 'Password must contain at least one number'
+      } else if (!hasLetter.test(password)) {
+        this.passwordError = 'Password must contain at least one letter'
+      } else {
+        this.passwordError = '' // 清除錯誤
+      }
     },
-    register() {
+    async register() {
       this.validatePasswords()
-      if (!this.passwordError) {
-        // 處理註冊邏輯
-        alert('註冊成功')
+
+      if (this.passwordError) {
+        return
+      }
+
+      if (this.form.password !== this.form.confirmPassword) {
+        this.passwordError = 'Passwords do not match'
+        return
+      }
+
+      try {
+        const response = await axios.post('http://localhost/TID101_g2/public/api/Register.php', this.form, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        console.log('Response:', response)
+
+        const data = response.data
+        // console.log('Registration response:', data)
+
+        if (data.success) {
+          alert('Registration successful')
+        } else {
+          this.passwordError = data.message
+        }
+      } catch (error) {
+        console.error('Error during registration:', error)
+        alert('An error occurred during registration. Please try again later.')
       }
     }
   }
@@ -321,7 +314,7 @@ export default {
         @include border-radius(8px);
         font-size: $fontSize_h5;
         background-color: $whitelady;
-        letter-spacing: $letterspacing;
+        // letter-spacing: $letterspacing;
         &::placeholder {
           color: rgba($color: $campari, $alpha: 0.5);
         }
@@ -450,7 +443,6 @@ export default {
         outline: none;
         @include border-radius(8px);
         font-size: $fontSize_h5;
-        letter-spacing: $letterspacing;
         color: $campari;
         background-color: $whitelady;
         &::placeholder {

@@ -91,8 +91,6 @@ export default {
     border: 1px solid #fcf0d8;
     opacity: 1;
     position: absolute;
-    // top: 170px;
-    // left: 85px;
     transition: none;
     width: 150px;
     background: none;

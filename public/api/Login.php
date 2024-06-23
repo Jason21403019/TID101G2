@@ -14,7 +14,7 @@ if (!isset($member['email']) || !isset($member['password'])) {
 }
 
 
-$sql = 'SELECT * FROM TID101_G2.member WHERE email = :email AND password = :password';
+$sql = 'SELECT * FROM member WHERE email = :email AND password = :password';
 $pstmt = $pdo->prepare($sql);
 $pstmt->bindValue(':email', $member['email']);
 $pstmt->bindValue(':password', $member['password']);

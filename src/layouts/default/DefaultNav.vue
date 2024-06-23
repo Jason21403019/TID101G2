@@ -8,24 +8,45 @@
     </div>
     <div class="header__btnarea">
       <div class="header__btnarea-icons">
-        <router-link v-if="!isLoggedIn" to="/register" class="header__icons-icon" @click="closeHamburger">
+        <!-- 背景底色不同icon顏色變換 -->
+        <button v-if="!isLoggedIn" class="header__icons-icon register" @click="toggleSubmenu">
           <img v-if="black" class="header__icons-icon-img1" :src="getNavMemberSrc" alt="" />
           <img v-else class="header__icons-icon-img1" :src="getNavMemberSrc" alt="" />
-        </router-link>
-        <button v-else class="header__icons-icon" @click="logout">
-          <img class="header__icons-icon-img1" :src="getLoginSrc" alt="Logout Icon" />
         </button>
-        <router-link to="/cart" class="header__icons-icon" @click="closeHamburger">
+
+        <!-- -->
+        <!-- <button v-else class="header__icons-icon" @click="logout">
+          <img class="header__icons-icon-img1" :src="getLoginSrc" alt="Logout Icon" />
+        </button> -->
+
+        <!-- 會員中心與登出 -->
+        <div v-if="dropdownVisible" class="dropdown-menu">
+          <router-link to="/member" class="dropdown-item" @click="closeDropdown"> 會員中心 </router-link>
+          <button @click="logout" class="dropdown-item">登出</button>
+        </div>
+
+        <!-- 購物車 -->
+        <router-link to="/cart" class="header__icons-icon carts" @click="closeHamburger">
           <img v-if="black" class="header__icons-icon-img2" :src="getNavCartSrc" alt="" />
           <img v-else class="header__icons-icon-img2" :src="getNavCartSrc" alt="" />
         </router-link>
       </div>
+
+      <!-- 登入 -->
+      <div v-if="showSubmenu" class="header__icons-icon submenu" @click="toggleSubmenu">
+        <router-link to="/register" class="header__icons-icon-img1 login" @click="closeHamburger"> 登入 </router-link>
+      </div>
+
+      <!-- hamburger -->
       <button class="h__btn" :class="hamburger__class" @click="toggleHamburger">
         <span class="hamburger__bar" :class="hanburgerBarColor"></span>
         <span class="hamburger__bar" :class="hanburgerBarColor"></span>
         <span class="hamburger__bar" :class="hanburgerBarColor"></span>
       </button>
+      <!-- circle -->
       <div class="circle" :class="hamburger__class"></div>
+
+      <!-- navBar -->
       <div :class="['menu__nav', { active: isHamburgerOpen, 'nav-dark': isHamburgerOpen }]">
         <nav class="menu__nav-content">
           <ul class="menu__nav-ul">
@@ -61,7 +82,9 @@ export default {
     return {
       isHamburgerOpen: false,
       lastPos: 0,
-      navTop: '0px'
+      navTop: '0px',
+      showSubmenu: false,
+      dropdownVisible: false
     }
   },
   computed: {
@@ -71,6 +94,7 @@ export default {
 
       return this.$route.name
     },
+    // 哪一個頁面是淺色的，使用路徑抓取
     black() {
       const blackRoutes = ['Reserve_first', 'Reserve_sec', 'Cart', 'Register']
 
@@ -112,6 +136,13 @@ export default {
     },
     hanburgerBarColor() {
       return this.isHamburgerOpen ? 'h-white' : this.black ? 'h-black' : 'h-black-on-light'
+    },
+    toggleSubmenu() {
+      alert('尚未開放')
+      this.showSubmenu = !this.showSubmenu
+    },
+    closeDropdown() {
+      this.dropdownVisible = !this.dropdownVisible
     }
   },
   mounted() {
@@ -221,12 +252,15 @@ export default {
     align-items: center;
     padding-right: 1rem;
     pointer-events: auto;
+    // border: 1px solid green;
+    position: relative;
     &-icons {
       display: flex;
       flex-basis: 200px;
       justify-content: space-around;
       align-items: center;
-      // border: 1px solid red;
+      // border: 1px solid green;
+      position: relative;
       cursor: pointer;
       button {
         border: none;
@@ -234,10 +268,22 @@ export default {
         outline: none;
         cursor: pointer;
       }
+      .register {
+        // border: 1px solid red;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .carts {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
       .header__icons-icon {
         position: relative;
         z-index: 1000;
-
+        cursor: pointer;
         &-img1 {
           width: 30px;
         }
@@ -247,6 +293,22 @@ export default {
         }
       }
     }
+    .login {
+      position: absolute;
+      left: -75px;
+      top: 55px;
+      width: 120px !important;
+      height: 50px;
+      background: $negroni;
+      @include border-radius(8px);
+      color: $ramos-gin-fizz;
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      font-size: $fontSize_p;
+    }
   }
   .h__btn {
     cursor: pointer;
@@ -255,7 +317,7 @@ export default {
     background-color: transparent;
     // border: 1px solid red;
     margin-left: 15px;
-    margin-bottom: 5px;
+    // margin-bottom: 5px;
     height: 35px;
     position: relative;
   }
@@ -379,10 +441,10 @@ export default {
           color: $whitelady;
         }
         &:nth-child(even) {
-          transform: translateX(140px);
+          transform: translateX(120px);
         }
         &:nth-child(odd) {
-          transform: translateX(-160px);
+          transform: translateX(-120px);
         }
         &:nth-child(1) {
           position: relative;

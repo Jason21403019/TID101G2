@@ -192,7 +192,6 @@ nav {
   }
   .read-more-button {
     position: absolute;
-    border: 1px solid red !important;
   }
 }
 

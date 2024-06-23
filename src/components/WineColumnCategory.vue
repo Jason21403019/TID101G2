@@ -51,38 +51,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .wine__category {
-//   width: 100%;
-//   // border: 1px solid red;
-//   &-ul {
-//     @include border-radius(8px);
-//     display: flex;
-//     justify-content: space-evenly;
-//     //   border: 1px solid red;
-//     background: $ramos-gin-fizz;
-//     padding: 2rem 0;
-//     overflow-x: scroll;
-
 .wine__category-ul-item {
-  // border: 1px solid blue;
-
   .wine__link {
-    // border: 1px solid red;
     position: relative;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: center;
-    // align-items: center;
     display: block;
     text-decoration: none;
     width: 100%;
-    // height: 230px;
 
     &::before {
       content: '';
       display: block;
       width: 100%;
-      // height: 100%;
       padding-bottom: 70%;
     }
 
@@ -123,7 +102,6 @@ export default {
         left: 0;
         width: 100%;
         height: 100%;
-        // padding-bottom: 70%;
         background: rgba($blackvevet, 0.8);
         @include border-radius(8px);
         z-index: 1;
@@ -134,11 +112,4 @@ export default {
     }
   }
 }
-.wine__category-ul-item.active {
-  position: relative;
-  z-index: 100;
-  background-color: #ffcc00 !important;
-}
-//   }
-// }
 </style>
