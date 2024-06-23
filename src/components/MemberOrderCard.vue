@@ -13,7 +13,14 @@
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">取消訂單</button>
 
           <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="modal">
+          <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+            ref="modal"
+          >
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -34,7 +41,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
 export default {
   name: 'MemberOrderCard',
@@ -43,28 +50,29 @@ export default {
   },
   data() {
     return {
-      orders: [],
-    };
+      orders: []
+    }
   },
   methods: {
     cancelOrder() {
-      axios.post('./api/MemberOrder.php', { orderId: this.order.id })
-        .then(response => {
-          console.log('訂單取消成功', response);
-          this.order.status = '取消中'; // 更新訂單狀態
+      axios
+        .post('./api/MemberOrder.php', { orderId: this.order.id })
+        .then((response) => {
+          console.log('訂單取消成功', response)
+          this.order.status = 'bbb' // 更新訂單狀態
           // 關閉模態視窗
-          const modalElement = this.$refs.modal;
-          const modalInstance = bootstrap.Modal.getInstance(modalElement);
+          const modalElement = this.$refs.modal
+          const modalInstance = bootstrap.Modal.getInstance(modalElement)
           if (modalInstance) {
-            modalInstance.hide();
+            modalInstance.hide()
           }
         })
-        .catch(error => {
-          console.error('取消訂單失敗', error);
-        });
+        .catch((error) => {
+          console.error('取消訂單失敗', error)
+        })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -88,7 +96,7 @@ export default {
   letter-spacing: $letterspacing - 0.175rem;
 }
 
-.btn-primary{
+.btn-primary {
   color: $ramos-gin-fizz;
   font-weight: bold;
   background-color: $irishcoffee;
@@ -97,8 +105,8 @@ export default {
   margin-top: 5px;
 }
 
-p{
+p {
   font-size: $fontSize_p;
-  letter-spacing: 2px
+  letter-spacing: 2px;
 }
 </style>

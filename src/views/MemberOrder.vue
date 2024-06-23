@@ -47,13 +47,13 @@ export default {
   },
   data() {
     return {
-      orders: [], // 訂單數據
+      orders: [], // 訂單陣列
       currentPage: 1, // 當前頁碼
       pageSize: 4, // 每頁顯示的單數量
     };
   },
   computed: {
-    // 計算屬性：分頁後的訂單數據
+    // 計算訂單比數去分頁
     paginatedOrders() {
       const startIndex = (this.currentPage - 1) * this.pageSize;
       return this.orders.slice(startIndex, startIndex + this.pageSize);
@@ -69,12 +69,14 @@ export default {
       axios.get('http://localhost/TID101G2/public/api/MemberOrder.php')
         .then(response => {
           this.orders = response.data;
-           console.log(response.data);
+           console.log('成功'.data);
         })
         .catch(error => {
-          console.error("Error fetching data:", error);
+          console.error("Error", error);
         });
     },
+
+    // 切換頁面設定
     // 下一頁的事件處理方法
     nextPageHandler() {
       if (this.currentPage < Math.ceil(this.orders.length / this.pageSize)) {

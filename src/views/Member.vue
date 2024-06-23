@@ -26,7 +26,7 @@
           <input type="text" id="address" v-model="address" required />
         </div>
         <!-- 按鈕 -->
-        <button type="submit">儲存設定</button>
+        <button type="submit">儲存</button>
       </form>
     </div>
   </div>
