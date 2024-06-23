@@ -94,7 +94,7 @@ export default {
     }
   },
   async mounted() {
-    console.log('Component mounted')
+    // console.log('Component mounted')
     await this.loadMembers()
   },
   methods: {
