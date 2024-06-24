@@ -33,7 +33,7 @@
 import MemberMenu from '../components/MemberMenu.vue'; 
 import MemberOrderCard from '../components/MemberOrderCard.vue'; 
 import Paginator from '../components/tabs/Paginator.vue'; 
-import axios from 'axios';
+import axios from 'axios'; //HTTP的請求工具之一
 
 export default {
   name: 'MemberOrder',
@@ -43,7 +43,7 @@ export default {
     Paginator
   },
   props: {
-    order: Object // 
+    order: Object // 讓資料從父層傳送到元件裡面
   },
   data() {
     return {
