@@ -7,6 +7,7 @@
         <li><router-link to="/member_reserve" class="link">查看預約</router-link></li>
         <li><router-link to="/member_voucher" class="link">優惠卷</router-link></li>
       </ul>
+      <!-- 下拉式選單 -->
       <select v-else @change="navigate($event.target.value)" v-model="currentView">
         <option value="member">帳戶資訊</option>
         <option value="member_order">查看訂單</option>
@@ -22,14 +23,18 @@ export default {
   name: 'MemberMenu',
   data() {
     return {
+      //追蹤當前要用什麼連接
       currentView: this.getCurrentView(),
+      //追蹤螢幕大小
       isLargeScreen: window.innerWidth > 820
     }
   },
   methods: {
+     //根據當前的nav 選擇連接
     navigate(view) {
       this.$router.push('/' + view);
     },
+     //當小於820 時使用option
     checkScreenSize() {
       this.isLargeScreen = window.innerWidth > 820;
     },
@@ -54,8 +59,10 @@ export default {
     }
   },
   mounted() {
+    // 監聽螢幕大小
     window.addEventListener('resize', this.checkScreenSize);
   },
+  // 解除監聽
   beforeDestroy() {
     window.removeEventListener('resize', this.checkScreenSize);
   }
