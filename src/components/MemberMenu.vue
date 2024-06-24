@@ -1,14 +1,13 @@
 <template>
   <div>
     <nav>
-      <!-- 使用 v-if 根據屏幕寬度選擇渲染導航方式 -->
       <ul class="member_nav" v-if="isLargeScreen">
         <li><router-link to="/member" class="link">帳戶資訊</router-link></li>
         <li><router-link to="/member_order" class="link">查看訂單</router-link></li>
         <li><router-link to="/member_reserve" class="link">查看預約</router-link></li>
         <li><router-link to="/member_voucher" class="link">優惠卷</router-link></li>
       </ul>
-      <select v-else v-model="currentView" @change="navigate">
+      <select v-else @change="navigate($event.target.value)" v-model="currentView">
         <option value="member">帳戶資訊</option>
         <option value="member_order">查看訂單</option>
         <option value="member_reserve">查看預約</option>
@@ -23,30 +22,46 @@ export default {
   name: 'MemberMenu',
   data() {
     return {
-      //當大於820 時使用ul
-      currentView: 'member',
+      currentView: this.getCurrentView(),
       isLargeScreen: window.innerWidth > 820
     }
   },
   methods: {
-    //根據當前的nav 選擇連接
-    navigate() {
-      this.$router.push('/' + this.currentView)
+    navigate(view) {
+      this.$router.push('/' + view);
     },
-    //當小於820 時使用option
     checkScreenSize() {
-      this.isLargeScreen = window.innerWidth > 820
+      this.isLargeScreen = window.innerWidth > 820;
+    },
+    getCurrentView() {
+      const routePath = this.$route.path;
+      // 根據路徑設定初始的currentView
+      if (routePath.includes('member_order')) {
+        return 'member_order';
+      } else if (routePath.includes('member_reserve')) {
+        return 'member_reserve';
+      } else if (routePath.includes('member_voucher')) {
+        return 'member_voucher';
+      } else {
+        return 'member';
+      }
     }
   },
-  // 監聽頁面
+  watch: {
+    // 監聽路由變化更新currentView
+    '$route'() {
+      this.currentView = this.getCurrentView();
+    }
+  },
   mounted() {
-    window.addEventListener('resize', this.checkScreenSize)
+    window.addEventListener('resize', this.checkScreenSize);
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.checkScreenSize)
+    window.removeEventListener('resize', this.checkScreenSize);
   }
 }
 </script>
+
 
 <style lang="scss" scoped>
 // 下拉式
