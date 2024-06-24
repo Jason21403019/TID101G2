@@ -11,7 +11,7 @@
         </div>
         <div class="form-row">
           <label for="birthdate">出生日期:</label>
-          <input type="date" id="birthdate" v-model="member.birth" required />
+          <input type="date" id="birthdate" v-model="member.birthdate" required />
         </div>
         <div class="form-row">
           <label for="email">信箱:</label>
@@ -53,25 +53,32 @@ export default {
       }
     };
   },
-  mounted() {
-    this.fetchMemberData();
+  //資料庫渲染
+  async mounted() {
+    await this.fetchMemberData();
   },
   methods: {
     fetchMemberData() {
-      // 假設你已經有用戶ID，這裡直接用一個固定值作為示例
-      axios.get('http://localhost/TID101G2/public/api/Member.php?id=M001')
+      // 實際上要獲得的會員ID
+      const memberId = 'M001'; 
+      // 抓到那個會員ID得值
+      axios.get('http://localhost/TID101G2/public/api/Member.php?id=${memberId}')
         .then(response => {
-          // 更新會員資料至 data 屬性
-          this.member.full_name = response.data.name;
-          this.member.birth = response.data.birth;
-          this.member.email = response.data.email;
-          this.member.phone = response.data.phone;
-          this.member.address = response.data.address;
-        })
-        .catch(error => {
-          console.error('Error fetching member data:', error);
-        });
-    },
+      if (response.data.length > 0) {
+        const memberData = response.data[0];  // 取第一條數據
+        this.member.full_name = memberData.full_name || memberData.name;
+        this.member.birthdate = memberData.birth;
+        this.member.email = memberData.email;
+        this.member.phone = memberData.phone;
+        this.member.address = memberData.address;
+      } else {
+        console.error('No data found');
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching member data:', error);
+    });
+},
     saveSettings() {
       // 發送 請求 更新會員資料
       axios.post('http://localhost/TID101G2/public/api/Member.php', this.member)
@@ -125,6 +132,7 @@ export default {
     height: 5vh;
     border: 0;
     border-radius: 4px;
+    padding-left: 10px;
   }
   button {
     margin-top: 20px;
