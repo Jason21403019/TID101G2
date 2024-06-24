@@ -29,8 +29,8 @@
       </thead>
       <tbody class="table-tbody">
         <tr v-for="category in categories" :key="category.id">
-          <td>{{ category.name }}</td>
-          <td>{{ category.memo }}</td>
+          <td>{{ category.id }}</td>
+          <td>{{ category.note }}</td>
           <td>
             <button @click="openModal('edit', category)">
               <img src="../imgs/icon/icon_admin-edit.svg" alt="editIcon" width="20px" height="20px" />
@@ -39,17 +39,17 @@
         </tr>
       </tbody>
       <caption>
-        每頁列表顯示<span class="main__list-number">6</span
-        >筆
+        每頁列表顯示<span class="main__list-number">6</span>筆
       </caption>
     </table>
   </section>
 
   <!-- 彈跳視窗 -->
-  <ModalCategory ref="modal" :action-type="currentActionType" :category="currentCategory" :on-save="handleSave"></ModalCategory>
+  <ModalCategory ref="modal" :action-type="currentActionType" :category="currentCategory" @save="handleSave"></ModalCategory>
 </template>
 
 <script>
+import axios from 'axios'
 import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
 import ModalCategory from '../components/AdminModalCategory.vue'
@@ -74,42 +74,47 @@ export default {
 
       currentActionType: 'add',
       currentCategory: {
-        name: '',
-        memo: ''
+        id: '',
+        note: ''
       },
-      categories: [
-        {
-          id: 1,
-          name: 'Category 1',
-          memo: '備註 1'
-        },
-        {
-          id: 2,
-          name: 'Category 2',
-          memo: '備註 2'
-        }
-      ]
+      categories: []
     }
   },
+  created() {
+    this.fetchCategories()
+  },
   methods: {
+    fetchCategories() {
+      axios.get('http://localhost/TID101G2/public/api/adminarticle_class.php')
+        .then(response => {
+          this.categories = response.data
+        })
+        .catch(error => {
+          console.error('Error fetching categories:', error)
+        })
+    },
     openModal(action, category = null) {
       this.currentActionType = action
-      this.currentCategory = category ? { ...category } : { name: '', memo: '' }
+      this.currentCategory = category ? { ...category } : { id: '', note: '' }
       this.$refs.modal.show()
     },
     handleSave(formData) {
       if (this.currentActionType === 'add') {
-        // 新增邏輯
-        const newCategory = { ...formData, id: this.categories.length + 1 }
-
-        this.categories.push(newCategory)
+        axios.post('http://localhost/TID101G2/public/api/adminarticle_class.php', formData)
+          .then(response => {
+            this.fetchCategories()
+          })
+          .catch(error => {
+            console.error('Error adding category:', error)
+          })
       } else {
-        // 編輯邏輯
-        const index = this.categories.findIndex((category) => category.id === formData.id)
-
-        if (index !== -1) {
-          this.categories.splice(index, 1, { ...formData })
-        }
+        axios.put(`http://localhost/TID101G2/public/api/adminarticle_class.php?id=${formData.id}`, formData)
+          .then(response => {
+            this.fetchCategories()
+          })
+          .catch(error => {
+            console.error('Error updating category:', error)
+          })
       }
     }
   }

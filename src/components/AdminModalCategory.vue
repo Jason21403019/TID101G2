@@ -17,14 +17,14 @@
           <form @submit.prevent="handleSave">
             <div class="mb-3">
               <label for="category-name" class="form-label">名稱:</label>
-              <input id="category-name" v-model="category.name" type="text" class="form-control" />
+              <input id="category-name" v-model="categoryData.id" type="text" class="form-control" />
             </div>
             <div class="mb-3">
               <label for="category-memo" class="form-label">備註:</label>
-              <textarea id="category-memo" v-model="category.memo" class="form-control"></textarea>
+              <textarea id="category-memo" v-model="categoryData.note" class="form-control"></textarea>
             </div>
             <div class="modal-footer">
-              <button type="submit" class="btn">{{ modalButtonText }}</button>
+              <button type="submit" class="btn btn-primary">{{ modalButtonText }}</button>
             </div>
           </form>
         </div>
@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   props: {
     actionType: {
@@ -44,17 +46,17 @@ export default {
       type: Object,
       required: true,
       default: () => ({
-        name: '',
-        memo: ''
+        id: '',
+        note: ''
       })
-    },
-    onSave: {
-      type: Function,
-      required: true
     }
   },
   data() {
     return {
+      categoryData: {
+        id: '',
+        note: ''
+      },
       myModal: null
     }
   },
@@ -66,23 +68,59 @@ export default {
       return this.actionType === 'add' ? '新增' : '更新'
     }
   },
+  watch: {
+    category: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          this.categoryData = { ...newVal }
+        } else {
+          this.categoryData = {
+            id: '',
+            note: ''
+          }
+        }
+      }
+    }
+  },
+  mounted() {
+    const modalElement = this.$refs.categoryModal
+    if (modalElement) {
+      this.myModal = new bootstrap.Modal(modalElement)
+    } else {
+      console.error('categoryModal reference is not found.')
+    }
+  },
   methods: {
     show() {
-      const modalElement = this.$refs.categoryModal
-
-      if (modalElement) {
-        this.myModal = new bootstrap.Modal(modalElement)
+      if (this.myModal) {
         this.myModal.show()
       } else {
-        console.error('categoryModal reference is not found.')
+        console.error('Modal instance is not available to show.')
       }
     },
-    handleSave() {
-      this.onSave(this.category)
+    hide() {
       if (this.myModal) {
         this.myModal.hide()
       } else {
         console.error('Modal instance is not available to hide.')
+      }
+    },
+    async handleSave() {
+      try {
+        if (this.actionType === 'add') {
+          // 新增分類
+          const response = await axios.post('http://localhost/TID101G2/public/api/adminarticle_class.php', this.categoryData);
+          console.log('新增分類成功:', response.data);
+        } else {
+          // 修改分類
+          const response = await axios.put(`http://localhost/TID101G2/public/api/adminarticle_class.php/${this.categoryData.id}`, this.categoryData);
+          console.log('修改分類成功:', response.data);
+        }
+        this.$emit('save', this.categoryData);
+        this.hide();
+      } catch (error) {
+        console.error('儲存分類失敗:', error);
       }
     }
   }
