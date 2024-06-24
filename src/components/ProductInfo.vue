@@ -3,15 +3,14 @@
     <!-- <article class="a" v-for="(product, index) in infos.slice(0, infos.length)" :key="product.id"> -->
     <article class="a" v-for="(product, index) in paginatedProducts" :key="product.id">
       <div class="content">
-        <!-- <img :src="`/src/imgs/productsImg/juice/Bel-Normande.jpg`" alt="" /> -->
         <img :src="product.picture" alt="" />
-        <div class="overlay" @click="handleOverlayClick($event, product)"></div>
+        <div class="overlay" @click="handleOverlayClick($event, product, index)"></div>
       </div>
       <span>
         <p>{{ product.brand }}</p>
         <p>{{ product.name }}</p>
         <p>{{ product.details }}</p>
-        <h3 @click="handleOverlayClickMobile($event, product)">NT${{ product.price }}</h3>
+        <h3 @click="handleOverlayClickMobile($event, product, index)">NT${{ product.price }}</h3>
       </span>
     </article>
   </div>
@@ -26,7 +25,9 @@
 </template>
 
 <script>
+import { useProductStore } from '../stores/product'
 import Paginator from './tabs/Paginator.vue'
+import Swal from 'sweetalert2'
 export default {
   props: ['currentTab', 'phpdataSearch'],
   components: { Paginator },
@@ -37,7 +38,8 @@ export default {
       currentPage: 1,
       pageSize: 6,
       count: 1,
-      total: 740
+      id: 60,
+      memberId: 'm001'
     }
   },
   computed: {
@@ -66,6 +68,8 @@ export default {
     previousPageHandler(page) {
       this.currentPage = page
     },
+
+    // php
     fetchAllProductData() {
       fetch('http://localhost/TID101G2sql/src/components/getData.php')
         .then((response) => response.json())
@@ -89,18 +93,32 @@ export default {
         .catch((error) => console.error('Error fetching data:', error))
     },
     fetchProductsCar(product) {
+      // 检查 memberId 是否为空或 null
+      if (!this.memberId) {
+        // 如果为空或 null，弹出提示框要求用户先登录
+        Swal.fire({
+          icon: 'warning',
+          position: 'top',
+          title: '請先登入帳號',
+          showConfirmButton: false,
+          timer: 1500,
+          toast: true,
+          onClose: () => {
+            console.log('Alert closed')
+          }
+        })
+        return // 停止执行后续代码
+      }
+
+      // const memberId = 'm001' // 设置 memberId 变量为 'm001'
+      const memberId = this.memberId
+      // 构建带有查询字符串的 URL
+      const url = `http://localhost/TID101G2sql/src/components/ProductCart.php?member_id=${encodeURIComponent(memberId)}`
       fetch('http://localhost/TID101G2sql/src/components/ProductCart.php', {
         method: 'POST',
 
-        body: JSON.stringify({
-          id: product.id,
-          brand: product.brand,
-          name: product.name,
-          details: product.details,
-          price: product.price,
-          count: this.count,
-          total: product.price
-        }) // 发送选项卡 ID 到后端
+        body: JSON.stringify({ id: this.id, product_id: product.id, member_id: this.memberId, count: this.count }) // 发送选项卡 ID 到后端
+        // body: { account: tabName } // 发送选项卡 ID 到后端
       })
       // .then((response) => response.json())
       // .then((data) => {
@@ -108,20 +126,48 @@ export default {
       //   // 可以在這裡進行一些成功後的處理，如果有需要的話
       // })
       // .catch((error) => console.error('Error inserting data:', error))
+
+      Swal.fire({
+        icon: 'success',
+        position: 'top',
+        title: '商品加入成功',
+        showConfirmButton: false,
+        timer: 1500,
+        toast: true,
+        onClose: () => {
+          console.log('Alert closed')
+        }
+      })
     },
     goToProductDetails(product) {
       // 在这里处理跳转逻辑，可以根据需要修改路径
       this.$router.push('/product_subpages')
     },
-    handleOverlayClick(event, product) {
+    handleOverlayClick(event, product, index) {
       // 判断点击的具体区域
       const rect = event.target.getBoundingClientRect()
+      const store = useProductStore()
       const x = event.clientX - rect.left
       const y = event.clientY - rect.top
+
+      // pinia
+      store.setSelectedProduct({
+        id: product.id,
+        brand: product.brand,
+        name: product.name,
+        details: product.details,
+        price: product.price,
+        stock: product.stock,
+        content: product.content,
+        product_class_id: product.product_class_id,
+        subpage_photo: product.subpage_photo
+      })
+
       // 根据点击位置判断是哪个部分
       if (x > rect.width * 0.7 && y > rect.height * 0.7) {
         // 点击了右下角区域
         this.fetchProductsCar(product)
+        this.id++ // 递增 id
       } else {
         // 点击了其他区域
         this.goToProductDetails(product)
@@ -131,12 +177,28 @@ export default {
     handleOverlayClickMobile(event, product) {
       // 判断点击的具体区域
       const rect = event.target.getBoundingClientRect()
+      const store = useProductStore()
       const x = event.clientX - rect.left
       const y = event.clientY - rect.top
+
+      // pinia
+      store.setSelectedProduct({
+        id: product.id,
+        brand: product.brand,
+        name: product.name,
+        details: product.details,
+        price: product.price,
+        stock: product.stock,
+        content: product.content,
+        product_class_id: product.product_class_id,
+        subpage_photo: product.subpage_photo
+      })
+
       // 根据点击位置判断是哪个部分
       if (x > rect.width * 0.7 && y > rect.height * 0.1) {
         // 点击了右下角区域
         this.fetchProductsCar(product)
+        this.id++
       }
     }
   },
@@ -189,6 +251,10 @@ export default {
   flex-wrap: wrap;
   padding-right: 5%;
   justify-content: space-evenly;
+  width: 100%;
+  @include breakpoint(mobile) {
+    padding-right: 0%;
+  }
 }
 
 img {
@@ -231,7 +297,7 @@ article {
   top: 0;
   left: 0;
   width: 100%;
-  height: 98%;
+  height: 99.5%;
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -248,7 +314,7 @@ article {
 
 @media (max-width: 768px) {
   img {
-    width: 200px;
+    width: 193px;
   }
 
   p {

@@ -5,64 +5,6 @@
     <div class="member_order">
       <div class="content">
         <h1>我的預約</h1>
-
-        <!-- <ul class="title">
-          <li>訂單編號</li>
-          <li>日期</li>
-          <li>預訂單狀態</li>
-          <li>總價</li>
-          <li>配送狀態</li>
-          <li>付款狀態</li>
-        </ul>
-        <ul class="orderInfo">
-          <li>{{ orderNumber }}</li>
-          <li>{{ orderTime }}</li>
-          <li>{{ orderProcessing }}</li>
-          <li>{{ orderPrice }}</li>
-          <li>{{ orderDelivery }}</li>
-          <li class="unpaidbtn">{{ Unpaid }}</li>
-        </ul>
-        <button @click="handleButtonClick">取消訂單</button>
-
-        <ul class="orderInfo">
-          <li>{{ orderNumber }}</li>
-          <li>{{ orderTime }}</li>
-          <li>{{ orderProcessing }}</li>
-          <li>{{ orderPrice }}</li>
-          <li>已出貨</li>
-          <li class="unpaidbtn">已付款</li>
-        </ul>
-        <button @click="handleButtonClick">再次購買</button>
-
-        <ul class="orderInfo">
-          <li>{{ orderNumber }}</li>
-          <li>{{ orderTime }}</li>
-          <li>{{ orderProcessing }}</li>
-          <li>{{ orderPrice }}</li>
-          <li>已出貨</li>
-          <li class="unpaidbtn">已付款</li>
-        </ul>
-        <button @click="handleButtonClick">再次購買</button>
-
-        <ul class="orderInfo">
-          <li>{{ orderNumber }}</li>
-          <li>{{ orderTime }}</li>
-          <li>{{ orderProcessing }}</li>
-          <li>{{ orderPrice }}</li>
-          <li>已出貨</li>
-          <li class="unpaidbtn">已付款</li>
-        </ul>
-        <button @click="handleButtonClick">再次購買</button>
-
-        <ul class="orderInfo">
-          <li>{{ orderNumber }}</li>
-          <li>{{ orderTime }}</li>
-          <li>{{ orderProcessing }}</li>
-          <li>{{ orderPrice }}</li>
-          <li>已出貨</li>
-          <li class="unpaidbtn">已付款</li>
-        </ul>
-        <button @click="handleButtonClick">再次購買</button> -->
       </div>
       <div class="order-list">
         <MemberOrderCard
@@ -115,33 +57,6 @@ export default {
       currentPage: 1,
       pageSize: 2,
       phpdata: []
-      // reserve: [
-      //   //放假資料的位置
-      //   {
-      //     id: '1',
-      //     name: 'xxx',
-      //     booking_date: '2024/05/20',
-      //     booking_time: '17:00',
-      //     guest_count: 6,
-      //     bookingNote: '希望靠角落'
-      //   },
-      //   {
-      //     id: '2',
-      //     name: 'aaa',
-      //     booking_date: '2024/05/21',
-      //     booking_time: '18:00',
-      //     guest_count: 4,
-      //     bookingNote: '希望靠角落'
-      //   },
-      //   {
-      //     id: '3',
-      //     name: 'bbb',
-      //     booking_date: '2024/05/22',
-      //     booking_time: '19:00',
-      //     guest_count: 5,
-      //     bookingNote: '希望靠角落'
-      //   }
-      // ]
     }
   },
   mounted() {

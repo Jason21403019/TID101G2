@@ -22,7 +22,7 @@
         <!-- <label></label> -->
         <select v-model="currentTab" @change="changeTab(currentTab)">
           <option v-for="tab in tabs" :key="tab.id" :value="tab.name">
-            <h1>{{ tab.name }}</h1>
+            {{ tab.name }}
           </option>
         </select>
       </section>
@@ -78,30 +78,7 @@ export default {
           name: '無酒精果汁'
         }
       ],
-      // infos: [
-      //   {
-      //     id: '01',
-      //     brand: 'Carl Jung 卡爾榮格',
-      //     name: 'Mousseux 穆瑟 無酒精氣泡酒',
-      //     Specification: ' ' + '750ML/瓶',
-      //     serialNumber: ' ' + 'P001',
-      //     information:
-      //       '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
-      //     price: 'NT$900',
-      //     img: 'juice/Bel Normande.png'
-      //   },
-      //   {
-      //     id: 'tab2',
-      //     brand: 'Carl Jung 卡爾',
-      //     name: 'Mousseux 穆瑟 無酒精氣',
-      //     Specification: ' 75ML/瓶',
-      //     serialNumber: 'P001',
-      //     information:
-      //       '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
-      //     price: 'NT$900',
-      //     img: 'juice/el Normande redapple.png'
-      //   }
-      // ],
+
       search: ''
     }
   },
@@ -193,14 +170,14 @@ export default {
     display: none;
 
     @include breakpoint(mobile) {
-      margin-right: 3%;
+      margin: 0 3%;
       margin-bottom: 5%;
       display: flex;
     }
 
-    // option {
-    //   font-family: 'Noto Serif TC';
-    // }
+    option {
+      font-family: 'Noto Serif TC';
+    }
   }
 }
 article {
@@ -209,11 +186,7 @@ article {
 
 main {
   background-color: #381b1d;
-  padding-top: 5%;
-
-  @include breakpoint(mobile) {
-    padding-top: 20%;
-  }
+  padding-top: 50px;
 
   p {
     font-size: 22px;
@@ -271,6 +244,7 @@ main {
   margin-left: 3%;
   @include breakpoint(mobile) {
     flex-direction: column;
+    margin-left: 0%;
   }
 }
 .test {
@@ -280,6 +254,9 @@ main {
   justify-content: space-between;
   padding-left: 5%;
   width: 100%;
+  @include breakpoint(mobile) {
+    padding-left: 0%;
+  }
 }
 
 .tab_content {
@@ -330,6 +307,9 @@ article div::before {
     ::placeholder {
       color: rgb(220, 218, 218);
     }
+    @include breakpoint(mobile) {
+      margin-right: 3%;
+    }
   }
   button {
     background-color: rgba(255, 255, 255, 0);
@@ -337,7 +317,10 @@ article div::before {
     border-radius: 10px;
     width: 5%;
     padding: 0;
-    margin-left: -4%;
+    margin-left: -5%;
+    @include breakpoint(mobile) {
+      margin-left: -8%;
+    }
     img {
       width: 20px;
     }

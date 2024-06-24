@@ -1,5 +1,6 @@
 <template>
   <main id="app">
+    <!-- 總攬 -->
     <h2>{{ overview }}</h2>
     <section>
       <article>
@@ -20,16 +21,20 @@
 
       <article>
         <div>
-          <h3>{{ needRestock_count }}</h3>
+          <h3>{{ phpdata.id }}</h3>
           <h4>{{ needRestock }}</h4>
         </div>
         <img :src="icons3" alt="" />
       </article>
     </section>
     <h2>{{ dataAnalysis }}</h2>
+
+    <!-- 數據分析 -->
     <section>
       <AdminLineChart></AdminLineChart>
     </section>
+
+    <!-- 常用功能 -->
     <h2>{{ CommonFunctions }}</h2>
 
     <section>
@@ -53,6 +58,7 @@ export default {
   },
   data() {
     return {
+      phpdata: [],
       overview: '總攬',
       dataAnalysis: '數據分析',
       CommonFunctions: '常用功能',
@@ -79,7 +85,20 @@ export default {
       } else if (page === '預約管理') {
         window.location.href = '#/admin_res'
       }
+    },
+
+    // php
+    fetchProductNeedRestock() {
+      fetch('http://localhost/TID101G2sql/src/components/admin.php')
+        .then((response) => response.json())
+        .then((data) => {
+          this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中
+        })
+        .catch((error) => console.error('Error fetching data:', error))
     }
+  },
+  mounted() {
+    this.fetchProductNeedRestock()
   }
 }
 </script>
@@ -133,6 +152,14 @@ main {
       font-weight: bolder;
       padding-top: 4%;
       padding-bottom: 4%;
+      margin-bottom: 3%;
+      border: 3px black;
+      border-style: groove;
+      border-radius: 10px;
+    }
+    input:hover {
+      background-color: $irishcoffee;
+      color: $ramos-gin-fizz;
     }
   }
 }

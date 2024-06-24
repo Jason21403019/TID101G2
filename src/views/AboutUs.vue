@@ -36,6 +36,10 @@
         <h3>{{ email }}</h3>
         <h3>{{ phone }}</h3>
         <h3>{{ address }}</h3>
+
+        <a href="https://www.facebook.com/TibaMe/?locale=zh_TW"><img src="../imgs/aboutImg/facebook.png" alt="" /></a>
+        <a href="https://www.instagram.com/tibame_wiedu/"><img src="../imgs/aboutImg/instagram.png" alt="" /></a>
+        <a href="https://page.line.me/750htowt"><img src="../imgs/aboutImg/line.png" alt="" /></a>
       </div>
     </section>
   </main>
@@ -280,6 +284,10 @@ section {
   text-align: center;
   background-position: bottom;
   .testbutton {
+    margin-top: 3%;
+  }
+  .testbutton:hover {
+    background-color: $ramos-gin-fizz;
   }
 }
 .aboutBackground_4 {
@@ -294,7 +302,7 @@ section {
   border-radius: 10px;
 
   @include breakpoint(mobile) {
-    height: 50vh;
+    height: 80vh;
   }
   h3 {
     margin: 0;
@@ -314,7 +322,7 @@ section {
     }
 
     @include breakpoint(mobile) {
-      height: 30vh;
+      // height: 300vh;
     }
   }
   div {
@@ -326,6 +334,10 @@ section {
       justify-content: left;
 
       line-height: 50px;
+    }
+    img {
+      padding-top: 3%;
+      padding-right: 3%;
     }
   }
 }

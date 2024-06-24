@@ -6,29 +6,28 @@
     </h4>
     <section class="productInformation">
       <article class="productImg">
-        <img class="productbackground" :src="tabs[0].bigimg" alt="" />
-        <!-- <img class="productbackground2" src="../imgs/productsImg/bg.png" alt="" /> -->
+        <img class="productbackground" :src="selectedProduct().subpage_photo" alt="" />
       </article>
       <article class="details">
-        <h1>{{ tabs[tabsIndex].brand }}</h1>
+        <h1>{{ selectedProduct().brand }}</h1>
 
-        <h1>{{ tabs[tabsIndex].name }}{{ tabs[tabsIndex].Specification }}</h1>
+        <h1>{{ selectedProduct().name }}{{ selectedProduct().details }}</h1>
 
-        <h4>商品編號:{{ tabs[tabsIndex].serialNumber }}</h4>
+        <h4>商品編號:{{ selectedProduct().id }}</h4>
 
-        <span v-html="tabs[tabsIndex].information" class="content"></span>
+        <span v-html="selectedProduct().content" class="content"></span>
         <div>
-          <h2>NT${{ tabs[tabsIndex].price }}</h2>
+          <h2>NT${{ selectedProduct().price }}</h2>
 
           <button class="countIcon" @click="countminusSign">
             {{ minusSign }}
           </button>
           <span class="counts">{{ count }}</span>
           <button class="countIcon" @click="countPlus">{{ plus }}</button>
-          <span class="quantitys"> 還剩{{ tabs[tabsIndex].stock }}件</span>
+          <span class="quantitys"> 還剩{{ selectedProduct().stock }}件</span>
         </div>
         <p>
-          <button class="car" @click="taskAdd()">{{ addToTheCart }}</button>
+          <button class="car" @click="fetchProductsCar">{{ addToTheCart }}</button>
         </p>
       </article>
     </section>
@@ -37,98 +36,52 @@
     <section class="Related">
       <h3>相關商品</h3>
       <ul class="pc">
-        <li v-for="(tab, index) in tabs.slice(0, 3)" :key="tab.id" @click="changeProduct(index)">
-          <img :src="tab.img" alt="" />
-          <p>{{ tab.brand }}</p>
-          <p v-html="tab.name"></p>
-          <p v-html="tab.Specification"></p>
-          <h5>NT${{ tab.price }}</h5>
+        <li v-for="(phpdata, index) in phpdata.slice(0, 3)" :key="phpdata.id" @click="handleOverlayClick(index)">
+          <img :src="phpdata.picture" alt="" />
+          <p>{{ phpdata.brand }}</p>
+          <p v-html="phpdata.name"></p>
+          <p v-html="phpdata.details"></p>
+          <h5>NT${{ phpdata.price }}</h5>
         </li>
       </ul>
       <!-- 手機板 -->
       <ul class="mobile">
-        <li v-for="(tab, index) in tabs.slice(0, 4)" :key="tab.id" @click="changeProduct(index)">
-          <img :src="tab.img" alt="" />
-          <p>{{ tab.brand }}</p>
-          <p v-html="tab.name"></p>
-          <p v-html="tab.Specification"></p>
-          <h5>NT${{ tab.price }}</h5>
+        <li
+          v-for="(phpdata, index) in phpdata.slice(0, 4)"
+          :key="phpdata.id"
+          @click="handleOverlayClickMobile($event, phpdata, index)"
+        >
+          <img :src="phpdata.picture" alt="" />
+          <p>{{ phpdata.brand }}</p>
+          <p v-html="phpdata.name"></p>
+          <p v-html="phpdata.details"></p>
+          <h5>NT${{ phpdata.price }}</h5>
         </li>
       </ul>
     </section>
   </main>
 </template>
 <script>
+import { useProductStore } from '../stores/product'
+import Swal from 'sweetalert2'
 export default {
   data() {
     return {
       count: 0,
+      counts: 1,
       tabsIndex: 0,
+      id: 70,
       plus: '+',
       minusSign: '-',
       addToTheCart: '加入購物車',
       productTasks: [],
       phpdata: [],
-      tabs: [
-        {
-          id: '01',
-          brand: 'Carl Jung 卡爾榮格 ',
-          name: 'Mousseux 穆瑟 無酒精氣泡酒',
-          Specification: ' ' + '750ML/瓶',
-          serialNumber: ' ' + 'P001',
-          stock: 9,
-          information:
-            '全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。',
-          price: '500',
-          img: 'src/imgs/productsImg/sparkling wine/Oddbird-WHITE.jpg',
-          bigimg: 'src/imgs/productsImg/sparkling wine/Oddbird-WHITE.png',
-          category: '無酒精紅酒'
-        },
-        {
-          id: 'tab2',
-          brand: '法國 Bel Normande',
-          name: '貝爾 諾曼第精選氣泡紅葡萄汁',
-          Specification: ' ' + '750ML/瓶',
-          serialNumber: ' ' + 'P001',
-          stock: 12,
-          information:
-            '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
-          price: '700',
-          img: 'src/imgs/productsImg/juice/HenryandLotte.jpg',
-          category: '無酒精白酒'
-        },
-        {
-          id: '03',
-          brand: 'J.Chadin',
-          name: '查帝麝香葡萄氣泡飲',
-          Specification: ' ' + '750ML/瓶',
-          serialNumber: ' ' + 'P001',
-          stock: 15,
-          information:
-            '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
-          price: '300',
-          img: 'src/imgs/productsImg/wine/Carl-Jung.jpg',
-          category: '無酒精紅酒'
-        },
-        {
-          id: '04',
-          brand: 'J.Chadin',
-          name: '查帝麝香葡萄氣泡飲',
-          Specification: ' ' + '750ML/瓶',
-          serialNumber: ' ' + 'P001',
-          stock: 10,
-          information:
-            '<p>全球無酒精葡萄酒的發明者，歐陸多國米其林餐廳指定，孕產婦、幼童、酒精過敏或酒精不耐症者可安心飲用，純素、無添加劑、無人工防腐劑，富含葡萄酒天然營養成分，如白藜蘆醇、單寧等。淡金色澤，微甜，氣泡綿密細緻，適合作開胃酒，百搭各式餐點，搭配中菜也很出色。</p><p>保存期限三年<br />未開封常溫保存，放置陰涼乾燥處。避免陽光直射，開封後蓋緊瓶蓋冷藏。</p>',
-          price: '300',
-          img: 'src/imgs/productsImg/pink wine/Le-Petit-Chavin.jpg',
-          category: '無酒精紅酒'
-        }
-      ]
+      memberId: 'm001'
     }
   },
   computed: {
     quantity() {
-      return this.tabs.length
+      return this.selectedProduct().stock
     }
   },
   methods: {
@@ -142,29 +95,174 @@ export default {
         this.count--
       }
     },
-    // taskAdd() {
-    //   this.productTasks.unshift({
-    //     id: Date.now(),
-    //     img: this.tabs[this.tabsIndex].img,
-    //     brand: this.tabs[this.tabsIndex].brand,
-    //     name: this.tabs[this.tabsIndex].name,
-    //     price: this.tabs[this.tabsIndex].price,
-    //     Specification: this.tabs[this.tabsIndex].Specification,
-    //     count: this.count,
-    //     totalprice: this.count * parseInt(this.tabs[this.tabsIndex].price)
-    //   })
-    //   localStorage.setItem('productTasks', JSON.stringify(this.productTasks))
-    // },
+
+    // php
+    fetchProductsCar() {
+      // 检查 memberId 是否为空或 null
+      if (!this.memberId) {
+        // 如果为空或 null，弹出提示框要求用户先登录
+        Swal.fire({
+          icon: 'warning',
+          position: 'top',
+          title: '請先登入帳號',
+          showConfirmButton: false,
+          timer: 1500,
+          toast: true,
+          onClose: () => {
+            console.log('Alert closed')
+          }
+        })
+        return // 停止执行后续代码
+      }
+
+      // const memberId = 'm001' // 设置 memberId 变量为 'm001'
+      const memberId = this.memberId
+      // 构建带有查询字符串的 URL
+      const url = `http://localhost/TID101G2sql/src/components/ProductCart.php?member_id=${encodeURIComponent(memberId)}`
+      fetch('http://localhost/TID101G2sql/src/components/ProductCart.php', {
+        method: 'POST',
+
+        body: JSON.stringify({
+          id: this.id,
+          product_id: this.selectedProduct().id,
+          member_id: this.memberId,
+          count: this.count
+        }) // 发送选项卡 ID 到后端
+        // body: { account: tabName } // 发送选项卡 ID 到后端
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Insert successful:', data) // 輸出成功信息
+          // 可以在這裡進行一些成功後的處理，如果有需要的話
+        })
+        .catch((error) => console.error('Error inserting data:', error))
+      Swal.fire({
+        icon: 'success',
+        position: 'top',
+        title: '商品加入成功',
+        showConfirmButton: false,
+        timer: 1500,
+        toast: true,
+        onClose: () => {
+          console.log('Alert closed')
+        }
+      })
+      this.id++ // 递增 id
+    },
+
+    fetchProductsCarMobile(phpdata) {
+      // 检查 memberId 是否为空或 null
+      if (!this.memberId) {
+        // 如果为空或 null，弹出提示框要求用户先登录
+        Swal.fire({
+          icon: 'warning',
+          position: 'top',
+          title: '請先登入帳號',
+          showConfirmButton: false,
+          timer: 1500,
+          toast: true,
+          onClose: () => {
+            console.log('Alert closed')
+          }
+        })
+        return // 停止执行后续代码
+      }
+
+      // const memberId = 'm001' // 设置 memberId 变量为 'm001'
+      const memberId = this.memberId
+
+      // 构建带有查询字符串的 URL
+      const url = `http://localhost/TID101G2sql/src/components/ProductCart.php?member_id=${encodeURIComponent(memberId)}`
+      fetch('http://localhost/TID101G2sql/src/components/ProductCart.php', {
+        method: 'POST',
+
+        body: JSON.stringify({ id: this.id, product_id: phpdata.id, member_id: this.memberId, count: this.counts }) // 发送选项卡 ID 到后端
+        // body: { account: tabName } // 发送选项卡 ID 到后端
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Insert successful:', data) // 輸出成功信息
+          // 可以在這裡進行一些成功後的處理，如果有需要的話
+        })
+        .catch((error) => console.error('Error inserting data:', error))
+      Swal.fire({
+        icon: 'success',
+        position: 'top',
+        title: '商品加入成功',
+        showConfirmButton: false,
+        timer: 1500,
+        toast: true,
+        onClose: () => {
+          console.log('Alert closed')
+        }
+      })
+    },
     changeProduct(index) {
       this.tabsIndex = index + 1
     },
+
     fetchAllProductData() {
       fetch('http://localhost/TID101G2sql/src/components/getData.php')
         .then((response) => response.json())
         .then((data) => {
           this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中
+          this.phpdata.sort(() => Math.random() - 0.5)
         })
         .catch((error) => console.error('Error fetching data:', error))
+    },
+    handleOverlayClickMobile(event, phpdata, index) {
+      // 判断点击的具体区域
+      const rect = event.target.getBoundingClientRect()
+
+      const x = event.clientX - rect.left
+      const y = event.clientY - rect.top
+
+      // 根据点击位置判断是哪个部分
+      if (x > rect.width * 0.7 && y > rect.height * 0.42) {
+        // 点击了右下角区域
+        this.fetchProductsCarMobile(phpdata)
+        // Swal.fire({
+        //   icon: 'success',
+        //   position: 'top',
+        //   title: '商品加入成功',
+        //   showConfirmButton: false,
+        //   timer: 1500,
+        //   toast: true,
+        //   onClose: () => {
+        //     console.log('Alert closed')
+        //   }
+        // })
+      } else {
+        // 点击了其他区域
+        this.handleOverlayClick(index)
+      }
+    },
+
+    // pinia
+    selectedProduct() {
+      const store = useProductStore()
+      return store.selectedProduct
+    },
+    handleOverlayClick(index) {
+      const selectedProduct = this.phpdata[index]
+      const store = useProductStore()
+      store.setSelectedProduct({
+        id: selectedProduct.id,
+        brand: selectedProduct.brand,
+        name: selectedProduct.name,
+        details: selectedProduct.details,
+        price: selectedProduct.price,
+        stock: selectedProduct.stock,
+        content: selectedProduct.content,
+        product_class_id: selectedProduct.product_class_id,
+        subpage_photo: selectedProduct.subpage_photo
+      })
+      // window.scrollTo({
+      //   top: 0,
+      //   behavior: 'smooth' // 可選的，平滑滾動
+      // })
+      this.count = 0
+      this.$router.push('/product_subpages')
     }
   },
   mounted() {
@@ -178,12 +276,24 @@ export default {
     @media (max-width: 1280px) {
       @content;
     }
+  } @else if $point == pc2 {
+    @media (max-width: 950px) {
+      @content;
+    }
   } @else if $point == mobile {
     @media (max-width: 768px) {
       @content;
     }
   } @else if $point == mobile2 {
-    @media (max-width: 600px) {
+    @media (max-width: 605px) {
+      @content;
+    }
+  } @else if $point == mobile3 {
+    @media (max-width: 500px) {
+      @content;
+    }
+  } @else if $point == mobile4 {
+    @media (max-width: 430px) {
       @content;
     }
   }
@@ -195,34 +305,34 @@ body {
     font-size: 23px;
     color: white;
     background-color: #381b1d;
+    background-image: url('../imgs/productsImg/bg.png');
+    background-size: 60%;
+    background-repeat: no-repeat;
+
+    align-items: center;
     .productInformation {
       display: flex;
-      // width: 100%;
-      background-image: url('../imgs/productsImg/bg.png');
-      background-size: cover;
-      background-repeat: no-repeat;
       .details {
         padding-right: 2%;
-        width: 70%;
+        width: 50%;
+        // height: 60vh;
         @include breakpoint(pc) {
-          width: 80%;
+          width: 55%;
         }
-        @include breakpoint(mobile) {
-        }
+
         .content {
           @include breakpoint(pc) {
-            font-size: 23px;
+            font-size: 20px;
             line-height: 40px;
           }
           @include breakpoint(mobile) {
             // display: none;
-            font-size: 15px;
+            font-size: 18px;
             line-height: 20px;
           }
-          @include breakpoint(mobile2) {
-            font-size: 11px;
-            line-height: 16px;
-            margin-bottom: 0.5%;
+          @include breakpoint(mobile3) {
+            font-size: 15px;
+            line-height: 15px;
           }
         }
         .countIcon {
@@ -236,18 +346,18 @@ body {
         }
 
         .counts {
-          padding: 0 5%;
+          padding: 0 3%;
           font-size: 50px;
           align-self: center;
           @include breakpoint(pc) {
-            font-size: 40px;
+            font-size: 35px;
           }
           @include breakpoint(mobile) {
             font-size: 20px;
           }
         }
         .quantitys {
-          padding-left: 5%;
+          padding-left: 3%;
           padding-bottom: 0%;
           font-size: 20px;
           align-self: center;
@@ -260,7 +370,7 @@ body {
         }
         div {
           display: flex;
-          @include breakpoint(mobile) {
+          @include breakpoint(mobile2) {
             display: block;
           }
           button {
@@ -270,7 +380,7 @@ body {
         }
         .car {
           @include breakpoint(pc) {
-            font-size: 44px;
+            font-size: 35px;
           }
           @include breakpoint(mobile) {
             font-size: 25px;
@@ -315,15 +425,7 @@ body {
       @include breakpoint(mobile) {
         flex-wrap: wrap;
       }
-      //   @include breakpoint(pc) {
-      //   font-size: 60px;
-      // }
-      // @include breakpoint(mobile) {
-      //   font-size: 55px;
-      // }
-      // @include breakpoint(mobile2) {
-      //   font-size: 50px;
-      // }
+
       li {
         width: 30%;
         font-size: 25px;
@@ -341,7 +443,7 @@ body {
         img {
           width: 100%;
           padding-bottom: 5%;
-
+          cursor: pointer;
           @include breakpoint(mobile) {
             // width: 180px;
           }
@@ -362,42 +464,48 @@ body {
     padding-bottom: 1%;
     color: #fcf0d8;
     @include breakpoint(pc) {
-      font-size: 30px;
+      font-size: 28px;
     }
     @include breakpoint(mobile) {
-      font-size: 21px;
+      font-size: 25px;
     }
     @include breakpoint(mobile2) {
-      font-size: 18px;
+      font-size: 22px;
+    }
+    @include breakpoint(mobile3) {
+      font-size: 20px;
     }
   }
   h2 {
     color: rgb(187, 129, 57);
-    padding-right: 8%;
+    padding-right: 5%;
     // padding-bottom: 3%;
-    font-size: 65px;
+    font-size: 62px;
     font-weight: bolder;
 
     @include breakpoint(pc) {
-      font-size: 57px;
+      font-size: 52px;
     }
     @include breakpoint(mobile) {
       font-size: 40px;
+    }
+    @include breakpoint(mobile3) {
+      font-size: 35px;
     }
   }
   h3 {
     text-align: center;
     font-size: 65px;
-    padding-bottom: 3%;
+    padding-bottom: 1.5%;
     @include breakpoint(mobile) {
       font-size: 40px;
     }
   }
   h4 {
     font-size: 23px;
-    padding-bottom: 3%;
+    padding-bottom: 1.5%;
     @include breakpoint(mobile) {
-      font-size: 12px;
+      font-size: 20px;
     }
     a {
       color: inherit;
@@ -408,13 +516,11 @@ body {
     }
   }
   .breadCrumbs {
-    padding-top: 8%;
+    padding-top: 120px;
     padding-left: 3%;
     @include breakpoint(pc) {
-      padding-top: 10%;
     }
     @include breakpoint(mobile) {
-      padding-top: 25%;
       font-size: 11px;
     }
   }
@@ -422,8 +528,14 @@ body {
     font-size: 40px;
     color: rgb(187, 129, 57);
     font-weight: bolder;
+
     @include breakpoint(mobile) {
       font-size: 20px;
+
+      background-image: url(/src/imgs/icon/icon_cart-shopping-w.svg);
+      background-size: 30%;
+      background-repeat: no-repeat;
+      background-position: right bottom;
     }
   }
   span {
@@ -442,30 +554,36 @@ body {
   }
 
   .productImg {
-    width: 400px;
-    // background-image: url('../imgs/productsImg/bg.png');
-    // background-size: cover;
-    // background-repeat: no-repeat;
+    width: 40%;
 
-    @include breakpoint(mobile) {
-      width: 200px;
-    }
     .productbackground {
-      width: 130%;
-      display: block;
-      padding-top: 10%;
+      width: 550px;
+      @include breakpoint(pc) {
+        width: 515px;
+        margin-left: -20%;
+      }
+      @include breakpoint(pc2) {
+        width: 480px;
+        margin-left: -25%;
+      }
 
-      // background-size: contain;
       @include breakpoint(mobile) {
-        width: 40vw;
-        height: 30vh;
-        float: left;
+        width: 445px;
+        margin-left: -30%;
+      }
+      @include breakpoint(mobile2) {
+        width: 445px;
+        margin-left: -50%;
+      }
+      @include breakpoint(mobile3) {
+        width: 445px;
+        margin-left: -65%;
+      }
+      @include breakpoint(mobile3) {
+        width: 445px;
+        margin-left: -85%;
       }
     }
-    // .productbackground2 {
-    //   width: 100%;
-    //   margin-top: -0%;
-    // }
   }
   li img:hover {
     filter: brightness(70%);
