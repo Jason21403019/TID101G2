@@ -21,6 +21,7 @@ if ($method === 'GET') {
 
 
         $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //將data 轉換成json echo出來
         echo json_encode($data);
     } catch (PDOException $e) {
         echo json_encode(['error' => $e->getMessage()]);
