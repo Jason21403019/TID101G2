@@ -87,7 +87,7 @@
           <td>{{ order.status }}</td>
           <td>{{ order.payment_status }}</td>
           <td>
-            <button @click="openModal('edit', selectedOrder)">
+            <button @click="openModal('edit', order)">
               <img src="../imgs/icon/icon_admin-edit.svg" alt="" width="20px" height="20px" />
             </button>
           </td>
@@ -110,7 +110,7 @@
     :action-type="currentActionType"
     :order="currentOrder"
     :show-cancel-reason="showCancelReason"
-    @save="handleSave"
+    :on-save="handleSave"
   />
 </template>
 
@@ -168,7 +168,7 @@ export default {
     }
   },
   async mounted() {
-    console.log('Component mounted')
+    // console.log('Component mounted')
     await this.loadOrders()
   },
   methods: {
@@ -209,7 +209,7 @@ export default {
           // 顯示已取消的確認消息
           Swal.fire('已取消', '該訂單已被取消', 'success').then(() => {
             // 打開模態窗口
-            this.openModal('cancel', order)
+            // this.openModal('cancel', order)
           })
         }
       })

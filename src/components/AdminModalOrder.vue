@@ -13,11 +13,11 @@
             <div class="mb-3 d-flex align-items-center">
               <div class="col-md-5 d-flex align-items-center">
                 <h4 class="col-form-label me-2">訂單編號:</h4>
-                <span>20210517379430</span>
+                <span>{{ orderData.order_id }}</span>
               </div>
               <div class="col-md-4 d-flex align-items-center">
                 <h4 class="col-form-label me-2">建立日期:</h4>
-                <span>2024/05/07</span>
+                <span>{{ orderData.order_date }}</span>
               </div>
               <div class="col-md-4 d-flex align-items-center">
                 <h4 class="col-form-label me-2">訂單狀態:</h4>
@@ -34,22 +34,22 @@
             <div class="mb-3 d-flex align-items-center">
               <div class="col-md-5 d-flex align-items-center">
                 <h4 class="col-form-label me-2">付款方式:</h4>
-                <span>信用卡</span>
+                <span>{{ orderData.payment_method }}</span>
               </div>
               <div class="col-md-5 d-flex align-items-center">
                 <h4 class="col-form-label me-2">運送方式:</h4>
-                <span>宅配</span>
+                <span>{{ orderData.delivery_method }}</span>
               </div>
             </div>
             <!-- 付款狀態 -->
             <div class="mb-3 d-flex payment-status-section">
               <div class="col-md-6 d-flex align-items-center">
                 <h4 class="col-form-label me-2">付款狀態:</h4>
-                <span>已付款</span>
+                <span>{{ orderData.payment_status }}</span>
               </div>
               <div class="col-md-6 d-flex align-items-center">
                 <h4 class="col-form-label me-2">配送狀態:</h4>
-                <span>配送中</span>
+                <span>{{ orderData.delivery_status }}</span>
               </div>
             </div>
 
@@ -71,15 +71,15 @@
               <div class="mb-3 d-flex align-items-center">
                 <div class="col-md-4 d-flex align-items-center">
                   <h4 class="col-form-label me-2">會員編號:</h4>
-                  <span>123456</span>
+                  <span>{{ orderData.member_id }}</span>
                 </div>
                 <div class="col-md-4 d-flex align-items-center">
                   <h4 class="col-form-label me-2">會員姓名:</h4>
-                  <span>張三</span>
+                  <span>{{ orderData.member_name }}</span>
                 </div>
                 <div class="col-md-4 d-flex align-items-center">
                   <h4 class="col-form-label me-2">會員電話:</h4>
-                  <span>0912345678</span>
+                  <span>{{ orderData.member_phone }}</span>
                 </div>
               </div>
             </section>
@@ -87,38 +87,37 @@
             <!-- 訂單明細 -->
             <section class="orderDetail">
               <h3>訂單明細</h3>
-              <!-- <div v-for="(product, index) in orderData.products" :key="index"> -->
-              <div>
+              <div v-for="(product, index) in orderData.products" :key="index">
                 <div class="mb-3 row align-items-center">
                   <div class="col-md-6 d-flex align-items-center">
                     <h4 class="col-form-label me-2">商品編號:</h4>
-                    <span>222222</span>
+                    <span>{{ product.product_id }}</span>
                   </div>
                   <div class="col-md-6 d-flex align-items-center">
                     <h4 class="col-form-label me-2">商品名稱:</h4>
-                    <span>Mousseux 穆瑟 無酒精氣泡酒</span>
+                    <span>{{ product.product_name }}</span>
                   </div>
                 </div>
 
                 <div class="mb-3 row align-items-center">
                   <div class="col-md-6 d-flex align-items-center">
                     <h4 class="col-form-label me-2">商品品牌:</h4>
-                    <span>Carl Jung 卡爾榮格</span>
+                    <span>{{ product.product_brand }}</span>
                   </div>
                   <div class="col-md-6 d-flex align-items-center">
                     <h4 class="col-form-label me-2">商品規格:</h4>
-                    <span>750ml</span>
+                    <span>{{ product.product_spec }}</span>
                   </div>
                 </div>
 
                 <div class="mb-3 row align-items-center">
                   <div class="col-md-6 d-flex align-items-center">
                     <h4 class="col-form-label me-2">數量:</h4>
-                    <span>3</span>
+                    <span>{{ product.product_count }}</span>
                   </div>
                   <div class="col-md-6 d-flex align-items-center">
                     <h4 class="col-form-label me-2">單價:</h4>
-                    <span>900</span>
+                    <span>{{ product.product_price }}</span>
                   </div>
                 </div>
               </div>
@@ -130,19 +129,21 @@
               <div class="mb-3">
                 <div class="d-flex align-items-center">
                   <h4 class="col-form-label me-2">小計:</h4>
-                  <span>$ 45,000</span>
+                  <span>$ {{ orderData.subtotal }}</span>
                 </div>
                 <div class="d-flex align-items-center">
                   <h4 class="col-form-label me-2">運費:</h4>
-                  <span>$ 250</span>
+                  <span v-if="orderData.shipping_fee">$ {{ orderData.shipping_fee }}</span>
+                  <span v-else>{{ orderData.shipping_fee }}</span>
                 </div>
                 <div class="d-flex align-items-center">
                   <h4 class="col-form-label me-2">優惠券:</h4>
-                  <span>$ -250</span>
+                  <span v-if="orderData.discount">$ {{ orderData.discount }}</span>
+                  <span v-else>{{ orderData.discount }}</span>
                 </div>
                 <div class="d-flex align-items-center">
                   <h4 class="col-form-label me-2">總金額:</h4>
-                  <span>$ 45,000</span>
+                  <span>$ {{ orderData.total_amount }}</span>
                 </div>
               </div>
             </section>
@@ -160,7 +161,7 @@
                 <div class="row mb-3">
                   <label class="col-md-2 col-form-label me-3">收件人姓名:</label>
                   <input
-                    v-model="orderData.recipientName"
+                    v-model="orderData.receiver"
                     type="text"
                     class="form-control"
                     :disabled="!isEditable"
@@ -171,7 +172,7 @@
                 <div class="row mb-3">
                   <label class="col-md-2 col-form-label me-3">收件人電話:</label>
                   <input
-                    v-model="orderData.recipientPhone"
+                    v-model="orderData.receiver_phone"
                     type="text"
                     class="form-control"
                     :disabled="!isEditable"
@@ -182,7 +183,7 @@
                 <div class="row mb-3">
                   <label class="col-md-2 col-form-label text-nowrap me-3">收件人Email:</label>
                   <input
-                    v-model="orderData.recipientEmail"
+                    v-model="orderData.receiver_email"
                     type="text"
                     class="form-control"
                     :disabled="!isEditable"
@@ -193,7 +194,7 @@
                 <div class="row mb-3">
                   <label class="col-md-2 col-form-label me-3">收件人地址:</label>
                   <input
-                    v-model="orderData.recipientAddress"
+                    v-model="orderData.receiver_address"
                     type="text"
                     class="form-control"
                     :disabled="!isEditable"
@@ -204,7 +205,7 @@
                 <div class="row mb-3">
                   <label class="col-md-2 col-form-label me-3">訂單備註:</label>
                   <input
-                    v-model="orderData.orderNote"
+                    v-model="orderData.note"
                     type="text"
                     class="form-control"
                     :disabled="!isEditable"
@@ -226,6 +227,8 @@
 </template>
 
 <script>
+import { useAdminOrderStore } from '../stores/adminOrder'
+
 export default {
   props: {
     actionType: {
@@ -248,41 +251,34 @@ export default {
   data() {
     return {
       orderData: {
-        id: '',
-        date: '',
-        status: '',
-        paymentStatus: '',
-        deliveryStatus: '',
-        memberId: '',
-        memberName: '',
-        memberPhone: '',
+        order_id: '',
+        order_date: '',
+        order_status: '',
+        delivery_status: '',
+        payment_method: '',
+        delivery_method: '',
         subtotal: '',
-        shippingFee: '',
-        coupon: '',
-        totalAmount: '',
-        recipientName: '',
-        recipientPhone: '',
-        recipientEmail: '',
-        recipientAddress: '',
-        paymentMethod: '',
-        deliveryMethod: '',
-        orderNote: '',
+        shipping_fee: '',
+        discount: '',
+        total_amount: '',
+        note: '',
+        member_id: '',
+        member_name: '',
+        member_phone: '',
+        member_email: '',
+        payment_status: '',
+        receiver: '',
+        receiver_phone: '',
+        receiver_email: '',
+        receiver_address: '',
         products: [
           {
-            id: '222222',
-            name: 'Mousseux 穆瑟 無酒精氣泡酒',
-            brand: 'Carl Jung 卡爾榮格',
-            spec: '750ml',
-            quantity: 1,
-            price: 'NT$300'
-          },
-          {
-            id: '333333',
-            name: '紅酒',
-            brand: '品牌B',
-            spec: '500ml',
-            quantity: 2,
-            price: 'NT$200'
+            product_id: '',
+            product_name: '',
+            product_brand: '',
+            product_spec: '',
+            order_quantity: '',
+            product_price: ''
           }
         ]
       },
@@ -294,31 +290,8 @@ export default {
     order: {
       immediate: true,
       handler(newVal) {
-        if (newVal) {
-          this.orderData = { ...newVal }
-        } else {
-          this.orderData = {
-            id: '',
-            date: '',
-            status: '',
-            paymentStatus: '',
-            deliveryStatus: '',
-            memberId: '',
-            memberName: '',
-            memberPhone: '',
-            subtotal: '',
-            shippingFee: '',
-            coupon: '',
-            totalAmount: '',
-            recipientName: '',
-            recipientPhone: '',
-            recipientEmail: '',
-            recipientAddress: '',
-            paymentMethod: '',
-            deliveryMethod: '',
-            orderNote: '',
-            products: []
-          }
+        if (newVal && newVal.id) {
+          this.fetchOrderDetails(newVal.id)
         }
       }
     }
@@ -327,6 +300,20 @@ export default {
     this.modal = new bootstrap.Modal(document.getElementById('orderModal'))
   },
   methods: {
+    async fetchOrderDetails(orderId) {
+      const adminOrderStore = useAdminOrderStore()
+      const result = await adminOrderStore.fetchOrderDetails(orderId)
+
+      if (result.success) {
+        console.log('result.orderDetails:', result.orderDetails)
+        this.orderData = {
+          ...result.orderDetails,
+          products: result.orderDetails.products || []
+        }
+      } else {
+        console.error(result.message)
+      }
+    },
     show() {
       this.modal.show()
     },
