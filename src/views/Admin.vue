@@ -19,9 +19,9 @@
         <img :src="icons2" alt="" />
       </article>
 
-      <article>
+      <article v-if="phpdata.length > 0">
         <div>
-          <h3>{{ phpdata.id }}</h3>
+          <h3>{{ phpdata[0]['count(id)'] }}</h3>
           <h4>{{ needRestock }}</h4>
         </div>
         <img :src="icons3" alt="" />
@@ -89,7 +89,7 @@ export default {
 
     // php
     fetchProductNeedRestock() {
-      fetch('http://localhost/TID101G2sql/src/components/admin.php')
+      fetch('http://localhost/TID101G2/public/api/Admin.php')
         .then((response) => response.json())
         .then((data) => {
           this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中

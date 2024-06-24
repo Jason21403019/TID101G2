@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     fetchMemberVoucherData() {
-      fetch('http://localhost/TID101G2sql/src/components/MemberVoucher.php')
+      fetch('http://localhost/TID101G2/public/api/MemberVoucher.php')
         .then((response) => response.json())
         .then((data) => {
           this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中

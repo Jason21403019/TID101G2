@@ -70,7 +70,7 @@ export default {
       count: 0,
       counts: 1,
       tabsIndex: 0,
-      id: 70,
+      id: 77,
       plus: '+',
       minusSign: '-',
       addToTheCart: '加入購物車',
@@ -119,7 +119,7 @@ export default {
       const memberId = this.memberId
       // 构建带有查询字符串的 URL
       const url = `http://localhost/TID101G2sql/src/components/ProductCart.php?member_id=${encodeURIComponent(memberId)}`
-      fetch('http://localhost/TID101G2sql/src/components/ProductCart.php', {
+      fetch('http://localhost/TID101G2/public/api/ProductCart.php', {
         method: 'POST',
 
         body: JSON.stringify({
@@ -173,7 +173,7 @@ export default {
 
       // 构建带有查询字符串的 URL
       const url = `http://localhost/TID101G2sql/src/components/ProductCart.php?member_id=${encodeURIComponent(memberId)}`
-      fetch('http://localhost/TID101G2sql/src/components/ProductCart.php', {
+      fetch('http://localhost/TID101G2/public/api/ProductCart.php', {
         method: 'POST',
 
         body: JSON.stringify({ id: this.id, product_id: phpdata.id, member_id: this.memberId, count: this.counts }) // 发送选项卡 ID 到后端
@@ -196,13 +196,14 @@ export default {
           console.log('Alert closed')
         }
       })
+      this.id++
     },
     changeProduct(index) {
       this.tabsIndex = index + 1
     },
 
     fetchAllProductData() {
-      fetch('http://localhost/TID101G2sql/src/components/getData.php')
+      fetch('http://localhost/TID101G2/public/api/Product.php')
         .then((response) => response.json())
         .then((data) => {
           this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中

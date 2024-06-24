@@ -38,7 +38,7 @@ export default {
       currentPage: 1,
       pageSize: 6,
       count: 1,
-      id: 60,
+      id: 66,
       memberId: 'm001'
     }
   },
@@ -71,7 +71,7 @@ export default {
 
     // php
     fetchAllProductData() {
-      fetch('http://localhost/TID101G2sql/src/components/getData.php')
+      fetch('http://localhost/TID101G2/public/api/Product.php')
         .then((response) => response.json())
         .then((data) => {
           this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中
@@ -79,7 +79,7 @@ export default {
         .catch((error) => console.error('Error fetching data:', error))
     },
     fetchProducts(tabName) {
-      fetch('http://localhost/TID101G2sql/src/components/changeProductClass.php', {
+      fetch('http://localhost/TID101G2/public/api/ProductClass.php', {
         method: 'POST',
 
         body: JSON.stringify({ account: tabName }) // 发送选项卡 ID 到后端
@@ -114,7 +114,7 @@ export default {
       const memberId = this.memberId
       // 构建带有查询字符串的 URL
       const url = `http://localhost/TID101G2sql/src/components/ProductCart.php?member_id=${encodeURIComponent(memberId)}`
-      fetch('http://localhost/TID101G2sql/src/components/ProductCart.php', {
+      fetch('http://localhost/TID101G2/public/api/ProductCart.php', {
         method: 'POST',
 
         body: JSON.stringify({ id: this.id, product_id: product.id, member_id: this.memberId, count: this.count }) // 发送选项卡 ID 到后端
