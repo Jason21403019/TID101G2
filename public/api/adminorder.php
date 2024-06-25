@@ -20,6 +20,12 @@ switch ($action) {
   case 'orderDetails':
     fetchOrderDetails($input['order_id']);
     break;
+  case 'editOrder':
+    editOrder($input['order_id'], $input['recipientData']);
+    break;
+  // case 'cancelOrder':
+  //   cancelOrder($input['order_id']);
+  //   break;
   default:
     echo json_encode(['success' => false, 'message' => 'Invalid action']);
     break;
@@ -53,7 +59,7 @@ function fetchOrders() {
   }
 }
 
-
+// 彈跳視窗
 function fetchOrderDetails($order_id) {
   global $conn;
 
@@ -86,7 +92,7 @@ function fetchOrderDetails($order_id) {
                   'product_name', `product`.name,
                   'product_brand', `product`.brand,
                   'product_spec', `product`.details,
-                  'product_count', `order_details`.count,
+                  'product_quantity', `order_details`.quantity,
                   'product_price', `product`.price
               )
           ) AS products
@@ -120,4 +126,54 @@ function fetchOrderDetails($order_id) {
   }
 }
 
+// 編輯收件人
+function editOrder($order_id, $recipientData) {
+  global $conn;
+
+  $receiver = $recipientData['receiver'];
+  $receiver_phone = $recipientData['receiver_phone'];
+  $receiver_email = $recipientData['receiver_email'];
+  $receiver_address = $recipientData['receiver_address'];
+  $note = $recipientData['note'];
+  $order_status = $recipientData['order_status']; 
+
+  try {
+    $sql = "UPDATE `order` SET receiver = :receiver, receiver_phone = :receiver_phone, receiver_email = :receiver_email, receiver_address = :receiver_address, note = :note, status = :order_status WHERE id = :order_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':receiver', $receiver, PDO::PARAM_STR);
+    $stmt->bindParam(':receiver_phone', $receiver_phone, PDO::PARAM_STR);
+    $stmt->bindParam(':receiver_email', $receiver_email, PDO::PARAM_STR);
+    $stmt->bindParam(':receiver_address', $receiver_address, PDO::PARAM_STR);
+    $stmt->bindParam(':note', $note, PDO::PARAM_STR);
+    $stmt->bindParam(':order_status', $order_status, PDO::PARAM_STR);
+    $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+
+    if ($stmt->execute()) {
+      echo json_encode(['success' => true]);
+    } else {
+      throw new Exception('Error executing update statement');
+    }
+  } catch (Exception $e) {
+    echo json_encode(['success' => false, 'message' => 'Error updating order', 'error' => $e->getMessage()]);
+  }
+}
+
+// 取消訂單
+// function cancelOrder($order_id) {
+//   global $conn;
+
+//   try {
+//     $sql = "UPDATE `order` SET status = '已取消' WHERE id = :order_id";
+//     $stmt = $conn->prepare($sql);
+//     $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+
+//     if ($stmt->execute()) {
+//       echo json_encode(['success' => true]);
+//     } else {
+//       throw new Exception('Error executing update statement');
+//     }
+//   } catch (Exception $e) {
+//     echo json_encode(['success' => false, 'message' => 'Error updating order status', 'error' => $e->getMessage()]);
+//   }
+// }
 ?>

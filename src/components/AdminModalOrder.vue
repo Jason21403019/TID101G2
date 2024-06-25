@@ -21,7 +21,7 @@
               </div>
               <div class="col-md-4 d-flex align-items-center">
                 <h4 class="col-form-label me-2">訂單狀態:</h4>
-                <select v-model="orderData.status" class="form-control">
+                <select v-model="orderData.order_status" class="form-control">
                   <option value="處理中">處理中</option>
                   <option value="已出貨">已出貨</option>
                   <option value="已完成">已完成</option>
@@ -113,13 +113,14 @@
                 <div class="mb-3 row align-items-center">
                   <div class="col-md-6 d-flex align-items-center">
                     <h4 class="col-form-label me-2">數量:</h4>
-                    <span>{{ product.product_count }}</span>
+                    <span>{{ product.product_quantity }}</span>
                   </div>
                   <div class="col-md-6 d-flex align-items-center">
                     <h4 class="col-form-label me-2">單價:</h4>
                     <span>{{ product.product_price }}</span>
                   </div>
                 </div>
+                <hr v-if="index < orderData.products.length - 1" />
               </div>
             </section>
 
@@ -227,6 +228,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import { useAdminOrderStore } from '../stores/adminOrder'
 
 export default {
@@ -305,7 +307,6 @@ export default {
       const result = await adminOrderStore.fetchOrderDetails(orderId)
 
       if (result.success) {
-        console.log('result.orderDetails:', result.orderDetails)
         this.orderData = {
           ...result.orderDetails,
           products: result.orderDetails.products || []
@@ -320,8 +321,33 @@ export default {
     hide() {
       this.modal.hide()
     },
-    handleSave() {
-      this.onSave(this.orderData)
+    async handleSave() {
+      const adminOrderStore = useAdminOrderStore()
+      const result = await adminOrderStore.editOrderRecipient(this.orderData.order_id, {
+        receiver: this.orderData.receiver,
+        receiver_phone: this.orderData.receiver_phone,
+        receiver_email: this.orderData.receiver_email,
+        receiver_address: this.orderData.receiver_address,
+        note: this.orderData.note,
+        order_status: this.orderData.order_status // 包括訂單狀態
+      })
+
+      if (result.success) {
+        Swal.fire({
+          icon: 'success',
+          title: '成功',
+          text: '訂單資訊更新成功'
+        })
+        this.onSave(this.orderData)
+        this.isEditable = false // 成功儲存後將狀態設置為不可編輯
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: '失敗',
+          text: '訂單資訊更新失敗'
+        })
+        console.error('訂單資訊更新失敗', result.message)
+      }
       this.hide()
     },
     toggleEdit() {

@@ -78,7 +78,13 @@
       <tbody>
         <tr v-for="order in orders" :key="order.orderId">
           <th scope="row">
-            <input class="form-check-input" type="checkbox" v-model="order.selected" @change="checkIfAllSelected" />
+            <input
+              v-if="order.status !== '已取消' && order.status !== '已完成'"
+              class="form-check-input"
+              type="checkbox"
+              v-model="order.selected"
+              @change="checkIfAllSelected"
+            />
           </th>
           <td>{{ order.id }}</td>
           <td>{{ order.order_date }}</td>
@@ -87,12 +93,12 @@
           <td>{{ order.status }}</td>
           <td>{{ order.payment_status }}</td>
           <td>
-            <button @click="openModal('edit', order)">
+            <button v-if="order.status !== '已取消' && order.status !== '已完成'" @click="openModal('edit', order)">
               <img src="../imgs/icon/icon_admin-edit.svg" alt="" width="20px" height="20px" />
             </button>
           </td>
           <td>
-            <button @click="confirmCancelOrder(order)">
+            <button v-if="order.status !== '已取消' && order.status !== '已完成'" @click="confirmCancelOrder(order)">
               <img src="../imgs/icon/icon_admin-square.svg" alt="" width="20px" height="20px" />
             </button>
           </td>
@@ -119,7 +125,6 @@ import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
 import AdminBulkBtn from '../components/AdminBulkBtn.vue'
 import AdminDateInput from '../components/AdminDateInput.vue'
-// import AdminInput from '../components/AdminInput.vue'
 import AdminSelectInput from '../components/AdminSelectInput.vue'
 import ModalOrder from '../components/AdminModalOrder.vue'
 import Swal from 'sweetalert2'
@@ -130,7 +135,6 @@ export default {
   name: 'AdminOrder',
   components: {
     AdminBreadcrumb,
-    // AdminInput,
     AdminSelectInput,
     AdminDateInput,
     AdminBtn,
@@ -176,8 +180,6 @@ export default {
     async loadOrders() {
       const adminOrderStore = useAdminOrderStore()
       const result = await adminOrderStore.fetchOrders()
-      // 沒有收件人欄位
-      // console.log(result)
 
       if (result.success) {
         this.orders = result.orders
@@ -189,10 +191,8 @@ export default {
       this.showCancelReason = actionType === 'cancel'
       this.$refs.modal.show()
     },
-    handleSave(order) {
-      // 編輯訂單的邏輯
-      console.log('編輯訂單', order)
-      // 更新訂單數據的邏輯
+    async handleSave(order) {
+      await this.loadOrders()
     },
     confirmCancelOrder(order) {
       Swal.fire({
@@ -200,7 +200,7 @@ export default {
         text: '您確定要取消此訂單嗎？',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: '是的，取消!',
+        confirmButtonText: '確定',
         cancelButtonText: '否'
       }).then((result) => {
         if (result.isConfirmed) {
