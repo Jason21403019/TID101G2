@@ -25,7 +25,7 @@
         <div class="article-content">
           <h3>{{ article.title }}</h3>
         </div>
-        <ReadMoreButton class="read-more-button" :custom-style="{ top: '3rem', right: '10px' }" />
+        <ReadMoreButton />
       </div>
     </div>
     <div class="more_btn">
@@ -40,15 +40,15 @@ import WineColumnCategory from '@/components/WineColumnCategory.vue'
 import WineColumnTitle from '@/components/WineColumnTitle.vue'
 import bottleWine from '@/imgs/wineColumnImg/bottle-with-champagne-glasses-tray.jpg'
 import cotailWorld from '@/imgs/wineColumnImg/spicy-michelada-drink-assortment-table.jpg'
-import img1 from '../imgs/wineColumnImg/dl.beatsnoop.com-final-M9bsqoHSIh.jpg'
-import img2 from '../imgs/wineColumnImg/glass-mojito-delicious-fresh-summer-cocktail-space-text.jpg'
-import img3 from '../imgs/wineColumnImg/cocktail-decorated-with-slice-lime.jpg'
-import img4 from '../imgs/wineColumnImg/wine.jpg'
-import img5 from '../imgs/wineColumnImg/vodka.jpg'
-import img6 from '../imgs/wineColumnImg/wine2.jpg'
-import img7 from '../imgs/wineColumnImg/wine-glasses-set-table-part-inviting-dinner-setting.jpg'
-import img8 from '../imgs/wineColumnImg/whiskey-making.jpg'
-import img9 from '../imgs/wineColumnImg/illuminated-train-night.jpg'
+import img1 from '../imgs/wineColumnImg/still-life-wine-carafe-table-(1).jpg'
+import img2 from '../imgs/wineColumnImg/still-life-wine-carafe-table-(2).jpg'
+import img3 from '../imgs/wineColumnImg/three-different-beautiful-cocktails-warm-colors-flower-background-cocktail.jpg'
+import img4 from '../imgs/wineColumnImg/side-view-woman-hand-pouring-red-wine-into-glass-different-kinds-cheese-olive-walnut-grape-white-surface-black-background.jpg'
+import img5 from '../imgs/wineColumnImg/top-view-new-year-party-arrangement.jpg'
+import img6 from '../imgs/wineColumnImg/handsome-bartender-making-drinking-cocktails-counter.jpg'
+import img7 from '../imgs/wineColumnImg/three-glass-cocktail-serve-bar-table.jpg'
+import img8 from '../imgs/wineColumnImg/liquid-that-is-poured-into-glass.jpg'
+import img9 from '../imgs/wineColumnImg/wide-shot-bottles-glasses-display-cabinet-bar-scandic-hotel-copenhagen-denmark.jpg'
 import newsReport from '@/imgs/wineColumnImg/businessman-reading-daily-news.jpg'
 
 export default {
@@ -84,15 +84,15 @@ export default {
         }
       ],
       articles: [
-        { id: 1, title: '威士忌釀造的藝術', image: img1 },
-        { id: 2, title: '蘭姆酒的奇幻旅程', image: img2 },
-        { id: 3, title: '龍舌蘭的酒吧神話', image: img3 },
-        { id: 4, title: '葡萄酒的氣候效應', image: img4 },
-        { id: 5, title: '威士忌的風味圖譜', image: img5 },
-        { id: 6, title: '葡萄酒鑑賞技巧', image: img6 },
-        { id: 7, title: '威士忌的歷史沿革', image: img7 },
-        { id: 8, title: '享受葡萄酒的樂趣', image: img8 },
-        { id: 9, title: '享受葡萄酒的樂趣', image: img9 }
+        { id: 1, title: '創新調酒風潮', image: img1 },
+        { id: 2, title: '新派調酒秘方', image: img2 },
+        { id: 3, title: '調酒潮流前線', image: img3 },
+        { id: 4, title: '未來調酒風尚', image: img4 },
+        { id: 5, title: '調酒新風味', image: img5 },
+        { id: 6, title: '創意調酒樂趣', image: img6 },
+        { id: 7, title: '時尚調酒指南', image: img7 },
+        { id: 8, title: '新銳調酒世界', image: img8 },
+        { id: 9, title: '風格調酒探索', image: img9 }
       ]
     }
   },
@@ -218,6 +218,7 @@ nav {
   display: flex;
   flex-direction: column;
   position: relative;
+  z-index: 10;
   &::before {
     content: '';
     position: absolute;
@@ -226,8 +227,15 @@ nav {
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
   }
-  .read-more-button {
+  &:hover .read-more-button {
     position: absolute;
+    z-index: 100;
+    opacity: 1;
+  }
+
+  &:hover .read-more-button .text {
+    opacity: 1;
+    transition-delay: 0.2s;
   }
 }
 
@@ -245,25 +253,6 @@ nav {
   color: $ramos-gin-fizz;
   letter-spacing: $letterspacing;
   font-family: $fontfamily;
-}
-.article-card {
-  position: relative;
-  z-index: 10;
-
-  &:hover .read-more-button {
-    position: absolute;
-    z-index: 100;
-    opacity: 1;
-  }
-
-  &:hover .read-more-button .text {
-    opacity: 1;
-    transition-delay: 0.2s;
-  }
-
-  &:hover .read-more-button .arrow {
-    transform: translateX(55px);
-  }
 }
 .more_btn {
   width: 80%;

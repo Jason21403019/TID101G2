@@ -92,7 +92,7 @@ export default {
         { id: 6, title: '葡萄酒鑑賞技巧', image: img6 },
         { id: 7, title: '威士忌的歷史沿革', image: img7 },
         { id: 8, title: '享受葡萄酒的樂趣', image: img8 },
-        { id: 9, title: '享受葡萄酒的樂趣', image: img9 }
+        { id: 9, title: '葡萄酒的夢想', image: img9 }
       ],
       page: 1,
       pageSize: 9,
@@ -231,6 +231,16 @@ nav {
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
   }
+  &:hover .read-more-button {
+    position: absolute;
+    z-index: 100;
+    opacity: 1;
+  }
+
+  &:hover .read-more-button .text {
+    opacity: 1;
+    transition-delay: 0.2s;
+  }
 }
 
 .article-card img {
@@ -248,26 +258,6 @@ nav {
   letter-spacing: $letterspacing;
   font-family: $fontfamily;
 }
-.article-card {
-  position: relative;
-  z-index: 10;
-
-  &:hover .read-more-button {
-    position: absolute;
-    z-index: 100;
-    opacity: 1;
-  }
-
-  &:hover .read-more-button .text {
-    opacity: 1;
-    transition-delay: 0.2s;
-  }
-
-  &:hover .read-more-button .arrow {
-    transform: translateX(55px);
-  }
-}
-
 .more_btn {
   width: 80%;
   margin: 0 auto;

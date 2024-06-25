@@ -40,15 +40,15 @@ import WineColumnCategory from '@/components/WineColumnCategory.vue'
 import WineColumnTitle from '@/components/WineColumnTitle.vue'
 import bottleWine from '@/imgs/wineColumnImg/bottle-with-champagne-glasses-tray.jpg'
 import cotailWorld from '@/imgs/wineColumnImg/spicy-michelada-drink-assortment-table.jpg'
-import img1 from '../imgs/wineColumnImg/dl.beatsnoop.com-final-M9bsqoHSIh.jpg'
-import img2 from '../imgs/wineColumnImg/glass-mojito-delicious-fresh-summer-cocktail-space-text.jpg'
-import img3 from '../imgs/wineColumnImg/cocktail-decorated-with-slice-lime.jpg'
-import img4 from '../imgs/wineColumnImg/wine.jpg'
-import img5 from '../imgs/wineColumnImg/vodka.jpg'
-import img6 from '../imgs/wineColumnImg/wine2.jpg'
-import img7 from '../imgs/wineColumnImg/wine-glasses-set-table-part-inviting-dinner-setting.jpg'
-import img8 from '../imgs/wineColumnImg/whiskey-making.jpg'
-import img9 from '../imgs/wineColumnImg/illuminated-train-night.jpg'
+import img1 from '../imgs/wineColumnImg/vertical-shot-person-holding-glass-wine-vineyard-sunlight.jpg'
+import img2 from '../imgs/wineColumnImg/glass-red-wine-bottle-bar-counter.jpg'
+import img3 from '../imgs/wineColumnImg/waiter-offers-visitors-wine.jpg'
+import img4 from '../imgs/wineColumnImg/organic-vineyard-chianti-region-ripe-grapes-generated-by-ai.jpg'
+import img5 from '../imgs/wineColumnImg/three-different-beautiful-cocktails-warm-colors-flower-background-cocktail.jpg'
+import img6 from '../imgs/wineColumnImg/vineyard-landscape-with-nature-grapevines.jpg'
+import img7 from '../imgs/wineColumnImg/aerial-shot-hungarian-parliament-building-budapest-hungary-cloudy-sky.jpg'
+import img8 from '../imgs/wineColumnImg/people-cling-with-different-cocktail-glasses.jpg'
+import img9 from '../imgs/wineColumnImg/set-alcoholic-beverages-studio-shot.jpg'
 import newsReport from '@/imgs/wineColumnImg/businessman-reading-daily-news.jpg'
 
 export default {
@@ -84,15 +84,15 @@ export default {
         }
       ],
       articles: [
-        { id: 1, title: '威士忌釀造的藝術', image: img1 },
-        { id: 2, title: '蘭姆酒的奇幻旅程', image: img2 },
-        { id: 3, title: '龍舌蘭的酒吧神話', image: img3 },
-        { id: 4, title: '葡萄酒的氣候效應', image: img4 },
-        { id: 5, title: '威士忌的風味圖譜', image: img5 },
-        { id: 6, title: '葡萄酒鑑賞技巧', image: img6 },
-        { id: 7, title: '威士忌的歷史沿革', image: img7 },
-        { id: 8, title: '享受葡萄酒的樂趣', image: img8 },
-        { id: 9, title: '享受葡萄酒的樂趣', image: img9 }
+        { id: 1, title: '探索全球稀有葡萄酒與烈酒', image: img1 },
+        { id: 2, title: '夏日十大推薦雞尾酒', image: img2 },
+        { id: 3, title: '精釀啤酒的藝術', image: img3 },
+        { id: 4, title: '美食與葡萄酒搭配指南', image: img4 },
+        { id: 5, title: '亞洲異國烈酒探索', image: img5 },
+        { id: 6, title: '威士忌品鑑指南', image: img6 },
+        { id: 7, title: '經典雞尾酒製作秘訣', image: img7 },
+        { id: 8, title: '葡萄酒收藏入門', image: img8 },
+        { id: 9, title: '全球知名酒莊巡禮', image: img9 }
       ]
     }
   },
@@ -219,6 +219,7 @@ nav {
   display: flex;
   flex-direction: column;
   position: relative;
+  z-index: 10;
   &::before {
     content: '';
     position: absolute;
@@ -226,6 +227,16 @@ nav {
     height: 400px;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
+  }
+  &:hover .read-more-button {
+    position: absolute;
+    z-index: 100;
+    opacity: 1;
+  }
+
+  &:hover .read-more-button .text {
+    opacity: 1;
+    transition-delay: 0.2s;
   }
 }
 
@@ -243,25 +254,6 @@ nav {
   color: $ramos-gin-fizz;
   letter-spacing: $letterspacing;
   font-family: $fontfamily;
-}
-.article-card {
-  position: relative;
-  z-index: 10;
-
-  &:hover .read-more-button {
-    position: absolute;
-    z-index: 100;
-    opacity: 1;
-  }
-
-  &:hover .read-more-button .text {
-    opacity: 1;
-    transition-delay: 0.2s;
-  }
-
-  &:hover .read-more-button .arrow {
-    transform: translateX(55px);
-  }
 }
 .more_btn {
   width: 80%;

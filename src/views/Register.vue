@@ -105,6 +105,11 @@ export default {
   watch: {
     'form.password': 'validatePasswords'
   },
+  computed: {
+    isLoggedIn() {
+      return useUserStore().isLoggedIn
+    }
+  },
   methods: {
     ...mapActions(useUserStore, ['login']),
     showRegister() {
@@ -113,10 +118,11 @@ export default {
     showLogin() {
       this.isRegister = false
     },
+    toggleLogin() {
+      useUserStore().toggleLogin()
+    },
     async login() {
       const userStore = useUserStore()
-
-      // alert('ttt')
 
       if (!this.loginForm.email || !this.loginForm.password) {
         this.passwordError = 'Email 和 Password 是必填的'
@@ -130,11 +136,11 @@ export default {
           }
         })
 
-        console.log('aaa')
+        // console.log('aaa')
 
         const result = response.data
 
-        console.log(result)
+        // console.log(result)
 
         if (result.success) {
           this.passwordError = null
@@ -189,7 +195,7 @@ export default {
             'Content-Type': 'application/json'
           }
         })
-        // console.log('Response:', response)
+        console.log('Response:', response)
 
         const data = response.data
         // console.log('Registration response:', data)

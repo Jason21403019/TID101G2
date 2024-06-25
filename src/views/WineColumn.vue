@@ -30,7 +30,6 @@ import WineColumnTitle from '../components/WineColumnTitle.vue'
 import bottleWine from '../imgs/wineColumnImg/bottle-with-champagne-glasses-tray.jpg'
 import cotailWorld from '../imgs/wineColumnImg/spicy-michelada-drink-assortment-table.jpg'
 import newsReport from '../imgs/wineColumnImg/businessman-reading-daily-news.jpg'
-import 'aos/dist/aos.css'
 
 export default {
   name: 'WineColumn',
@@ -91,7 +90,7 @@ export default {
     },
     fetchCategories() {
       axios
-        .get('http://yourserver.com/fetchWineCategories.php')
+        .get(`${import.meta.env.VITE_PHP_PATH}WineColumn.php`)
         .then((response) => {
           this.categories = response.data
         })
@@ -141,40 +140,6 @@ export default {
       }
     }
   }
-  // .dropdown {
-  //   width: 100%;
-  //   margin: 3rem 0 0.5rem 0;
-  //   display: flex;
-  //   justify-content: end;
-  //   position: relative;
-  //   .btn {
-  //     background: $ramos-gin-fizz;
-  //     color: $campari;
-  //     letter-spacing: $letterspacing;
-  //   }
-  //   .dropdown-menu {
-  //     min-width: 159px;
-  //     position: absolute;
-  //     top: 100%;
-  //     right: 0;
-  //     background: $ramos-gin-fizz;
-  //     letter-spacing: $letterspacing;
-  //     li {
-  //       padding: 0.2rem 0.2rem;
-  //       .dropdown-item {
-  //         display: block;
-  //         padding: 0.55rem 0;
-  //         @include border-radius(8px);
-  //         padding-left: 0.55rem;
-  //         letter-spacing: $letterspacing;
-  //         &:hover {
-  //           background: $negroni;
-  //           color: $ramos-gin-fizz;
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
 }
 .news_title {
   width: 80%;

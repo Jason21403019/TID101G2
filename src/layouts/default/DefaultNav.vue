@@ -15,8 +15,8 @@
         </button>
 
         <!-- 登入後顯示的按鈕 -->
-        <button v-else class="header__icons-icon" @click="toggleSubmenu">
-          <img :src="black ? '@/imgs/icon/icon_member-off.svg' : '@/imgs/icon/icon_member-off-w.svg'" alt="Logout Icon" />
+        <button v-else class="header__icons-icon afterLogin" @click="memberAndLogout">
+          <img class="header__icons-icon-img1" :src="getAfterLoginSrc" alt="Logout Icon" />
         </button>
 
         <!-- 購物車 -->
@@ -24,16 +24,16 @@
           <img v-if="black" class="header__icons-icon-img2" :src="getNavCartSrc" alt="" />
           <img v-else class="header__icons-icon-img2" :src="getNavCartSrc" alt="" />
         </router-link>
-      </div>
-      <!-- 會員中心與登出 -->
-      <div class="dropdown-menu logoutMenu">
-        <router-link to="/member" class="dropdown-item" @click="closeDropdown"> 會員中心 </router-link>
-        <button @click="logout" class="dropdown-item">登出</button>
-      </div>
 
+        <!-- 會員中心與登出 -->
+        <div v-show="memberAndLogout" class="logoutMenu" :class="{ show: isDropdownVisible }">
+          <router-link to="/member" class="logoutMenu-item" @click="closeMemberMenu"> 會員中心 </router-link>
+          <button type="submit" @click="logout" class="logoutMenu-item">登出</button>
+        </div>
+      </div>
       <!-- 登入 -->
-      <div v-show="showSubmenu" class="header__icons-icon submenu" @click="toggleSubmenu">
-        <router-link to="/register" class="header__icons-icon-img1 login" @click.stop="closeHamburger"> 登入 </router-link>
+      <div v-show="showSubmenu" class="header__icons-icon submenu">
+        <router-link to="/register" class="header__icons-icon-img1 login" @click.stop="handleRegisterClick"> 登入 </router-link>
       </div>
 
       <!-- hamburger -->
@@ -71,8 +71,7 @@
 <script>
 import logoimg from '../../imgs/logo/logo-w.png'
 import membertSrc from '../../imgs/icon/icon_member-on-w.svg'
-import { mapActions, mapState } from 'pinia'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '../../stores/user'
 
 export default {
   inclouds: [logoimg, membertSrc],
@@ -83,11 +82,18 @@ export default {
       lastPos: 0,
       navTop: '0px',
       showSubmenu: false,
-      dropdownVisible: false
+      dropdownVisible: false,
+      isLoggedIn: false,
+      isDropdownVisible: false
     }
   },
   computed: {
-    ...mapState(useUserStore, ['isLoggedIn']),
+    // ...mapState(useUserStore, ['isLoggedIn']),
+    isLoggedIn() {
+      const userStore = useUserStore()
+
+      return userStore.isLoggedIn
+    },
     currentPath() {
       // console.log(this.$route.name)
 
@@ -121,6 +127,11 @@ export default {
         ? new URL('@/imgs/icon/icon_cart-shopping.svg', import.meta.url).href
         : new URL('@/imgs/icon/icon_cart-shopping-w.svg', import.meta.url).href
     },
+    getAfterLoginSrc() {
+      return this.black
+        ? new URL('@/imgs/icon/icon_member-off.svg', import.meta.url).href
+        : new URL('@/imgs/icon/icon_member-off-w.svg', import.meta.url).href
+    },
     getNavMemberSrc() {
       return this.isHamburgerOpen ? new URL('@/imgs/icon/icon_member-on-w.svg', import.meta.url).href : this.getMemberSrc
     },
@@ -149,17 +160,31 @@ export default {
   },
 
   methods: {
-    ...mapActions(useUserStore, ['logout']),
+    // ...mapActions(useUserStore, ['logout']),
+    logout() {
+      const userStore = useUserStore()
+
+      userStore.logout()
+    },
     toggleHamburger() {
       this.isHamburgerOpen = !this.isHamburgerOpen
     },
     closeHamburger() {
       this.isHamburgerOpen = false
     },
+    closeMemberMenu() {
+      this.isDropdownVisible = false
+    },
     toggleSubmenu() {
       this.showSubmenu = !this.showSubmenu
     },
-
+    handleRegisterClick() {
+      this.showSubmenu = false // 關閉 submenu
+      this.closeHamburger() // 如果還需要進行其他處理，如關閉漢堡菜單
+    },
+    memberAndLogout() {
+      this.isDropdownVisible = !this.isDropdownVisible
+    },
     async logout() {
       try {
         const response = await axios.post(
@@ -259,6 +284,44 @@ export default {
         outline: none;
         cursor: pointer;
       }
+      .logoutMenu {
+        position: absolute;
+        width: 170px;
+        height: fit-content;
+        top: 30px;
+        right: 75px;
+        display: none;
+        flex-direction: column;
+        align-items: center !important;
+        padding: 0.5rem 0.5rem;
+        @include border-radius(8px);
+        background: $negroni;
+        font-size: $fontSize_p;
+        &-item {
+          color: $blackvevet;
+
+          &:nth-child(1) {
+            margin-bottom: 0.65rem;
+            text-decoration: none;
+            width: 100%;
+            font-family: $fontfamily;
+            text-align: center;
+            background: $ramos-gin-fizz;
+            @include border-radius(4px);
+          }
+          &:nth-child(2) {
+            width: 100%;
+            font-family: $fontfamily;
+            @include border-radius(4px);
+            color: $negroni;
+            text-align: center;
+            background: $ramos-gin-fizz;
+          }
+        }
+      }
+      .logoutMenu.show {
+        display: flex;
+      }
       .register {
         // border: 1px solid red;
         display: flex;
@@ -282,23 +345,6 @@ export default {
           width: 30px;
           padding-top: 2px;
         }
-      }
-      .dropdown-menu {
-        position: absolute;
-        top: 60px;
-        left: -75px;
-        width: 120px !important;
-        height: 50px;
-        background: $negroni;
-        @include border-radius(8px);
-        color: $ramos-gin-fizz;
-        font-size: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none;
-        font-size: $fontSize_p;
-        z-index: 1000;
       }
     }
     .login {
