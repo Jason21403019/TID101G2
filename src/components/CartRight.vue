@@ -222,24 +222,25 @@ export default {
                 text: '請填寫所有必填欄位!',
             });
          }
-       }
-    },
+       },
 
-  submitOrder() {
-    Swal.fire({
-      title: '訂單處理中',
-      html: '頁面跳轉中...',
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: () => {
-        Swal.showLoading();
-      }
+    submitOrder() {
+        Swal.fire({
+        title: '訂單處理中',
+        html: '頁面跳轉中...',
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+            Swal.showLoading();
+        }
     }).then(result => {
       if (result.dismiss === Swal.DismissReason.timer) {
-        this.$router.push('/creditcard');
+        this.$router.push({ name: 'CreditCard' });
       }
     });
   }
+
+    },
  };
 
 

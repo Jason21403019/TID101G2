@@ -2,7 +2,7 @@
     <div class="wrapper">
       <div class="form">
         <div class="card-input">
-          <label for="cardNumber">卡號</label>
+          <label>卡號</label>
           <div class="card-number-wrapper">
             <input
               type="text"
@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="card-input">
-          <label for="cardName">持卡人姓名</label>
+          <label>持卡人姓名</label>
           <input type="text" v-model="cardName" id="cardName" />
         </div>
         <div class="card-input">
@@ -85,6 +85,7 @@
 <script>
 import { ref } from 'vue';
 import Swal from 'sweetalert2';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'CardForm',
@@ -97,6 +98,7 @@ export default {
     const cardMonth = ref('');
     const cardYear = ref('');
     const cardCvv = ref('');
+    const router = useRouter();
 
     const focusNext = (event, index) => {
       if (event.target.value.length === event.target.maxLength) {
@@ -157,19 +159,37 @@ export default {
             confirmButtonText: '確定',
           });
         } else {
-          Swal.fire({
-            title: '提交成功！',
-            icon: 'success',
-            confirmButtonText: '確定',
-          });
+          submitOrder();
         }
       } else {
         Swal.fire({
           title: '請填寫所有欄位',
           icon: 'error',
           confirmButtonText: '確定',
-        });
+        })
       }
+    };
+
+    const submitOrder = () => {
+      Swal.fire({
+        title: '付款處理中',
+        html: '請稍候...',
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      }).then(result => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+          Swal.fire({
+            title: '付款成功！',
+            icon: 'success',
+            confirmButtonText: '確定',
+          }).then(() => {
+            router.push('/ordercomplete');
+          });
+        }
+      });
     };
 
     return {
