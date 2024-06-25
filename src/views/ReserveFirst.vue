@@ -34,14 +34,14 @@
       <!-- 當有錯誤信息的時候才會顯示 -->
       <p v-if="errorMessage" class="error" style="color: red">{{ errorMessage }}</p>
 
-      <div class="name">
+      <div class="name" v-if="phpdata.length > 0">
         <p><img src="../imgs/icon/icon_admin-person.svg" alt="" />姓名</p>
-        <input id="name" v-model="name" type="text" placeholder="" required /><br />
+        <input id="name" v-model="phpdata[0].full_name" type="text" placeholder="" required /><br />
       </div>
 
-      <div class="phone">
+      <div class="phone" v-if="phpdata.length > 0">
         <p><img src="../imgs/icon/icon_Vector.svg" alt="" />電話</p>
-        <input id="phone" v-model="phone" type="text" placeholder="" required /><br />
+        <input id="phone" v-model="phpdata[0].phone" type="text" placeholder="" required /><br />
       </div>
 
       <div class="people">
@@ -67,23 +67,17 @@
         <p><img src="../imgs/icon/icon_time.svg" alt="" />用餐日期與時間</p>
         <div class="select">
           <div class="date">
-            <!-- <label for="date">日期:</label> -->
-            <!-- <Datepicker v-model="date" id="date" :placeholder="placeholderText" 
-            style="width: 100%;padding:15px ;font-size: 1.5rem;"></Datepicker> -->
             <input id="date" v-model="date" type="date" required />
           </div>
           <div class="time">
             <input id="time" v-model="time" type="time" required />
-            <!-- <label for="time">時間:</label> -->
-            <!-- <vue-timepicker v-model="time" id="time" :placeholder="placeholderTime"  class="timepicker"></vue-timepicker> -->
-            
           </div>
         </div>
       </div>
 
       <div class="note">
         <p>其他備註</p>
-        <textarea id="note" name="note" cols="140" rows="15" placeholder="有特殊需求可以寫在這裡喔！"></textarea>
+        <textarea id="note" v-model="note" name="note" cols="140" rows="15" placeholder="有特殊需求可以寫在這裡喔！"></textarea>
       </div>
     </div>
 
@@ -96,11 +90,7 @@
 </template>
 
 <script>
-// import VueTimepicker from 'vue3-timepicker';
-// import 'vue3-timepicker/dist/VueTimepicker.css';
-// import Datepicker from 'vue3-datepicker'
-
-
+import Swal from 'sweetalert2'
 export default {
   data() {
     return {
@@ -113,6 +103,8 @@ export default {
       showPopup: false,
       errorMessage: '',
 
+      phpdata: []
+
       // placeholderText: '請選擇日期',
       // placeholderTime: '請選擇時間'
     }
@@ -121,11 +113,7 @@ export default {
     goToNextPage() {
       this.errorMessage = ''
 
-      if (!this.name) {
-        this.errorMessage = '**請填寫姓名**'
-      } else if (!this.phone) {
-        this.errorMessage = '**請填寫聯絡電話**'
-      } else if (!this.date) {
+      if (!this.date) {
         this.errorMessage = '**請選擇用餐日期**'
       } else if (!this.time) {
         this.errorMessage = '**請選擇用餐時間**'
@@ -143,9 +131,84 @@ export default {
             note: this.note
           })
         )
+
+        Swal.fire({
+          icon: 'success',
+          title: '預約成功',
+          text: '您的預約已成功。',
+          confirmButtonText: '確認'
+        })
+
+        // 執行 fetchReserve() 方法
+        this.fetchReserve()
         this.$router.push('/reserve_sec')
       }
+    },
+    fetchReserve() {
+      const memberId = 'm001' // 设置 memberId 变量为 'm001'
+
+      // 构建带有查询字符串的 URL
+      // const url = 'http://localhost/TID101G2sql/src/components/ProductCart.php?member_id=${encodeURIComponent(memberId)'};
+      fetch('http://localhost/TID101G2/public/api/ReserveFirst.php', {
+        method: 'POST',
+
+        body: JSON.stringify({
+          booking_date: this.date,
+          booking_time: this.date + ' ' + this.time,
+          guest_count: this.guests,
+          booking_note: this.note,
+          member_id: memberId
+        })
+      })
+      // .then((response) => response.json())
+      // .then((data) => {
+      //   console.log('Insert successful:', data) // 輸出成功信息
+      //   // 可以在這裡進行一些成功後的處理，如果有需要的話
+      // })
+      // .catch((error) => console.error('Error inserting data:', error))
+    },
+    fetchReserveMember() {
+      const memberId = 'm001' // 设置 memberId 变量为 'm001'
+
+      fetch('http://localhost/TID101G2/public/api/ReserveMember.php', {
+        method: 'POST',
+
+        body: JSON.stringify({ member_id: memberId }) // 发送选项卡 ID 到后端
+        // body: { account: tabName } // 发送选项卡 ID 到后端
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中
+          // this.currentPage = 1 // Reset current page when data changes
+        })
+      // .catch((error) => console.error('Error fetching data:', error))
     }
+  },
+  computed: {
+    // 使用计算属性将 phpdata[0].full_name 的值同步到 name 中
+    fullNameFromPhpdata() {
+      if (this.phpdata.length > 0) {
+        return this.phpdata[0].full_name
+      } else {
+        return ''
+      }
+    }
+  },
+  watch: {
+    // 监听 phpdata 的变化，将 full_name 的值更新到 name 中
+    phpdata: {
+      handler(newVal, oldVal) {
+        if (newVal.length > 0) {
+          this.name = newVal[0].full_name
+        } else {
+          this.name = ''
+        }
+      },
+      deep: true // 深度监听数组内部变化
+    }
+  },
+  mounted() {
+    this.fetchReserveMember()
   }
 }
 </script>

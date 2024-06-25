@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 export default {
   data() {
     return {
@@ -76,6 +77,40 @@ export default {
     cancelReservation() {
       this.showPopup = false
       // 这里可以添加取消逻辑，例如清空表单或发送取消请求
+
+      // 调用 SweetAlert2 弹窗显示取消预约成功
+      Swal.fire({
+        icon: 'success',
+        title: '取消預約成功',
+        text: '您的預約已成功取消。',
+        confirmButtonText: '確認'
+      })
+
+      // 新增跳轉回預約頁面
+      this.$router.push('/reserve_first')
+      this.fetchReserve()
+    },
+    // php
+    fetchReserve() {
+      const memberId = 'm001' // 设置 memberId 变量为 'm001'
+
+      // 构建带有查询字符串的 URL
+      // const url = http://localhost/TID101G2sql/src/components/ProductCart.php?member_id=${encodeURIComponent(memberId)}
+      fetch('http://localhost/TID101G2/public/api/ReserveSecCancel.php', {
+        method: 'POST',
+
+        body: JSON.stringify({
+          booking_date: this.reservationData.date,
+          booking_time: this.reservationData.date + ' ' + this.reservationData.time,
+          guest_count: this.reservationData.guests
+        })
+      })
+      // .then((response) => response.json())
+      // .then((data) => {
+      //   console.log('Insert successful:', data) // 輸出成功信息
+      //   // 可以在這裡進行一些成功後的處理，如果有需要的話
+      // })
+      // .catch((error) => console.error('Error inserting data:', error))
     }
   }
 }
