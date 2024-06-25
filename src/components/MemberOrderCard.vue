@@ -10,7 +10,13 @@
           <p><strong>總價:</strong> {{ order.total_amount }}</p>
           <p><strong>付款狀態:</strong> {{ order.payment_status }}</p>
           <p><strong>出貨狀態:</strong> {{ order.delivery_status }}</p>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">取消訂單</button>
+          <button type="button"
+                  class="btn btn-primary"
+                  :disabled="order.status === '已取消'"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal">
+            取消訂單
+          </button>
 
           <!-- Modal -->
           <div
@@ -62,13 +68,12 @@ export default {
           this.order.status = '已取消' 
           // 關閉模態視窗
           const modalElement = this.$refs.modal
-          const modalInstance = bootstrap.Modal.getInstance(modalElement)
-          if (modalInstance) {
-            modalInstance.hide()
-          }
+          const modalInstance = bootstrap.Modal.getInstance(modalElement);
+          modalInstance.hide();
         })
         .catch((error) => {
           console.error('取消訂單失敗', error)
+          this.loading = false;
         })
     }
   }

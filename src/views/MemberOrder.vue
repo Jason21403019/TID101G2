@@ -66,7 +66,7 @@ export default {
   methods: {
     // 從後端獲取訂單數據的方法
     fetchOrders() {
-      axios.get('http://localhost/TID101G2/public/api/MemberOrder.php')
+      axios.get(`${import.meta.env.VITE_PHP_PATH}MemberOrder.php`)
         .then(response => {
           this.orders = response.data;
            console.log('成功'.data);
