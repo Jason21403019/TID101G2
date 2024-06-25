@@ -3,7 +3,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-header("Content-Type: application/json");
 include ("conn.php");
 
 try {
@@ -49,10 +48,6 @@ try {
     // 準備和綁定
     $stmt = $conn->prepare("INSERT INTO member (id,password, full_name, birth, phone, email, address, two_fifty, five_hundred
      ) VALUES (:id, :password, :full_name, :birth, :phone, :email, :address, :two_fifty, :five_hundred)");
-    if ($stmt === false) {
-        echo json_encode(["success" => false, "message" => "Prepare failed: " . $conn->errorInfo()[2]]);
-        exit();
-    }
     
     // 設置參數並綁定
     $full_name = $data['full_name'];
@@ -69,16 +64,9 @@ try {
     $stmt->bindParam(':address', $address, $address === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
     $stmt->bindParam(':two_fifty', $two_fifty);
     $stmt->bindParam(':five_hundred', $five_hundred);
+    $stmt->execute();
     
-    
-    
-    echo "mmm";
-    
-    if ($stmt->execute()) {
-        echo json_encode(["success" => true]); 
-    } else {
-        echo json_encode(["success" => false, "message" => "Execute failed: " . $stmt->errorInfo()[2]]);
-    }
+    echo json_encode(["success" => true,"member_id"=>$memberId,"last-id"=>$last_id]); 
 
     $stmt->closeCursor();
     $conn = null;

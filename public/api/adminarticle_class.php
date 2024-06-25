@@ -21,7 +21,7 @@ try {
         case 'GET':
             // 讀取數據
             if ($id) {
-                $stmt = $conn->prepare("SELECT id, note FROM article_class WHERE id = ?");
+                $stmt = $conn->prepare("SELECT id, note FROM article_class WHERE id = ? desc");
                 $stmt->execute([$id]);
                 $product = $stmt->fetch(PDO::FETCH_ASSOC);
                 if ($product) {

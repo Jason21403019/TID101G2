@@ -9,10 +9,10 @@
     <div class="header__btnarea">
       <div class="header__btnarea-icons">
         <!-- 背景底色不同icon顏色變換 -->
-        <button v-if="!isLoggedIn" class="header__icons-icon register" @click="toggleSubmenu">
+        <router-link to="/register" v-if="!isLoggedIn" class="header__icons-icon register" @click="toggleSubmenu">
           <img v-if="black" class="header__icons-icon-img1" :src="getNavMemberSrc" alt="" />
           <img v-else class="header__icons-icon-img1" :src="getNavMemberSrc" alt="" />
-        </button>
+        </router-link>
 
         <!-- 登入後顯示的按鈕 -->
         <button v-else class="header__icons-icon afterLogin" @click="memberAndLogout">
@@ -32,9 +32,9 @@
         </div>
       </div>
       <!-- 登入 -->
-      <div v-show="showSubmenu" class="header__icons-icon submenu">
+      <!-- <div v-show="showSubmenu" class="header__icons-icon submenu">
         <router-link to="/register" class="header__icons-icon-img1 login" @click.stop="handleRegisterClick"> 登入 </router-link>
-      </div>
+      </div> -->
 
       <!-- hamburger -->
       <button class="h__btn" :class="hamburger__class" @click="toggleHamburger">
@@ -83,7 +83,6 @@ export default {
       navTop: '0px',
       showSubmenu: false,
       dropdownVisible: false,
-      isLoggedIn: false,
       isDropdownVisible: false
     }
   },
@@ -91,6 +90,9 @@ export default {
     // ...mapState(useUserStore, ['isLoggedIn']),
     isLoggedIn() {
       const userStore = useUserStore()
+
+      // console.log(userStore)
+      // console.log(userStore.isLoggedIn)
 
       return userStore.isLoggedIn
     },
@@ -183,34 +185,13 @@ export default {
       this.closeHamburger() // 如果還需要進行其他處理，如關閉漢堡菜單
     },
     memberAndLogout() {
-      this.isDropdownVisible = !this.isDropdownVisible
-    },
-    async logout() {
-      try {
-        const response = await axios.post(
-          '/public/api/Logout.php',
-          {},
-          {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          }
-        )
+      // const userStore = useUserStore()
 
-        const result = response.data
-
-        if (result.success) {
-          this.logout() // 使用 Pinia 的 logout action
-          console.log('Logout successful')
-          this.$router.push('/home')
-        } else {
-          this.error = 'Logout failed'
-        }
-      } catch (err) {
-        console.error('Error:', err)
-        this.error = 'An error occurred'
+      if (useUserStore.isLoggedIn == null) {
+        this.isDropdownVisible = !this.isDropdownVisible
       }
     },
+
     handleScroll() {
       const currentPos = window.scrollY
 

@@ -56,7 +56,7 @@
         <div class="login__container-password">
           <label for="password">密碼</label>
           <input id="password" v-model="loginForm.password" type="password" placeholder="請輸入密碼" />
-          <p class="error-message" v-if="password && passwordError">密碼必須至少8位數，且包含英文及數字</p>
+          <p class="error-message" v-if="loginForm.password && passwordError">密碼必須至少8位數，且包含英文及數字</p>
         </div>
         <div class="login__container-noaccount">
           <p>沒有帳號嗎？<button @click="showRegister">註冊</button></p>
@@ -95,10 +95,22 @@ export default {
         birth: '',
         address: ''
       },
+      // form: {
+      //   full_name: 'Test',
+      //   phone: '3333333',
+      //   email: 'xxx@gmail.com',
+      //   password: '12345678A',
+      //   birth: '1987-12-22',
+      //   address: 'xxx'
+      // },
       loginForm: {
         email: '',
         password: ''
       },
+      // loginForm: {
+      //   email: 'song@gmail.com',
+      //   password: 'song123456'
+      // },
       passwordError: false
     }
   },
@@ -129,12 +141,17 @@ export default {
         return
       }
 
+      console.log(this.loginForm)
+
       try {
+        console.log('start login')
         const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}Login.php`, this.loginForm, {
           headers: {
             'Content-Type': 'application/json'
           }
         })
+        console.log('end login', response)
+        // console.log(response);
 
         // console.log('aaa')
 
@@ -144,13 +161,13 @@ export default {
 
         if (result.success) {
           this.passwordError = null
-          userStore.login()
+          userStore.login('4234234')
           this.$router.push('/member')
         } else {
           this.passwordError = result.message || 'Login failed'
         }
       } catch (err) {
-        console.error('Error:', error)
+        console.error('Error:', err)
         this.passwordError = 'An error occurred'
         alert(err)
       }

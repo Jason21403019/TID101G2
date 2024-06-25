@@ -9,7 +9,7 @@
       <div class="wine__link-img">
         <img :src="item.imgSrc" :alt="item.altText" />
       </div>
-      <span class="wine__link-text">{{ item.text }}</span>
+      <span class="wine__link-text">{{ item.id }}</span>
     </router-link>
   </li>
 </template>
