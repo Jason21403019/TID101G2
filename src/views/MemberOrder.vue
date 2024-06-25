@@ -34,6 +34,7 @@ import MemberMenu from '../components/MemberMenu.vue';
 import MemberOrderCard from '../components/MemberOrderCard.vue'; 
 import Paginator from '../components/tabs/Paginator.vue'; 
 import axios from 'axios'; //HTTP的請求工具之一
+// import user       //引入抓登入的會員編號的js
 
 export default {
   name: 'MemberOrder',
@@ -64,6 +65,13 @@ export default {
     await this.fetchOrders();
   },
   methods: {
+    //先抓登入的會員編號
+    // if(useUserStore.checkLoginStatus() === true){
+      //   const member_id = useUserStore.isLoggedIn
+      // }else{
+       // console.error("沒抓取到會員編號成");
+      // },
+
     // 從後端獲取訂單數據的方法
     fetchOrders() {
       axios.get(`${import.meta.env.VITE_PHP_PATH}MemberOrder.php`)

@@ -6,7 +6,7 @@
           <p><strong>訂單編號:</strong> {{ order.id }}</p>
           <p><strong>成立時間:</strong> {{ order.order_date }}</p>
           <p><strong>訂單狀態:</strong> {{ order.status }}</p>
-          <p><strong>購買產品:</strong> {{ order.product_details }}</p>
+          <p><strong>購買產品:</strong> {{ order.name }}</p>
           <p><strong>總價:</strong> {{ order.total_amount }}</p>
           <p><strong>付款狀態:</strong> {{ order.payment_status }}</p>
           <p><strong>出貨狀態:</strong> {{ order.delivery_status }}</p>
