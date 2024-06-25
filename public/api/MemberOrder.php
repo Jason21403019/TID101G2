@@ -21,7 +21,7 @@ if ($method === 'GET') {
 
 
         $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-        //將data 轉換成json echo出來
+        //將data 轉換成json 
         echo json_encode($data);
     } catch (PDOException $e) {
         echo json_encode(['error' => $e->getMessage()]);
@@ -31,35 +31,40 @@ if ($method === 'GET') {
     elseif ($method === 'POST') {
     // POST 邏輯
     $data = json_decode(file_get_contents("php://input"), true);
-    $orderId = $data[$orderId] ?? null;
+    $orderId = $data['orderId'] ?? null;
 
     if ($orderId === null) {
-        http_response_code(400); // Bad Request
+        
         echo json_encode(["message" => "缺少orderId"]);
         exit();
     }
 
+    
+
     // 更新訂單狀態
-    $sql = "UPDATE TID101_G2.order SET status = 'bbb' WHERE id = :orderId";
+    $sql = "UPDATE TID101_G2.order SET status = '已取消' WHERE id = :orderId";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':orderId', $orderId, PDO::PARAM_INT);
+    $stmt->execute();
+    echo json_encode(["$orderId"]);
 
-    //執行SQL
-    try {
-        if ($stmt->execute()) {
-            echo json_encode(["$orderId"]);
-        } 
-        //失敗得話
-        else {
-            http_response_code(500); // Internal Server Error
-            echo json_encode(["message" => "取消訂單失敗"]);
-        }
-    } catch (PDOException $e) {
-        http_response_code(500); // Internal Server Error
-        echo json_encode(["message" => "取消訂單失敗: " . $e->getMessage()]);
-    }
+
+    // //執行SQL
+    // try {
+    //     if ($stmt->execute()) {
+    //         echo json_encode(["$orderId"]);
+    //     } 
+    //     //失敗得話
+    //     else {
+    //         // http_response_code(500); // Internal Server Error
+    //         echo json_encode(["message" => "取消訂單失敗"]);
+    //     }
+    // } catch (PDOException $e) {
+    //     // http_response_code(500); // Internal Server Error
+    //     echo json_encode(["message" => "取消訂單失敗: " . $e->getMessage()]);
+    // }
 } else {
-    http_response_code(405); // Method Not Allowed
+    
     echo json_encode(["message" => "不支援的請求方法"]);
 }
 ?>

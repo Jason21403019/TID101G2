@@ -56,10 +56,10 @@ export default {
   methods: {
     cancelOrder() {
       axios
-        .post('./api/MemberOrder.php', { orderId: this.order.id })
+        .post(`${import.meta.env.VITE_PHP_PATH}MemberOrder.php`, { orderId: this.order.id })
         .then((response) => {
           console.log('訂單取消成功', response)
-          this.order.status = 'bbb' // 更新訂單狀態
+          this.order.status = '已取消' 
           // 關閉模態視窗
           const modalElement = this.$refs.modal
           const modalInstance = bootstrap.Modal.getInstance(modalElement)
