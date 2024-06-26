@@ -68,7 +68,7 @@
   </section>
 
   <!-- 彈跳視窗 -->
-  <ModalArticle ref="modal" :action-type="currentActionType" :article="currentArticle" :on-save="handleSave" />
+  <ModalArticle ref="modal" :action-type="currentActionType" :article="currentArticle" @save="handleSave" />
 </template>
 
 <script>
@@ -108,14 +108,13 @@ export default {
     this.fetchArticles();
   },
   methods: {
-    fetchArticles() {
-      axios.get(`${import.meta.env.VITE_PHP_PATH}adminarticle.php`)
-        .then(response => {
-          this.articles = response.data;
-        })
-        .catch(error => {
-          console.error('Error fetching articles:', error);
-        });
+    async fetchArticles() {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_PHP_PATH}adminarticle.php`);
+        this.articles = response.data;
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+      }
     },
     openModal(action, article = {}) { 
       this.currentActionType = action;
@@ -129,49 +128,46 @@ export default {
         this.updateArticle(formData);
       }
     },
-    createArticle(articleData) {
-      axios.post(`${import.meta.env.VITE_PHP_PATH}adminarticle.php`, articleData) 
-        .then(response => {
-          console.log('Article created:', response.data);
-          this.fetchArticles(); 
-        })
-        .catch(error => {
-          console.error('Error creating article:', error);
-        });
+    async createArticle(articleData) {
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}adminarticle.php`, articleData);
+        console.log('Article created:', response.data);
+        this.fetchArticles(); 
+      } catch (error) {
+        console.error('Error creating article:', error);
+      }
     },
-    updateArticle(articleData) {
-      axios.put(`${import.meta.env.VITE_PHP_PATH}adminarticle.php?id=${articleData.name}`, articleData) 
-        .then(response => {
-          console.log('Article updated:', response.data);
-          this.fetchArticles(); 
-          this.$refs.modal.hide(); 
-        })
-        .catch(error => {
-          console.error('Error updating article:', error);
-        });
+    async updateArticle(articleData) {
+      try {
+        const response = await axios.put(`${import.meta.env.VITE_PHP_PATH}adminarticle.php?id=${articleData.name}`, articleData);
+        console.log('Article updated:', response.data);
+        this.fetchArticles(); 
+        this.$refs.modal.hide(); 
+      } catch (error) {
+        console.error('Error updating article:', error);
+      }
     },
-    deleteArticle(articleId) {
-      Swal.fire({
+    async deleteArticle(articleId) {
+      const result = await Swal.fire({
         title: '確認刪除',
         text: '您確定要刪除此項目嗎？',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: '刪除!',
         cancelButtonText: '取消',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios.delete(`${import.meta.env.VITE_PHP_PATH}adminarticle.php?id=${articleId}`) 
-            .then(response => {
-              console.log('Article deleted:', response.data);
-              this.fetchArticles(); 
-            })
-            .catch(error => {
-              console.error('Error deleting article:', error);
-            });
-        }
       });
+
+      if (result.isConfirmed) {
+        try {
+          const response = await axios.delete(`${import.meta.env.VITE_PHP_PATH}adminarticle.php?id=${articleId}`);
+          console.log('Article deleted:', response.data);
+          this.fetchArticles(); 
+        } catch (error) {
+          console.error('Error deleting article:', error);
+        }
+      }
     },
-    bulkDelete() {
+    async bulkDelete() {
       const selectedIds = Object.keys(this.selectedArticleIds).filter(id => this.selectedArticleIds[id]);
 
       if (selectedIds.length === 0) {
@@ -179,36 +175,35 @@ export default {
         return;
       }
 
-      Swal.fire({
+      const result = await Swal.fire({
         title: '確認刪除',
         text: `您確定要刪除選中的 ${selectedIds.length} 個項目嗎？`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: '刪除!',
         cancelButtonText: '取消',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios.delete(`${import.meta.env.VITE_PHP_PATH}adminarticle.php`, { 
-            data: { ids: selectedIds } 
-          })
-          .then(response => {
-            console.log('Articles deleted:', response.data);
-            this.fetchArticles();
-            this.selectAll = false;
-            this.selectedArticleIds = {};
-          })
-          .catch(error => {
-            console.error('Error deleting articles:', error);
-          });
-        }
       });
+
+      if (result.isConfirmed) {
+        try {
+          const response = await axios.delete(`${import.meta.env.VITE_PHP_PATH}adminarticle.php`, { 
+            data: { ids: selectedIds } 
+          });
+          console.log('Articles deleted:', response.data);
+          this.fetchArticles();
+          this.selectAll = false;
+          this.selectedArticleIds = {};
+        } catch (error) {
+          console.error('Error deleting articles:', error);
+        }
+      }
     },
     toggleAllCheckboxes() {
       this.articles.forEach(article => {
         this.selectedArticleIds[article.id] = this.selectAll;
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

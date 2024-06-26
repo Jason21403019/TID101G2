@@ -40,9 +40,9 @@
               <input id="article-publish-date" v-model="article.publish_date" type="date" class="form-control" />
             </div>
             <div class="mb-3">
-  <label for="article-content" class="col-form-label">專欄內容:</label>
-  <admin-text-editor v-model:content="article.content"></admin-text-editor>
-</div>
+              <label for="article-content" class="col-form-label">專欄內容:</label>
+              <input id="article-content" v-model="article.content" type="text" class="form-control"></input>
+            </div>
             <div class="mb-3">
               <label for="article-image" class="col-form-label">標題圖上傳:</label>
               <input id="article-image" type="file" class="form-control" @change="handleImageUpload" />
@@ -80,12 +80,13 @@ export default {
       required: true,
       default: () => ({
         id: '',
-        article_class_id: '', // 使用與後端一致的欄位名稱
-        name: '', // 使用與後端一致的欄位名稱
-        publisher: '', // 使用與後端一致的欄位名稱
-        publish_date: '', // 使用與後端一致的欄位名稱
+        article_class_id: '',
+        name: '',
+        publisher: '',
+        publish_date: '',
         content: '',
         image: '',
+        article_status: false
       })
     },
     onSave: {
@@ -107,41 +108,46 @@ export default {
     }
   },
   methods: {
-  show() {
-    const modalElement = this.$refs.articleModal
+    show() {
+      const modalElement = this.$refs.articleModal
 
-    if (modalElement) {
-      this.myModal = new bootstrap.Modal(modalElement)
-      this.myModal.show()
-    } else {
-      console.error('articleModal reference is not found.')
-    }
-  },
-  handleSave() {
-    console.log('Form Data:', this.article); // 這裡加入 console.log
-    this.onSave(this.article)
-    if (this.myModal) {
-      this.myModal.hide()
-    } else {
-      console.error('Modal instance is not available to hide.')
-    }
-  },
-  handleImageUpload(event) {
-    const file = event.target.files[0]
+      if (modalElement) {
+        this.myModal = new bootstrap.Modal(modalElement)
+        this.myModal.show()
+      } else {
+        console.error('articleModal reference is not found.')
+      }
+    },
+    handleSave() {
+      console.log('Form Data:', this.article);
+      this.onSave(this.article)
+      if (this.myModal) {
+        this.myModal.hide()
+      } else {
+        console.error('Modal instance is not available to hide.')
+      }
+    },
+    handleImageUpload(event) {
+      const file = event.target.files[0]
 
-    if (file) {
-      // 這裡可以處理圖片上傳，例如使用 FileReader 將圖片轉換為 base64 編碼
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.article.image = e.target.result;
-      };
-      reader.readAsDataURL(file);
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.article.image = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    hideModal() {
+      if (this.myModal) {
+        this.myModal.hide();
+      } else {
+        console.error('Modal instance is not available to hide.');
+      }
     }
   }
 }
-      }
 </script>
-
 <style lang="scss" scoped>
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 

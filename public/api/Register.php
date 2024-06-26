@@ -66,7 +66,7 @@ try {
     $stmt->bindParam(':five_hundred', $five_hundred);
     $stmt->execute();
     
-    echo json_encode(["success" => true,"member_id"=>$memberId,"last-id"=>$last_id]); 
+    echo json_encode(["success" => true,"member_id"=>$memberId]); 
 
     $stmt->closeCursor();
     $conn = null;
