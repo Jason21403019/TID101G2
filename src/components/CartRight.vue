@@ -164,33 +164,24 @@ export default {
   applyDiscount() {
     const couponDiscounts = { '1': 250, '2': 500 };
     this.discount = couponDiscounts[this.selectedCoupon] || 0;
-    this.total = this.subtotal - this.discount; // 直接從小計減去折扣來更新總計
-    this.calculateTotal();  // 重新計算總金額以反映折扣
+    this.calculateTotal(); // 重新計算總金額以反映折扣
   },
 
-  increment(itemId) {
+  updateItemCount(itemId, increment) {
     const item = this.items.find(item => item.id === itemId);
     if (item) {
-      if (item.count < item.stock) {
-        item.count++;
-        item.price = item.unitPrice * item.count;
-        this.calculateTotal();
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: '錯誤',
-          text: '已超過庫存數量!',
-        });
-      }
-    }
-  },
-
-  decrement(itemId) {
-    const item = this.items.find(item => item.id === itemId);
-    if (item && item.count > 1) {
-      item.count--;
-      item.price = item.unitPrice * item.count;
-      this.calculateTotal();
+        const newCount = increment ? item.count + 1 : item.count - 1;
+        if (newCount >= 1 && newCount <= item.stock) {
+            item.count = newCount;
+            item.price = item.unitPrice * item.count;
+            this.calculateTotal();
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: '錯誤',
+                text: increment ? '已超過庫存數量!' : '數量不能少於1!',
+            });
+        }
     }
   },
 
