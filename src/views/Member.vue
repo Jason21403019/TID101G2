@@ -10,8 +10,8 @@
           <input type="text" id="name" v-model="member.full_name" required />
         </div>
         <div class="form-row">
-          <label for="birthdate">出生日期:</label>
-          <input type="date" id="birthdate" v-model="member.birthdate" required />
+          <label for="birth">出生日期:</label>
+          <input type="date" id="birth" v-model="member.birth" required />
         </div>
         <div class="form-row">
           <label for="email">信箱:</label>
@@ -47,7 +47,7 @@ export default {
       // 會員專區資料
       member: {
         full_name: '',
-        birthdate: '',
+        birth: '',
         email: '',
         phone: '',
         address: ''
@@ -58,6 +58,7 @@ export default {
   },
   //資料庫渲染
   async mounted() {
+    await this.checkLogin();
     await this.fetchMemberData();
   },
   methods: {
@@ -82,7 +83,7 @@ export default {
           if (response.data && response.data.length > 0) {
             const memberData = response.data[0];
             this.member.full_name = memberData.full_name || memberData.name;
-            this.member.birthdate = memberData.birth;
+            this.member.birth = memberData.birth;
             this.member.email = memberData.email;
             this.member.phone = memberData.phone;
             this.member.address = memberData.address;
@@ -98,17 +99,15 @@ export default {
     }
   });
 },
-    saveSettings() {
-      // 發送 請求 更新會員資料
-      axios
-        .post(`${import.meta.env.VITE_PHP_PATH}Member.php?id=${memberId}`, this.member_id)
-        .then((response) => {
-          alert('設置已保存！')
-        })
-        .catch((error) => {
-          console.error('Error saving settings:', error)
-        })
-    }
+saveSettings() {
+    axios.post(`${import.meta.env.VITE_PHP_PATH}Member.php?id=${this.member_id}`, this.member)
+      .then((response) => {
+        alert('設置已保存！');
+      })
+      .catch((error) => {
+        console.error('Error saving settings:', error);
+      });
+}
   }
 }
 </script>
