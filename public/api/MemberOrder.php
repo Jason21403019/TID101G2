@@ -13,11 +13,10 @@ $member_id = "M001";
 if ($method === 'GET') {
     // GET 請求處理邏輯
     // $sql = "SELECT * FROM TID101_G2.order;";
-    $sql = "SELECT o.id, o.order_date, o.status, o.status, p.`name`, o.total_amount, o.payment_status, o.delivery_status
+    $sql = "SELECT o.id, o.order_date, o.status, o.status, p.`name`, o.total_amount, o.payment_status, o.delivery_status, o.member_id
     FROM `order` o
     JOIN order_details od ON o.id = od.order_id
-    JOIN product p ON od.product_id = p.id
-    WHERE o.member_id = $member_id;";
+    JOIN product p ON od.product_id = p.id;";
 
     try {
         // 執行並查詢，會回傳查詢結果的物件，必須使用 fetch、fetchAll...等方式取得資料

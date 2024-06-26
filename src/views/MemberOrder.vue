@@ -70,7 +70,7 @@ export default {
       //   const member_id = useUserStore.isLoggedIn
       // }else{
        // console.error("沒抓取到會員編號成");
-      // },
+      // }
 
     // 從後端獲取訂單數據的方法
     fetchOrders() {
