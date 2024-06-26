@@ -21,8 +21,8 @@
               </div>
               <div class="col-md-4 d-flex align-items-center">
                 <h4 class="col-form-label me-2">訂單狀態:</h4>
-                <select v-model="orderData.order_status" class="form-control">
-                  <option value="處理中">處理中</option>
+                <select v-model="orderData.order_status" class="form-control" :disabled="actionType === 'view'">
+                  <option value="已確認">已確認</option>
                   <option value="已出貨">已出貨</option>
                   <option value="已完成">已完成</option>
                   <option value="已取消">已取消</option>
@@ -54,7 +54,7 @@
             </div>
 
             <!-- 點擊取消時才會跳出 -->
-            <div v-if="showCancelReason" class="mb-3 cancel">
+            <div v-if="orderData.order_status === '已取消' && actionType === 'view'" class="mb-3 cancel">
               <div class="col-md-6 d-flex align-items-center">
                 <h4 class="col-form-label me-2">取消原因:</h4>
                 <span>價格太貴</span>
@@ -153,7 +153,7 @@
             <section class="recipient">
               <div class="mb-3 d-flex align-items-center">
                 <h3 class="me-2">收件人資訊</h3>
-                <button @click="toggleEdit">
+                <button v-if="actionType !== 'view'" @click="toggleEdit">
                   <img src="../imgs/icon/icon_admin-edit.svg" alt="" width="20px" height="20px" />
                 </button>
               </div>
@@ -218,7 +218,7 @@
           </form>
         </div>
 
-        <div class="modal-footer">
+        <div class="modal-footer" v-if="actionType !== 'view'">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
           <button type="button" class="btn btn-primary" @click="handleSave">儲存</button>
         </div>
