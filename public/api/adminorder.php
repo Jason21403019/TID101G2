@@ -23,9 +23,9 @@ switch ($action) {
   case 'editOrder':
     editOrder($input['order_id'], $input['recipientData']);
     break;
-  // case 'cancelOrder':
-  //   cancelOrder($input['order_id']);
-  //   break;
+  case 'cancelOrder':
+    cancelOrder($input['order_id']);
+    break;
   default:
     echo json_encode(['success' => false, 'message' => 'Invalid action']);
     break;
@@ -159,21 +159,21 @@ function editOrder($order_id, $recipientData) {
 }
 
 // 取消訂單
-// function cancelOrder($order_id) {
-//   global $conn;
+function cancelOrder($order_id) {
+  global $conn;
 
-//   try {
-//     $sql = "UPDATE `order` SET status = '已取消' WHERE id = :order_id";
-//     $stmt = $conn->prepare($sql);
-//     $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+  try {
+    $sql = "UPDATE `order` SET status = '已取消' WHERE id = :order_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
 
-//     if ($stmt->execute()) {
-//       echo json_encode(['success' => true]);
-//     } else {
-//       throw new Exception('Error executing update statement');
-//     }
-//   } catch (Exception $e) {
-//     echo json_encode(['success' => false, 'message' => 'Error updating order status', 'error' => $e->getMessage()]);
-//   }
-// }
+    if ($stmt->execute()) {
+      echo json_encode(['success' => true]);
+    } else {
+      throw new Exception('Error executing update statement');
+    }
+  } catch (Exception $e) {
+    echo json_encode(['success' => false, 'message' => 'Error updating order status', 'error' => $e->getMessage()]);
+  }
+}
 ?>

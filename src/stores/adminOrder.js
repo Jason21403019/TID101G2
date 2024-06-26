@@ -87,27 +87,27 @@ export const useAdminOrderStore = defineStore('adminOrder', {
       } catch (error) {
         return { success: false, message: error.message }
       }
+    },
+    // 取消訂單
+    async cancelOrder(orderId) {
+      try {
+        const apiUrl = import.meta.env.VITE_PHP_PATH
+        const url = `${apiUrl}adminorder.php`
+
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ action: 'cancelOrder', order_id: orderId })
+        })
+
+        const data = await response.json()
+
+        return data
+      } catch (error) {
+        return { success: false, message: error.message }
+      }
     }
-  },
-  // 取消訂單
-  // async cancelOrder(orderId) {
-  //   try {
-  //     const apiUrl = import.meta.env.VITE_PHP_PATH
-  //     const url = `${apiUrl}adminorder.php`
-
-  //     const response = await fetch(url, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({ action: 'cancelOrder', order_id: orderId })
-  //     })
-
-  //     const data = await response.json()
-
-  //     return data
-  //   } catch (error) {
-  //     return { success: false, message: error.message }
-  //   }
-  // }
+  }
 })

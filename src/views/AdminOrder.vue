@@ -80,9 +80,9 @@
           <th scope="row">
             <input
               v-if="order.status !== '已取消' && order.status !== '已完成'"
+              v-model="order.selected"
               class="form-check-input"
               type="checkbox"
-              v-model="order.selected"
               @change="checkIfAllSelected"
             />
           </th>
@@ -194,7 +194,10 @@ export default {
     async handleSave(order) {
       await this.loadOrders()
     },
-    confirmCancelOrder(order) {
+    // 取消單筆訂單
+    async confirmCancelOrder(order) {
+      const adminOrderStore = useAdminOrderStore()
+
       Swal.fire({
         title: '確認取消',
         text: '您確定要取消此訂單嗎？',
@@ -202,15 +205,20 @@ export default {
         showCancelButton: true,
         confirmButtonText: '確定',
         cancelButtonText: '否'
-      }).then((result) => {
+      }).then(async (result) => {
         if (result.isConfirmed) {
-          // 更新訂單狀態
-          order.orderStatus = '已取消'
-          // 顯示已取消的確認消息
-          Swal.fire('已取消', '該訂單已被取消', 'success').then(() => {
-            // 打開模態窗口
-            // this.openModal('cancel', order)
-          })
+          // 呼叫 cancelOrder 方法來更新資料庫中的訂單狀態
+          const updateResult = await adminOrderStore.cancelOrder(order.id)
+
+          if (updateResult.success) {
+            // 更新表格中的訂單狀態
+            order.status = '已取消'
+            // 顯示已取消的確認消息
+            Swal.fire('已取消', '該訂單已被取消', 'success')
+          } else {
+            // 顯示錯誤消息
+            Swal.fire('失敗', '訂單取消失敗', 'error')
+          }
         }
       })
     },
@@ -219,7 +227,7 @@ export default {
         order.selected = this.selectAll
       })
     },
-    // 確認並更新選定的訂單狀態
+    // 多筆取消
     bulkCancel() {
       const selectedOrders = this.orders.filter((order) => order.selected)
 
@@ -236,11 +244,17 @@ export default {
         showCancelButton: true,
         confirmButtonText: '確定!',
         cancelButtonText: '取消'
-      }).then((result) => {
+      }).then(async (result) => {
         if (result.isConfirmed) {
-          selectedOrders.forEach((order) => {
-            order.orderStatus = '已取消'
-          })
+          const adminOrderStore = useAdminOrderStore()
+
+          for (const order of selectedOrders) {
+            const updateResult = await adminOrderStore.cancelOrder(order.id)
+
+            if (updateResult.success) {
+              order.status = '已取消'
+            }
+          }
           this.selectAll = false // 重置selectAll狀態
           Swal.fire('已取消', '選中的訂單狀態已更新為已取消', 'success')
         }
