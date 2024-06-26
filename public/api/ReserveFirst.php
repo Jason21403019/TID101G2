@@ -6,7 +6,7 @@
  header("Access-Control-Allow-Origin: *");
 
 $requestData = json_decode(file_get_contents('php://input'), true);
-$reserveId = $requestData["id"] ?? '';
+
 $reserveBooking_date = $requestData["booking_date"] ?? '';
 $reserveBooking_time = $requestData["booking_time"] ?? '';
 $reserveGuest_count = $requestData["guest_count"] ?? '';
@@ -21,16 +21,16 @@ $reservemember_id = $requestData["member_id"] ?? '';
 
        try {
               // 建立SQL語法
-              $sql = "INSERT INTO reservation(id, booking_date,booking_time, guest_count,booking_note,member_id) VALUES (?,?,?,?,?,?)";
+              $sql = "INSERT INTO reservation( booking_date,booking_time, guest_count,booking_note,member_id) VALUES (?,?,?,?,?)";
           
               // 執行並查詢，會回傳查詢結果的物件，必須使用fetch、fetchAll...等方式取得資料
               $statement = $conn->prepare($sql);
-              $statement->bindValue(1, $reserveId);
-              $statement->bindValue(2, $reserveBooking_date);
-              $statement->bindValue(3, $reserveBooking_time);
-              $statement->bindValue(4, $reserveGuest_count);
-              $statement->bindValue(5, $reserveBooking_note);
-              $statement->bindValue(6, $reservemember_id);
+     
+              $statement->bindValue(1, $reserveBooking_date);
+              $statement->bindValue(2, $reserveBooking_time);
+              $statement->bindValue(3, $reserveGuest_count);
+              $statement->bindValue(4, $reserveBooking_note);
+              $statement->bindValue(5, $reservemember_id);
          
     
               // 执行查询

@@ -1,8 +1,8 @@
 <template>
   <main id="commodity_tab">
     <div class="searchButton">
-      <h4><router-link to="/home">首頁</router-link> > 商品</h4>
-      <input type="text" class="searchText" v-model="search" placeholder="Search" />
+      <h4><router-link to="/home">首頁</router-link> > 全部商品</h4>
+      <input type="text" class="searchText" v-model="search" placeholder="查詢商品名稱" />
       <button class="search" @click="fetchProductSearch(search)">
         <img src="../imgs/icon/icon_admin-search.svg" alt="" />
       </button>
@@ -115,6 +115,7 @@ export default {
           // this.currentPage = 1 // Reset current page when data changes
         })
       // .catch((error) => console.error('Error fetching data:', error))
+      this.search = ''
     }
   }
   // watch: {
@@ -185,7 +186,7 @@ article {
 }
 
 main {
-  background-color: #381b1d;
+  background: $negroni;
   padding-top: 50px;
 
   p {
@@ -255,7 +256,7 @@ main {
   padding-left: 5%;
   width: 100%;
   @include breakpoint(mobile) {
-    padding-left: 0%;
+    padding-left: 3%;
   }
 }
 

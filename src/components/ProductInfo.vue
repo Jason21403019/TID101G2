@@ -21,6 +21,7 @@
     :currentPage="currentPage"
     @next-page="nextPageHandler"
     @previous-page="previousPageHandler"
+    @click-page="clickpage"
   ></Paginator>
 </template>
 
@@ -38,7 +39,7 @@ export default {
       currentPage: 1,
       pageSize: 6,
       count: 1,
-      id: 66,
+      // id: 66,
       memberId: 'm001'
     }
   },
@@ -72,6 +73,14 @@ export default {
     // php
     fetchAllProductData() {
       fetch('http://localhost/TID101G2/public/api/Product.php')
+        .then((response) => response.json())
+        .then((data) => {
+          this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中
+        })
+        .catch((error) => console.error('Error fetching data:', error))
+    },
+    fetchAllProductBest() {
+      fetch('http://localhost/TID101G2/public/api/ProductBestseller.php')
         .then((response) => response.json())
         .then((data) => {
           this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中
@@ -117,7 +126,7 @@ export default {
       fetch('http://localhost/TID101G2/public/api/ProductCart.php', {
         method: 'POST',
 
-        body: JSON.stringify({ id: this.id, product_id: product.id, member_id: this.memberId, count: this.count }) // 发送选项卡 ID 到后端
+        body: JSON.stringify({ product_id: product.id, member_id: this.memberId, count: this.count }) // 发送选项卡 ID 到后端
         // body: { account: tabName } // 发送选项卡 ID 到后端
       })
       // .then((response) => response.json())
@@ -200,6 +209,17 @@ export default {
         this.fetchProductsCar(product)
         this.id++
       }
+    },
+    clickpage(pageNumber) {
+      // 更新 currentPage
+      this.currentPage = pageNumber
+
+      // 根據 currentPage 計算要顯示的商品範圍
+      const startIndex = (this.currentPage - 1) * this.pageSize
+      const endIndex = startIndex + this.pageSize
+
+      // 更新 paginatedProducts
+      this.paginatedProducts = this.phpdata.slice(startIndex, endIndex)
     }
   },
   watch: {
@@ -209,6 +229,8 @@ export default {
         if (newValue === '全部商品') {
           // 当选项卡为 '全部商品' 时重新获取全部商品数据
           this.fetchAllProductData()
+        } else if (newValue === '熱銷商品') {
+          this.fetchAllProductBest()
         } else {
           // 否则根据选项卡获取对应数据
           this.fetchProducts(newValue)
@@ -251,6 +273,7 @@ export default {
   flex-wrap: wrap;
   padding-right: 5%;
   justify-content: space-evenly;
+
   width: 100%;
   @include breakpoint(mobile) {
     padding-right: 0%;
@@ -310,6 +333,9 @@ article {
 
 .overlay:hover {
   opacity: 1;
+}
+article {
+  margin-right: auto; /* 使用 auto Margin 将项目靠左对齐 */
 }
 
 @media (max-width: 768px) {
