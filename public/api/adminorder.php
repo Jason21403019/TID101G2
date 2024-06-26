@@ -26,6 +26,9 @@ switch ($action) {
   case 'cancelOrder':
     cancelOrder($input['order_id']);
     break;
+  case 'search':
+    searchOrders($input['field'], $input['query'], $input['startDate'], $input['endDate']);
+    break;
   default:
     echo json_encode(['success' => false, 'message' => 'Invalid action']);
     break;
@@ -174,6 +177,58 @@ function cancelOrder($order_id) {
     }
   } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'Error updating order status', 'error' => $e->getMessage()]);
+  }
+}
+
+
+// 查詢
+
+function searchOrders($field, $query, $startDate, $endDate) {
+  global $conn;
+
+  try {
+    $allowedFields = ['order.id', 'member_name', 'status'];
+    if (!in_array($field, $allowedFields)) {
+      echo json_encode(['success' => false, 'message' => 'Invalid field']);
+      return;
+    }
+
+    $sql = "SELECT order.id, order.order_date, member.full_name, order.status, order.payment_status, order.receiver
+    FROM `order`
+    JOIN `member` ON order.member_id = member.id
+    WHERE ";
+
+    // 搜尋資料表
+    if ($field === 'member_name') {
+      $sql .= "member.full_name LIKE :query";
+    } else {
+      $sql .= "$field LIKE :query";
+    }
+    
+    if ($startDate && $endDate) {
+      $sql .= " AND order.order_date BETWEEN :startDate AND :endDate";
+    }
+
+    $stmt = $conn->prepare($sql);
+    if ($stmt === false) {
+      throw new Exception($conn->errorInfo()[2]);
+    }
+    $searchQuery = '%' . $query . '%';
+    $stmt->bindParam(':query', $searchQuery, PDO::PARAM_STR);
+    if ($startDate && $endDate) {
+      $stmt->bindParam(':startDate', $startDate, PDO::PARAM_STR);
+      $stmt->bindParam(':endDate', $endDate, PDO::PARAM_STR);
+    }
+    $stmt->execute();
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($orders) {
+      echo json_encode(['success' => true, 'orders' => $orders]);
+    } else {
+      echo json_encode(['success' => false, 'message' => 'No orders found']);
+    }
+  } catch (Exception $e) {
+    echo json_encode(['success' => false, 'message' => 'Error searching orders: ' . $e->getMessage()]);
   }
 }
 ?>

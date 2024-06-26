@@ -8,9 +8,10 @@
         <slot name="info"></slot>
       </div>
     </div>
-    <input :id="startDateId" type="date" class="form-control" />
+    <!-- 雙向綁定AdminOrder日期 -->
+    <input :id="startDateId" v-model="internalStartDate" type="date" class="form-control" @change="emitDateChange" />
     <span>到</span>
-    <input :id="endDateId" type="date" class="form-control" />
+    <input :id="endDateId" v-model="internalEndDate" type="date" class="form-control" @change="emitDateChange" />
   </div>
 </template>
 
@@ -25,6 +26,35 @@ export default {
     endDateId: {
       type: String,
       required: true
+    },
+    startDate: {
+      type: String,
+      default: ''
+    },
+    endDate: {
+      type: String,
+      default: ''
+    }
+  },
+  emits: ['dateChange'],
+  data() {
+    return {
+      internalStartDate: this.startDate,
+      internalEndDate: this.endDate
+    }
+  },
+  // 監聽父組件日期的變化
+  watch: {
+    startDate(newVal) {
+      this.internalStartDate = newVal
+    },
+    endDate(newVal) {
+      this.internalEndDate = newVal
+    }
+  },
+  methods: {
+    emitDateChange() {
+      this.$emit('dateChange', { startDate: this.internalStartDate, endDate: this.internalEndDate })
     }
   }
 }

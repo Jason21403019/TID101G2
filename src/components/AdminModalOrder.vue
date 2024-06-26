@@ -21,7 +21,8 @@
               </div>
               <div class="col-md-4 d-flex align-items-center">
                 <h4 class="col-form-label me-2">訂單狀態:</h4>
-                <select v-model="orderData.order_status" class="form-control" :disabled="actionType === 'view'">
+                <span v-if="actionType === 'view'">{{ orderData.order_status }}</span>
+                <select v-else v-model="orderData.order_status" class="form-control">
                   <option value="已確認">已確認</option>
                   <option value="已出貨">已出貨</option>
                   <option value="已完成">已完成</option>
@@ -159,59 +160,34 @@
               </div>
 
               <div class="mb-3">
-                <div class="row mb-3">
+                <div class="mb-3 d-flex align-items-center">
                   <label class="col-md-2 col-form-label me-3">收件人姓名:</label>
-                  <input
-                    v-model="orderData.receiver"
-                    type="text"
-                    class="form-control"
-                    :disabled="!isEditable"
-                    :class="{ 'editable-input': isEditable }"
-                  />
+                  <span v-if="!isEditable">{{ orderData.receiver }}</span>
+                  <input v-else v-model="orderData.receiver" type="text" class="form-control" />
                 </div>
 
-                <div class="row mb-3">
+                <div class="mb-3 d-flex align-items-center">
                   <label class="col-md-2 col-form-label me-3">收件人電話:</label>
-                  <input
-                    v-model="orderData.receiver_phone"
-                    type="text"
-                    class="form-control"
-                    :disabled="!isEditable"
-                    :class="{ 'editable-input': isEditable }"
-                  />
+                  <span v-if="!isEditable">{{ orderData.receiver_phone }}</span>
+                  <input v-else v-model="orderData.receiver_phone" type="text" class="form-control" />
                 </div>
 
-                <div class="row mb-3">
-                  <label class="col-md-2 col-form-label text-nowrap me-3">收件人Email:</label>
-                  <input
-                    v-model="orderData.receiver_email"
-                    type="text"
-                    class="form-control"
-                    :disabled="!isEditable"
-                    :class="{ 'editable-input': isEditable }"
-                  />
+                <div class="mb-3 d-flex align-items-center">
+                  <label class="col-md-2 col-form-label me-3">收件人Email:</label>
+                  <span v-if="!isEditable">{{ orderData.receiver_email }}</span>
+                  <input v-else v-model="orderData.receiver_email" type="text" class="form-control" />
                 </div>
 
-                <div class="row mb-3">
+                <div class="mb-3 d-flex align-items-center">
                   <label class="col-md-2 col-form-label me-3">收件人地址:</label>
-                  <input
-                    v-model="orderData.receiver_address"
-                    type="text"
-                    class="form-control"
-                    :disabled="!isEditable"
-                    :class="{ 'editable-input': isEditable }"
-                  />
+                  <span v-if="!isEditable">{{ orderData.receiver_address }}</span>
+                  <input v-else v-model="orderData.receiver_address" type="text" class="form-control" />
                 </div>
 
-                <div class="row mb-3">
+                <div class="mb-3 d-flex align-items-center">
                   <label class="col-md-2 col-form-label me-3">訂單備註:</label>
-                  <input
-                    v-model="orderData.note"
-                    type="text"
-                    class="form-control"
-                    :disabled="!isEditable"
-                    :class="{ 'editable-input': isEditable }"
-                  />
+                  <span v-if="!isEditable">{{ orderData.note }}</span>
+                  <input v-else v-model="orderData.note" type="text" class="form-control" />
                 </div>
               </div>
             </section>

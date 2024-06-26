@@ -8,7 +8,7 @@
   </div>
 
   <!-- 搜尋 -->
-  <section class="searchOrder">
+  <section class="searchBlock">
     <admin-select-input input-id="formGroupExampleInput1" :selected-option="selectedOption">
       <template #label>查詢條件</template>
       <template #select>
@@ -23,30 +23,36 @@
         <input v-if="selectedOption !== '2'" :id="inputId" v-model="inputValue" type="text" class="form-control" />
         <select v-else v-model="selectedOrderStatus" class="form-select">
           <option value="">選擇訂單狀態</option>
-          <option value="processing">已確認</option>
-          <option value="shipped">已出貨</option>
-          <option value="completed">已完成</option>
-          <option value="cancelled">已取消</option>
-          <option value="returns_exchanges">退換貨</option>
+          <option value="已確認">已確認</option>
+          <option value="已出貨">已出貨</option>
+          <option value="已完成">已完成</option>
+          <option value="已取消">已取消</option>
+          <option value="退換貨">退換貨</option>
         </select>
       </template>
     </admin-select-input>
 
     <!-- 查詢日期 -->
     <div class="d-flex align-items-center">
-      <admin-date-input start-date-id="dateInputField1" end-date-id="dateInputField2">
+      <admin-date-input
+        start-date-id="dateInputField1"
+        end-date-id="dateInputField2"
+        :start-date="startDate"
+        :end-date="endDate"
+        @date-change="handleDateChange"
+      >
         <template #label>訂單日期</template>
         <template #info>(最多查詢100天)</template>
       </admin-date-input>
 
-      <admin-btn>
+      <admin-btn @click="searchOrders">
         <template #icon>
           <img src="../imgs/icon/icon_admin-search-w.svg" alt="addIcon" height="20" width="20" />
         </template>
         <template #text>查詢</template>
       </admin-btn>
 
-      <admin-bulk-btn class="orderClear">
+      <admin-bulk-btn :handle-click="clearSearch" class="orderClear">
         <template #bulktext>清除條件</template>
       </admin-bulk-btn>
     </div>
@@ -67,7 +73,7 @@
       <thead class="table-thead">
         <tr>
           <th scope="col">
-            <input class="form-check-input" type="checkbox" v-model="selectAll" @change="toggleAllCheckboxes" />
+            <input v-model="selectAll" class="form-check-input" type="checkbox" @change="toggleAllCheckboxes" />
           </th>
           <th scope="col">訂單編號</th>
           <th scope="col">訂單日期</th>
@@ -167,7 +173,10 @@ export default {
       // 訂單狀態
       selectedOption: '',
       inputValue: '',
-      selectedOrderStatus: ''
+      selectedOrderStatus: '',
+      startDate: '',
+      endDate: '',
+      isSearching: false // 添加 isSearching 標誌
     }
   },
   watch: {
@@ -271,6 +280,55 @@ export default {
           Swal.fire('已取消', '選中的訂單狀態已更新為已取消', 'success')
         }
       })
+    },
+    // 查詢
+    async searchOrders() {
+      if (this.isSearching) return
+      this.isSearching = true
+      // console.log('searchOrders called')
+
+      const adminOrderStore = useAdminOrderStore()
+      const query = this.selectedOption === '2' ? this.selectedOrderStatus : this.inputValue
+      const field = this.selectedOption === '2' ? 'status' : this.selectedOption === '' ? 'order.id' : 'member_name'
+
+      if (this.startDate && this.endDate) {
+        const diffTime = Math.abs(new Date(this.endDate) - new Date(this.startDate))
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+        if (diffDays > 100) {
+          alert('日期範圍不能超過100天')
+          this.isSearching = false
+
+          return
+        }
+      }
+
+      try {
+        const result = await adminOrderStore.searchOrders(field, query, this.startDate, this.endDate)
+
+        if (result.success) {
+          this.orders = result.orders
+        } else {
+          alert('查詢失敗: ' + result.message)
+        }
+      } catch (error) {
+        console.error('查詢過程中發生錯誤:', error)
+        alert('查詢過程中發生錯誤，請稍後再試。')
+      } finally {
+        this.isSearching = false // 查詢完成後重置標誌位
+      }
+    },
+    async clearSearch() {
+      this.selectedOption = ''
+      this.inputValue = ''
+      this.selectedOrderStatus = ''
+      this.startDate = ''
+      this.endDate = ''
+      await this.loadOrders()
+    },
+    handleDateChange({ startDate, endDate }) {
+      this.startDate = startDate
+      this.endDate = endDate
     }
   }
 }
