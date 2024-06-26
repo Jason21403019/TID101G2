@@ -8,7 +8,7 @@
   </div>
 
   <!-- 搜尋 -->
-  <section>
+  <section class="searchOrder">
     <admin-select-input input-id="formGroupExampleInput1" :selected-option="selectedOption">
       <template #label>查詢條件</template>
       <template #select>
@@ -23,7 +23,7 @@
         <input v-if="selectedOption !== '2'" :id="inputId" v-model="inputValue" type="text" class="form-control" />
         <select v-else v-model="selectedOrderStatus" class="form-select">
           <option value="">選擇訂單狀態</option>
-          <option value="processing">處理中</option>
+          <option value="processing">已確認</option>
           <option value="shipped">已出貨</option>
           <option value="completed">已完成</option>
           <option value="cancelled">已取消</option>
@@ -45,6 +45,10 @@
         </template>
         <template #text>查詢</template>
       </admin-btn>
+
+      <admin-bulk-btn class="orderClear">
+        <template #bulktext>清除條件</template>
+      </admin-bulk-btn>
     </div>
   </section>
 
@@ -86,7 +90,11 @@
               @change="checkIfAllSelected"
             />
           </th>
-          <td>{{ order.id }}</td>
+          <td>
+            <button class="btn btn-link" @click="viewOrderDetails(order)">
+              {{ order.id }}
+            </button>
+          </td>
           <td>{{ order.order_date }}</td>
           <td>{{ order.full_name }}</td>
           <td>{{ order.receiver }}</td>
@@ -222,6 +230,10 @@ export default {
         }
       })
     },
+    // 點選訂單編號的檢視頁
+    viewOrderDetails(order) {
+      this.openModal('view', order)
+    },
     toggleAllCheckboxes() {
       this.orders.forEach((order) => {
         order.selected = this.selectAll
@@ -280,9 +292,16 @@ export default {
     margin: 0 20px;
   }
 }
-.searchDay {
-  font-size: $fontSize_p;
+.admin_btn {
+  margin-top: 5px;
+  margin-left: 5px;
+  height: 35px;
 }
+.orderClear {
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
 .d-grid {
   margin-top: 50px;
   margin-left: 160px;
