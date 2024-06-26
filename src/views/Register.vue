@@ -212,12 +212,13 @@ export default {
             'Content-Type': 'application/json'
           }
         })
-        console.log('Response:', response)
+        // console.log('Response:', response)
 
         const data = response.data
         // console.log('Registration response:', data)
 
         if (data.success) {
+          // console.log('aaaa')
           alert('Registration successful')
         } else {
           this.passwordError = data.message
