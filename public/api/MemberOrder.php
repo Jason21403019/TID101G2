@@ -7,68 +7,48 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 // 引入資料庫
 include("conn.php");
 
-// 判斷請求方法
 $method = $_SERVER['REQUEST_METHOD'];
-$member_id = "M001";
+// 設定id抓取
+$member_id = $_GET['member_id'] ?? 'default_member_id';
+
+// ＳＱＬ指令
 if ($method === 'GET') {
-    // GET 請求處理邏輯
-    // $sql = "SELECT * FROM TID101_G2.order;";
-    $sql = "SELECT o.id, o.order_date, o.status, o.status, p.`name`, o.total_amount, o.payment_status, o.delivery_status, o.member_id
-    FROM `order` o
-    JOIN order_details od ON o.id = od.order_id
-    JOIN product p ON od.product_id = p.id;";
+    $sql = "SELECT o.id, o.order_date, o.status, p.`name`, o.total_amount, o.payment_status, o.delivery_status, o.member_id
+            FROM `order` o
+            JOIN order_details od ON o.id = od.order_id
+            JOIN product p ON od.product_id = p.id
+            WHERE o.member_id = :member_id;";
 
     try {
-        // 執行並查詢，會回傳查詢結果的物件，必須使用 fetch、fetchAll...等方式取得資料
-        $statement = $conn->query($sql);
-        $statement->execute();
-
-
-        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-        //將data 轉換成json 
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':member_id', $member_id, PDO::PARAM_STR);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($data);
+        $stmt->closeCursor();
     } catch (PDOException $e) {
         echo json_encode(['error' => $e->getMessage()]);
     }
-}  
-    //訂單狀態轉換
-    elseif ($method === 'POST') {
-    // POST 邏輯
+} elseif ($method === 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
     $orderId = $data['orderId'] ?? null;
 
     if ($orderId === null) {
-        
         echo json_encode(["message" => "缺少orderId"]);
         exit();
     }
 
-    
+    $sql = "UPDATE `order` SET status = '已取消' WHERE id = :orderId";
 
-    // 更新訂單狀態
-    $sql = "UPDATE TID101_G2.order SET status = '已取消' WHERE id = :orderId";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':orderId', $orderId, PDO::PARAM_INT);
-    $stmt->execute();
-    echo json_encode(["$orderId"]);
-
-
-    // //執行SQL
-    // try {
-    //     if ($stmt->execute()) {
-    //         echo json_encode(["$orderId"]);
-    //     } 
-    //     //失敗得話
-    //     else {
-    //         // http_response_code(500); // Internal Server Error
-    //         echo json_encode(["message" => "取消訂單失敗"]);
-    //     }
-    // } catch (PDOException $e) {
-    //     // http_response_code(500); // Internal Server Error
-    //     echo json_encode(["message" => "取消訂單失敗: " . $e->getMessage()]);
-    // }
+    try {
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':orderId', $orderId, PDO::PARAM_INT);
+        $stmt->execute();
+        echo json_encode(["message" => "訂單已取消", "orderId" => $orderId]);
+    } catch (PDOException $e) {
+        echo json_encode(["message" => "取消訂單失敗: " . $e->getMessage()]);
+    }
 } else {
-    
     echo json_encode(["message" => "不支援的請求方法"]);
 }
 ?>

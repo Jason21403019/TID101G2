@@ -34,7 +34,7 @@ import MemberMenu from '../components/MemberMenu.vue';
 import MemberOrderCard from '../components/MemberOrderCard.vue'; 
 import Paginator from '../components/tabs/Paginator.vue'; 
 import axios from 'axios'; //HTTP的請求工具之一
-// import user       //引入抓登入的會員編號的js
+import { useUserStore } from '../stores/user';   //引入抓登入的會員編號的js
 
 export default {
   name: 'MemberOrder',
@@ -51,6 +51,7 @@ export default {
       orders: [], // 訂單陣列
       currentPage: 1, // 當前頁碼
       pageSize: 4, // 每頁顯示的單數量
+      member_id: null 
     };
   },
   computed: {
@@ -62,27 +63,36 @@ export default {
   },
   //資料庫渲染
   async mounted() {
+    await this.checkLogin();
     await this.fetchOrders();
   },
   methods: {
-    //先抓登入的會員編號
-    // if(useUserStore.checkLoginStatus() === true){
-      //   const member_id = useUserStore.isLoggedIn
-      // }else{
-       // console.error("沒抓取到會員編號成");
-      // }
-
+    async checkLogin() {
+      const userStore = useUserStore();
+      if (userStore.checkLoginStatus()) {
+        this.member_id = userStore.isLoggedIn; // 把存取在localStorage 抓出來
+        // console.log('Logged in member ID:', this.member_id);
+      } else {
+        console.error("沒抓取到會員編號");
+      }
+    },
     // 從後端獲取訂單數據的方法
     fetchOrders() {
-      axios.get(`${import.meta.env.VITE_PHP_PATH}MemberOrder.php`)
-        .then(response => {
-          this.orders = response.data;
-           console.log('成功'.data);
-        })
-        .catch(error => {
-          console.error("Error", error);
-        });
-    },
+  if (this.member_id) {
+    axios.get(`${import.meta.env.VITE_PHP_PATH}MemberOrder.php`, {
+      params: { member_id: this.member_id }
+    })
+    .then(response => {
+      this.orders = response.data;
+      console.log('訂單數據加載成功', response.data);
+    })
+    .catch(error => {
+      console.error("加載訂單數據錯誤", error);
+    });
+  } else {
+    console.error("無有效會員編號，無法加載訂單數據");
+  }
+},
 
     // 切換頁面設定
     // 下一頁的事件處理方法
@@ -100,7 +110,18 @@ export default {
   }
 };
 </script>
+
 <style lang="scss" scoped>
+
+@media (max-width: 768px) {
+  .content {
+    width: 90vw; // 在較小屏幕上增加寬度
+  }
+
+  .order-list {
+    grid-template-columns: 1fr; // 單列顯示以適應窄屏幕
+  }
+}
 .memberorder {
   background-color: $campari;
   padding-top: 100px;
