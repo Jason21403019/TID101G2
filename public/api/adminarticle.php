@@ -1,14 +1,19 @@
 <?php
 header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
 include 'conn.php';
 
 // 確認使用者的請求方式
 $request_method = $_SERVER["REQUEST_METHOD"];
 
 switch ($request_method) {
+    case 'OPTIONS':
+        // 處理預檢請求
+        http_response_code(200);
+        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+        exit();
+
     case 'GET':
         // GET 請求 - 讀取資料
         try {
@@ -86,10 +91,10 @@ switch ($request_method) {
         // PUT 請求 - 更新資料
         try {
             $data = json_decode(file_get_contents("php://input"), true);
-            $id = isset($_GET['id']) ? $_GET['id'] : null;
 
-            // 檢查是否有收到必要的欄位和 ID
-            if ($id && isset($data['name'], $data['publisher'], $data['publish_date'], $data['article_class_id'])) {
+            // 檢查是否有收到必要的欄位
+            if (isset($data['id'], $data['name'], $data['publisher'], $data['publish_date'], $data['article_class_id'])) {
+                $id = $data['id'];
                 $name = $data['name'];
                 $publisher = $data['publisher'];
                 $publish_date = $data['publish_date'];
@@ -117,7 +122,7 @@ switch ($request_method) {
                     echo json_encode(["error" => "Failed to update article."]);
                 }
             } else {
-                echo json_encode(["error" => "Missing required fields or ID."]);
+                echo json_encode(["error" => "Missing required fields."]);
             }
         } catch (PDOException $e) {
             echo json_encode(["error" => $e->getMessage()]);
