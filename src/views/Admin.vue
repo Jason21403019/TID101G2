@@ -3,25 +3,26 @@
     <!-- 總攬 -->
     <h2>{{ overview }}</h2>
     <section>
-      <article>
+      <article v-if="phpdata.data2 && phpdata.data2.length > 0">
         <div>
-          <h3>{{ notShipped_count }}</h3>
+          <h3>{{ phpdata.data2[0].member }}</h3>
           <h4>{{ notShipped }}</h4>
         </div>
         <img :src="icons1" alt="" />
       </article>
 
-      <article>
+      <article v-if="phpdata.data3 && phpdata.data3.length > 0">
         <div>
-          <h3>{{ Unpaid_count }}</h3>
+          <h3>{{ phpdata.data3[0].payment }}</h3>
           <h4>{{ Unpaid }}</h4>
         </div>
         <img :src="icons2" alt="" />
       </article>
 
-      <article v-if="phpdata.length > 0">
+      <article v-if="phpdata.data && phpdata.data.length > 0">
         <div>
-          <h3>{{ phpdata[0]['count(id)'] }}</h3>
+          <h3>{{ phpdata.data[0].counts }}</h3>
+          <!-- this.phpdata.data.counts -->
           <h4>{{ needRestock }}</h4>
         </div>
         <img :src="icons3" alt="" />
@@ -38,23 +39,29 @@
     <h2>{{ CommonFunctions }}</h2>
 
     <section>
-      <input type="button" :value="commodity" @click="commodityPage(commodity)" />
-      <input type="button" :value="article" @click="commodityPage(article)" />
+      <input type="button" :value="commodity" @click="openModal('edit', product)" />
+      <input type="button" :value="article" @click="openModalA('edit', article)" />
       <input type="button" :value="reserve" @click="commodityPage(reserve)" />
     </section>
   </main>
+  <ModalArticle ref="modal" :action-type="currentActionType" :article="currentArticle" @save="handleSave" />
+  <ModalProduct ref="modal" :action-type="currentActionType" :product="currentProduct" @save="handleSaveA" />
 </template>
 
 <script>
 import AdminIconManger from '../components/AdminIconManger.vue'
 import DefaultBkSidebar from '../layouts/default/AdminSlidebar.vue'
 import AdminLineChart from '../components/AdminLineChart.vue'
+import ModalProduct from '../components/AdminModalProduct.vue'
+import ModalArticle from '../components/AdminModalArticle.vue'
 export default {
   name: 'Admin',
   components: {
     AdminIconManger,
     DefaultBkSidebar,
-    AdminLineChart
+    AdminLineChart,
+    ModalProduct,
+    ModalArticle
   },
   data() {
     return {
@@ -63,7 +70,7 @@ export default {
       dataAnalysis: '數據分析',
       CommonFunctions: '常用功能',
       notShipped_count: 0,
-      notShipped: '訂單未出貨',
+      notShipped: '會員人數',
       Unpaid_count: 0,
       Unpaid: '訂單未付款',
       needRestock_count: 0,
@@ -73,7 +80,13 @@ export default {
       icons3: '/src/imgs/icon/icon_admin-tags.svg',
       commodity: '新增商品',
       article: '新增文章',
-      reserve: '預約管理'
+      reserve: '預約管理',
+      currentActionType: '',
+      currentProduct: {},
+      products: [],
+      currentActionType: 'add',
+      currentActionTypeA: 'add',
+      currentArticle: {}
     }
   },
   methods: {
@@ -83,7 +96,54 @@ export default {
       } else if (page === '新增文章') {
         window.location.href = '#/admin_article'
       } else if (page === '預約管理') {
-        window.location.href = '#/admin_res'
+        this.$router.push('/admin_res')
+      }
+    },
+    openModal(actionType, product = {}) {
+      this.currentActionType = actionType
+      this.currentProduct = product
+      this.$refs.modal.show()
+    },
+    handleSave(updatedProduct) {
+      if (this.currentActionType === 'add') {
+        this.products.push(updatedProduct)
+      } else {
+        const index = this.products.findIndex((p) => p.id === updatedProduct.id)
+        if (index !== -1) {
+          this.products.splice(index, 1, updatedProduct)
+        }
+      }
+    },
+
+    openModalA(action, article = {}) {
+      this.currentActionTypeA = action
+      this.currentArticle = { ...article }
+      this.$refs.modal.show()
+    },
+    handleSaveA(formData) {
+      if (this.currentActionTypeA === 'add') {
+        this.createArticle(formData)
+      } else {
+        this.updateArticle(formData)
+      }
+    },
+    async createArticle(articleData) {
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}adminarticle.php`, articleData)
+        console.log('Article created:', response.data)
+        this.fetchArticles()
+      } catch (error) {
+        console.error('Error creating article:', error)
+      }
+    },
+    async updateArticle(articleData) {
+      try {
+        const response = await axios.put(`${import.meta.env.VITE_PHP_PATH}adminarticle.php?id=${articleData.name}`, articleData)
+        console.log('Article updated:', response.data)
+        this.fetchArticles()
+        this.$refs.modal.hide()
+      } catch (error) {
+        console.error('Error updating article:', error)
       }
     },
 

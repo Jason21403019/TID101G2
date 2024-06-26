@@ -2,7 +2,7 @@
   <main id="app">
     <!-- 商品詳細資訊 -->
     <h4 class="breadCrumbs">
-      <router-link to="/home">首頁</router-link> > <router-link to="/product">商品</router-link> > 商品資訊
+      <router-link to="/home">首頁</router-link> > <router-link to="/product">全部商品</router-link> > 商品資訊
     </h4>
     <section class="productInformation">
       <article class="productImg">
@@ -67,10 +67,10 @@ import Swal from 'sweetalert2'
 export default {
   data() {
     return {
-      count: 0,
+      count: 1,
       counts: 1,
       tabsIndex: 0,
-      id: 77,
+      // id: 77,
       plus: '+',
       minusSign: '-',
       addToTheCart: '加入購物車',
@@ -91,7 +91,7 @@ export default {
       }
     },
     countminusSign() {
-      if (this.count > 0) {
+      if (this.count > 1) {
         this.count--
       }
     },
@@ -112,6 +112,7 @@ export default {
             console.log('Alert closed')
           }
         })
+
         return // 停止执行后续代码
       }
 
@@ -123,7 +124,7 @@ export default {
         method: 'POST',
 
         body: JSON.stringify({
-          id: this.id,
+          // id: this.id,
           product_id: this.selectedProduct().id,
           member_id: this.memberId,
           count: this.count
@@ -176,7 +177,7 @@ export default {
       fetch('http://localhost/TID101G2/public/api/ProductCart.php', {
         method: 'POST',
 
-        body: JSON.stringify({ id: this.id, product_id: phpdata.id, member_id: this.memberId, count: this.counts }) // 发送选项卡 ID 到后端
+        body: JSON.stringify({ product_id: phpdata.id, member_id: this.memberId, count: this.counts }) // 发送选项卡 ID 到后端
         // body: { account: tabName } // 发送选项卡 ID 到后端
       })
         .then((response) => response.json())
@@ -546,12 +547,6 @@ body {
   }
   p {
     padding-bottom: 3%;
-  }
-  article {
-    // width: 50%;
-    img {
-      // height: 60%;
-    }
   }
 
   .productImg {

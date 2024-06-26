@@ -31,20 +31,6 @@ $accountSearch = '%'.$tabId.'%' ;
               // 輸出 JSON
               echo $jsonData;
 
-// 圖片------------------------
-// foreach ($data as $row) {
-//     // 获取图片数据
-//     $imageData = $row['picture'];
-
-//     // 将 BLOB 数据转换为 Base64 编码的字符串
-//     $base64Image = base64_encode($imageData);
-
-//     // 输出 Base64 编码的图片字符串
-//     echo '<img src="data:image/jpeg;base64,' . $base64Image . '" />';
-// }
-
-
-
           } catch (PDOException $e) {
               // 處理 PDO 例外錯誤
               echo json_encode(array('error' => 'PDO Error: ' . $e->getMessage()));
