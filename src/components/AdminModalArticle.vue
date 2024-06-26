@@ -17,28 +17,32 @@
           <form @submit.prevent="handleSave">
             <div class="mb-3">
               <label for="article-category" class="col-form-label">專欄分類:</label>
-              <select id="article-category" v-model="article.category" class="form-select">
-                <option value="Wine Knowledge">Wine Knowledge 酒類知識</option>
-                <option value="News Report">News Report 國外報導</option>
-                <option value="Cotail World">Cotail World 調酒新世代</option>
+              <select id="article-category" v-model="article.article_class_id" class="form-select">
+                <option value="酒類知識">Wine Knowledge 酒類知識</option>
+                <option value="國外報導">News Report 國外報導</option>
+                <option value="調酒新世代">Cotail World 調酒新世代</option>
               </select>
             </div>
             <div class="mb-3">
+              <label for="article-id" class="col-form-label">id:</label>
+              <input id="article-id" v-model="article.id" type="text" class="form-control" />
+            </div>
+            <div class="mb-3">
               <label for="article-title" class="col-form-label">專欄標題:</label>
-              <input id="article-title" v-model="article.title" type="text" class="form-control" />
+              <input id="article-title" v-model="article.name" type="text" class="form-control" />
             </div>
             <div class="mb-3">
               <label for="article-author" class="col-form-label">作者:</label>
-              <input id="article-author" v-model="article.author" type="text" class="form-control" />
+              <input id="article-author" v-model="article.publisher" type="text" class="form-control" />
             </div>
             <div class="mb-3">
               <label for="article-publish-date" class="col-form-label">發布時間:</label>
-              <input id="article-publish-date" v-model="article.publishDate" type="date" class="form-control" />
+              <input id="article-publish-date" v-model="article.publish_date" type="date" class="form-control" />
             </div>
             <div class="mb-3">
-              <label for="article-content" class="col-form-label">專欄內容:</label>
-              <admin-text-editor></admin-text-editor>
-            </div>
+  <label for="article-content" class="col-form-label">專欄內容:</label>
+  <admin-text-editor v-model:content="article.content"></admin-text-editor>
+</div>
             <div class="mb-3">
               <label for="article-image" class="col-form-label">標題圖上傳:</label>
               <input id="article-image" type="file" class="form-control" @change="handleImageUpload" />
@@ -46,7 +50,7 @@
             <div class="mb-3">
               <label for="article-status" class="col-form-label">顯示狀態:</label>
               <div class="form-check form-switch">
-                <input id="flexSwitchCheckChecked" v-model="article.status" class="form-check-input" type="checkbox" />
+                <input id="flexSwitchCheckChecked" v-model="article.article_status" class="form-check-input" type="checkbox" />
               </div>
             </div>
             <div class="modal-footer">
@@ -75,13 +79,13 @@ export default {
       type: Object,
       required: true,
       default: () => ({
-        category: '',
-        title: '',
-        author: '',
-        publishDate: '',
+        id: '',
+        article_class_id: '', // 使用與後端一致的欄位名稱
+        name: '', // 使用與後端一致的欄位名稱
+        publisher: '', // 使用與後端一致的欄位名稱
+        publish_date: '', // 使用與後端一致的欄位名稱
         content: '',
         image: '',
-        status: false
       })
     },
     onSave: {
@@ -103,33 +107,39 @@ export default {
     }
   },
   methods: {
-    show() {
-      const modalElement = this.$refs.articleModal
+  show() {
+    const modalElement = this.$refs.articleModal
 
-      if (modalElement) {
-        this.myModal = new bootstrap.Modal(modalElement)
-        this.myModal.show()
-      } else {
-        console.error('articleModal reference is not found.')
-      }
-    },
-    handleSave() {
-      this.onSave(this.article)
-      if (this.myModal) {
-        this.myModal.hide()
-      } else {
-        console.error('Modal instance is not available to hide.')
-      }
-    },
-    handleImageUpload(event) {
-      const file = event.target.files[0]
+    if (modalElement) {
+      this.myModal = new bootstrap.Modal(modalElement)
+      this.myModal.show()
+    } else {
+      console.error('articleModal reference is not found.')
+    }
+  },
+  handleSave() {
+    console.log('Form Data:', this.article); // 這裡加入 console.log
+    this.onSave(this.article)
+    if (this.myModal) {
+      this.myModal.hide()
+    } else {
+      console.error('Modal instance is not available to hide.')
+    }
+  },
+  handleImageUpload(event) {
+    const file = event.target.files[0]
 
-      if (file) {
-        this.article.image = file
-      }
+    if (file) {
+      // 這裡可以處理圖片上傳，例如使用 FileReader 將圖片轉換為 base64 編碼
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.article.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
   }
 }
+      }
 </script>
 
 <style lang="scss" scoped>

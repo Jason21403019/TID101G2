@@ -9,7 +9,7 @@
 
   <!-- 按鈕 -->
   <div class="d-grid gap-2 d-md-flex justify-content-md-between">
-    <admin-bulk-btn :handle-click="bulkCancel">
+    <admin-bulk-btn :handle-click="bulkDelete">
       <template #bulkicon>
         <img src="../imgs/icon/icon_delete.svg" alt="delIcon" height="20" width="20" />
       </template>
@@ -32,59 +32,53 @@
           <th scope="col">
             <input v-model="selectAll" class="form-check-input" type="checkbox" @change="toggleAllCheckboxes" />
           </th>
-          <th scope="col">分類名稱</th>
-          <th scope="col">專欄標題</th>
-          <th scope="col">點擊次數</th>
+          <th scope="col">名稱</th>
+          <th scope="col">作者</th>
+          <th scope="col">分類 ID</th>
           <th scope="col">發布時間</th>
-          <th scope="col">顯示</th>
           <th scope="col">編輯</th>
           <th scope="col">刪除</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(article, index) in articles" :key="index">
+        <tr v-for="(article, index) in articles" :key="article.id"> 
           <th scope="row">
-            <input v-model="article.selected" class="form-check-input" type="checkbox" @change="checkIfAllSelected" />
+            <input v-model="selectedArticleIds[article.id]" class="form-check-input" type="checkbox" />
           </th>
-          <td>{{ article.category }}</td>
-          <td>{{ article.title }}</td>
-          <td>{{ article.clicks }}</td>
-          <td>{{ article.publishDate }}</td>
-          <td>
-            <div class="form-check form-switch">
-              <input :id="'flexSwitchCheckChecked' + index" v-model="article.show" class="form-check-input" type="checkbox" />
-            </div>
-          </td>
+          <td>{{ article.name }}</td>
+          <td>{{ article.publisher }}</td>
+          <td>{{ article.article_class_id }}</td>
+          <td>{{ article.publish_date }}</td>
           <td>
             <button @click="openModal('edit', article)">
               <img src="../imgs/icon/icon_admin-edit.svg" alt="編輯" width="20px" height="20px" />
             </button>
           </td>
           <td>
-            <button @click="deleteArticle(index)">
+            <button @click="deleteArticle(article.id)"> 
               <img src="../imgs/icon/icon_delete.svg" alt="刪除" width="20px" height="20px" />
             </button>
           </td>
         </tr>
       </tbody>
       <caption>
-        每頁列表顯示<span class="main__list-number">6</span
-        >筆
+        每頁列表顯示<span class="main__list-number">6</span>筆
       </caption>
     </table>
   </section>
 
   <!-- 彈跳視窗 -->
-  <ModalArticle ref="modal" :action-type="currentActionType" :article="currentArticle" :on-save="handleSave"></ModalArticle>
+  <ModalArticle ref="modal" :action-type="currentActionType" :article="currentArticle" :on-save="handleSave" />
 </template>
 
 <script>
-import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
-import AdminBtn from '../components/AdminBtn.vue'
-import AdminBulkBtn from '../components/AdminBulkBtn.vue'
-import ModalArticle from '../components/AdminModalArticle.vue'
-import Swal from 'sweetalert2'
-import { variables } from '../js/AdminVariables.js'
+import axios from 'axios';
+import AdminBreadcrumb from '../components/AdminBreadcrumb.vue';
+import AdminBtn from '../components/AdminBtn.vue';
+import AdminBulkBtn from '../components/AdminBulkBtn.vue';
+import ModalArticle from '../components/AdminModalArticle.vue';
+import Swal from 'sweetalert2';
+import { variables } from '../js/AdminVariables.js';
 
 export default {
   name: 'AdminArticle',
@@ -92,7 +86,7 @@ export default {
     AdminBreadcrumb,
     AdminBtn,
     AdminBulkBtn,
-    ModalArticle
+    ModalArticle,
   },
   data() {
     return {
@@ -101,115 +95,122 @@ export default {
       breadcrumbItems: [
         { text: '首頁', link: '/admin', active: false },
         { text: variables.articleblock.wine, link: '', active: true },
-        { text: variables.articleblock.articleList, link: '/admin_article', active: false }
+        { text: variables.articleblock.articleList, link: '/admin_article', active: false },
       ],
-
       currentActionType: 'add',
-      currentArticle: {
-        title: '',
-        category: '',
-        clicks: 0,
-        publishDate: '',
-        show: true
-      },
-      articles: [
-        {
-          category: 'Wine Knowledge 酒類知識',
-          title: '威士忌釀造的藝術',
-          clicks: 123,
-          publishDate: '2023-05-01',
-          show: true
-        }
-      ]
-    }
+      currentArticle: {},
+      articles: [],
+      selectedArticleIds: {}, // 使用物件來追蹤選取的 ID
+      selectAll: false,
+    };
   },
-  watch: {
-    articles: {
-      handler() {
-        // 檢查是否所有的 article.selected 都是 true，若是則勾選表頭的複選框
-        this.selectAll = this.articles.every((article) => article.selected)
-      },
-      deep: true
-    }
+  mounted() {
+    this.fetchArticles();
   },
   methods: {
-    openModal(action, article = null) {
-      this.currentActionType = action
-      this.currentArticle = article ? { ...article } : { category: '', title: '', clicks: 0, publishDate: '', show: true }
-      this.$refs.modal.show()
+    fetchArticles() {
+      axios.get(`${import.meta.env.VITE_PHP_PATH}adminarticle.php`)
+        .then(response => {
+          this.articles = response.data;
+        })
+        .catch(error => {
+          console.error('Error fetching articles:', error);
+        });
+    },
+    openModal(action, article = {}) { 
+      this.currentActionType = action;
+      this.currentArticle = { ...article }; 
+      this.$refs.modal.show();
     },
     handleSave(formData) {
       if (this.currentActionType === 'add') {
-        // 新增邏輯
-        const newArticle = { ...formData, id: this.articles.length + 1 }
-
-        this.articles.push(newArticle)
+        this.createArticle(formData);
       } else {
-        // 編輯邏輯
-        const index = this.articles.findIndex((article) => article.id === formData.id)
-
-        if (index !== -1) {
-          this.articles.splice(index, 1, { ...formData })
-        }
+        this.updateArticle(formData);
       }
     },
-    // 單顆按鈕點刪除時
-    deleteArticle(index) {
+    createArticle(articleData) {
+      axios.post(`${import.meta.env.VITE_PHP_PATH}adminarticle.php`, articleData) 
+        .then(response => {
+          console.log('Article created:', response.data);
+          this.fetchArticles(); 
+        })
+        .catch(error => {
+          console.error('Error creating article:', error);
+        });
+    },
+    updateArticle(articleData) {
+      axios.put(`${import.meta.env.VITE_PHP_PATH}adminarticle.php?id=${articleData.name}`, articleData) 
+        .then(response => {
+          console.log('Article updated:', response.data);
+          this.fetchArticles(); 
+          this.$refs.modal.hide(); 
+        })
+        .catch(error => {
+          console.error('Error updating article:', error);
+        });
+    },
+    deleteArticle(articleId) {
       Swal.fire({
         title: '確認刪除',
         text: '您確定要刪除此項目嗎？',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: '刪除!',
-        cancelButtonText: '取消'
+        cancelButtonText: '取消',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.articles.splice(index, 1)
-          Swal.fire('已刪除', '該項目已被刪除', 'success')
+          axios.delete(`${import.meta.env.VITE_PHP_PATH}adminarticle.php?id=${articleId}`) 
+            .then(response => {
+              console.log('Article deleted:', response.data);
+              this.fetchArticles(); 
+            })
+            .catch(error => {
+              console.error('Error deleting article:', error);
+            });
         }
-      })
+      });
     },
-    // 當我的tbody中input全勾，全選勾會被勾起來
-    toggleAllCheckboxes() {
-      this.articles.forEach((article) => {
-        article.selected = this.selectAll
-      })
-    },
-    // 當複選框勾起來時，是否刪除的警告訊息
-    bulkCancel() {
-      const selectedArticles = this.articles.filter((article) => article.selected)
+    bulkDelete() {
+      const selectedIds = Object.keys(this.selectedArticleIds).filter(id => this.selectedArticleIds[id]);
 
-      if (selectedArticles.length === 0) {
-        Swal.fire('未選擇任何項目', '請選擇要刪除的項目', 'warning')
-
-        return
+      if (selectedIds.length === 0) {
+        Swal.fire('未選擇任何項目', '請選擇要刪除的項目', 'warning');
+        return;
       }
 
       Swal.fire({
         title: '確認刪除',
-        text: `您確定要刪除選中的${selectedArticles.length}個項目嗎？`,
+        text: `您確定要刪除選中的 ${selectedIds.length} 個項目嗎？`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: '刪除!',
-        cancelButtonText: '取消'
+        cancelButtonText: '取消',
       }).then((result) => {
         if (result.isConfirmed) {
-          selectedArticles.forEach((article) => {
-            const index = this.articles.indexOf(article)
-
-            if (index !== -1) {
-              this.articles.splice(index, 1)
-            }
+          axios.delete(`${import.meta.env.VITE_PHP_PATH}adminarticle.php`, { 
+            data: { ids: selectedIds } 
           })
-          this.selectAll = false // 重置selectAll狀態
-          Swal.fire('已刪除', '選中的項目已被刪除', 'success')
+          .then(response => {
+            console.log('Articles deleted:', response.data);
+            this.fetchArticles();
+            this.selectAll = false;
+            this.selectedArticleIds = {};
+          })
+          .catch(error => {
+            console.error('Error deleting articles:', error);
+          });
         }
-      })
-    }
-  }
-}
+      });
+    },
+    toggleAllCheckboxes() {
+      this.articles.forEach(article => {
+        this.selectedArticleIds[article.id] = this.selectAll;
+      });
+    },
+  },
+};
 </script>
-
 <style lang="scss" scoped>
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 

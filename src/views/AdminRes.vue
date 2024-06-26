@@ -1,49 +1,34 @@
 <template>
   <AdminBreadcrumb :items="breadcrumbItems" />
-  <!-- 標題 -->
   <div class="resblock">
     <h1 class="resblock-h1">{{ mainTitle }}</h1>
     <span class="resblock-pipe"> | </span>
     <h1 class="resblock-h1">{{ subTitle }}</h1>
   </div>
-  <!-- 搜尋 -->
   <div>
     <admin-input input-id="formGroupExampleInput1">
       <template #label>查詢條件</template>
       <template #select>
         <select class="form-select" aria-label="Default select example">
           <option selected>會員編號</option>
-          <option value="1">會員姓名</option>
-          <option value="2">會員電話</option>
         </select>
       </template>
     </admin-input>
-
     <div class="d-flex align-items-center">
       <admin-date-input start-date-id="dateInputField1" end-date-id="dateInputField2">
         <template #label>訂位日期</template>
         <template #info>(最多查詢100天)</template>
       </admin-date-input>
-
       <admin-btn :handle-click="search">
         <template #icon>
-          <img src="../imgs/icon/icon_admin-search-w.svg" alt="addIcon" height="20" width="20" />
+          <img src="../imgs/icon/icon_admin-search-w.svg" alt="searchIcon" height="20" width="20" />
         </template>
         <template #text>查詢</template>
       </admin-btn>
     </div>
   </div>
-  <!-- 按鈕 -->
-  <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-    <admin-bulk-btn :handle-click="bulkCancel">
-      <template #bulkicon>
-        <img src="../imgs/icon/icon_admin-time-past.svg" alt="cancelIcon" height="20" width="20" />
-      </template>
-      <template #bulktext>歷史訂位</template>
-    </admin-bulk-btn>
-  </div>
 
-  <section>
+  <section v-if="reservations.length">
     <table class="table">
       <thead class="table-thead">
         <tr>
@@ -51,51 +36,38 @@
           <th scope="col">會員姓名</th>
           <th scope="col">會員電話</th>
           <th scope="col">Email</th>
-          <th scope="col">預約狀態</th>
+          <th scope="col"></th>
           <th scope="col">用餐人數</th>
-          <th scope="col">訂位日期</th>
+          <th scope="col">備註</th>
           <th scope="col">訂位時間</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">M001</th>
-          <td>不熬夜</td>
-          <td>0912-345-678</td>
-          <td>Tibame@gmail.com</td>
-          <td>進行中</td>
-          <td>3位</td>
-          <td>2024/05/23</td>
-          <td>18:00</td>
-        </tr>
-
-        <tr>
-          <th scope="row">M001</th>
-          <td>不熬夜</td>
-          <td>0912-345-678</td>
-          <td>Tibame@gmail.com</td>
-          <td>進行中</td>
-          <td>3位</td>
-          <td>2024/05/23</td>
-          <td>18:00</td>
+        <tr v-for="reservation in reservations" :key="reservation.id">
+          <td>{{ reservation.member_id	 }}</td>
+          <td>{{ reservation.full_name }}</td>
+          <td>{{ reservation.phone }}</td>
+          <td>{{ reservation.email }}</td>
+          <td>{{ reservation.status }}</td>
+          <td>{{ reservation.guest_count }}</td>
+          <td>{{ reservation.booking_note }}</td>
+          <td>{{ reservation.booking_time }}</td>
         </tr>
       </tbody>
-
-      <caption>
-        每頁列表顯示<span class="main__list-number">6</span
-        >筆
-      </caption>
+      <caption>每頁列表顯示<span class="main__list-number">10</span>筆</caption>
     </table>
   </section>
+  <div v-else>No reservations found.</div>
 </template>
 
 <script>
-import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
-import AdminBtn from '../components/AdminBtn.vue'
-import AdminBulkBtn from '../components/AdminBulkBtn.vue'
-import AdminDateInput from '../components/AdminDateInput.vue'
-import AdminInput from '../components/AdminInput.vue'
-import { variables } from '../js/AdminVariables.js'
+import axios from 'axios';
+import AdminBreadcrumb from '../components/AdminBreadcrumb.vue';
+import AdminBtn from '../components/AdminBtn.vue';
+import AdminBulkBtn from '../components/AdminBulkBtn.vue';
+import AdminDateInput from '../components/AdminDateInput.vue';
+import AdminInput from '../components/AdminInput.vue';
+import { variables } from '../js/AdminVariables.js';
 
 export default {
   name: 'AdminRes',
@@ -114,12 +86,26 @@ export default {
         { text: '首頁', link: '/admin', active: false },
         { text: variables.resblock.reservation, link: '', active: true },
         { text: variables.resblock.bookingList, link: '/admin_res', active: false }
-      ]
+      ],
+      reservations: []
+    }
+  },
+  async mounted() {
+    await this.fetchReservations();
+  },
+  methods: {
+    async fetchReservations() {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_PHP_PATH}admin_res.php`);
+        this.reservations = response.data;
+      } catch (error) {
+        console.error("獲取訂位資料時出錯：", error);
+        this.reservations = []; // Ensure data consistency
+      }
     }
   }
 }
 </script>
-
 <style lang="scss" scoped>
 @import '../../node_modules/bootstrap/scss/bootstrap.scss'; // 確保這一行在最上面
 
