@@ -22,17 +22,17 @@ switch ($request_method) {
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $products = $stmt->fetchAll();
 
-            foreach ($products as &$product) {
-                if (!empty($product['picture'])) {
-                    $product['picture'] = base64_encode($product['picture']);
-                }
-                if (!empty($product['picture2'])) {
-                    $product['picture2'] = base64_encode($product['picture2']);
-                }
-                if (!empty($product['picture3'])) {
-                    $product['picture3'] = base64_encode($product['picture3']);
-                }
-            }
+            // foreach ($products as &$product) {
+            //     if (!empty($product['picture'])) {
+            //         $product['picture'] = base64_encode($product['picture']);
+            //     }
+            //     if (!empty($product['picture2'])) {
+            //         $product['picture2'] = base64_encode($product['picture2']);
+            //     }
+            //     if (!empty($product['picture3'])) {
+            //         $product['picture3'] = base64_encode($product['picture3']);
+            //     }
+            // }
 
             if (empty($products)) {
                 echo json_encode(["message" => "No records found."]);

@@ -6,11 +6,14 @@ header("Access-Control-Allow-Headers: Content-Type");
 // // 設置返回的內容類型
 header('Content-Type: application/json');
 // 資料庫連線設定
-$db_host = "127.0.0.1";
-$db_user = "tibamefe_since2021";
-$db_pass = "vwRBSb.j&K#E";
-$db_select = "tibamefe_tid101g2";
-
+// $db_host = "127.0.0.1";
+// $db_user = "tibamefe_since2021";
+// $db_pass = "vwRBSb.j&K#E";
+// $db_select = "tibamefe_tid101g2";
+$servername = "localhost";
+$username = "root";
+$password = "password";
+$dbname = "tid101_g2";
 try {
     
     // 建立連線
