@@ -28,9 +28,6 @@ export const useUserStore = defineStore('user', {
         return true
       }
       return false
-
-      // this.isLoggedIn = localStorage.getItem('isLoggedIn')
-      // 這裡可以進一步恢復其他用戶數據
     }
   }
 })

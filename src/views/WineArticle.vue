@@ -8,37 +8,23 @@
       </ol>
     </nav>
     <div class="wine__article-banner">
-      <img :src="article.src1" alt="banner" />
+      <img :src="article.picture" alt="banner" />
     </div>
     <div class="ap">
       <div class="wine__article-author">
         <p>
-          {{ article.author }}
+          {{ article.publisher }}
         </p>
       </div>
-      <div class="wine__article-publish_time">
+      <div class="wine__article-publish-time">
         <p>
-          {{ article.publish_time }}
+          {{ article.publish_date }}
         </p>
       </div>
     </div>
     <div class="wine__article-textarea">
       <p>
-        {{ article.p1 }}
-      </p>
-      <p>
-        {{ article.p2 }}
-      </p>
-    </div>
-    <div class="wine__article-banner">
-      <img :src="article.src2" alt="banner" />
-    </div>
-    <div class="wine__article-textarea">
-      <p>
-        {{ article.p3 }}
-      </p>
-      <p>
-        {{ article.p4 }}
+        {{ article.content }}
       </p>
     </div>
     <h3 class="wine__article-related">更多相關文章</h3>
@@ -55,9 +41,10 @@
 </template>
 
 <script>
+import axios from 'axios'
 import ReadMoreButton from '@/components/WineColumnBtn.vue'
-import img1 from '../imgs/wineColumnImg/105d2bb9d92254d478410275acb1e78f5394907e.jpg'
-import img2 from '../imgs/wineColumnImg/4fd6ad2b388e62b71d7fdf74902d4a5095c1e46d.jpg'
+// import img1 from '../imgs/wineColumnImg/105d2bb9d92254d478410275acb1e78f5394907e.jpg'
+// import img2 from '../imgs/wineColumnImg/4fd6ad2b388e62b71d7fdf74902d4a5095c1e46d.jpg'
 import img4 from '../imgs/wineColumnImg/dl.beatsnoop.com-final-M9bsqoHSIh.jpg'
 import img5 from '../imgs/wineColumnImg/glass-mojito-delicious-fresh-summer-cocktail-space-text.jpg'
 import img6 from '../imgs/wineColumnImg/cocktail-decorated-with-slice-lime.jpg'
@@ -70,21 +57,28 @@ export default {
 
   data() {
     return {
-      article: {
-        author: 'MM站長',
-        publish_time: '2024-06-11',
-        src1: img1,
-        src2: img2,
-        p1: '2020年初，一場突如其來的疫情，讓全世界陷入前所未有的變化，病毒阻絕了人與人之間的實體來往，也嚴重打擊了日本酒產業，愛媛縣政府面對這樣的困境，與東京農業大學、愛媛縣產業技術研究中心、愛媛縣酒造組合、伊台貿股份有限公司（台灣）等產官學通各界，投入近千萬日幣研發預算，由愛媛縣境內22家酒造共同進行實驗釀造，打造出由愛媛縣特有品種「翠雀花(Sakurahime)」所分離出之花酵母釀製之EhimeSakurahime系列，作為面對疫情後再次出發的強勢商品。',
-        p2: '愛媛縣酒造組合理事長越智浩(石鎚酒造)表示：「愛媛縣雖曾於90年代發展出愛媛(EK)酵母，但那畢竟是從熊本K901培育過來的變異株，簡單來說愛媛縣至此並無自己本地的「原生酵母」」。畢業於日本釀造最高學府−東京農業大學釀造學系的越智浩進一步表示：「石鎚酒造曾在2019年接受東農大委託，與來自日本其他六間酒造共同以美智子玫瑰花酵母釀造花酵母日本酒，此次與東農大再度合作，成功從愛媛縣的特有原生花種「翠雀花/さくらひめ/桜姫」(Sakura-hime)中，分離出愛媛縣特有的原生酵母。（按:翠雀花原為深藍色的花種，在1970年代在愛媛縣產業技術中心的培育進行突變後產生了特有的粉櫻色品種，因顏色與形狀酷似櫻花，故以櫻花與愛媛的媛合名為Sakura-hime）',
-        p3: `擔任愛媛縣酒造組合市場開發委員長的近藤嘉郎(近藤酒造/華姬櫻)指出：「此次Sakurahim花酵母系列，總共分為Type1 Tropical、Type 2 Clear、Type 3 Well Balance、Type 4 Rich等四種特性完全不同的酵母種類(TYPE)釀造，由縣內22家酒造分別選擇自己拿手的酵母後，釀造出22款在香氣與口感上完全不同的酒款呈現給消費者。日本國內預計於2023年3月30日由愛媛縣中村時廣知事進行首次發表，並於4月14日於台北國際酒展作為海外首次發表場地。」`,
-        p4: `身為愛媛縣酒造組合海外最大代理商的伊台貿股份有限公司董事長管怡宣表示：「台灣這幾年已成為愛媛縣日本酒出口第一大國，選擇台灣作為海外首場發表場地，更可顯現出愛媛縣全體酒造對台灣市場的高度重視。此次將由四組花酵母的領銜酒造（石鎚酒造、梅錦山川酒造、近藤酒造以及八木酒造/山丹正宗）社長親自來台，除將於展期首日(4月14日)，由四家酒造社長於品酒教室中講解各組花酵母的特性與提供試飲講解外，展期期間也將於酒展展間舞台區舉行各式活動並且提供限量紀念品，也藉此機會讓消費者能夠更近距離與酒造社長進行互動。`
-      },
+      article: [],
       articles: [
         { id: 1, title: '威士忌釀造的藝術', image: img4 },
         { id: 2, title: '蘭姆酒的奇幻旅程', image: img5 },
         { id: 3, title: '龍舌蘭的酒吧神話', image: img6 }
       ]
+    }
+  },
+  mounted() {
+    this.articleFetch()
+  },
+  methods: {
+    articleFetch() {
+      axios
+        .get(`${import.meta.env.VITE_PHP_PATH}/adminarticle.php`)
+        .then((res) => {
+          this.article = res.data[0]
+          console.log(this.article)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 }
@@ -168,7 +162,7 @@ export default {
       color: $ramos-gin-fizz;
     }
   }
-  &-publish_time {
+  &-publish-time {
     // border: 1px solid red;
     position: absolute;
     width: 100%;

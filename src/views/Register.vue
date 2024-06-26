@@ -141,16 +141,16 @@ export default {
         return
       }
 
-      console.log(this.loginForm)
+      // console.log(this.loginForm)
 
       try {
-        console.log('start login')
+        // console.log('start login')
         const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}Login.php`, this.loginForm, {
           headers: {
             'Content-Type': 'application/json'
           }
         })
-        console.log('end login', response)
+        // console.log('end login', response)
         // console.log(response);
 
         // console.log('aaa')
@@ -161,7 +161,7 @@ export default {
 
         if (result.success) {
           this.passwordError = null
-          userStore.login('4234234')
+          userStore.login(result.userid)
           this.$router.push('/member')
         } else {
           this.passwordError = result.message || 'Login failed'

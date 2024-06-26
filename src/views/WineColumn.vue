@@ -107,7 +107,6 @@ export default {
         if (this.wineCategories[index]) {
           // 確保不超出現有的索引範圍
           this.wineCategories[index].id = category.id
-          this.wineCategories[index].text = category.note
         }
       })
     }

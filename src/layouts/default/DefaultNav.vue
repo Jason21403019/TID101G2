@@ -167,6 +167,8 @@ export default {
       const userStore = useUserStore()
 
       userStore.logout()
+      this.$router.push('/home')
+      this.memberAndLogout()
     },
     toggleHamburger() {
       this.isHamburgerOpen = !this.isHamburgerOpen
@@ -185,8 +187,6 @@ export default {
       this.closeHamburger() // 如果還需要進行其他處理，如關閉漢堡菜單
     },
     memberAndLogout() {
-      // const userStore = useUserStore()
-
       if (useUserStore.isLoggedIn == null) {
         this.isDropdownVisible = !this.isDropdownVisible
       }

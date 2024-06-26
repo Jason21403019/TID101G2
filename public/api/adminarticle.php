@@ -12,14 +12,6 @@ try {
     $stmt->setFetchMode(PDO::FETCH_ASSOC);
     $products = $stmt->fetchAll();
 
-    // 處理圖片 BLOB 字段
-    foreach ($products as &$product) {
-        if (!empty($product['picture'])) {
-            // 將 BLOB 資料轉換為 Base64 編碼
-            $product['picture'] = base64_encode($product['picture']);
-        }
-    }
-
     // 檢查資料是否存在
     if (empty($products)) {
         echo json_encode(["message" => "No records found."]);
