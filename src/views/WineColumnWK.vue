@@ -20,7 +20,7 @@
       </ul>
     </section>
     <div class="article-grid">
-      <div v-for="article in articles" :key="article.id" class="article-card">
+      <div v-for="(article, index) in articles" :key="article.id" class="article-card">
         <img :src="article.image" alt="article image" />
         <div class="article-content">
           <h3>{{ article.title }}</h3>
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import ReadMoreButton from '@/components/WineColumnBtn.vue'
 import WineColumnCategory from '@/components/WineColumnCategory.vue'
 import WineColumnTitle from '@/components/WineColumnTitle.vue'
@@ -65,22 +66,22 @@ export default {
       title_en: 'Wine Knowledge',
       wineCategories: [
         {
-          link: '/wine_column_wk',
-          imgSrc: bottleWine,
-          altText: '',
-          text: '酒類知識'
-        },
-        {
+          id: '',
           link: '/wine_column_news',
-          imgSrc: newsReport,
-          altText: '',
-          text: '國外報導'
+          imgSrc: bottleWine,
+          altText: ''
         },
         {
+          id: '',
+          imgSrc: newsReport,
           link: '/wine_column_nc',
+          altText: ''
+        },
+        {
+          id: '',
+          link: '/wine_column_wk',
           imgSrc: cotailWorld,
-          altText: '',
-          text: '調酒新世界'
+          altText: ''
         }
       ],
       articles: [
@@ -100,12 +101,36 @@ export default {
       noMoreArticles: false
     }
   },
+  mounted() {
+    this.fetchCategories()
+  },
 
   methods: {
     isActive(link) {
       if (link === '/') return false
 
       return link === this.$route.path
+    },
+    fetchCategories() {
+      axios
+        .get(`${import.meta.env.VITE_PHP_PATH}adminarticle_class.php`)
+        .then((response) => {
+          console.log('Response:', response.data)
+          this.categories = response.data
+          this.mergeCategories(response.data) // 調用合併方法
+        })
+        .catch((error) => {
+          console.error('There was an error fetching the categories: ', error)
+        })
+    },
+    mergeCategories(fetchedCategories) {
+      fetchedCategories.forEach((category, index) => {
+        if (this.wineCategories[index]) {
+          // 確保不超出現有的索引範圍
+          this.wineCategories[index].id = category.id
+          this.wineCategories[index].text = category.note
+        }
+      })
     }
   }
 }

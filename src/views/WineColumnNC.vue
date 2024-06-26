@@ -67,19 +67,19 @@ export default {
       wineCategories: [
         {
           id: '',
-          link: '/wine_column_wk',
+          link: '/wine_column_news',
           imgSrc: bottleWine,
           altText: ''
         },
         {
           id: '',
-          link: '/wine_column_news',
+          link: '/wine_column_nc',
           imgSrc: newsReport,
           altText: ''
         },
         {
           id: '',
-          link: '/wine_column_nc',
+          link: '/wine_column_wk',
           imgSrc: cotailWorld,
           altText: ''
         }
@@ -110,7 +110,7 @@ export default {
       axios
         .get(`${import.meta.env.VITE_PHP_PATH}adminarticle_class.php`)
         .then((response) => {
-          console.log('Response:', response.data)
+          // console.log('Response:', response.data)
           this.categories = response.data
           this.mergeCategories(response.data) // 調用合併方法
         })
