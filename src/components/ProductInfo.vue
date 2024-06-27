@@ -40,7 +40,7 @@ export default {
       pageSize: 6,
       count: 1,
       // id: 66,
-      memberId: 'm001'
+      memberId: ''
     }
   },
   computed: {
@@ -209,18 +209,26 @@ export default {
         this.fetchProductsCar(product)
         this.id++
       }
-    },
-    clickpage(pageNumber) {
-      // 更新 currentPage
-      this.currentPage = pageNumber
-
-      // 根據 currentPage 計算要顯示的商品範圍
-      const startIndex = (this.currentPage - 1) * this.pageSize
-      const endIndex = startIndex + this.pageSize
-
-      // 更新 paginatedProducts
-      this.paginatedProducts = this.phpdata.slice(startIndex, endIndex)
     }
+    // clickpage(pageNumber) {
+    //   // 更新 currentPage
+    //   this.currentPage = pageNumber
+
+    //   // 根據 currentPage 計算要顯示的商品範圍
+    //   const startIndex = (this.currentPage - 1) * this.pageSize
+    //   const endIndex = startIndex + this.pageSize
+
+    //   // 更新 paginatedProducts
+    //   this.paginatedProducts = this.phpdata.slice(startIndex, endIndex)
+    // }
+
+    // memberId() {
+    //   // 获取存储在 localStorage 中的值
+    //   this.memberId = localStorage.getItem('isLoggedIn')
+
+    //   // 使用获取到的值
+    //   console.log(this.memberId) // 输出存储的值
+    // }
   },
   watch: {
     // 监听当前选项卡 ID 的变化，更新商品数据
@@ -247,6 +255,9 @@ export default {
   },
   mounted() {
     this.fetchAllProductData()
+    // 获取存储在 localStorage 中的值，并赋给 memberId
+    this.memberId = localStorage.getItem('isLoggedIn')
+    console.log(this.memberId) // 输出 memberId，用于验证获取是否正确
   }
 }
 </script>

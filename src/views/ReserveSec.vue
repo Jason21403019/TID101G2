@@ -48,7 +48,8 @@ export default {
         time: '',
         note: ''
       },
-      showPopup: true
+      showPopup: true,
+      memberId: ''
     }
   },
   computed: {
@@ -92,7 +93,7 @@ export default {
     },
     // php
     fetchReserve() {
-      const memberId = 'm001' // 设置 memberId 变量为 'm001'
+      // const memberId = 'm001' // 设置 memberId 变量为 'm001'
 
       // 构建带有查询字符串的 URL
       // const url = http://localhost/TID101G2sql/src/components/ProductCart.php?member_id=${encodeURIComponent(memberId)}
@@ -102,7 +103,8 @@ export default {
         body: JSON.stringify({
           booking_date: this.reservationData.date,
           booking_time: this.reservationData.date + ' ' + this.reservationData.time,
-          guest_count: this.reservationData.guests
+          guest_count: this.reservationData.guests,
+          member_id: this.memberId
         })
       })
       // .then((response) => response.json())
@@ -112,6 +114,11 @@ export default {
       // })
       // .catch((error) => console.error('Error inserting data:', error))
     }
+  },
+  mounted() {
+    // 获取存储在 localStorage 中的值，并赋给 memberId
+    this.memberId = localStorage.getItem('isLoggedIn')
+    console.log(this.memberId) // 输出 memberId，用于验证获取是否正确
   }
 }
 </script>
@@ -128,19 +135,19 @@ export default {
   }
 
   @include breakpoint(820px) {
-      width: 80%;
+    width: 80%;
   }
 
   @include breakpoint(540px) {
-      width: 100%;
+    width: 100%;
   }
 
-  @include breakpoint(430px){
-      padding: 20px;
+  @include breakpoint(430px) {
+    padding: 20px;
   }
 
-  @include breakpoint(375px){
-       padding: 10px;
+  @include breakpoint(375px) {
+    padding: 10px;
   }
 
   p {
@@ -187,8 +194,8 @@ export default {
       text-align: center;
       padding: 20px;
 
-      @include breakpoint(430px){
-          padding: 10px;
+      @include breakpoint(430px) {
+        padding: 10px;
       }
 
       h3 {
@@ -201,19 +208,15 @@ export default {
       p {
         font-size: $fontSize_h5;
         margin-bottom: 10px;
-      
 
-        @include breakpoint(430px){
-            margin-bottom: 0;
+        @include breakpoint(430px) {
+          margin-bottom: 0;
         }
 
-        @include breakpoint(375px){
+        @include breakpoint(375px) {
           font-size: $fontSize_p;
-          
         }
-
       }
-
     }
 
     .data {
@@ -223,13 +226,13 @@ export default {
       padding: 30px;
       text-align: center;
 
-        @include breakpoint(430px) {
-            padding: 10px;
-        }
+      @include breakpoint(430px) {
+        padding: 10px;
+      }
 
-        @include breakpoint(375px){
-            width: 100%;
-        }
+      @include breakpoint(375px) {
+        width: 100%;
+      }
 
       .hello {
         font-size: $fontSize_p;
@@ -245,7 +248,7 @@ export default {
         margin-bottom: 30px;
         font-weight: bold;
 
-        @include breakpoint(430px){
+        @include breakpoint(430px) {
           font-size: 1.5rem;
         }
       }
@@ -277,10 +280,10 @@ export default {
         margin-bottom: 30px;
         font-weight: bold;
 
-          @include breakpoint(430px){
-            width: 40%;
-          }
-       }
+        @include breakpoint(430px) {
+          width: 40%;
+        }
+      }
 
       .btn_text {
         p {

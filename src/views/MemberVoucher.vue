@@ -41,10 +41,14 @@ export default {
   },
   data() {
     return {
-      phpdata: []
+      phpdata: [],
+      memberId: ''
     }
   },
   mounted() {
+    // 获取存储在 localStorage 中的值，并赋给 memberId
+    this.memberId = localStorage.getItem('isLoggedIn')
+    console.log(this.memberId) // 输出 memberId，用于验证获取是否正确
     this.fetchMemberVoucherData()
   },
   computed: {
@@ -62,7 +66,12 @@ export default {
   },
   methods: {
     fetchMemberVoucherData() {
-      fetch('http://localhost/TID101G2/public/api/MemberVoucher.php')
+      fetch('http://localhost/TID101G2/public/api/MemberVoucher.php', {
+        method: 'POST',
+
+        body: JSON.stringify({ member_id: this.memberId }) // 发送选项卡 ID 到后端
+        // body: { account: tabName } // 发送选项卡 ID 到后端
+      })
         .then((response) => response.json())
         .then((data) => {
           this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中

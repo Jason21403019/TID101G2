@@ -10,7 +10,7 @@ $requestData = json_decode(file_get_contents('php://input'), true);
 $reserveBooking_date = $requestData["booking_date"] ?? '';
 $reserveBooking_time = $requestData["booking_time"] ?? '';
 $reserveGuest_count = $requestData["guest_count"] ?? '';
-
+$member_id = $requestData["member_id"] ?? '';
 
 // $reserveCar = '%'.$tabId.'%' ;
 // $tabId =$_REQUEST["account"];
@@ -20,7 +20,7 @@ $reserveGuest_count = $requestData["guest_count"] ?? '';
 
        try {
               // 建立SQL語法
-              $sql = "DELETE FROM reservation WHERE booking_date = ? AND booking_time = ? AND guest_count = ? ";
+              $sql = "DELETE FROM reservation WHERE booking_date = ? AND booking_time = ? AND guest_count = ? AND member_id = ?";
 
               // 執行並查詢，會回傳查詢結果的物件，必須使用fetch、fetchAll...等方式取得資料
               $statement = $conn->prepare($sql);
@@ -28,7 +28,7 @@ $reserveGuest_count = $requestData["guest_count"] ?? '';
               $statement->bindValue(1, $reserveBooking_date);
               $statement->bindValue(2, $reserveBooking_time);
               $statement->bindValue(3, $reserveGuest_count);
-        
+              $statement->bindValue(4, $member_id);
          
     
               // 执行查询

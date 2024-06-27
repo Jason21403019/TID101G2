@@ -22,9 +22,9 @@ $productcount = $requestData["count"] ?? '';
               // 執行並查詢，會回傳查詢結果的物件，必須使用fetch、fetchAll...等方式取得資料
               $statement = $conn->prepare($sql);
             //   $statement->bindValue(1, $productId);
-              $statement->bindValue(2, $member_id);
-              $statement->bindValue(3, $product_id);
-              $statement->bindValue(4, $productcount);
+              $statement->bindValue(1, $member_id);
+              $statement->bindValue(2, $product_id);
+              $statement->bindValue(3, $productcount);
             
     
               // 执行查询

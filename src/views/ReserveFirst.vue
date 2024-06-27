@@ -102,7 +102,7 @@ export default {
       note: '',
       showPopup: false,
       errorMessage: '',
-
+      memberId: '',
       phpdata: []
 
       // placeholderText: '請選擇日期',
@@ -145,8 +145,8 @@ export default {
       }
     },
     fetchReserve() {
-      const memberId = 'm001' // 设置 memberId 变量为 'm001'
-
+      // const memberId = 'm001' // 设置 memberId 变量为 'm001'
+      // const memberId = this.memberId
       // 构建带有查询字符串的 URL
       // const url = 'http://localhost/TID101G2sql/src/components/ProductCart.php?member_id=${encodeURIComponent(memberId)'};
       fetch('http://localhost/TID101G2/public/api/ReserveFirst.php', {
@@ -157,7 +157,7 @@ export default {
           booking_time: this.date + ' ' + this.time,
           guest_count: this.guests,
           booking_note: this.note,
-          member_id: memberId
+          member_id: this.memberId
         })
       })
       // .then((response) => response.json())
@@ -168,12 +168,12 @@ export default {
       // .catch((error) => console.error('Error inserting data:', error))
     },
     fetchReserveMember() {
-      const memberId = 'm001' // 设置 memberId 变量为 'm001'
-
+      // const memberId = 'm001' // 设置 memberId 变量为 'm001'
+      const memberId = this.memberId
       fetch('http://localhost/TID101G2/public/api/ReserveMember.php', {
         method: 'POST',
 
-        body: JSON.stringify({ member_id: memberId }) // 发送选项卡 ID 到后端
+        body: JSON.stringify({ member_id: this.memberId }) // 发送选项卡 ID 到后端
         // body: { account: tabName } // 发送选项卡 ID 到后端
       })
         .then((response) => response.json())
@@ -208,6 +208,8 @@ export default {
     }
   },
   mounted() {
+    this.memberId = localStorage.getItem('isLoggedIn')
+    console.log(this.memberId) // 输出 memberId，用于验证获取是否正确
     this.fetchReserveMember()
   }
 }
@@ -266,7 +268,6 @@ export default {
       @include breakpoint(430px) {
         font-size: $fontSize_h2;
       }
-
     }
 
     //captivate Intoxicat
@@ -364,7 +365,6 @@ export default {
     width: 100%;
   }
 
-
   //提醒事項
   h1 {
     font-family: $fontfamily;
@@ -388,15 +388,12 @@ export default {
       @include breakpoint(430px) {
         font-size: $fontSize_h4;
         line-height: 30px;
-       
       }
 
       @include breakpoint(390px) {
         font-size: 1rem;
         line-height: 1.5;
       }
-
-
     }
   }
 }
@@ -442,8 +439,6 @@ export default {
     @include breakpoint(375px) {
       font-size: $fontSize_h5;
     }
-
-
   }
 
   input {
@@ -456,8 +451,6 @@ export default {
     @include breakpoint(540px) {
       padding: 15px;
     }
-
-
   }
 
   img {
@@ -497,9 +490,9 @@ export default {
       appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;
-      background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="292.362" height="292.362" viewBox="0 0 292.362 292.362"><path fill="%23333" d="M287.273 69.233L166.191 190.317c-7.592 7.589-17.748 11.781-28.49 11.781s-20.896-4.192-28.49-11.781L5.088 69.233C-1.696 62.44-1.696 51.426 5.088 44.631c6.789-6.789 17.803-6.789 24.591 0l112.021 112.02L262.681 44.631c6.789-6.789 17.803-6.789 24.591 0 6.784 6.789 6.784 17.803 0 24.602z"/></svg>') no-repeat right 10px center;
+      background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="292.362" height="292.362" viewBox="0 0 292.362 292.362"><path fill="%23333" d="M287.273 69.233L166.191 190.317c-7.592 7.589-17.748 11.781-28.49 11.781s-20.896-4.192-28.49-11.781L5.088 69.233C-1.696 62.44-1.696 51.426 5.088 44.631c6.789-6.789 17.803-6.789 24.591 0l112.021 112.02L262.681 44.631c6.789-6.789 17.803-6.789 24.591 0 6.784 6.789 6.784 17.803 0 24.602z"/></svg>')
+        no-repeat right 10px center;
       background-size: 20px 20px;
-
 
       @include breakpoint(820px) {
         font-size: $fontSize_h3;
@@ -515,7 +508,6 @@ export default {
 
       @include breakpoint(375px) {
         font-size: $fontSize_h4;
-
       }
     }
 
@@ -557,9 +549,6 @@ export default {
         width: 50%;
         margin-right: 10px;
 
-
-
-
         @include breakpoint(768px) {
           width: 100%;
         }
@@ -571,36 +560,32 @@ export default {
         @include breakpoint(768px) {
           width: 100%;
         }
-        
-        }
-
-        
       }
     }
   }
+}
 
-  //其他備註 欄位
-  .note {
-    margin-bottom: 50px;
+//其他備註 欄位
+.note {
+  margin-bottom: 50px;
 
-    textarea {
-      width: 100%;
-    }
-
-    textarea::placeholder {
-      padding: 30px;
-      font-size: $fontSize_h4;
-
-      @include breakpoint(540px) {
-        padding: 20px;
-      }
-
-      @include breakpoint(430px) {
-        padding: 10px;
-    }
-    }
+  textarea {
+    width: 100%;
   }
 
+  textarea::placeholder {
+    padding: 30px;
+    font-size: $fontSize_h4;
+
+    @include breakpoint(540px) {
+      padding: 20px;
+    }
+
+    @include breakpoint(430px) {
+      padding: 10px;
+    }
+  }
+}
 
 .btn {
   width: 100%;

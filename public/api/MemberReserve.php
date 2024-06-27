@@ -4,16 +4,22 @@
  header("Access-Control-Allow-Origin: *");
 //  header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 //  header('Content-Type: application/json; charset=UTF-8');
+$requestData = json_decode(file_get_contents('php://input'), true);
+// $productId = $requestData["id"] ?? '';
+$member_id = $requestData["member_id"] ?? '';
        //---------------------------------------------------
 
        try {
               // 建立SQL語法
               $sql = "SELECT r.id ,r.booking_date,r.booking_time,r.guest_count,r.booking_note,m.full_name 
-FROM TID101_G2.reservation as r join TID101_G2.member as m on r.member_id = m.id;";
+FROM reservation as r join member as m on r.member_id = m.id  WHERE r.member_id = ?";
           
               // 執行並查詢，會回傳查詢結果的物件，必須使用fetch、fetchAll...等方式取得資料
-              $statement = $conn->query($sql);
+              $statement = $conn->prepare($sql);
           
+              $statement->bindValue(1, $member_id);
+              $statement->execute(); // 执行查询
+         
               // 抓出全部資料並封裝成一個二維陣列
               $data = $statement->fetchAll(PDO::FETCH_ASSOC);
           

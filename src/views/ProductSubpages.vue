@@ -76,7 +76,7 @@ export default {
       addToTheCart: '加入購物車',
       productTasks: [],
       phpdata: [],
-      memberId: 'm001'
+      memberId: ''
     }
   },
   computed: {
@@ -269,6 +269,9 @@ export default {
   },
   mounted() {
     this.fetchAllProductData()
+    // 获取存储在 localStorage 中的值，并赋给 memberId
+    this.memberId = localStorage.getItem('isLoggedIn')
+    console.log(this.memberId) // 输出 memberId，用于验证获取是否正确
   }
 }
 </script>
