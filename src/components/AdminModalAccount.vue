@@ -181,11 +181,14 @@ export default {
       this.jobError = ''
       this.permissionError = ''
     },
+    //  減少modal重複創建，避免遮罩行為出現
     show() {
       const modalElement = this.$refs.modal
 
       if (modalElement) {
-        this.myModal = new bootstrap.Modal(modalElement)
+        if (!this.myModal) {
+          this.myModal = new bootstrap.Modal(modalElement)
+        }
         this.myModal.show()
       } else {
         console.error('adminModal reference is not found.')
