@@ -20,8 +20,9 @@ if (empty($member_id)) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // 解析 JSON 資料
     $data = json_decode(file_get_contents("php://input"), true);
+    //SQL指令 - 修
     $updateSql = "UPDATE TID101_G2.member SET full_name = :full_name, birth = :birth, email = :email, phone = :phone, address = :address WHERE id = :member_id";
-
+    // 將修改後資料帶入
     try {
         $stmt = $conn->prepare($updateSql);
         $stmt->bindParam(':member_id', $member_id);
@@ -36,23 +37,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } catch (PDOException $e) {
         echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
     }
-} else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $sql = "SELECT * FROM TID101_G2.member WHERE id = :member_id";
-    try {
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':member_id', $member_id, PDO::PARAM_STR);
-        $stmt->execute();
 
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if (empty($data)) {
-            echo json_encode(['error' => 'No data found for Member ID: ' . htmlspecialchars($member_id)]);
-        } else {
-            echo json_encode($data);
+} 
+    // 抓取會員ＩＤ資料
+    else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $sql = "SELECT * FROM TID101_G2.member WHERE id = :member_id";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':member_id', $member_id, PDO::PARAM_STR);
+            $stmt->execute();
+
+            //變陣列
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($data)) {
+                echo json_encode(['error' => '沒找到ID ' . htmlspecialchars($member_id)]);
+            } else {
+                echo json_encode($data);
+            }
+        } catch (PDOException $e) {
+            echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+        } catch (Exception $e) {
+            echo json_encode(['error' => $e->getMessage()]);
         }
-    } catch (PDOException $e) {
-        echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
-    } catch (Exception $e) {
-        echo json_encode(['error' => $e->getMessage()]);
     }
-}
 ?>
