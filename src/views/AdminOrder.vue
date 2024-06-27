@@ -1,137 +1,160 @@
 <template>
-  <AdminBreadcrumb :items="breadcrumbItems" />
-  <!-- 標題 -->
-  <div class="orderblock">
-    <h1 class="orderblock-h1">{{ mainTitle }}</h1>
-    <span class="orderblock-pipe"> | </span>
-    <h1 class="orderblock-h1">{{ subTitle }}</h1>
-  </div>
+  <div class="AdminOrderPage">
+    <AdminBreadcrumb :items="breadcrumbItems" />
+    <!-- 標題 -->
+    <div class="orderblock">
+      <h1 class="orderblock-h1">{{ mainTitle }}</h1>
+      <span class="orderblock-pipe"> | </span>
+      <h1 class="orderblock-h1">{{ subTitle }}</h1>
+    </div>
 
-  <!-- 搜尋 -->
-  <section class="searchBlock">
-    <admin-select-input input-id="formGroupExampleInput1" :selected-option="selectedOption">
-      <template #label>查詢條件</template>
-      <template #select>
-        <select v-model="selectedOption" class="form-select" aria-label="Default select example">
-          <option selected value="">訂單編號</option>
-          <option value="1">會員姓名</option>
-          <option value="2">訂單狀態</option>
-        </select>
-      </template>
-      <!-- 如果切換到訂單狀態時，變更input視窗為下拉式 -->
-      <template #input="{ inputId }">
-        <input v-if="selectedOption !== '2'" :id="inputId" v-model="inputValue" type="text" class="form-control" />
-        <select v-else v-model="selectedOrderStatus" class="form-select">
-          <option value="">選擇訂單狀態</option>
-          <option value="已確認">已確認</option>
-          <option value="已出貨">已出貨</option>
-          <option value="已完成">已完成</option>
-          <option value="已取消">已取消</option>
-          <option value="退換貨">退換貨</option>
-        </select>
-      </template>
-    </admin-select-input>
-
-    <!-- 查詢日期 -->
-    <div class="d-flex align-items-center">
-      <admin-date-input
-        start-date-id="dateInputField1"
-        end-date-id="dateInputField2"
-        :start-date="startDate"
-        :end-date="endDate"
-        @date-change="handleDateChange"
-      >
-        <template #label>訂單日期</template>
-        <template #info>(最多查詢100天)</template>
-      </admin-date-input>
-
-      <admin-btn @click="searchOrders">
-        <template #icon>
-          <img src="../imgs/icon/icon_admin-search-w.svg" alt="addIcon" height="20" width="20" />
+    <!-- 搜尋 -->
+    <section class="searchBlock">
+      <admin-select-input input-id="formGroupExampleInput1" :selected-option="selectedOption">
+        <template #label>查詢條件</template>
+        <template #select>
+          <select v-model="selectedOption" class="form-select" aria-label="Default select example">
+            <option selected value="">訂單編號</option>
+            <option value="1">會員姓名</option>
+            <option value="2">訂單狀態</option>
+          </select>
         </template>
-        <template #text>查詢</template>
-      </admin-btn>
+        <!-- 如果切換到訂單狀態時，變更input視窗為下拉式 -->
+        <template #input="{ inputId }">
+          <input v-if="selectedOption !== '2'" :id="inputId" v-model="inputValue" type="text" class="form-control" />
+          <select v-else v-model="selectedOrderStatus" class="form-select">
+            <option value="">選擇訂單狀態</option>
+            <option value="已確認">已確認</option>
+            <option value="已出貨">已出貨</option>
+            <option value="已完成">已完成</option>
+            <option value="已取消">已取消</option>
+            <option value="退換貨">退換貨</option>
+          </select>
+        </template>
+      </admin-select-input>
 
-      <admin-bulk-btn :handle-click="clearSearch" class="orderClear">
-        <template #bulktext>清除條件</template>
+      <!-- 查詢日期 -->
+      <div class="d-flex align-items-center">
+        <admin-date-input
+          start-date-id="dateInputField1"
+          end-date-id="dateInputField2"
+          :start-date="startDate"
+          :end-date="endDate"
+          @date-change="handleDateChange"
+        >
+          <template #label>訂單日期</template>
+          <template #info>(最多查詢100天)</template>
+        </admin-date-input>
+
+        <admin-btn @click="searchOrders">
+          <template #icon>
+            <img src="../imgs/icon/icon_admin-search-w.svg" alt="addIcon" height="20" width="20" />
+          </template>
+          <template #text>查詢</template>
+        </admin-btn>
+
+        <admin-bulk-btn :handle-click="clearSearch" class="orderClear">
+          <template #bulktext>清除條件</template>
+        </admin-bulk-btn>
+      </div>
+    </section>
+
+    <!-- 按鈕 -->
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+      <admin-bulk-btn :handle-click="bulkCancel">
+        <template #bulkicon>
+          <img src="../imgs/icon/icon_admin-square.svg" alt="cancelIcon" height="20" width="20" />
+        </template>
+        <template #bulktext>多筆取消</template>
       </admin-bulk-btn>
     </div>
-  </section>
 
-  <!-- 按鈕 -->
-  <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-    <admin-bulk-btn :handle-click="bulkCancel">
-      <template #bulkicon>
-        <img src="../imgs/icon/icon_admin-square.svg" alt="cancelIcon" height="20" width="20" />
-      </template>
-      <template #bulktext>多筆取消</template>
-    </admin-bulk-btn>
+    <section>
+      <table class="table">
+        <thead class="table-thead">
+          <tr>
+            <th scope="col">
+              <input v-model="selectAll" class="form-check-input" type="checkbox" @change="toggleAllCheckboxes" />
+            </th>
+            <th scope="col">訂單編號</th>
+            <th scope="col">訂單日期</th>
+            <th scope="col">會員姓名</th>
+            <th scope="col">收件人姓名</th>
+            <th scope="col">訂單狀態</th>
+            <th scope="col">付款狀態</th>
+            <th scope="col">編輯</th>
+            <th scope="col">取消</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="order in paginatedOrders" :key="order.orderId">
+            <th scope="row">
+              <input
+                v-if="order.status !== '已取消' && order.status !== '已完成'"
+                v-model="order.selected"
+                class="form-check-input"
+                type="checkbox"
+                @change="checkIfAllSelected"
+              />
+            </th>
+            <td>
+              <button class="btn btn-link" @click="viewOrderDetails(order)">
+                {{ order.id }}
+              </button>
+            </td>
+            <td>{{ order.order_date }}</td>
+            <td>{{ order.full_name }}</td>
+            <td>{{ order.receiver }}</td>
+            <td>{{ order.status }}</td>
+            <td>{{ order.payment_status }}</td>
+            <td>
+              <button v-if="order.status !== '已取消' && order.status !== '已完成'" @click="openModal('edit', order)">
+                <img src="../imgs/icon/icon_admin-edit.svg" alt="" width="20px" height="20px" />
+              </button>
+            </td>
+            <td>
+              <button v-if="order.status !== '已取消' && order.status !== '已完成'" @click="confirmCancelOrder(order)">
+                <img src="../imgs/icon/icon_admin-square.svg" alt="" width="20px" height="20px" />
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- 分頁和每頁顯示數量 -->
+      <div class="row align-items-center">
+        <div class="col-sm-4">
+          <div class="dataTables_info">顯示第 {{ startItem }} 至 {{ endItem }} 項結果，共 {{ totalItems }} 項</div>
+        </div>
+        <div class="col-sm-8">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end moveRight">
+              <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                <a class="page-link" href="#" aria-label="Previous" @click.prevent="changePage(currentPage - 1)">
+                  <span aria-hidden="true">&lt;</span>
+                </a>
+              </li>
+              <li v-for="page in totalPages" :key="page" class="page-item" :class="{ active: currentPage === page }">
+                <a class="page-link" href="#" @click.prevent="changePage(page)">{{ page }}</a>
+              </li>
+              <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                <a class="page-link" href="#" aria-label="Next" @click.prevent="changePage(currentPage + 1)">
+                  <span aria-hidden="true">&gt;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <ModalOrder
+      ref="modal"
+      :action-type="currentActionType"
+      :order="currentOrder"
+      :show-cancel-reason="showCancelReason"
+      :on-save="handleSave"
+    />
   </div>
-
-  <section>
-    <table class="table">
-      <thead class="table-thead">
-        <tr>
-          <th scope="col">
-            <input v-model="selectAll" class="form-check-input" type="checkbox" @change="toggleAllCheckboxes" />
-          </th>
-          <th scope="col">訂單編號</th>
-          <th scope="col">訂單日期</th>
-          <th scope="col">會員姓名</th>
-          <th scope="col">收件人姓名</th>
-          <th scope="col">訂單狀態</th>
-          <th scope="col">付款狀態</th>
-          <th scope="col">編輯</th>
-          <th scope="col">取消</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="order in orders" :key="order.orderId">
-          <th scope="row">
-            <input
-              v-if="order.status !== '已取消' && order.status !== '已完成'"
-              v-model="order.selected"
-              class="form-check-input"
-              type="checkbox"
-              @change="checkIfAllSelected"
-            />
-          </th>
-          <td>
-            <button class="btn btn-link" @click="viewOrderDetails(order)">
-              {{ order.id }}
-            </button>
-          </td>
-          <td>{{ order.order_date }}</td>
-          <td>{{ order.full_name }}</td>
-          <td>{{ order.receiver }}</td>
-          <td>{{ order.status }}</td>
-          <td>{{ order.payment_status }}</td>
-          <td>
-            <button v-if="order.status !== '已取消' && order.status !== '已完成'" @click="openModal('edit', order)">
-              <img src="../imgs/icon/icon_admin-edit.svg" alt="" width="20px" height="20px" />
-            </button>
-          </td>
-          <td>
-            <button v-if="order.status !== '已取消' && order.status !== '已完成'" @click="confirmCancelOrder(order)">
-              <img src="../imgs/icon/icon_admin-square.svg" alt="" width="20px" height="20px" />
-            </button>
-          </td>
-        </tr>
-      </tbody>
-      <!-- <caption>
-        每頁列表顯示<span class="main__list-number">6</span
-        >筆
-      </caption> -->
-    </table>
-  </section>
-
-  <ModalOrder
-    ref="modal"
-    :action-type="currentActionType"
-    :order="currentOrder"
-    :show-cancel-reason="showCancelReason"
-    :on-save="handleSave"
-  />
 </template>
 
 <script>
@@ -165,6 +188,8 @@ export default {
         { text: variables.orderblock.orderList, link: '/admin_order', active: false }
       ],
       orders: [],
+      currentPage: 1,
+      itemsPerPage: 6,
       currentActionType: '',
       currentOrder: {},
       showCancelReason: false,
@@ -177,6 +202,53 @@ export default {
       startDate: '',
       endDate: '',
       isSearching: false // 添加 isSearching 標誌
+    }
+  },
+  computed: {
+    paginatedOrders() {
+      const start = (this.currentPage - 1) * this.itemsPerPage
+      const end = start + this.itemsPerPage
+
+      return this.orders.slice(start, end)
+    },
+    totalPages() {
+      return Math.ceil(this.orders.length / this.itemsPerPage)
+    },
+    pagesToShow() {
+      const pages = []
+      const totalPages = this.totalPages
+      const currentPage = this.currentPage
+
+      if (totalPages <= 3) {
+        for (let i = 1; i <= totalPages; i++) {
+          pages.push(i)
+        }
+      } else {
+        if (currentPage > 1) {
+          pages.push(currentPage - 1)
+        }
+        pages.push(currentPage)
+        if (currentPage < totalPages) {
+          pages.push(currentPage + 1)
+        }
+        if (currentPage > 2) {
+          pages.unshift(1)
+        }
+        if (currentPage < totalPages - 1) {
+          pages.push(totalPages)
+        }
+      }
+
+      return pages
+    },
+    totalItems() {
+      return this.orders.length
+    },
+    startItem() {
+      return (this.currentPage - 1) * this.itemsPerPage + 1
+    },
+    endItem() {
+      return Math.min(this.currentPage * this.itemsPerPage, this.totalItems)
     }
   },
   watch: {
@@ -193,6 +265,11 @@ export default {
     await this.loadOrders()
   },
   methods: {
+    changePage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page
+      }
+    },
     // 讀取資料庫的資料渲染在table上
     async loadOrders() {
       const adminOrderStore = useAdminOrderStore()
@@ -308,6 +385,7 @@ export default {
 
         if (result.success) {
           this.orders = result.orders
+          this.currentPage = 1 // 搜索後重置頁碼
         } else {
           alert('查詢失敗: ' + result.message)
         }
@@ -325,6 +403,7 @@ export default {
       this.startDate = ''
       this.endDate = ''
       await this.loadOrders()
+      this.currentPage = 1 // 清除搜索後重置頁碼
     },
     handleDateChange({ startDate, endDate }) {
       this.startDate = startDate
@@ -336,52 +415,81 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../node_modules/bootstrap/scss/bootstrap.scss'; // 確保這一行在最上面
-
-.orderblock {
-  margin-top: 40px;
-  margin-left: 160px;
-  color: $campari;
-  &-h1 {
-    display: inline;
-    font-size: $fontSize_h3;
-  }
-  &-pipe {
-    font-size: $fontSize_h3;
-    margin: 0 20px;
-  }
-}
-.admin_btn {
-  margin-top: 5px;
-  margin-left: 5px;
-  height: 35px;
-}
-.orderClear {
-  margin-top: 5px;
-  margin-left: 5px;
-}
-
-.d-grid {
-  margin-top: 50px;
-  margin-left: 160px;
-}
-.table {
-  width: 85%;
-  margin-top: 10px;
-  margin-left: 160px;
-  .table-thead {
-    font-size: $fontSize_h4;
-    th {
-      background-color: $campari;
-      color: $ramos-gin-fizz;
+.AdminOrderPage {
+  max-width: 1440px;
+  .orderblock {
+    margin-top: 40px;
+    margin-left: 160px;
+    color: $campari;
+    &-h1 {
+      display: inline;
+      font-size: $fontSize_h3;
+    }
+    &-pipe {
+      font-size: $fontSize_h3;
+      margin: 0 20px;
     }
   }
-  button {
-    border: none;
-    background: none;
+  .admin_btn {
+    margin-top: 5px;
+    margin-left: 5px;
+    height: 35px;
   }
-  #flexSwitchCheckChecked:checked {
-    background-color: $toggle-on;
-    border: solid $toggle-on;
+  .orderClear {
+    margin-top: 5px;
+    margin-left: 5px;
+  }
+
+  .d-grid {
+    margin-top: 50px;
+    margin-left: 160px;
+  }
+  .table {
+    width: 85%;
+    margin-top: 10px;
+    margin-left: 160px;
+    .table-thead {
+      font-size: $fontSize_h4;
+      th {
+        background-color: $campari;
+        color: $ramos-gin-fizz;
+      }
+    }
+    button {
+      border: none;
+      background: none;
+    }
+    #flexSwitchCheckChecked:checked {
+      background-color: $toggle-on;
+      border: solid $toggle-on;
+    }
+  }
+  // 分頁
+  .moveRight {
+    margin-right: 50px;
+  }
+  .dataTables_info {
+    margin-left: 160px;
+    margin-top: -20px;
+  }
+  .page-link {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: $campari;
+    &:hover {
+      color: $irishcoffee;
+    }
+    &:focus {
+      box-shadow: none;
+    }
+  }
+  .page-link.active,
+  .active > .page-link {
+    background-color: transparent;
+    color: $campari;
+    border: none;
+    text-decoration: underline;
   }
 }
 </style>
