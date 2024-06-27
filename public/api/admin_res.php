@@ -7,27 +7,44 @@ header("Access-Control-Allow-Origin: *");
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method == 'GET') {
-    $id = isset($_GET['id']) ? intval($_GET['id']) : null;
+    $memberId = isset($_GET['memberId']) ? intval($_GET['memberId']) : null;
+    $fullName = isset($_GET['fullName']) ? $_GET['fullName'] : null;
+    $phone = isset($_GET['phone']) ? $_GET['phone'] : null;
+    $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : null;
+    $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : null;
 
     try {
-        if ($id) {
-            $stmt = $conn->prepare("SELECT reservation.id, reservation.booking_date, reservation.booking_time, reservation.guest_count, reservation.booking_note, reservation.member_id, member.full_name, member.email, member.phone FROM reservation JOIN member ON reservation.member_id = member.id WHERE reservation.id = ?");
-            $stmt->execute([$id]);
-            $product = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($product) {
-                echo json_encode($product);
-            } else {
-                echo json_encode(["message" => "記錄未找到。"]);
-            }
+        $query = "SELECT reservation.id, reservation.booking_date, reservation.booking_time, reservation.guest_count, reservation.booking_note, reservation.member_id, member.full_name, member.email, member.phone FROM reservation JOIN member ON reservation.member_id = member.id WHERE 1=1";
+        $params = [];
+
+        if ($memberId) {
+            $query .= " AND reservation.member_id = ?";
+            $params[] = $memberId;
+        }
+
+        if ($fullName) {
+            $query .= " AND member.full_name LIKE ?";
+            $params[] = "%$fullName%";
+        }
+
+        if ($phone) {
+            $query .= " AND member.phone LIKE ?";
+            $params[] = "%$phone%";
+        }
+
+        if ($startDate && $endDate) {
+            $query .= " AND reservation.booking_date BETWEEN ? AND ?";
+            $params[] = $startDate;
+            $params[] = $endDate;
+        }
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute($params);
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($products) {
+            echo json_encode($products);
         } else {
-            $stmt = $conn->prepare("SELECT reservation.id, reservation.booking_date, reservation.booking_time, reservation.guest_count, reservation.booking_note, reservation.member_id, member.full_name, member.email, member.phone FROM reservation JOIN member ON reservation.member_id = member.id");
-            $stmt->execute();
-            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            if ($products) {
-                echo json_encode($products);
-            } else {
-                echo json_encode(["message" => "沒有記錄。"]);
-            }
+            echo json_encode(["message" => "沒有記錄。"]);
         }
     } catch (PDOException $e) {
         echo json_encode(["error" => $e->getMessage()]);
