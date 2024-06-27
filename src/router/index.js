@@ -106,7 +106,7 @@ const routes = [
   },
   // 文章頁面
   {
-    path: '/wine_article',
+    path: '/wine_article/:id',
     name: 'WineArticle',
     component: () => import('../views/WineArticle.vue'),
     meta: {

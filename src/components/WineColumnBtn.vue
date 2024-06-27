@@ -1,5 +1,5 @@
 <template>
-  <router-link to="/wine_article" class="read-more-button-link" :style="customStyle">
+  <router-link :to="{ name: 'WineArticle', params: { id: article_id } }" class="read-more-button-link" :style="customStyle">
     <button class="read-more-button">
       <span class="text">Read More</span>
     </button>
@@ -13,6 +13,10 @@ export default {
     customStyle: {
       type: Object,
       required: true
+    },
+    article_id: {
+      type: Number,
+      default: 1
     }
   },
   created() {
@@ -47,10 +51,10 @@ export default {
   border: none;
   @include border-radius(8px);
   cursor: pointer;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  // position: absolute;
+  // top: 50%;
+  // left: 50%;
+  // transform: translate(-50%, -50%);
   overflow: hidden;
   white-space: nowrap;
   transition: all 0.6s cubic-bezier(0.85, 0.05, 0.25, 1);
@@ -59,6 +63,7 @@ export default {
   z-index: 2;
 
   .text {
+    font-family: $fontfamily-en;
     opacity: 0;
     transition: all 0.5s cubic-bezier(0.8, 0.03, 0.25, 1);
   }
@@ -70,14 +75,11 @@ export default {
 .winecolumn__masonry-item1-rg-tp-r:hover .read-more-button,
 .winecolumn__masonry-item1-rg-bt:hover .read-more-button,
 .winecolumn__masonry-item2:hover .read-more-button {
-  font-family: $fontfamily-en;
   width: 150px;
   opacity: 1;
 
   .text {
-    font-family: $fontfamily-en;
     opacity: 1;
-    transition-delay: 0.2s;
   }
 }
 @include breakpoint(768px) {

@@ -94,7 +94,6 @@ export default {
       axios
         .get(`${import.meta.env.VITE_PHP_PATH}adminarticle_class.php`)
         .then((response) => {
-          console.log('Response:', response.data)
           this.categories = response.data
           this.mergeCategories(response.data) // 調用合併方法
         })

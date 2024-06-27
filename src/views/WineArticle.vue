@@ -3,7 +3,7 @@
     <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><router-link to="/wine_column">酒品專欄</router-link></li>
-        <li class="breadcrumb-item" aria-current="page"><router-link to="wine_column_wk">酒類知識</router-link></li>
+        <li class="breadcrumb-item" aria-current="page"><router-link to="/wine_column_wk">酒類知識</router-link></li>
         <li class="breadcrumb-item active" aria-current="page"><router-link to="">威士忌釀造的藝術</router-link></li>
       </ol>
     </nav>
@@ -34,7 +34,7 @@
         <div class="article-content">
           <h3>{{ article_item.title }}</h3>
         </div>
-        <ReadMoreButton />
+        <ReadMoreButton :article_id="article_item.id" class="article-card__button" />
       </div>
     </div>
   </div>
@@ -66,14 +66,19 @@ export default {
     }
   },
   mounted() {
-    this.articleFetch()
+    let id = 1
+    if (this.$route && this.$route.params && this.$route.params.id) {
+      id = this.$route.params.id
+    }
+    this.articleFetch(id)
   },
   methods: {
-    articleFetch() {
+    articleFetch(id) {
       axios
-        .get(`${import.meta.env.VITE_PHP_PATH}/adminarticle.php`)
+        .get(`${import.meta.env.VITE_PHP_PATH}ArticleSearch.php?id=${id}`)
         .then((res) => {
           this.article = res.data[0]
+          console.log(res.data)
           console.log(this.article)
         })
         .catch((err) => {
@@ -238,6 +243,10 @@ export default {
       height: 400px;
       background: rgba(0, 0, 0, 0.5);
       z-index: 1;
+    }
+    .article-card__button {
+      position: absolute;
+      bottom: 20px;
     }
   }
 

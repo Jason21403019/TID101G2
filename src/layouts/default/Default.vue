@@ -1,7 +1,9 @@
 <template>
   <div class="default-page-wrapper">
     <default-nav />
-    <slot />
+    <transition name="fade">
+      <slot :key="$route.fullPath" />
+    </transition>
     <default-footer />
   </div>
 </template>
@@ -11,4 +13,14 @@ import DefaultFooter from './DefaultFooter.vue'
 import DefaultNav from './DefaultNav.vue'
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+// .fade-enter-active,
+// .fade-leave-active {
+//   transition: opacity 0.3s ease-in-out;
+// }
+
+// .fade-enter-from,
+// .fade-leave-active {
+//   opacity: 0;
+// }
+</style>

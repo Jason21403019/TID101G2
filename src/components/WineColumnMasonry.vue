@@ -1,89 +1,82 @@
 <template>
   <section class="winecolumn__masonry">
-    <!-- <div class="winecolumn__masonry">
-      <div v-for="(item, key) in data" class="winecolumn__masonry-item" :key="key">
-        {{ item.title }}
-      </div>
-    </div> -->
     <div class="winecolumn__masonry-item1 winecolumn__group-outer">
       <div class="winecolumn__masonry-item1-lf winecolumn__group-outer">
         <div class="winecolumn__masonry-item1-lf-tp winecolumn__group">
-          <h3 class="winecolumn__title">{{ title }}</h3>
+          <h3 class="winecolumn__title" v-if="articles[5] && articles[5].name">{{ articles[5].name }}</h3>
           <img
             class="winecolumn__img"
             src="@/imgs/wineColumnImg/bartender-opens-bottle-red-wine-using-wine-opener-pour-lot-empty-glasses-bar-counter-blurred-background-wine-tasting-open-beverage-bartender-dinner-concept.jpg"
             alt=""
           />
           <ReadMoreButton class="read-more-btn" />
-          <div class="category-name">{{ category }}</div>
+          <div class="category-name" v-if="articles[5] && articles[5].article_class_id">{{ articles[5].article_class_id }}</div>
         </div>
         <div class="winecolumn__masonry-item1-lf-bt winecolumn__group">
-          <h3 class="winecolumn__title">{{ title2 }}</h3>
+          <h3 class="winecolumn__title" v-if="articles[2] && articles[2].name">{{ articles[2].name }}</h3>
           <img
             class="winecolumn__img"
             src="@/imgs/wineColumnImg/close-up-woman-s-hands-decorating-grapefruit-detox-healthy-smoothie-with-rosemary.jpg"
             alt=""
           />
           <ReadMoreButton />
-          <div class="category-name">{{ category2 }}</div>
+          <div class="category-name" v-if="articles[2] && articles[2].article_class_id">{{ articles[2].article_class_id }}</div>
         </div>
       </div>
       <div class="winecolumn__masonry-item1-rg winecolumn__group-outer">
         <div class="winecolumn__masonry-item1-rg-tp winecolumn__group-outer">
           <div class="winecolumn__masonry-item1-rg-tp-l winecolumn__group">
-            <h3 class="winecolumn__title">{{ title3 }}</h3>
+            <h3 class="winecolumn__title" v-if="articles[1] && articles[1].name">{{ articles[1].name }}</h3>
             <img class="winecolumn__img" src="@/imgs/wineColumnImg/105d2bb9d92254d478410275acb1e78f5394907e.jpg" alt="" />
             <ReadMoreButton />
-            <div class="category-name">{{ category3 }}</div>
+            <div class="category-name" v-if="articles[1] && articles[1].article_class_id">
+              {{ articles[1].article_class_id }}
+            </div>
           </div>
           <div class="winecolumn__masonry-item1-rg-tp-r winecolumn__group">
-            <h3 class="winecolumn__title">{{ title4 }}</h3>
+            <h3 class="winecolumn__title" v-if="articles[0] && articles[0].name">{{ articles[0].name }}</h3>
             <img class="winecolumn__img" src="@/imgs/wineColumnImg/Chateau-Latour.jpg" alt="" />
             <ReadMoreButton />
-            <div class="category-name">{{ category4 }}</div>
+            <div class="category-name" v-if="articles[0] && articles[0].article_class_id">
+              {{ articles[0].article_class_id }}
+            </div>
           </div>
         </div>
         <div class="winecolumn__masonry-item1-rg-bt winecolumn__group">
-          <h3 class="winecolumn__title">{{ title5 }}</h3>
+          <h3 class="winecolumn__title" v-if="articles[4] && articles[4].name">{{ articles[4].name }}</h3>
           <img class="winecolumn__img" src="@/imgs/wineColumnImg/a824168e245aebc8e62ef40c9fbcaf589e7c1fe7.jpg" alt="" />
           <ReadMoreButton />
-          <div class="category-name">{{ category5 }}</div>
+          <div class="category-name" v-if="articles[4] && articles[4].article_class_id">{{ articles[4].article_class_id }}</div>
         </div>
       </div>
     </div>
     <div class="winecolumn__masonry-item2 winecolumn__group">
-      <h3 class="winecolumn__title">{{ title6 }}</h3>
+      <h3 class="winecolumn__title" v-if="articles[3] && articles[3].name">{{ articles[3].name }}</h3>
       <img
         class="winecolumn__img"
         src="@/imgs/wineColumnImg/fresh-cocktails-with-ice-lemon-lime-fruits-generative-ai.jpg"
         alt=""
       />
       <ReadMoreButton />
-      <div class="category-name">{{ category6 }}</div>
+      <div class="category-name" v-if="articles[3] && articles[3].article_class_id">{{ articles[3].article_class_id }}</div>
     </div>
   </section>
 </template>
 
 <script>
 import ReadMoreButton from '@/components/WineColumnBtn.vue'
+import axios from 'axios'
 
 export default {
   name: 'WineColumnMasonry',
   components: {
     ReadMoreButton
   },
-  props: {
-    // imgSrc: {
-    //   type: String,
-    //   required: true
-    // },
-    // category: {
-    //   type: String,
-    //   required: true
-    // }
-  },
+  props: {},
   data() {
     return {
+      articles: [],
+
       title: '專業品酒師的開瓶技巧',
       //   imageSrc:
       //     '@/imgs/wineColumnImg/bartender-opens-bottle-red-wine-using-wine-opener-pour-lot-empty-glasses-bar-counter-blurred-background-wine-tasting-open-beverage-bartender-dinner-concept.jpg',
@@ -98,6 +91,25 @@ export default {
       category5: '國外報導',
       title6: '品嚐來自世界各地調酒師的最佳調酒',
       category6: '調酒新世界'
+    }
+  },
+  mounted() {
+    this.fetchTitle()
+  },
+  methods: {
+    fetchTitle() {
+      axios
+        .get(`${import.meta.env.VITE_PHP_PATH}adminarticle.php`)
+        .then((response) => {
+          this.articles = response.data
+          console.log('Articles:', this.articles)
+
+          this.articles = this.articles.filter((article) => article.title !== null)
+          this.articles = this.articles.filter((article) => article.category !== null)
+        })
+        .catch((error) => {
+          console.error('Error:', error)
+        })
     }
   }
 }

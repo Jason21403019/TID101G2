@@ -155,6 +155,7 @@ export default {
     }
   },
   mounted() {
+    checkLoginStatus()
     window.addEventListener('scroll', this.handleScroll)
   },
   beforeUnmount() {
@@ -463,6 +464,7 @@ export default {
         // border: 1px solid green;
         font-family: $fontfamily;
         font-size: $fontSize_h3;
+        margin-bottom: 1rem;
         text-decoration: none;
         text-align: center;
         color: $whitelady;

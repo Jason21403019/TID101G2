@@ -42,12 +42,10 @@ try {
     }
     $birth = isset($data['birth']) && $data['birth'] !== '' ? $data['birth'] : '1987-01-01';
     $address = isset($data['address']) ? $data['address'] : null;
-    $two_fifty = isset($data['two_fifty']) ? $data['two_fifty'] : 1;
-    $five_hundred = isset($data['five_hundred']) ? $data['five_hundred'] : 1;
     
     // 準備和綁定
-    $stmt = $conn->prepare("INSERT INTO member (id,password, full_name, birth, phone, email, address, two_fifty, five_hundred
-     ) VALUES (:id, :password, :full_name, :birth, :phone, :email, :address, :two_fifty, :five_hundred)");
+    $stmt = $conn->prepare("INSERT INTO member (id,password, full_name, birth, phone, email, address
+     ) VALUES (:id, :password, :full_name, :birth, :phone, :email, :address)");
     
     // 設置參數並綁定
     $full_name = $data['full_name'];
@@ -62,8 +60,6 @@ try {
     $stmt->bindParam(':password', $data['password']); 
     $stmt->bindParam(':birth', $birth, $birth === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
     $stmt->bindParam(':address', $address, $address === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
-    $stmt->bindParam(':two_fifty', $two_fifty);
-    $stmt->bindParam(':five_hundred', $five_hundred);
     $stmt->execute();
     
     echo json_encode(["success" => true,"member_id"=>$memberId]); 
