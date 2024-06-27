@@ -208,7 +208,6 @@ export default {
 
 // 標題
 .AdminMemberPage {
-  max-width: 1440px;
   .memberblock {
     margin-top: 40px;
     margin-left: 160px;

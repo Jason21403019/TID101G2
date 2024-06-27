@@ -367,8 +367,6 @@ export default {
 <style lang="scss" scoped>
 @import '../../node_modules/bootstrap/scss/bootstrap.scss'; // 確保這一行在最上面
 .AdminAccountPage {
-  max-width: 1440px;
-
   .adminblock {
     margin-top: 40px;
     margin-left: 160px;
