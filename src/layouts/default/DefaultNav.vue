@@ -148,6 +148,7 @@ export default {
   mounted() {
     const userStore = useUserStore()
 
+    // 用來判斷是否登入
     userStore.checkLoginStatus()
     window.addEventListener('scroll', this.handleScroll)
   },
