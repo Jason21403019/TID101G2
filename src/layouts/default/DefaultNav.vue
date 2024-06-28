@@ -97,7 +97,7 @@ export default {
     },
     // 哪一個頁面是淺色的，使用路徑抓取
     black() {
-      const blackRoutes = ['Reserve_first', 'Reserve_sec', 'Cart', 'Register']
+      const blackRoutes = ['Reserve_first', 'Reserve_sec', 'Cart', 'Register', 'OrderComplete', 'CreditCard']
 
       return blackRoutes.includes(this.currentPath)
     },

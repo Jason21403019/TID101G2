@@ -148,7 +148,7 @@ export default {
       width: 100% !important;
       height: 200px !important;
       .read-more-button {
-        border: 1px solid red;
+        // border: 1px solid red;
         height: 40px;
         right: -80px;
         bottom: -60px;

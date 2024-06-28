@@ -31,7 +31,10 @@ export default {
   display: flex;
   align-items: center;
   color: $ramos-gin-fizz;
-  margin: 2rem 0;
+  margin: 0 auto;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  // border: 1px solid red;
 
   @include breakpoint(430px) {
     flex-direction: column;

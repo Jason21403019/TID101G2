@@ -1,9 +1,9 @@
 <template>
   <div class="default-page-wrapper">
     <default-nav />
-    <transition name="fade">
-      <slot :key="$route.fullPath" />
-    </transition>
+    <!-- <transition name="fade"> -->
+    <slot :key="$route.fullPath" />
+    <!-- </transition> -->
     <default-footer />
   </div>
 </template>

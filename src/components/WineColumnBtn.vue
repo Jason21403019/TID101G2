@@ -1,8 +1,8 @@
 <template>
   <router-link :to="{ name: 'WineArticle', params: { id: article_id } }" class="read-more-button-link" :style="customStyle">
-    <button class="read-more-button">
-      <span class="text">Read More</span>
-    </button>
+    <!-- <button class="read-more-button"> -->
+    <span class="text">Read More</span>
+    <!-- </button> -->
   </router-link>
 </template>
 
@@ -38,23 +38,15 @@ export default {
   transform: translate(-50%, -50%);
   position: absolute;
   z-index: 2;
-}
-
-.read-more-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 2.5rem;
+  padding: 1.25rem 2rem;
   background: $ramos-gin-fizz;
-  color: $negroni;
-  font-size: $fontSize_h5;
+  font-size: $fontSize_h4;
   border: none;
   @include border-radius(8px);
   cursor: pointer;
-  // position: absolute;
-  // top: 50%;
-  // left: 50%;
-  // transform: translate(-50%, -50%);
   overflow: hidden;
   white-space: nowrap;
   transition: all 0.6s cubic-bezier(0.85, 0.05, 0.25, 1);
@@ -63,18 +55,20 @@ export default {
   z-index: 2;
 
   .text {
+    color: $campari;
     font-family: $fontfamily-en;
     opacity: 0;
     transition: all 0.5s cubic-bezier(0.8, 0.03, 0.25, 1);
   }
 }
-.article-card:hover .read-more-button,
-.winecolumn__masonry-item1-lf-tp:hover .read-more-button,
-.winecolumn__masonry-item1-lf-bt:hover .read-more-button,
-.winecolumn__masonry-item1-rg-tp-l:hover .read-more-button,
-.winecolumn__masonry-item1-rg-tp-r:hover .read-more-button,
-.winecolumn__masonry-item1-rg-bt:hover .read-more-button,
-.winecolumn__masonry-item2:hover .read-more-button {
+
+.article-card:hover .read-more-button-link,
+.winecolumn__masonry-item1-lf-tp:hover .read-more-button-link,
+.winecolumn__masonry-item1-lf-bt:hover .read-more-button-link,
+.winecolumn__masonry-item1-rg-tp-l:hover .read-more-button-link,
+.winecolumn__masonry-item1-rg-tp-r:hover .read-more-button-link,
+.winecolumn__masonry-item1-rg-bt:hover .read-more-button-link,
+.winecolumn__masonry-item2:hover .read-more-button-link {
   width: 150px;
   opacity: 1;
 
@@ -87,8 +81,6 @@ export default {
     position: absolute;
     top: 170px;
     left: 85px;
-  }
-  .read-more-button {
     position: absolute;
     border: 1px solid #fcf0d8;
     opacity: 1;
@@ -98,10 +90,19 @@ export default {
     background: none;
     padding: 0.5rem 0.75rem;
     color: #fcf0d8;
+    font-size: $fontSize_h4;
+
     .text {
+      color: $ramos-gin-fizz;
       font-family: $fontfamily-en;
       opacity: 1;
     }
   }
+}
+.rm-button {
+  border: 1px solid $ramos-gin-fizz;
+  position: absolute;
+  top: 370px;
+  height: 40px;
 }
 </style>

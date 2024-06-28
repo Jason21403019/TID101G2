@@ -25,7 +25,7 @@
         <div class="article-content">
           <h3>{{ article.title }}</h3>
         </div>
-        <ReadMoreButton />
+        <ReadMoreButton class="rm-button" />
       </div>
     </div>
     <div class="more_btn">
@@ -162,7 +162,7 @@ export default {
 }
 nav {
   width: 80%;
-  //   border: 1px solid red;
+  // border: 1px solid red;
   margin: 0 auto;
   padding: 1rem 0;
   @include breakpoint(1280px) {
@@ -185,7 +185,7 @@ nav {
 }
 .breadcrumb {
   .breadcrumb-item {
-    font-size: $fontSize_h5;
+    font-size: $fontSize_h4;
     font-family: $fontfamily;
     a {
       color: $irishcoffee;

@@ -57,12 +57,14 @@ export default {
     display: block;
     text-decoration: none;
     width: 100%;
+    height: 200px;
 
     &::before {
       content: '';
       display: block;
       width: 100%;
-      padding-bottom: 70%;
+      height: 100%;
+      // padding-bottom: 70%;
     }
 
     &-text {

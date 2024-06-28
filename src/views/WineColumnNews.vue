@@ -25,7 +25,7 @@
         <div class="article-content">
           <h3>{{ article.title }}</h3>
         </div>
-        <ReadMoreButton />
+        <ReadMoreButton class="rm-button" />
       </div>
     </div>
     <div class="more_btn">

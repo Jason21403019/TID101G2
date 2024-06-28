@@ -34,7 +34,7 @@
         <div class="article-content">
           <h3>{{ article_item.title }}</h3>
         </div>
-        <ReadMoreButton :article_id="article_item.id" class="article-card__button" />
+        <ReadMoreButton :article_id="article_item.id" class="article-card__button rm-button" />
       </div>
     </div>
   </div>
