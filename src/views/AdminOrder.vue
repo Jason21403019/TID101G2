@@ -437,6 +437,7 @@ export default {
   .orderClear {
     margin-top: 5px;
     margin-left: 5px;
+    height: 35px;
   }
 
   .d-grid {

@@ -229,6 +229,7 @@ export default {
   .admin_bulkbtn {
     margin-top: 39px;
     margin-left: 5px;
+    height: 35px;
   }
   // table
   .table td,

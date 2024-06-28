@@ -22,7 +22,7 @@
               <div class="col-md-4 d-flex align-items-center">
                 <h4 class="col-form-label me-2">訂單狀態:</h4>
                 <span v-if="actionType === 'view'">{{ orderData.order_status }}</span>
-                <select v-else v-model="orderData.order_status" class="form-control">
+                <select v-else v-model="orderData.order_status" class="form-control orderStatus">
                   <option value="已確認">已確認</option>
                   <option value="已出貨">已出貨</option>
                   <option value="已完成">已完成</option>
@@ -350,7 +350,7 @@ export default {
   h3 {
     font-size: $fontSize_h4;
   }
-  .form-control[data-v-b6d1be6c] {
+  .form-control.orderStatus {
     width: 40%;
   }
   // 付款狀態底色
