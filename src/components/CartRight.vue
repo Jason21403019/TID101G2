@@ -165,7 +165,7 @@ export default {
 
             this.checkLogin().then(() =>{
                 if(this.member_id){
-                    axios.get('http://localhost:8087/TID101G2/public/api/cartreceiver.php', {
+                    axios.get(`${import.meta.env.VITE_PHP_PATH}cartproduct.php`, {
                         params: {
                             id: this.member_id
                         }
