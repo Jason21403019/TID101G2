@@ -21,11 +21,11 @@
         <input v-if="selectedOption !== '1'" :id="inputId" v-model="inputValue" type="text" class="form-control" />
         <select v-else v-model="selectedCategory" class="form-select">
           <option value="">選擇商品類別</option>
-          <option value="category1">無酒精白酒</option>
-          <option value="category2">無酒精粉紅酒</option>
-          <option value="category3">無酒精氣泡酒</option>
-          <option value="category4">無酒精果汁</option>
-          <option value="category5">無酒精紅酒</option>
+          <option value="無酒精白酒">無酒精白酒</option>
+          <option value="無酒精粉紅酒">無酒精粉紅酒</option>
+          <option value="無酒精氣泡酒">無酒精氣泡酒</option>
+          <option value="無酒精果汁">無酒精果汁</option>
+          <option value="無酒精紅酒">無酒精紅酒</option>
         </select>
       </template>
     </admin-select-input>
@@ -150,7 +150,7 @@ export default {
   },
   methods: {
     fetchProducts(name = '', product_class_id = '') {
-      let url = `http://localhost/TID101G2-dev/public/api/adminProduct.php?name=${encodeURIComponent(name)}`;
+      let url = `http://localhost/TID101G2/public/api/adminproduct.php?name=${encodeURIComponent(name)}`;
       if (product_class_id) {
         url += `&product_class_id=${encodeURIComponent(product_class_id)}`;
       }
@@ -206,7 +206,7 @@ export default {
         cancelButtonText: '取消'
       }).then(result => {
         if (result.isConfirmed) {
-          axios.delete(`http://localhost/TID101G2-dev/public/api/adminProduct.php`, {
+          axios.delete(`http://localhost/TID101G2/public/api/adminproduct.php`, {
             data: { id: productId }
           })
           .then(response => {
@@ -241,7 +241,7 @@ export default {
       }).then(result => {
         if (result.isConfirmed) {
           const deletePromises = selectedProducts.map(product => {
-            return axios.delete(`http://localhost/TID101G2-dev/public/api/adminProduct.php`, { data: { id: product.id } });
+            return axios.delete(`http://localhost/TID101G2/public/api/adminproduct.php`, { data: { id: product.id } });
           });
           Promise.all(deletePromises)
             .then(responses => responses.map(res => res.data))

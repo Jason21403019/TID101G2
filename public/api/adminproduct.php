@@ -1,76 +1,129 @@
 <?php
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, DELETE');
+header('Access-Control-Allow-Origin: *'); // 注意：生產環境請勿使用 *，要限制允許的來源網域
+header('Access-Control-Allow-Methods: GET, POST, DELETE, PUT'); 
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
 include './conn.php'; // 包含你的資料庫連接文件
 
+$method = $_SERVER['REQUEST_METHOD'];
+
 try {
-    // 判斷請求方法
-    $method = $_SERVER['REQUEST_METHOD'];
-    if ($method == 'GET') {
-        // 檢查是否有查詢參數
-        $category = isset($_GET['category']) ? $_GET['category'] : '';
-        $name = isset($_GET['name']) ? $_GET['name'] : '';
+    switch ($method) {
+        case 'OPTIONS':
+            http_response_code(200);
+            header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+            header("Access-Control-Allow-Headers: Content-Type, Authorization");
+            exit();
         
-        if ($category && $name) {
-            $stmt = $conn->prepare("SELECT id, brand, name, details, price, stock, subpage_photo, picture, content, product_class_id FROM product WHERE product_class_id = ? AND name LIKE ?");
-            $stmt->execute([$category, "%$name%"]);
-        } elseif ($category) {
-            $stmt = $conn->prepare("SELECT id, brand, name, details, price, stock, subpage_photo, picture, content, product_class_id FROM product WHERE product_class_id = ?");
-            $stmt->execute([$category]);
-        } elseif ($name) {
-            $stmt = $conn->prepare("SELECT id, brand, name, details, price, stock, subpage_photo, picture, content, product_class_id FROM product WHERE name LIKE ?");
-            $stmt->execute(["%$name%"]);
-        } else {
-            $stmt = $conn->prepare("SELECT id, brand, name, details, price, stock, subpage_photo, picture, content, product_class_id FROM product");
-            $stmt->execute();
-        }
-        
-        // 設定 fetch 模式
-        $stmt->setFetchMode(PDO::FETCH_ASSOC);
-        $products = $stmt->fetchAll();
-        // 處理圖片 BLOB 字段
-        foreach ($products as &$product) {
-            if (!empty($product['picture'])) {
-                // 將 BLOB 資料轉換為 Base64 編碼
-                $product['picture'] = base64_encode($product['picture']);
+        case 'GET':
+            // 查詢商品
+            $category = isset($_GET['category']) ? $_GET['category'] : '';
+            $name = isset($_GET['name']) ? $_GET['name'] : '';
+
+            $sql = "SELECT id, brand, name, details, price, stock, subpage_photo, picture, content, product_class_id FROM product WHERE 1=1 ";
+            $params = [];
+
+            if ($category) {
+                $sql .= " AND product_class_id = ? ";
+                $params[] = $category;
             }
-        }
-        // 檢查資料是否存在
-        if (empty($products)) {
-            echo json_encode(["message" => "No records found."]);
-        } else {
-            echo json_encode($products);
-        }
-    } elseif ($method == 'POST') {
-        // 新增資料
-        $data = json_decode(file_get_contents("php://input"), true);
-        if (json_last_error() === JSON_ERROR_NONE && !empty($data)) {
-            $stmt = $conn->prepare("INSERT INTO product (brand, name, details, price, stock, subpage_photo, picture, content, product_class_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$data['brand'], $data['name'], $data['details'], $data['price'], $data['stock'], $data['subpage_photo'], base64_decode($data['picture']), $data['content'], $data['product_class_id']]);
-            echo json_encode(["message" => "Product added successfully."]);
-        } else {
-            echo json_encode(["error" => "Invalid input."]);
-        }
-    } elseif ($method == 'DELETE') {
-        // 刪除資料
-        $data = json_decode(file_get_contents("php://input"), true);
-        $id = isset($data['id']) ? $data['id'] : '';
-        if (json_last_error() === JSON_ERROR_NONE && !empty($id)) {
-            $stmt = $conn->prepare("DELETE FROM product WHERE id = ?");
-            $stmt->execute([$id]);
-            echo json_encode(["message" => "Product deleted successfully."]);
-        } else {
-            echo json_encode(["error" => "Invalid input."]);
-        }
-    } else {
-        echo json_encode(["message" => "Request method not supported."]);
+            if ($name) {
+                $sql .= " AND name LIKE ? ";
+                $params[] = "%$name%";
+            }
+
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($params);
+
+            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // 處理圖片 BLOB 字段
+            foreach ($products as &$product) {
+                if (!empty($product['picture'])) {
+                    $product['picture'] = base64_encode($product['picture']);
+                }
+            }
+
+            if (empty($products)) {
+                echo json_encode(["message" => "No records found."]);
+            } else {
+                echo json_encode($products);
+            }
+            break;
+
+        case 'POST':
+            // 新增商品
+            $data = json_decode(file_get_contents("php://input"), true);
+
+            if (json_last_error() === JSON_ERROR_NONE && !empty($data)) {
+                // 过滤用户输入
+                $id = isset($data['id']) ? intval($data['id']) : '';
+                $brand = htmlspecialchars($data['brand']);
+                $name = htmlspecialchars($data['name']);
+                $details = htmlspecialchars($data['details']);
+                $price = intval($data['price']); 
+                $stock = intval($data['stock']); 
+                $subpage_photo = htmlspecialchars($data['subpage_photo']);
+                $picture = base64_decode($data['picture']); 
+                $content = htmlspecialchars($data['content']);
+                $product_class_id = htmlspecialchars($data['product_class_id']);
+
+                $stmt = $conn->prepare("INSERT INTO product (brand, name, details, price, stock, subpage_photo, picture, content, product_class_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->execute([$brand, $name, $details, $price, $stock, $subpage_photo, $picture, $content, $product_class_id]);
+                echo json_encode(["message" => "Product added successfully.", "id" => $conn->lastInsertId()], 201); // 使用 201 Created 状态码，并返回新增商品的 ID
+            } else {
+                echo json_encode(["error" => "Invalid input."], 400); // 使用 400 Bad Request 状态码
+            }
+            break;
+
+        case 'PUT':
+            // 修改商品
+            $data = json_decode(file_get_contents("php://input"), true);
+            $id = isset($data['id']) ? intval($data['id']) : ''; 
+
+            if (json_last_error() === JSON_ERROR_NONE && !empty($id) && !empty($data)) {
+                // 过滤用户输入
+                $brand = htmlspecialchars($data['brand']);
+                $name = htmlspecialchars($data['name']);
+                $details = htmlspecialchars($data['details']);
+                $price = intval($data['price']); 
+                $stock = intval($data['stock']); 
+                $subpage_photo = htmlspecialchars($data['subpage_photo']);
+                $picture = base64_decode($data['picture']); 
+                $content = htmlspecialchars($data['content']);
+                $product_class_id = htmlspecialchars($data['product_class_id']);
+
+                $stmt = $conn->prepare("UPDATE product SET brand=?, name=?, details=?, price=?, stock=?, subpage_photo=?, picture=?, content=?, product_class_id=? WHERE id=?");
+                $stmt->execute([$brand, $name, $details, $price, $stock, $subpage_photo, $picture, $content, $product_class_id, $id]);
+
+                echo json_encode(["message" => "Product updated successfully."], 200); 
+            } else {
+                echo json_encode(["error" => "Invalid input."], 400); 
+            }
+            break;
+
+        case 'DELETE':
+            // 刪除商品
+            $data = json_decode(file_get_contents("php://input"), true);
+            $id = isset($data['id']) ? intval($data['id']) : '';
+
+            if (json_last_error() === JSON_ERROR_NONE && !empty($id)) {
+                $stmt = $conn->prepare("DELETE FROM product WHERE id = ?");
+                $stmt->execute([$id]);
+                echo json_encode(["message" => "Product deleted successfully."], 204); // 使用 204 No Content 状态码
+            } else {
+                echo json_encode(["error" => "Invalid input."], 400); 
+            }
+            break;
+
+        default:
+            echo json_encode(["message" => "Request method not supported."], 405); 
+            break;
     }
 } catch (PDOException $e) {
-    error_log($e->getMessage(), 3, '/var/log/php_errors.log'); // 記錄錯誤日誌
-    echo json_encode(["error" => $e->getMessage()]);
+    error_log($e->getMessage(), 3, '/var/log/php_errors.log'); 
+    echo json_encode(["error" => "Database error."], 500); 
 }
-// 關閉連線
+
 $conn = null;
 ?>

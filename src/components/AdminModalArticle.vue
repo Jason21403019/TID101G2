@@ -63,11 +63,9 @@
 </template>
 
 <script>
-import AdminTextEditor from '../components/AdminTextEditor.vue'
-
 export default {
   components: {
-    AdminTextEditor
+    
   },
   props: {
     actionType: {
@@ -145,11 +143,6 @@ export default {
     },
     hideModal() {
       this.myModal.hide('articleModal');
-      // if (this.myModal) {
-      //   this.myModal.hide();
-      // } else {
-      //   console.error('Modal instance is not available to hide.');
-      // }
     }
   }
 }

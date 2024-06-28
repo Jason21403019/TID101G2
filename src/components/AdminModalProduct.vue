@@ -11,7 +11,7 @@
             <!-- ID欄位，在新增和編輯模式下都顯示 -->
             <div class="mb-3">
               <label for="productId" class="col-form-label">商品ID:</label>
-              <input id="productId" v-model="productData.id" type="text" class="form-control" :readonly="actionType === 'edit'" />
+              <input id="productId" v-model="productData.id" type="text" class="form-control" />
             </div>
             <div class="mb-3">
               <label for="productBrand" class="col-form-label">商品品牌:</label>
@@ -87,8 +87,6 @@ export default {
         details: '',
         stock: null,
         content: '',
-        is_hot: false,
-        is_available: true
       },
       modal: null
     }
@@ -106,7 +104,7 @@ export default {
           this.productData = { ...newVal }
         } else {
           this.productData = {
-            id: null,
+            id: '',
             name: '',
             price: null,
             brand: '',
@@ -123,47 +121,35 @@ export default {
     this.modal = new bootstrap.Modal(document.getElementById('exampleModal'))
   },
   methods: {
-  show() {
-    this.modal.show()
-  },
-  hide() {
-    this.modal.hide()
-  },
-  async onSave() {
-    try {
-      // 在這裡，你可能需要確保productData中已經包含了圖片的Base64資料
-      if (this.actionType === 'add') {
-        // 新增商品
-        const response = await axios.post('http://localhost/TID101G2-dev/public/api/AdminModalProduct.php', this.productData);
-        console.log('新增商品成功:', response.data);
-      } else {
-        // 修改商品
-        const response = await axios.put(`http://localhost/TID101G2-dev/public/api/AdminModalProduct.php/${this.productData.id}`, this.productData);
-        console.log('修改商品成功:', response.data);
+    show() {
+      this.modal.show()
+    },
+    hide() {
+      this.modal.hide()
+    },
+    async onSave() {
+      try {
+        if (this.actionType === 'add') {
+          // 新增商品
+          const response = await axios.post('http://localhost/TID101G2/public/api/AdminModalProduct.php', this.productData);
+          console.log('新增商品成功:', response.data);
+        } else {
+          // 修改商品
+          const response = await axios.put(`http://localhost/TID101G2/public/api/AdminModalProduct.php/${this.productData.id}`, this.productData);
+          console.log('修改商品成功:', response.data);
+        }
+        this.$emit('save', this.productData);
+        this.hide();
+      } catch (error) {
+        console.error('儲存商品失敗:', error);
       }
-      this.$emit('save', this.productData);
-      this.hide();
-    } catch (error) {
-      console.error('儲存商品失敗:', error);
+    },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      // 處理文件上傳邏輯
+      console.log('上傳的文件:', file);
     }
-  },
-  handleFileUpload(event) {
-    const file = event.target.files[0];
-    if (!file) {
-      console.error('沒有選擇文件');
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      // 將圖片的Base64格式資料儲存到productData中
-      this.productData.content = e.target.result;
-    };
-    reader.onerror = (error) => {
-      console.error('文件讀取錯誤:', error);
-    };
-    reader.readAsDataURL(file); // 讀取文件，並將其轉換為Base64格式
   }
-}
 }
 </script>
 
