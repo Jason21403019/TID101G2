@@ -119,6 +119,7 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss';
+import { useUserStore } from '../stores/user';
 
 export default {
   data() {
@@ -129,32 +130,101 @@ export default {
         discount: 0,
         shippingFee: 250,  // 優惠券折扣的金額
         selectedCoupon: '0',  // 保存選擇的優惠券ID
+        member_id:null,
+        orderName: '',
+        orderPhone: '',
+        orderEmail: '',
+        orderAddress: '',
+        
     };
   },
   created() {
-    this.fetchCartItems();
+    this.checkLogin().then(() => {
+      this.fetchCartItems();
+    });
+  },
+
+  async mounted() {
+        await this.checkLogin();
+        await this.fetchMemberData();
   },
 
   methods: {
-  fetchCartItems() {
-    // axios.get('/public/api/cartproduct.php', {
 
-    axios.get('http://localhost:8087/TID101G2/public/api/cartproduct.php', {
-      params: {
-        member_id: 'M001'
-      }
-    })
-    .then(response => {
-      this.items = response.data;
-      this.items.forEach(item => {
-        item.price = item.unitPrice * item.count;
-      });
-      this.calculateTotal();
-    })
-    .catch(error => {
-      console.error('There was an error fetching the cart items!', error);
-    });
-  },
+    async checkLogin() {
+            const userStore = useUserStore();
+            if(userStore.checkLoginStatus()){
+                this.member_id = userStore.isLoggedIn;
+                console.log('logged in member_id: ',this.member_id);
+            }else{
+                console.log('not logged in');
+            }
+        },
+
+         fetchMemberData() {
+
+            this.checkLogin().then(() =>{
+                if(this.member_id){
+                    axios.get('http://localhost:8087/TID101G2/public/api/cartreceiver.php', {
+                        params: {
+                            id: this.member_id
+                        }
+                    })
+                    
+                    .then((response) => {
+                        if(response.data && response.data.length > 0) {
+                            const memberData = response.data[0];
+                            // this.member_id = memberData.id;
+                            this.orderName = memberData.full_name;
+                            this.orderPhone = memberData.phone;
+                            this.orderEmail = memberData.email;
+                            this.orderAddress = memberData.address;
+                            
+                        } else{
+                            console.log('No member data found');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching member info:', error);
+                    });
+                        
+                }else {
+                    console.log('No member_id found');
+                }
+            });
+
+        },
+
+        fetchCartItems() {
+            // axios.get('/public/api/cartproduct.php', {
+
+            if (!this.member_id) {
+                console.error('member_id is not set');
+                return;
+            }
+            console.log('Fetching cart items for member_id: ', this.member_id);
+
+            axios.get('http://localhost:8087/TID101G2/public/api/cartproduct.php', {
+            params: {
+                id: this.member_id
+                }
+            })
+            .then(response => {
+                console.log('Response data:', response.data);
+            if (Array.isArray(response.data)) {   
+                this.items = response.data;
+                this.items.forEach(item => {
+                item.price = item.unitPrice * item.count;
+            });
+            this.calculateTotal();
+            }else{
+                console.error('Response data is not an array:', response.data);
+              }
+            })
+            .catch(error => {
+            console.error('There was an error fetching the cart items!', error);
+            });
+        },
 
   calculateTotal() {
     this.subtotal = this.items.reduce((sum, item) => sum + item.price, 0);
@@ -165,6 +235,14 @@ export default {
     const couponDiscounts = { '1': 250, '2': 500 };
     this.discount = couponDiscounts[this.selectedCoupon] || 0;
     this.calculateTotal(); // 重新計算總金額以反映折扣
+  },
+
+  increment(itemId) {
+    this.updateItemCount(itemId, true);
+  },
+  
+  decrement(itemId) {
+    this.updateItemCount(itemId, false);
   },
 
   updateItemCount(itemId, increment) {

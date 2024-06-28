@@ -1,44 +1,59 @@
 <?php
 
-// 允許所有的標頭
-header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
 
 
+include './conn.php';  // 确保包含你的数据库连接文件
 
+$member_id = isset($_GET['id']) ? $_GET['id'] : null;
 
-include './conn.php'; 
+if (empty($member_id)) {
+    echo json_encode(['error' => 'No member_id']);
+    exit();
+}
 
-$member_id = "M001"; // 假設會員ID從GET參數獲取
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $sql = "
+        SELECT 
+            cart.id, 
+            cart.product_id, 
+            cart.count, 
+            product.name, 
+            product.price AS unitPrice, 
+            product.stock, 
+            product.details, 
+            product.picture 
+        FROM 
+            cart 
+        JOIN 
+            product ON cart.product_id = product.id 
+        WHERE 
+            cart.member_id = :member_id
+    ";
+    
+    try {
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':member_id', $member_id, PDO::PARAM_STR);
+        $stmt->execute();
 
-// $sql = "SELECT cart.id, cart.product_id, cart.count, product.name, product.price AS unitPrice, product.details, product.picture FROM cart JOIN product ON cart.product_id = product.id WHERE cart.member_id = \"".$member_id . "\"";
-$sql = "SELECT cart.id, cart.product_id, cart.count, product.name, product.price AS unitPrice, product.stock, product.details, product.picture FROM cart JOIN product ON cart.product_id = product.id WHERE cart.member_id = '".$member_id."'";
-
-
-// print_r("============\r\n");
-// print_r($sql . "\r\n");
-// print_r("============\r\n");
-
-$result = $conn->query($sql);
-
-// print_r($result);
-$items = array();
-
-
-
-// print_r("有" . $result->rowCount() . "筆資料");
-
-if ($result->rowCount() > 0) {
-    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        // print_r($row["name"]);
-        $items[] = $row;
+        $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (empty($items)) {
+            echo json_encode(['error' => 'No data found for member_id: ' . htmlspecialchars($member_id)]);
+        } else {
+            echo json_encode($items);
+        }
+    } catch (PDOException $e) {
+        echo json_encode(['error' => 'Error fetching data: ' . $e->getMessage()]);
+    } catch (Exception $e) {
+        echo json_encode(['error' => 'Error: ' . $e->getMessage()]);
     }
 }
 
-// print_r($items);
-
-echo json_encode($items);
-
 $conn = null;
+
+
+
 
 ?>
 

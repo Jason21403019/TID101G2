@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper">
       <!-- 左邊區塊 -->
-      <CartLeft ref="cartLeft" />
+      <CartLeft ref="cartLeft" @update-items="updateItems"/>
       <!-- 右邊區塊 -->
-      <CartRight />
+      <CartRight @submit-order="handleSubmitOrder" />
    
   </div>
 </template>

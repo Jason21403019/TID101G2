@@ -81,6 +81,7 @@
 
 <script>
 import axios from 'axios';
+import { useUserStore } from '../stores/user';   //引入抓登入的會員編號的js
 
 export default {
     data() {
@@ -93,27 +94,57 @@ export default {
             shipPhone: '',
             shipEmail: '',
             shipAddress: '',
-            isSyncActive: false
+            isSyncActive: false,
+            member_id:null
         };
+
     },
-    mounted() {
-        this.fetchMemberData();
+    async mounted() {
+        await this.checkLogin();
+        await this.fetchMemberData();
     },
     methods: {
-        async fetchMemberData() {
-            try {
-                const response = await axios.get('http://localhost:8087/TID101G2/public/api/cartreceiver.php', {
-                    params: {
-                        member_id: 'M001'  // 替換為特定會員ID或通過某種方式動態獲取
-                    }
-                });
-                this.orderName = response.data.full_name;
-                this.orderPhone = response.data.phone;
-                this.orderEmail = response.data.email;
-                this.orderAddress = response.data.address;
-            } catch (error) {
-                console.error('Error fetching member info:', error);
+        async checkLogin() {
+            const userStore = useUserStore();
+            if(userStore.checkLoginStatus()){
+                this.member_id = userStore.isLoggedIn;
+                console.log('logged in member_id: ',this.member_id);
+            }else{
+                console.log('not logged in');
             }
+        },
+
+        fetchMemberData() {
+
+            this.checkLogin().then(() =>{
+                if(this.member_id){
+                    axios.get('http://localhost:8087/TID101G2/public/api/cartreceiver.php', {
+                        params: {
+                            id: this.member_id
+                        }
+                    })
+                    
+                    .then((response) => {
+                        if(response.data && response.data.length > 0) {
+                            const memberData = response.data[0];
+                            this.orderName = memberData.full_name;
+                            this.orderPhone = memberData.phone;
+                            this.orderEmail = memberData.email;
+                            this.orderAddress = memberData.address;
+                            
+                        } else{
+                            console.log('No member data found');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching member info:', error);
+                    });
+                        
+                }else {
+                    console.log('No member_id found');
+                }
+            });
+
         },
         copyOrderInfo() {
             if (this.isSyncActive) {

@@ -149,7 +149,7 @@ export default {
       // const memberId = this.memberId
       // 构建带有查询字符串的 URL
       // const url = 'http://localhost/TID101G2sql/src/components/ProductCart.php?member_id=${encodeURIComponent(memberId)'};
-      fetch('http://localhost/TID101G2/public/api/ReserveFirst.php', {
+      fetch(`${import.meta.env.VITE_PHP_PATH}ReserveFirst.php`, {
         method: 'POST',
 
         body: JSON.stringify({
@@ -170,7 +170,7 @@ export default {
     fetchReserveMember() {
       // const memberId = 'm001' // 设置 memberId 变量为 'm001'
       const memberId = this.memberId
-      fetch('http://localhost/TID101G2/public/api/ReserveMember.php', {
+      fetch(`${import.meta.env.VITE_PHP_PATH}ReserveMember.php`, {
         method: 'POST',
 
         body: JSON.stringify({ member_id: this.memberId }) // 发送选项卡 ID 到后端

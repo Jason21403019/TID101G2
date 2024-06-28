@@ -97,7 +97,7 @@ export default {
 
       // 构建带有查询字符串的 URL
       // const url = http://localhost/TID101G2sql/src/components/ProductCart.php?member_id=${encodeURIComponent(memberId)}
-      fetch('http://localhost/TID101G2/public/api/ReserveSecCancel.php', {
+      fetch(`${import.meta.env.VITE_PHP_PATH}ReserveSecCancel.php`, {
         method: 'POST',
 
         body: JSON.stringify({
