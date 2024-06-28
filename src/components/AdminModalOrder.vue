@@ -55,7 +55,7 @@
             </div>
 
             <!-- 點擊取消時才會跳出 -->
-            <div v-if="orderData.order_status === '已取消' && actionType === 'view'" class="mb-3 cancel">
+            <!-- <div v-if="orderData.order_status === '已取消' && actionType === 'view'" class="mb-3 cancel">
               <div class="col-md-6 d-flex align-items-center">
                 <h4 class="col-form-label me-2">取消原因:</h4>
                 <span>價格太貴</span>
@@ -64,7 +64,7 @@
                 <h4 class="col-form-label me-2">其他因素:</h4>
                 <span>.....</span>
               </div>
-            </div>
+            </div> -->
 
             <!-- 會員資訊 -->
             <section class="memberInfo">
@@ -272,10 +272,25 @@ export default {
           this.fetchOrderDetails(newVal.id)
         }
       }
+    },
+    // 確保檢視頁不會被編輯頁影響
+    actionType: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal === 'view') {
+          this.isEditable = false
+        }
+      }
     }
   },
   mounted() {
     this.modal = new bootstrap.Modal(document.getElementById('orderModal'))
+    // 添加事件監聽器，當 modal 被隱藏時調用 resetEditable 方法
+    document.getElementById('orderModal').addEventListener('hidden.bs.modal', this.resetEditable)
+  },
+  beforeUnmount() {
+    // 當組件即將被銷毀時，移除事件監聽器
+    document.getElementById('orderModal').removeEventListener('hidden.bs.modal', this.resetEditable)
   },
   methods: {
     async fetchOrderDetails(orderId) {
@@ -329,6 +344,10 @@ export default {
     toggleEdit() {
       event.preventDefault() // 防止默認行為
       this.isEditable = !this.isEditable
+    },
+    // 確保按下close和關閉時,把toggle修正
+    resetEditable() {
+      this.isEditable = false
     }
   }
 }
@@ -350,7 +369,7 @@ export default {
   h3 {
     font-size: $fontSize_h4;
   }
-  .form-control.orderStatus {
+  .form-control {
     width: 40%;
   }
   // 付款狀態底色
