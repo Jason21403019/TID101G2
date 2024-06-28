@@ -142,7 +142,6 @@ export default {
         const response = await axios.put(`${import.meta.env.VITE_PHP_PATH}adminarticle.php?id=${articleData.name}`, articleData);
         console.log('Article updated:', response.data);
         this.fetchArticles(); 
-        this.$refs.modal.hide(); 
       } catch (error) {
         console.error('Error updating article:', error);
       }
@@ -168,36 +167,40 @@ export default {
       }
     },
     async bulkDelete() {
-      const selectedIds = Object.keys(this.selectedArticleIds).filter(id => this.selectedArticleIds[id]);
+  const selectedIds = Object.keys(this.selectedArticleIds).filter(id => this.selectedArticleIds[id]);
 
-      if (selectedIds.length === 0) {
-        Swal.fire('未選擇任何項目', '請選擇要刪除的項目', 'warning');
-        return;
-      }
+  if (selectedIds.length === 0) {
+    Swal.fire('未選擇任何項目', '請選擇要刪除的項目', 'warning');
+    return;
+  }
 
-      const result = await Swal.fire({
-        title: '確認刪除',
-        text: `您確定要刪除選中的 ${selectedIds.length} 個項目嗎？`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: '刪除!',
-        cancelButtonText: '取消',
-      });
-
-      if (result.isConfirmed) {
+  Swal.fire({
+    title: '確認刪除',
+    text: `您確定要刪除選中的 ${selectedIds.length} 個項目嗎？`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: '刪除!',
+    cancelButtonText: '取消',
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      for (const articleId of selectedIds) {
         try {
-          const response = await axios.delete(`${import.meta.env.VITE_PHP_PATH}adminarticle.php`, { 
-            data: { ids: selectedIds } 
-          });
-          console.log('Articles deleted:', response.data);
-          this.fetchArticles();
-          this.selectAll = false;
-          this.selectedArticleIds = {};
+          const response = await axios.delete(`${import.meta.env.VITE_PHP_PATH}adminarticle.php?id=${articleId}`);
+          console.log(`Article ${articleId} deleted:`, response.data);
+          // 可以根據後端回傳結果，選擇性地更新 articles 陣列，或者直接刷新頁面
         } catch (error) {
-          console.error('Error deleting articles:', error);
+          console.error(`Error deleting article ${articleId}:`, error);
+          // 處理刪除單個文章失敗的情況，例如顯示錯誤訊息
         }
       }
-    },
+
+      this.selectAll = false;
+      this.selectedArticleIds = {};
+      this.fetchArticles(); // 重新載入文章列表
+      Swal.fire('已刪除', '選中的項目已刪除', 'success');
+    }
+  });
+},
     toggleAllCheckboxes() {
       this.articles.forEach(article => {
         this.selectedArticleIds[article.id] = this.selectAll;

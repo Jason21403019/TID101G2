@@ -1,7 +1,6 @@
 <template>
   <div
     id="articleModal"
-    ref="articleModal"
     class="modal fade"
     tabindex="-1"
     aria-labelledby="articleModalLabel"
@@ -109,20 +108,26 @@ export default {
   },
   methods: {
     show() {
-      const modalElement = this.$refs.articleModal
+      // const modalElement = this.$refs.articleModal
 
-      if (modalElement) {
-        this.myModal = new bootstrap.Modal(modalElement)
-        this.myModal.show()
-      } else {
-        console.error('articleModal reference is not found.')
-      }
+      // if (modalElement) {
+        this.myModal = new bootstrap.Modal(document.getElementById(('articleModal')))
+        this.myModal.show('articleModal')
+      // } else {
+      //   console.error('articleModal reference is not found.')
+      // }
     },
     handleSave() {
       console.log('Form Data:', this.article);
       this.onSave(this.article)
+      console.log(this.myModal);
       if (this.myModal) {
-        this.myModal.hide()
+        console.log('hide');
+        this.myModal.hide('articleModal')
+        if(document.querySelector('.modal-backdrop.fade.show')){
+          document.querySelector('.modal-backdrop.fade.show').remove()
+        }
+        
       } else {
         console.error('Modal instance is not available to hide.')
       }
@@ -139,11 +144,12 @@ export default {
       }
     },
     hideModal() {
-      if (this.myModal) {
-        this.myModal.hide();
-      } else {
-        console.error('Modal instance is not available to hide.');
-      }
+      this.myModal.hide('articleModal');
+      // if (this.myModal) {
+      //   this.myModal.hide();
+      // } else {
+      //   console.error('Modal instance is not available to hide.');
+      // }
     }
   }
 }
