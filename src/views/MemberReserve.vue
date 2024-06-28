@@ -71,7 +71,7 @@ export default {
       // const memberId = this.memberId
       console.log(this.memberId)
 
-      fetch('http://localhost/TID101G2/public/api/MemberReserve.php', {
+      fetch(`${import.meta.env.VITE_PHP_PATH}MemberReserve.php`, {
         method: 'POST',
 
         body: JSON.stringify({ member_id: this.memberId }) // 发送选项卡 ID 到后端

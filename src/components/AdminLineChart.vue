@@ -82,11 +82,11 @@ export default {
       const labels = this.phpdata.data3.map((item) => this.getMonthName(item.month))
       const data = {
         labels: labels,
-        data: this.phpdata.data3.map((item) => item.total),
+
         datasets: [
           {
             label: '每月銷售額',
-            data: [625, 469, 530, 231, 166, 335, 500],
+            data: this.phpdata.data3.map((item) => item.total),
             fill: true,
             borderColor: '#381B1D',
             backgroundColor: '#FCF0D8',
@@ -213,7 +213,7 @@ export default {
 
     // php
     fetchAdminLineChart() {
-      fetch('http://localhost/TID101G2/public/api/AdminLineChart.php')
+      fetch(`${import.meta.env.VITE_PHP_PATH}AdminLineChart.php`)
         .then((response) => response.json())
         .then((data) => {
           this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中

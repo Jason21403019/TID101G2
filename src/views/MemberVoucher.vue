@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     fetchMemberVoucherData() {
-      fetch('http://localhost/TID101G2/public/api/MemberVoucher.php', {
+      fetch(`${import.meta.env.VITE_PHP_PATH}MemberVoucher.php`, {
         method: 'POST',
 
         body: JSON.stringify({ member_id: this.memberId }) // 发送选项卡 ID 到后端

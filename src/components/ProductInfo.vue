@@ -29,6 +29,7 @@
 import { useProductStore } from '../stores/product'
 import Paginator from './tabs/Paginator.vue'
 import Swal from 'sweetalert2'
+import { useUserStore } from '../stores/user'
 export default {
   props: ['currentTab', 'phpdataSearch'],
   components: { Paginator },
@@ -72,7 +73,7 @@ export default {
 
     // php
     fetchAllProductData() {
-      fetch('http://localhost/TID101G2/public/api/Product.php')
+      fetch(`${import.meta.env.VITE_PHP_PATH}Product.php`)
         .then((response) => response.json())
         .then((data) => {
           this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中
@@ -80,7 +81,7 @@ export default {
         .catch((error) => console.error('Error fetching data:', error))
     },
     fetchAllProductBest() {
-      fetch('http://localhost/TID101G2/public/api/ProductBestseller.php')
+      fetch(`${import.meta.env.VITE_PHP_PATH}ProductBestseller.php`)
         .then((response) => response.json())
         .then((data) => {
           this.phpdata = data // 將從 PHP 獲取的資料存儲到 Vue 的 data 屬性中
@@ -88,7 +89,7 @@ export default {
         .catch((error) => console.error('Error fetching data:', error))
     },
     fetchProducts(tabName) {
-      fetch('http://localhost/TID101G2/public/api/ProductClass.php', {
+      fetch(`${import.meta.env.VITE_PHP_PATH}ProductClass.php`, {
         method: 'POST',
 
         body: JSON.stringify({ account: tabName }) // 发送选项卡 ID 到后端
@@ -116,6 +117,7 @@ export default {
             console.log('Alert closed')
           }
         })
+        this.$router.push('/register')
         return // 停止执行后续代码
       }
 
@@ -123,7 +125,7 @@ export default {
       const memberId = this.memberId
       // 构建带有查询字符串的 URL
       const url = `http://localhost/TID101G2sql/src/components/ProductCart.php?member_id=${encodeURIComponent(memberId)}`
-      fetch('http://localhost/TID101G2/public/api/ProductCart.php', {
+      fetch(`${import.meta.env.VITE_PHP_PATH}ProductCart.php`, {
         method: 'POST',
 
         body: JSON.stringify({ product_id: product.id, member_id: this.memberId, count: this.count }) // 发送选项卡 ID 到后端
@@ -209,7 +211,7 @@ export default {
         this.fetchProductsCar(product)
         this.id++
       }
-    }
+    },
     // clickpage(pageNumber) {
     //   // 更新 currentPage
     //   this.currentPage = pageNumber
@@ -228,7 +230,16 @@ export default {
 
     //   // 使用获取到的值
     //   console.log(this.memberId) // 输出存储的值
-    // }
+    // },
+
+    checkLoginStatus() {
+      const login_check = localStorage.getItem('isLoggedIn')
+      if (login_check) {
+        this.isLoggedIn = login_check
+        return true
+      }
+      return false
+    }
   },
   watch: {
     // 监听当前选项卡 ID 的变化，更新商品数据
@@ -254,6 +265,9 @@ export default {
     }
   },
   mounted() {
+    const userStore = useUserStore()
+    userStore.checkLoginStatus()
+
     this.fetchAllProductData()
     // 获取存储在 localStorage 中的值，并赋给 memberId
     this.memberId = localStorage.getItem('isLoggedIn')

@@ -103,7 +103,7 @@ export default {
       this.currentTab = tabId
     },
     fetchProductSearch(search) {
-      fetch('http://localhost/TID101G2/public/api/ProductNameSearch.php', {
+      fetch(`${import.meta.env.VITE_PHP_PATH}ProductNameSearch.php`, {
         method: 'POST',
 
         body: JSON.stringify({ account: search }) // 发送选项卡 ID 到后端
