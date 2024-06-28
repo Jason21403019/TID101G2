@@ -20,10 +20,10 @@
         </button>
 
         <!-- 購物車 -->
-        <router-link to="/cart" class="header__icons-icon carts" @click="closeHamburger">
+        <button class="header__icons-icon carts" @click="handleCartClick">
           <img v-if="black" class="header__icons-icon-img2" :src="getNavCartSrc" alt="" />
           <img v-else class="header__icons-icon-img2" :src="getNavCartSrc" alt="" />
-        </router-link>
+        </button>
 
         <!-- 會員中心與登出 -->
         <div v-show="memberAndLogout" class="logoutMenu" :class="{ show: isDropdownVisible }">
@@ -87,18 +87,12 @@ export default {
     }
   },
   computed: {
-    // ...mapState(useUserStore, ['isLoggedIn']),
     isLoggedIn() {
       const userStore = useUserStore()
-
-      // console.log(userStore)
-      // console.log(userStore.isLoggedIn)
 
       return userStore.isLoggedIn
     },
     currentPath() {
-      // console.log(this.$route.name)
-
       return this.$route.name
     },
     // 哪一個頁面是淺色的，使用路徑抓取
@@ -117,13 +111,11 @@ export default {
         ? new URL('@/imgs/icon/icon_member-off.svg', import.meta.url).href
         : new URL('@/imgs/icon/icon_member-off-w.svg', import.meta.url).href
     },
-
     getMemberSrc() {
       return this.black
         ? new URL('@/imgs/icon/icon_member-on.svg', import.meta.url).href
         : new URL('@/imgs/icon/icon_member-on-w.svg', import.meta.url).href
     },
-
     getCartSrc() {
       return this.black
         ? new URL('@/imgs/icon/icon_cart-shopping.svg', import.meta.url).href
@@ -149,13 +141,14 @@ export default {
     hanburgerBarColor() {
       return this.isHamburgerOpen ? 'h-white' : this.black ? 'h-black' : 'h-black-on-light'
     },
-
     closeDropdown() {
       this.dropdownVisible = !this.dropdownVisible
     }
   },
   mounted() {
-    checkLoginStatus()
+    const userStore = useUserStore()
+
+    userStore.checkLoginStatus()
     window.addEventListener('scroll', this.handleScroll)
   },
   beforeUnmount() {
@@ -163,13 +156,22 @@ export default {
   },
 
   methods: {
-    // ...mapActions(useUserStore, ['logout']),
     logout() {
       const userStore = useUserStore()
 
       userStore.logout()
       this.$router.push('/home')
       this.memberAndLogout()
+    },
+    handleCartClick() {
+      this.closeHamburger()
+      let useStore = useUserStore()
+
+      if (useStore.isLoggedIn) {
+        this.$router.push('/cart')
+      } else {
+        this.$router.push('/register')
+      }
     },
     toggleHamburger() {
       this.isHamburgerOpen = !this.isHamburgerOpen
@@ -268,7 +270,7 @@ export default {
       }
       .logoutMenu {
         position: absolute;
-        width: 170px;
+        width: 100px;
         height: fit-content;
         top: 30px;
         right: 75px;
@@ -278,7 +280,7 @@ export default {
         padding: 0.5rem 0.5rem;
         @include border-radius(8px);
         background: $negroni;
-        font-size: $fontSize_p;
+        font-size: $fontSize_h4;
         &-item {
           color: $blackvevet;
 
@@ -286,6 +288,8 @@ export default {
             margin-bottom: 0.65rem;
             text-decoration: none;
             width: 100%;
+            height: 25px;
+            line-height: 25px;
             font-family: $fontfamily;
             text-align: center;
             background: $ramos-gin-fizz;
@@ -293,6 +297,8 @@ export default {
           }
           &:nth-child(2) {
             width: 100%;
+            height: 25px;
+            line-height: 25px;
             font-family: $fontfamily;
             @include border-radius(4px);
             color: $negroni;

@@ -9,7 +9,7 @@
             src="@/imgs/wineColumnImg/bartender-opens-bottle-red-wine-using-wine-opener-pour-lot-empty-glasses-bar-counter-blurred-background-wine-tasting-open-beverage-bartender-dinner-concept.jpg"
             alt=""
           />
-          <ReadMoreButton class="read-more-btn" />
+          <ReadMoreButton class="read-more-button" />
           <div class="category-name" v-if="articles[5] && articles[5].article_class_id">{{ articles[5].article_class_id }}</div>
         </div>
         <div class="winecolumn__masonry-item1-lf-bt winecolumn__group">
@@ -19,7 +19,7 @@
             src="@/imgs/wineColumnImg/close-up-woman-s-hands-decorating-grapefruit-detox-healthy-smoothie-with-rosemary.jpg"
             alt=""
           />
-          <ReadMoreButton />
+          <ReadMoreButton class="read-more-button" />
           <div class="category-name" v-if="articles[2] && articles[2].article_class_id">{{ articles[2].article_class_id }}</div>
         </div>
       </div>
@@ -28,7 +28,7 @@
           <div class="winecolumn__masonry-item1-rg-tp-l winecolumn__group">
             <h3 class="winecolumn__title" v-if="articles[1] && articles[1].name">{{ articles[1].name }}</h3>
             <img class="winecolumn__img" src="@/imgs/wineColumnImg/105d2bb9d92254d478410275acb1e78f5394907e.jpg" alt="" />
-            <ReadMoreButton />
+            <ReadMoreButton class="read-more-button" />
             <div class="category-name" v-if="articles[1] && articles[1].article_class_id">
               {{ articles[1].article_class_id }}
             </div>
@@ -36,7 +36,7 @@
           <div class="winecolumn__masonry-item1-rg-tp-r winecolumn__group">
             <h3 class="winecolumn__title" v-if="articles[0] && articles[0].name">{{ articles[0].name }}</h3>
             <img class="winecolumn__img" src="@/imgs/wineColumnImg/Chateau-Latour.jpg" alt="" />
-            <ReadMoreButton />
+            <ReadMoreButton class="read-more-button" />
             <div class="category-name" v-if="articles[0] && articles[0].article_class_id">
               {{ articles[0].article_class_id }}
             </div>
@@ -45,7 +45,7 @@
         <div class="winecolumn__masonry-item1-rg-bt winecolumn__group">
           <h3 class="winecolumn__title" v-if="articles[4] && articles[4].name">{{ articles[4].name }}</h3>
           <img class="winecolumn__img" src="@/imgs/wineColumnImg/a824168e245aebc8e62ef40c9fbcaf589e7c1fe7.jpg" alt="" />
-          <ReadMoreButton />
+          <ReadMoreButton class="read-more-button" />
           <div class="category-name" v-if="articles[4] && articles[4].article_class_id">{{ articles[4].article_class_id }}</div>
         </div>
       </div>
@@ -57,7 +57,7 @@
         src="@/imgs/wineColumnImg/fresh-cocktails-with-ice-lemon-lime-fruits-generative-ai.jpg"
         alt=""
       />
-      <ReadMoreButton />
+      <ReadMoreButton class="read-more-button" />
       <div class="category-name" v-if="articles[3] && articles[3].article_class_id">{{ articles[3].article_class_id }}</div>
     </div>
   </section>
@@ -147,6 +147,12 @@ export default {
       margin-right: 0 !important;
       width: 100% !important;
       height: 200px !important;
+      .read-more-button {
+        border: 1px solid red;
+        height: 40px;
+        right: -80px;
+        bottom: -60px;
+      }
       .category-name {
         bottom: 0.5rem;
         right: 0rem;

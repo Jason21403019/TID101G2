@@ -41,7 +41,7 @@
       </div>
       <div v-if="!isRegister" class="login__container">
         <div class="login__container-title">
-          <h3>快速登入</h3>
+          <!-- <h3>快速登入</h3> -->
         </div>
         <div class="login__container-googleaccount">
           <button class="login__googleaccount-btn">
@@ -269,7 +269,7 @@ export default {
         outline: none;
         border: none;
         width: 300px;
-        margin: 0.25rem;
+        margin: 0.25rem 0;
         line-height: 70px;
         font-size: $fontSize_h3;
         @include border-radius(8px);
@@ -340,7 +340,7 @@ export default {
       }
       input {
         width: 350px;
-        height: 20px;
+        height: 40px;
         margin-bottom: 0.5rem;
         border: 1px solid green;
         padding: 1.15rem 1rem;
@@ -357,7 +357,9 @@ export default {
       // border: 1px solid red;
     }
     &-haveaccount {
-      margin-right: 3rem;
+      width: 350px;
+      justify-content: flex-start;
+      // margin-right: 3rem;
       margin-bottom: 2rem;
       // padding: 1rem 0;
       color: $campari;
@@ -422,6 +424,7 @@ export default {
       }
     }
     &-googleaccount {
+      margin-top: 1.5rem;
       // border: 1px solid red;
       &::after {
         content: '';
@@ -470,7 +473,7 @@ export default {
       }
       input {
         width: 350px;
-        height: 30px;
+        height: 40px;
         margin-bottom: 0.5rem;
         // border: 1px solid green;
         padding: 1.15rem 1rem;
@@ -487,7 +490,9 @@ export default {
       // border: 1px solid red;
     }
     &-noaccount {
-      margin-right: 3rem;
+      width: 350px;
+      justify-content: flex-start;
+      // margin-right: 3rem;
       // padding: 1rem 0;
       p {
         font-size: $fontSize_p;

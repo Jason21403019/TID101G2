@@ -46,12 +46,15 @@ try {
     // 準備和綁定
     $stmt = $conn->prepare("INSERT INTO member (id,password, full_name, birth, phone, email, address
      ) VALUES (:id, :password, :full_name, :birth, :phone, :email, :address)");
+
+    $stmt2 = $conn->prepare("INSERT INTO coupon (id, name, discount, status, member_id ) VALUES (:id, :name, :discount, :status, :member_id ) ;");
     
-    // 設置參數並綁定
+    // 設置會員參數並綁定
     $full_name = $data['full_name'];
     $phone = $data['phone'];
     $email = $data['email'];
     $hashed_password = password_hash($data['password'], PASSWORD_DEFAULT);
+
     
     $stmt->bindParam(':id', $memberId);
     $stmt->bindParam(':full_name', $full_name);
@@ -61,6 +64,24 @@ try {
     $stmt->bindParam(':birth', $birth, $birth === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
     $stmt->bindParam(':address', $address, $address === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
     $stmt->execute();
+    
+
+    // 生成一個隨機數字，例如從1到10000
+    $randomNumber = rand(1, 10000);
+
+    // 拼接字符串 'ilove' 和隨機數字
+    $id = "ilove" . $randomNumber;
+   
+    $discount = 500;// 直接賦值為500來測試
+    $status = 1; 
+    $name = '折扣五百元';
+    //綁定coupon
+    $stmt2->bindParam(':id', $id);
+    $stmt2->bindParam(':name', $name);
+    $stmt2->bindParam(':discount', $discount, PDO::PARAM_INT);
+    $stmt2->bindParam(':status', $status, PDO::PARAM_INT);
+    $stmt2->bindParam(':member_id', $memberId);
+    $stmt2->execute();
     
     echo json_encode(["success" => true,"member_id"=>$memberId]); 
 
