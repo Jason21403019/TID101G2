@@ -42,7 +42,7 @@
         >
           <ul class="accordion-body">
             <li v-for="subItem in item.subItems" :key="subItem.text">
-              <a :href="subItem.link">{{ subItem.text }}</a>
+              <router-link :to="subItem.link">{{ subItem.text }}</router-link>
             </li>
           </ul>
         </div>
