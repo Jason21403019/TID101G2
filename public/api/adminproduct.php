@@ -102,26 +102,20 @@ try {
             }
             break;
 
-        case 'DELETE':
-            // 刪除商品
-            $data = json_decode(file_get_contents("php://input"), true);
-            $id = isset($data['id']) ? intval($data['id']) : '';
-
-            if (json_last_error() === JSON_ERROR_NONE && !empty($id)) {
-                $stmt = $conn->prepare("DELETE FROM product WHERE id = ?");
-                $stmt->execute([$id]);
-                echo json_encode(["message" => "Product deleted successfully."], 204); // 使用 204 No Content 状态码
-            } else {
-                echo json_encode(["error" => "Invalid input."], 400); 
-            }
-            break;
-
-        default:
-            echo json_encode(["message" => "Request method not supported."], 405); 
-            break;
+            case 'DELETE':
+                // 刪除商品
+                $id = isset($_GET['id']) ? $_GET['id'] : ''; // 從 GET 參數中獲取 id
+                if (!empty($id)) {
+                  $stmt = $conn->prepare("DELETE FROM product WHERE id = :id");
+                  $stmt->bindParam(':id', $id, PDO::PARAM_STR); 
+                  $stmt->execute();
+                  echo json_encode(["message" => "Product deleted successfully."]); // 返回成功訊息
+                } else {
+                  echo json_encode(["error" => "Invalid input."], 400); 
+                }
+                break;
     }
 } catch (PDOException $e) {
-    error_log($e->getMessage(), 3, '/var/log/php_errors.log'); 
     echo json_encode(["error" => "Database error."], 500); 
 }
 

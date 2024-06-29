@@ -44,6 +44,7 @@
       </template>
       <template #bulktext>多筆刪除</template>
     </admin-bulk-btn>
+
     <admin-btn @click="openModal('add')">
       <template #icon>
         <img src="../imgs/icon/icon_expand-w-67.svg" alt="addIcon" height="20" width="20" />
@@ -52,6 +53,7 @@
     </admin-btn>
   </div>
   <section>
+    <!-- 列表 -->
     <table class="table">
       <thead class="table-thead">
         <tr>
@@ -91,9 +93,6 @@
           </td>
         </tr>
       </tbody>
-      <caption>
-        每頁列表顯示<span class="main__list-number">6</span>筆
-      </caption>
     </table>
   </section>
   <ModalProduct ref="modal" :action-type="currentActionType" :product="currentProduct" @save="handleSave" />
@@ -176,12 +175,13 @@ export default {
         });
     },
     search() {
-      const name = this.selectedOption === '1' ? '' : this.inputValue;
-      const product_class_id = this.selectedOption === '1' ? this.selectedCategory : '';
-      console.log('Searching with name:', name, 'and selectedCategory:', product_class_id);
-      this.fetchProducts(name, product_class_id);
-    },
-    openModal(actionType, product = {}) {
+    const name = this.selectedOption === '1' ? '' : this.inputValue;
+    const product_class_id = this.selectedOption === '1' ? this.selectedCategory : '';
+
+    console.log('Searching with name:', name, 'and selectedCategory:', product_class_id);
+    this.fetchProducts(product_class_id);
+  },   
+  openModal(actionType, product = {}) {
       this.currentActionType = actionType;
       this.currentProduct = product;
       this.$refs.modal.show();
@@ -206,8 +206,9 @@ export default {
         cancelButtonText: '取消'
       }).then(result => {
         if (result.isConfirmed) {
+          console.log(productId); 
           axios.delete(`http://localhost/TID101G2/public/api/adminproduct.php`, {
-            data: { id: productId }
+            params: { id: productId } 
           })
           .then(response => {
             const data = response.data;
@@ -233,7 +234,7 @@ export default {
       }
       Swal.fire({
         title: '確認刪除',
-        text: '您確定要刪除選中的項目嗎？',
+        text: '您確定要刪除選中的 ' + selectedProducts.length + ' 個項目嗎？',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: '確定',
@@ -241,22 +242,27 @@ export default {
       }).then(result => {
         if (result.isConfirmed) {
           const deletePromises = selectedProducts.map(product => {
-            return axios.delete(`http://localhost/TID101G2/public/api/adminproduct.php`, { data: { id: product.id } });
+            return axios.delete(`http://localhost/TID101G2/public/api/adminproduct.php`, { 
+              params: { id: product.id } 
+            });
           });
+
           Promise.all(deletePromises)
-            .then(responses => responses.map(res => res.data))
-            .then(results => {
-              const successResults = results.filter(result => result.message === "Product deleted successfully.");
-              if (successResults.length > 0) {
+            .then(responses => {
+              const allSuccess = responses.every(response => {
+                return response.status === 200 && response.data.message === "Product deleted successfully.";
+              });
+
+              if (allSuccess) {
                 this.products = this.products.filter(product => !product.selected);
                 Swal.fire('已刪除', '選中的產品已成功刪除。', 'success');
               } else {
-                Swal.fire('錯誤', '刪除失敗。', 'error');
+                Swal.fire('錯誤', '部分產品刪除失敗，請稍後再試。', 'error');
               }
             })
             .catch(error => {
               console.error('Error deleting products:', error);
-              Swal.fire('錯誤', '刪除失敗。', 'error');
+              Swal.fire('錯誤', '刪除失敗，請稍後再試。', 'error');
             });
         }
       });
@@ -272,7 +278,7 @@ export default {
       }
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 @import '../../node_modules/bootstrap/scss/bootstrap.scss'; // 確保這一行在最上面

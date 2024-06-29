@@ -8,7 +8,6 @@
         </div>
         <div class="modal-body">
           <form>
-            <!-- ID欄位，在新增和編輯模式下都顯示 -->
             <div class="mb-3">
               <label for="productId" class="col-form-label">商品ID:</label>
               <input id="productId" v-model="productData.id" type="text" class="form-control" />
@@ -79,7 +78,7 @@ export default {
   data() {
     return {
       productData: {
-        id: null,
+        id: '',
         name: '',
         price: null,
         brand: '',
@@ -133,10 +132,12 @@ export default {
           // 新增商品
           const response = await axios.post('http://localhost/TID101G2/public/api/AdminModalProduct.php', this.productData);
           console.log('新增商品成功:', response.data);
+          console.log(this.productData);
         } else {
           // 修改商品
           const response = await axios.put(`http://localhost/TID101G2/public/api/AdminModalProduct.php/${this.productData.id}`, this.productData);
           console.log('修改商品成功:', response.data);
+          console.log(this.productData);
         }
         this.$emit('save', this.productData);
         this.hide();
@@ -146,7 +147,7 @@ export default {
     },
     handleFileUpload(event) {
       const file = event.target.files[0];
-      // 處理文件上傳邏輯
+      this.productData.image = file; // 將文件存儲到productData中
       console.log('上傳的文件:', file);
     }
   }
