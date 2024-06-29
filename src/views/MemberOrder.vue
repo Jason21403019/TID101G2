@@ -6,13 +6,9 @@
       <div class="content">
         <h1>查看訂單</h1>
       </div>
-    
+
       <div class="order-list">
-        <MemberOrderCard
-          v-for="(order, index) in paginatedOrders"
-          :key="index"
-          :order="order"
-        />
+        <MemberOrderCard v-for="(order, index) in paginatedOrders" :key="index" :order="order" />
       </div>
 
       <!-- 分頁 -->
@@ -30,11 +26,11 @@
 </template>
 
 <script>
-import MemberMenu from '../components/MemberMenu.vue'; 
-import MemberOrderCard from '../components/MemberOrderCard.vue'; 
-import Paginator from '../components/tabs/Paginator.vue'; 
-import axios from 'axios'; //HTTP的請求工具之一
-import { useUserStore } from '../stores/user';   //引入抓登入的會員編號的js
+import MemberMenu from '../components/MemberMenu.vue'
+import MemberOrderCard from '../components/MemberOrderCard.vue'
+import Paginator from '../components/tabs/Paginator.vue'
+import axios from 'axios' //HTTP的請求工具之一
+import { useUserStore } from '../stores/user' //引入抓登入的會員編號的js
 
 export default {
   name: 'MemberOrder',
@@ -51,68 +47,68 @@ export default {
       orders: [], // 訂單陣列
       currentPage: 1, // 當前頁碼
       pageSize: 4, // 每頁顯示的單數量
-      member_id: null 
-    };
+      member_id: null
+    }
   },
   computed: {
     // 計算訂單比數去分頁
     paginatedOrders() {
-      const startIndex = (this.currentPage - 1) * this.pageSize;
-      return this.orders.slice(startIndex, startIndex + this.pageSize);
+      const startIndex = (this.currentPage - 1) * this.pageSize
+      return this.orders.slice(startIndex, startIndex + this.pageSize)
     }
   },
   //資料庫渲染
   async mounted() {
-    await this.checkLogin();
-    await this.fetchOrders();
+    await this.checkLogin()
+    await this.fetchOrders()
   },
   methods: {
     async checkLogin() {
-      const userStore = useUserStore();
+      const userStore = useUserStore()
       if (userStore.checkLoginStatus()) {
-        this.member_id = userStore.isLoggedIn; // 把存取在localStorage 抓出來
+        this.member_id = userStore.isLoggedIn // 把存取在localStorage 抓出來
         // console.log('Logged in member ID:', this.member_id);
       } else {
-        console.error("沒抓取到會員編號");
+        console.error('沒抓取到會員編號')
       }
     },
     // 從後端獲取訂單數據的方法
     fetchOrders() {
-  if (this.member_id) {
-    axios.get(`${import.meta.env.VITE_PHP_PATH}MemberOrder.php`, {
-      params: { member_id: this.member_id }
-    })
-    .then(response => {
-      this.orders = response.data;
-      console.log('訂單數據加載成功', response.data);
-    })
-    .catch(error => {
-      console.error("加載訂單數據錯誤", error);
-    });
-  } else {
-    console.error("無有效會員編號，無法加載訂單數據");
-  }
-},
+      if (this.member_id) {
+        axios
+          .get(`${import.meta.env.VITE_PHP_PATH}MemberOrder.php`, {
+            params: { member_id: this.member_id }
+          })
+          .then((response) => {
+            this.orders = response.data
+            console.log('訂單數據加載成功', response.data)
+          })
+          .catch((error) => {
+            console.error('加載訂單數據錯誤', error)
+          })
+      } else {
+        console.error('無有效會員編號，無法加載訂單數據')
+      }
+    },
 
     // 切換頁面設定
     // 下一頁的事件處理方法
     nextPageHandler() {
       if (this.currentPage < Math.ceil(this.orders.length / this.pageSize)) {
-        this.currentPage++;
+        this.currentPage++
       }
     },
     // 上一頁的事件處理方法
     previousPageHandler() {
       if (this.currentPage > 1) {
-        this.currentPage--;
+        this.currentPage--
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-
 @media (max-width: 768px) {
   .content {
     width: 90vw; // 在較小屏幕上增加寬度

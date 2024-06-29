@@ -35,7 +35,7 @@
 <script>
 import MemberMenu from '../components/MemberMenu.vue'
 import axios from 'axios'
-import { useUserStore } from '../stores/user';   //引入抓登入的會員編號的js
+import { useUserStore } from '../stores/user' //引入抓登入的會員編號的js
 
 export default {
   name: 'Member',
@@ -52,62 +52,63 @@ export default {
         phone: '',
         address: ''
       },
-      member_id: null 
+      member_id: null
     }
-    
   },
   //資料庫渲染
   async mounted() {
-    await this.checkLogin();
-    await this.fetchMemberData();
+    await this.checkLogin()
+    await this.fetchMemberData()
   },
   methods: {
-     //先抓登入的會員編號
-     async checkLogin() {
-      const userStore = useUserStore();
+    //先抓登入的會員編號
+    async checkLogin() {
+      const userStore = useUserStore()
       if (userStore.checkLoginStatus()) {
-        this.member_id = userStore.isLoggedIn; // 把存取在localStorage 抓出來
+        this.member_id = userStore.isLoggedIn // 把存取在localStorage 抓出來
         // console.log('Logged in member ID:', this.member_id);
       } else {
-        console.error("沒抓取到會員編號");
+        console.error('沒抓取到會員編號')
       }
     },
 
     fetchMemberData() {
-  // 從後端撈資料
-  this.checkLogin().then(() => {
-    if (this.member_id) {
-      axios.get(`${import.meta.env.VITE_PHP_PATH}Member.php?id=${this.member_id}`)
+      // 從後端撈資料
+      this.checkLogin().then(() => {
+        if (this.member_id) {
+          axios
+            .get(`${import.meta.env.VITE_PHP_PATH}Member.php?id=${this.member_id}`)
+            .then((response) => {
+              //渲染出資料
+              if (response.data && response.data.length > 0) {
+                const memberData = response.data[0]
+                this.member.full_name = memberData.full_name || memberData.name
+                this.member.birth = memberData.birth
+                this.member.email = memberData.email
+                this.member.phone = memberData.phone
+                this.member.address = memberData.address
+              } else {
+                console.error('No data found')
+              }
+            })
+            .catch((error) => {
+              console.error('Error fetching member data:', error)
+            })
+        } else {
+          console.error('Member ID is not set')
+        }
+      })
+    },
+    saveSettings() {
+      axios
+        .post(`${import.meta.env.VITE_PHP_PATH}Member.php?id=${this.member_id}`, this.member)
         .then((response) => {
-          //渲染出資料
-          if (response.data && response.data.length > 0) {
-            const memberData = response.data[0];
-            this.member.full_name = memberData.full_name || memberData.name;
-            this.member.birth = memberData.birth;
-            this.member.email = memberData.email;
-            this.member.phone = memberData.phone;
-            this.member.address = memberData.address;
-          } else {
-            console.error('No data found');
-          }
+          alert('設置已保存！')
         })
         .catch((error) => {
-          console.error('Error fetching member data:', error);
-        });
-    } else {
-      console.error('Member ID is not set');
+          console.error('Error saving settings:', error)
+        })
     }
-  });
-},
-saveSettings() {
-    axios.post(`${import.meta.env.VITE_PHP_PATH}Member.php?id=${this.member_id}`, this.member)
-      .then((response) => {
-        alert('設置已保存！');
-      })
-      .catch((error) => {
-        console.error('Error saving settings:', error);
-      });
-}
   }
 }
 </script>
