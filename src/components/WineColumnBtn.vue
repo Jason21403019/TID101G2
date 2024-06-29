@@ -101,7 +101,7 @@ export default {
 }
 .rm-button {
   border: 1px solid $ramos-gin-fizz;
-  position: absolute;
+  // position: absolute;
   top: 370px;
   height: 40px;
 }

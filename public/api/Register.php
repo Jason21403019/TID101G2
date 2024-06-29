@@ -6,6 +6,8 @@ error_reporting(E_ALL);
 include ("conn.php");
 
 try {
+    $conn->beginTransaction();  // 開始事務
+    
     // 獲取原始的 POST 資料
     $postData = file_get_contents("php://input");
     $data = json_decode($postData, true);
@@ -48,6 +50,8 @@ try {
      ) VALUES (:id, :password, :full_name, :birth, :phone, :email, :address)");
 
     $stmt2 = $conn->prepare("INSERT INTO coupon (id, name, discount, status, member_id ) VALUES (:id, :name, :discount, :status, :member_id ) ;");
+
+    $stmt3 = $conn->prepare("INSERT INTO coupon (id, name, discount, status, member_id ) VALUES (:id, :name, :discount, :status, :member_id ) ;");
     
     // 設置會員參數並綁定
     $full_name = $data['full_name'];
@@ -65,24 +69,23 @@ try {
     $stmt->bindParam(':address', $address, $address === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
     $stmt->execute();
     
-
-    // 生成一個隨機數字，例如從1到10000
-    $randomNumber = rand(1, 10000);
-
-    // 拼接字符串 'ilove' 和隨機數字
-    $id = "ilove" . $randomNumber;
-   
-    $discount = 500;// 直接賦值為500來測試
-    $status = 1; 
-    $name = '折扣五百元';
-    //綁定coupon
-    $stmt2->bindParam(':id', $id);
-    $stmt2->bindParam(':name', $name);
-    $stmt2->bindParam(':discount', $discount, PDO::PARAM_INT);
-    $stmt2->bindParam(':status', $status, PDO::PARAM_INT);
-    $stmt2->bindParam(':member_id', $memberId);
-    $stmt2->execute();
+     // 插入兩張優惠券
+     $couponNames = ['折扣五百元', '貼心免運券'];
+     $discounts = [500, 250];
+     $status = 1; 
+ 
+     foreach ($couponNames as $index => $name) {
+         $randomNumber = rand(1, 10000);
+         $couponId = "ilove" . $randomNumber;
+         $stmt2->bindParam(':id', $couponId);
+         $stmt2->bindParam(':name', $name);
+         $stmt2->bindParam(':discount', $discounts[$index], PDO::PARAM_INT);
+         $stmt2->bindParam(':status', $status, PDO::PARAM_INT);
+         $stmt2->bindParam(':member_id', $memberId);
+         $stmt2->execute();
+     }
     
+    $conn->commit();  // 提交事務
     echo json_encode(["success" => true,"member_id"=>$memberId]); 
 
     $stmt->closeCursor();
