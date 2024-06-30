@@ -7,61 +7,32 @@
       </div>
 
       <div class="place">
-        <h3>訂單編號：2057382977594</h3>
+        <h3>訂單編號：{{ orderInfo.orderId }}</h3>
       </div>
       
     <div class="scroll_container">
-      <div class="product">
+      <div class="product" v-for="product in products" :key="product.id">
           <div class="item_details">
         <!-- 標題&數量按鈕 -->
               <div class="text">
-                <h5>Le Petit Chavin 小夏凡 夏多內無酒精氣泡葡萄飲</h5>
+                <h5>{{ product.name }}</h5>
                 <div class="text_down">
-                    <p>750ml/瓶</p>
+                    <p>{{ product.details }}</p>
                 </div>
               </div> 
           </div>
           <div class="price">
-              <p>NT$ 890</p>
+              <p>NT$ {{ product.price }}</p>
           </div>     
       </div>
 
-      <div class="product">
-          <div class="item_details">
-        <!-- 標題&數量按鈕 -->
-              <div class="text">
-                <h5>Le Petit Chavin 小夏凡 夏多內無酒精氣泡葡萄飲</h5>
-                <div class="text_down">
-                    <p>750ml/瓶</p>
-                </div>
-              </div> 
-          </div>
-          <div class="price">
-              <p>NT$ 890</p>
-          </div>     
-      </div>
-
-      <div class="product">
-          <div class="item_details">
-        <!-- 標題&數量按鈕 -->
-              <div class="text">
-                <h5>Le Petit Chavin 小夏凡 夏多內無酒精氣泡葡萄飲</h5>
-                <div class="text_down">
-                    <p>750ml/瓶</p>
-                </div>
-              </div> 
-          </div>
-          <div class="price">
-              <p>NT$ 890</p>
-          </div>     
-      </div>
     </div>
 
     <div class="order_info">
       <!-- <h3>收件資訊</h3> -->
-      <h4>收件人:鄭卉汝</h4>
-      <h4>聯絡電話:0912345678</h4>
-      <h4>地址:台北市中山區南京東路三段219號</h4>
+      <h4>收件人:{{ orderInfo.receiverName }}</h4>
+      <h4>聯絡電話:{{ orderInfo.receiverPhone }}</h4>
+      <h4>地址:{{ orderInfo.receiverAddress }}</h4>
     </div>
 
     <div class="pay_info">
@@ -83,7 +54,7 @@
 
           <div class="subtotal">
               <h5>小計</h5>
-              <p>$45000</p>
+              <p>$ {{ orderInfo.subtotal }}</p>
           </div>
 
           <div class="ship_fee">
@@ -93,12 +64,12 @@
 
           <div class="ship_discount">
               <h5>折抵</h5>
-              <p>-$250</p>
+              <p>-$ {{ orderInfo.discount }}</p>
           </div>
 
           <div class="total_price">
               <h5>總計額</h5>
-              <p class="twd">TWD $45000</p>
+              <p class="twd">TWD $ {{ orderInfo.total }}</p>
           </div>
 
     </div>
@@ -109,6 +80,39 @@
 
   </div>
 </template>
+
+
+
+<script>
+import axios from 'axios';
+export default {
+  data() {
+    return {
+      products: [],
+      orderInfo: null,
+    };
+  },
+  created() {
+    this.fetchOrderDetails();
+  },
+  methods: {
+    fetchOrderDetails() {
+      axios.get('http://localhost:8087/TID101G2/public/api/OrderComplete.php', {
+        params: {
+          order_id: 'some_order_id',  // 确保这里传入正确的订单ID
+          member_id: 'some_member_id'  // 传入会员ID
+        }
+      }).then(response => {
+        this.orderInfo = response.data.orderInfo;
+        this.products = response.data.products;
+      }).catch(error => {
+        console.error("Error fetching order details:", error);
+      });
+    }
+  }
+}
+</script>
+
 
 <style lang="scss" scoped>
 .popup {

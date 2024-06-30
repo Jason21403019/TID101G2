@@ -150,6 +150,7 @@ export default {
           receiver_phone: shippingInfo?.shipPhone,
           receiver_address: shippingInfo?. shipAddress,
           receiver_email: shippingInfo?.shipEmail,
+          note: shippingInfo?.note,
           subtotal: cartSummary?.subtotal,
           shipping_fee: cartSummary?.shipping_fee,
           discount: cartSummary?.discount,
@@ -159,7 +160,7 @@ export default {
           status: "未處理",
           id:"",
           order_date:"",
-          note: "",
+          
           member_id: localStorage.getItem('isLoggedIn'),
           delivery_method:"宅配",
           delivery_status:"未取貨",
@@ -168,8 +169,8 @@ export default {
 
 
           try {
-            const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}cartreceiver.php`, orderData, {
-            // const response = await axios.post('http://localhost:8087/TID101G2/public/api/submitOrder.php', orderData, {
+            // const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}cartreceiver.php`, orderData, {
+            const response = await axios.post('http://localhost:8087/TID101G2/public/api/submitOrder.php', orderData, {
               cancelToken: axiosCancelSource.token // 使用 cancel token
             });
             if (response.data.success) {
