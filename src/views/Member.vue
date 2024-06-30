@@ -7,23 +7,23 @@
       <form @submit.prevent="saveSettings" class="tabe_account">
         <div class="form-row">
           <label for="name">名字:</label>
-          <input type="text" id="name" v-model="memberfull_name" required />
+          <input type="text" id="name" v-model="memberName" required />
         </div>
         <!-- <div class="form-row">
           <label for="birth">出生日期:</label>
-          <input type="date" id="birth" v-model="memberbirth" required />
+          <input type="date" id="birth" v-model="memberBirth" required />
         </div> -->
         <div class="form-row">
           <label for="email">信箱:</label>
-          <input type="email" id="email" v-model="memberemail" required />
+          <input type="email" id="email" v-model="memberEmail" required />
         </div>
         <div class="form-row">
           <label for="phone">手機:</label>
-          <input type="tel" id="phone" v-model="memberphone" required />
+          <input type="tel" id="phone" v-model="memberPhone" required />
         </div>
         <div class="form-row">
           <label for="address">地址:</label>
-          <input type="text" id="address" v-model="memberaddress" required />
+          <input type="text" id="address" v-model="memberAddress" required />
         </div>
         <!-- 按鈕 -->
         <button type="submit">儲存</button>
@@ -46,7 +46,7 @@ export default {
     return {
       // 會員專區資料
 
-      memberfull_name: '',
+      memberName: '',
       memberbirth: '',
       memberemail: '',
       memberphone: '',
@@ -57,7 +57,7 @@ export default {
   //資料庫渲染
   async mounted() {
     await this.checkLogin()
-    await this.fetchMemberData()
+    await this.fetchMemberData2()
   },
   methods: {
     //先抓登入的會員編號
@@ -71,12 +71,12 @@ export default {
       }
     },
 
-    fetchMemberData() {
+    fetchMemberData2() {
       // 從後端撈資料
       this.checkLogin().then(() => {
         if (this.member_id) {
           axios
-            .get(`${import.meta.env.VITE_PHP_PATH}Member.php`, {
+            .get(`${import.meta.env.VITE_PHP_PATH}CartReceiver.php`, {
               // axios.get('http://localhost:8087/TID101G2/public/api/Member.php', {
               params: {
                 id: this.member_id
@@ -86,11 +86,11 @@ export default {
               //渲染出資料
               if (response.data && response.data.length > 0) {
                 const memberData = response.data[0]
-                this.memberfull_name = memberData.full_name
-                this.memberbirth = memberData.birth
-                this.memberemail = memberData.email
-                this.memberphone = memberData.phone
-                this.memberaddress = memberData.address
+                this.memberfulName = memberData.full_name
+                this.memberBirth = memberData.birth
+                this.memberEmail = memberData.email
+                this.memberPhone = memberData.phone
+                this.memberAddress = memberData.address
               } else {
                 console.error('No data found')
               }
