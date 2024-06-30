@@ -106,6 +106,10 @@ export default {
     justify-content: center;
     color: $campari;
     box-shadow: 0px 0px 10px 5px $irishcoffee;
+    @include breakpoint(530px) {
+      width: 370px;
+      height: 350px;
+    }
   }
   .fp__pupup-first {
     h2 {
@@ -125,6 +129,9 @@ export default {
       width: 350px;
       margin-bottom: 2rem;
       background: $whitelady;
+      @include breakpoint(530px) {
+        width: 300px;
+      }
     }
     &-nextbtn {
       outline: none;
@@ -177,6 +184,9 @@ export default {
       width: 350px;
       margin-bottom: 2rem;
       background: $whitelady;
+      @include breakpoint(530px) {
+        width: 300px;
+      }
     }
     &-input2 {
       padding: 0.5rem;
@@ -186,6 +196,9 @@ export default {
       width: 350px;
       margin-bottom: 2rem;
       background: $whitelady;
+      @include breakpoint(530px) {
+        width: 300px;
+      }
     }
     &-nextbtn {
       outline: none;
