@@ -9,10 +9,10 @@
           <label for="name">名字:</label>
           <input type="text" id="name" v-model="memberfull_name" required />
         </div>
-        <div class="form-row">
+        <!-- <div class="form-row">
           <label for="birth">出生日期:</label>
           <input type="date" id="birth" v-model="memberbirth" required />
-        </div>
+        </div> -->
         <div class="form-row">
           <label for="email">信箱:</label>
           <input type="email" id="email" v-model="memberemail" required />

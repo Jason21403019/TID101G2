@@ -10,13 +10,13 @@
           <p><strong>總價:</strong> {{ order.total_amount }}</p>
           <p><strong>付款狀態:</strong> {{ order.payment_status }}</p>
           <p><strong>出貨狀態:</strong> {{ order.delivery_status }}</p>
-          <button type="button"
+          <!-- <button type="button"
                   class="btn btn-primary"
                   :disabled="order.status === '已取消'"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal">
             取消訂單
-          </button>
+          </button> -->
 
           <!-- Modal -->
           <div
@@ -65,15 +65,15 @@ export default {
         .post(`${import.meta.env.VITE_PHP_PATH}MemberOrder.php`, { orderId: this.order.id })
         .then((response) => {
           console.log('訂單取消成功', response)
-          this.order.status = '已取消' 
+          this.order.status = '已取消'
           // 關閉模態視窗
           const modalElement = this.$refs.modal
-          const modalInstance = bootstrap.Modal.getInstance(modalElement);
-          modalInstance.hide();
+          const modalInstance = bootstrap.Modal.getInstance(modalElement)
+          modalInstance.hide()
         })
         .catch((error) => {
           console.error('取消訂單失敗', error)
-          this.loading = false;
+          this.loading = false
         })
     }
   }
