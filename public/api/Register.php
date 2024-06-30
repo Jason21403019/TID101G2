@@ -61,30 +61,30 @@ try {
         exit();
     }
     
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $input = json_decode(file_get_contents('php://input'), true);
-        $code = $input['code'];
+    // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    //     $input = json_decode(file_get_contents('php://input'), true);
+    //     $code = $input['code'];
     
-        if ($code) {
-            $accessTokenData = getAccessToken($code);
-            if ($accessTokenData && isset($accessTokenData['access_token'])) {
-                $userInfo = getUserInfo($accessTokenData['access_token']);
-                if ($userInfo && isset($userInfo['email'])) {
-                    // 在這裡執行用戶註冊或更新操作
-                    // 您可能還需要檢查資料庫中是否已經存在這個電子郵件
-                    echo json_encode(['status' => 'success', 'message' => 'User registered successfully']);
-                } else {
-                    echo json_encode(['status' => 'error', 'message' => 'Failed to retrieve user info']);
-                }
-            } else {
-                echo json_encode(['status' => 'error', 'message' => 'Failed to retrieve access token']);
-            }
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'No authorization code provided']);
-        }
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
-    }
+    //     if ($code) {
+    //         $accessTokenData = getAccessToken($code);
+    //         if ($accessTokenData && isset($accessTokenData['access_token'])) {
+    //             $userInfo = getUserInfo($accessTokenData['access_token']);
+    //             if ($userInfo && isset($userInfo['email'])) {
+    //                 // 在這裡執行用戶註冊或更新操作
+    //                 // 您可能還需要檢查資料庫中是否已經存在這個電子郵件
+    //                 echo json_encode(['status' => 'success', 'message' => 'User registered successfully']);
+    //             } else {
+    //                 echo json_encode(['status' => 'error', 'message' => 'Failed to retrieve user info']);
+    //             }
+    //         } else {
+    //             echo json_encode(['status' => 'error', 'message' => 'Failed to retrieve access token']);
+    //         }
+    //     } else {
+    //         echo json_encode(['status' => 'error', 'message' => 'No authorization code provided']);
+    //     }
+    // } else {
+    //     echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
+    // }
     
     // 生成會員ID (例如: "M001")
     $stmt = $conn->prepare("SELECT MAX(id) AS max_id FROM member");
