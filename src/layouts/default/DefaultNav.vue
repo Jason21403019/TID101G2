@@ -16,7 +16,8 @@
 
         <!-- 登入後顯示的按鈕 -->
         <button v-else class="header__icons-icon afterLogin" @click="memberAndLogout">
-          <img class="header__icons-icon-img1" :src="getAfterLoginSrc" alt="Logout Icon" />
+          <img v-if="black" class="header__icons-icon-img1" :src="getAfterLoginSrc" alt="Logout Icon" />
+          <img v-else class="header__icons-icon-img1" :src="getAfterLoginSrc" alt="Logout Icon" />
         </button>
 
         <!-- 購物車 -->
@@ -131,6 +132,9 @@ export default {
     },
     getNavCartSrc() {
       return this.isHamburgerOpen ? new URL('@/imgs/icon/icon_cart-shopping-w.svg', import.meta.url).href : this.getCartSrc
+    },
+    getLogoutSrc() {
+      return this.isHamburgerOpen ? new URL('@/imgs/icon/icon_member-off-w.svg', import.meta.url).href : this.getAfterLoginSrc
     },
     getNavLogoSrc() {
       return this.isHamburgerOpen ? new URL('@/imgs/logo/logo-w.png', import.meta.url).href : this.getLogoSrc
