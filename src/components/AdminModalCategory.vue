@@ -110,11 +110,11 @@ export default {
       try {
         if (this.actionType === 'add') {
           // 新增分類
-          const response = await axios.post('http://localhost/TID101G2/public/api/adminarticle_class.php', this.categoryData);
+          const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}adminarticle_class.php`, this.categoryData);
           console.log('新增分類成功:', response.data);
         } else {
           // 修改分類
-          const response = await axios.put(`http://localhost/TID101G2/public/api/adminarticle_class.php/${this.categoryData.id}`, this.categoryData);
+          const response = await axios.put(`${import.meta.env.VITE_PHP_PATH}adminproduct.php/${this.categoryData.id}`, this.categoryData);
           console.log('修改分類成功:', response.data);
         }
         this.$emit('save', this.categoryData);
