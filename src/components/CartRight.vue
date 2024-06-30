@@ -131,10 +131,10 @@ export default {
         shippingFee: 250,  // 優惠券折扣的金額
         selectedCoupon: '0',  // 保存選擇的優惠券ID
         member_id:null,
-        orderName: '',
-        orderPhone: '',
-        orderEmail: '',
-        orderAddress: '',
+        // orderName: '',
+        // orderPhone: '',
+        // orderEmail: '',
+        // orderAddress: '',
         
     };
   },
@@ -198,15 +198,9 @@ export default {
         },
 
         fetchCartItems() {
-            // axios.get('/public/api/cartproduct.php', {
-
-            if (!this.member_id) {
-                console.error('member_id is not set');
-                return;
-            }
-            console.log('Fetching cart items for member_id: ', this.member_id);
-
             axios.get(`${import.meta.env.VITE_PHP_PATH}cartproduct.php`, {
+
+            // axios.get('http://localhost:8087/TID101G2/public/api/cartproduct.php', {
             params: {
                 id: this.member_id
                 }
@@ -228,90 +222,107 @@ export default {
             });
         },
 
-  calculateTotal() {
-    this.subtotal = this.items.reduce((sum, item) => sum + item.price, 0);
-    this.total = this.subtotal + this.shippingFee - this.discount;// 更新總金額以反映任何折扣
-  },
+        calculateTotal() {
+            this.subtotal = this.items.reduce((sum, item) => sum + item.price, 0);
+            this.total = this.subtotal + this.shippingFee - this.discount;// 更新總金額以反映任何折扣
+            console.log('subtotal:', this.subtotal, 'total:', this.total, 'discount:', this.discount, 'shippingFee:', this.shippingFee);
+        },
 
-  applyDiscount() {
-    const couponDiscounts = { '1': 250, '2': 500 };
-    this.discount = couponDiscounts[this.selectedCoupon] || 0;
-    this.calculateTotal(); // 重新計算總金額以反映折扣
-  },
 
-  increment(itemId) {
-    this.updateItemCount(itemId, true);
-  },
-  
-  decrement(itemId) {
-    this.updateItemCount(itemId, false);
-  },
+        applyDiscount() {
+            const couponDiscounts = { '1': 250, '2': 500 };
+            this.discount = couponDiscounts[this.selectedCoupon] || 0;
+            this.calculateTotal(); // 重新計算總金額以反映折扣
+            // 計算完成之後才傳送資料給父層
+            this.sendCartSummaryToParent();
+        },
 
-  updateItemCount(itemId, increment) {
-    const item = this.items.find(item => item.id === itemId);
-    if (item) {
-        const newCount = increment ? item.count + 1 : item.count - 1;
-        if (newCount >= 1 && newCount <= item.stock) {
-            item.count = newCount;
-            item.price = item.unitPrice * item.count;
+        
+        increment(itemId) {
+            this.updateItemCount(itemId, true);
+        },
+        
+        decrement(itemId) {
+            this.updateItemCount(itemId, false);
+        },
+
+        updateItemCount(itemId, increment) {
+            const item = this.items.find(item => item.id === itemId);
+            if (item) {
+                const newCount = increment ? item.count + 1 : item.count - 1;
+                if (newCount >= 1 && newCount <= item.stock) {
+                    item.count = newCount;
+                    item.price = item.unitPrice * item.count;
+                    this.calculateTotal();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '錯誤',
+                        text: increment ? '已超過庫存數量!' : '數量不能少於1!',
+                    });
+                }
+            }
+        },
+
+        removeItem(itemId) {
+            this.items = this.items.filter(item => item.id !== itemId);
             this.calculateTotal();
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: '錯誤',
-                text: increment ? '已超過庫存數量!' : '數量不能少於1!',
+        },
+
+        confirmOrder() {
+            if (this.$parent.$refs.cartLeft.validateFields()) {
+                Swal.fire({
+                title: "提交訂單嗎?",
+                text: "請確認商品和訂單資訊無誤",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "確定",
+                cancelButtonText: "取消"
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submitOrder();
+                }
             });
-        }
-    }
-  },
+            }else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '未完成',
+                        text: '請填寫所有必填欄位!',
+                    });
+                }
+            },
 
-  removeItem(itemId) {
-    this.items = this.items.filter(item => item.id !== itemId);
-    this.calculateTotal();
-  },
-
-  confirmOrder() {
-    if (this.$parent.$refs.cartLeft.validateFields()) {
-        Swal.fire({
-        title: "提交訂單嗎?",
-        text: "請確認商品和訂單資訊無誤",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "確定",
-        cancelButtonText: "取消"
-        }).then((result) => {
-        if (result.isConfirmed) {
-            this.submitOrder();
-         }
-      });
-    }else {
-            Swal.fire({
-                icon: 'error',
-                title: '未完成',
-                text: '請填寫所有必填欄位!',
+        sendCartSummaryToParent() {
+            this.$emit('updateCartSummary', {
+                subtotal: this.subtotal,
+                discount: this.discount,
+                total: this.total,
+                pay_method: "信用卡",
+                ship_method: "宅配",
+                shipping_fee: 250
             });
-         }
-       },
+        },
 
-    submitOrder() {
-        Swal.fire({
-        title: '訂單處理中',
-        html: '頁面跳轉中...',
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: () => {
-            Swal.showLoading();
+        submitOrder() {
+            Swal.fire({
+            title: '訂單處理中',
+            html: '頁面跳轉中...',
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        }).then(result => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+            this.$router.push({ name: 'CreditCard' });
         }
-    }).then(result => {
-      if (result.dismiss === Swal.DismissReason.timer) {
-        this.$router.push({ name: 'CreditCard' });
-      }
-    });
-  }
-
+        });
+        }
     },
+
+
  };
 
 

@@ -67,7 +67,7 @@
 
               <div class="order_note">
                 <p>訂單備註</p>
-                <textarea name="" id="" cols="30" rows="15" placeholder="若有其他備註事項，請在此填寫，謝謝您！"></textarea>
+                <textarea name="" id="note" cols="30" rows="15" v-model="note" placeholder="若有其他備註事項，請在此填寫，謝謝您！"></textarea>
               </div>
               
 
@@ -94,11 +94,32 @@ export default {
             shipPhone: '',
             shipEmail: '',
             shipAddress: '',
+            note: '',
             isSyncActive: false,
-            member_id:null
+            member_id:null,
+            
         };
 
     },
+
+    watch: {
+      shipName(newVal) {
+        this.$emit('updateData', { shipName: newVal });
+      },
+      shipPhone(newVal) {
+        this.$emit('updateData', { shipPhone: newVal });
+      },
+      shipEmail(newVal) {
+        this.$emit('updateData', { shipEmail: newVal });
+      },
+      shipAddress(newVal) {
+        this.$emit('updateData', { shipAddress: newVal });
+      },
+      note(newVal) {
+        this.$emit('updateData', { note: newVal });
+      },
+  },
+
     async mounted() {
         await this.checkLogin();
         await this.fetchMemberData();

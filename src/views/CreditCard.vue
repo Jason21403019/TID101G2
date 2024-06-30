@@ -83,13 +83,15 @@
   </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onBeforeUnmount } from 'vue';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 export default {
-  name: 'CardForm',
+  name: 'CreditCard',
   setup() {
+    const router = useRouter();
     const cardNumber1 = ref('');
     const cardNumber2 = ref('');
     const cardNumber3 = ref('');
@@ -98,7 +100,30 @@ export default {
     const cardMonth = ref('');
     const cardYear = ref('');
     const cardCvv = ref('');
-    const router = useRouter();
+
+    const validateCardNumber = (cardNumber) => {
+    const newCardNum = cardNumber.replace(/-/g, '');  // 移除卡號中的分隔符
+    let sum = 0;
+    const nDigits = newCardNum.length;
+    const parity = nDigits % 2;  // 根據卡號長度計算奇偶性
+
+    for (let i = 0; i < nDigits; i++) {
+      let digit = parseInt(newCardNum[i]);
+      if (i % 2 == parity) {  // 奇數位置或偶數位置的判定需要根據卡號長度的奇偶性決定
+        digit = digit * 2;
+        if (digit > 9) {
+          digit -= 9;
+        }
+      }
+      sum += digit;
+    }
+
+    return sum % 10 == 0;
+    };
+
+
+    // 创建一个 Axios Cancel Token
+    const axiosCancelSource = axios.CancelToken.source();
 
     const focusNext = (event, index) => {
       if (event.target.value.length === event.target.maxLength) {
@@ -109,87 +134,64 @@ export default {
       }
     };
 
-    const validateCardNumber = (cardNumber) => {
-      const newCardNum = cardNumber.replace(/-/g, '');
-      const sum = evenNum(newCardNum) + oddNum(newCardNum);
-      let resultNum = sum % 10;
-      if (resultNum !== 0) {
-        resultNum = 10 - resultNum;
-      }
-      return resultNum === Number(newCardNum[15]);
-    };
+    // 确保在组件卸载前取消所有正在进行的请求
+    onBeforeUnmount(() => {
+      axiosCancelSource.cancel('Component unmounting: Request canceled.');
+    });
 
-    const evenNum = (newCardNum) => {
-      let sum = 0;
-      for (let i = 1; i <= 13; i += 2) {
-        let resultNum = Number(newCardNum[i]);
-        sum += resultNum;
-      }
-      return sum;
-    };
-
-    const oddNum = (newCardNum) => {
-      let sum = 0;
-      for (let i = 0; i <= 15; i += 2) {
-        let resultNum = Number(newCardNum[i]) * 2;
-        if (resultNum >= 10) {
-          resultNum -= 9;
-        }
-        sum += resultNum;
-      }
-      return sum;
-    };
-
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
       const cardNumber = `${cardNumber1.value}-${cardNumber2.value}-${cardNumber3.value}-${cardNumber4.value}`;
-      if (
-        cardNumber1.value &&
-        cardNumber2.value &&
-        cardNumber3.value &&
-        cardNumber4.value &&
-        cardName.value &&
-        cardMonth.value &&
-        cardYear.value &&
-        cardCvv.value
-      ) {
-        if (!validateCardNumber(cardNumber)) {
-          Swal.fire({
-            title: '信用卡號碼無效',
-            icon: 'error',
-            confirmButtonText: '確定',
-          });
+      if (cardName.value && cardMonth.value && cardYear.value && cardCvv.value && cardNumber) {
+        if (validateCardNumber(cardNumber)) {
+          const shippingInfo = JSON.parse(localStorage.getItem('shippingInfo'));
+          const cartSummary = JSON.parse(localStorage.getItem('cartSummary'));
+          const orderData = {
+          receiver: shippingInfo?.shipName,
+          receiver_phone: shippingInfo?.shipPhone,
+          receiver_address: shippingInfo?. shipAddress,
+          receiver_email: shippingInfo?.shipEmail,
+          subtotal: cartSummary?.subtotal,
+          shipping_fee: cartSummary?.shipping_fee,
+          discount: cartSummary?.discount,
+          total_amount: cartSummary?.total,
+          payment_status: "已付款", // 因信用卡驗證成功而設定
+          payment_method: "信用卡",
+          status: "未處理",
+          id:"",
+          order_date:"",
+          note: "",
+          member_id: localStorage.getItem('isLoggedIn'),
+          delivery_method:"宅配",
+          delivery_status:"未取貨",
+          };
+          
+
+
+          try {
+            const response = await axios.post('http://localhost:8087/TID101G2/public/api/submitOrder.php', orderData, {
+              cancelToken: axiosCancelSource.token // 使用 cancel token
+            });
+            if (response.data.success) {
+              Swal.fire('付款成功！', '', 'success').then(() => {
+                router.push('/ordercomplete');
+                localStorage.clear(); // 清除 localStorage 中的数据
+              });
+            } else {
+              throw new Error(response.data.message);
+            }
+          } catch (error) {
+            if (axios.isCancel(error)) {
+              console.log('Request canceled:', error.message);
+            } else {
+              Swal.fire('支付錯誤', error.message, 'error');
+            }
+          }
         } else {
-          submitOrder();
+          Swal.fire('無效的信用卡號碼', '', 'error');
         }
       } else {
-        Swal.fire({
-          title: '請填寫所有欄位',
-          icon: 'error',
-          confirmButtonText: '確定',
-        })
+        Swal.fire('欄位不可為空', '', 'error');
       }
-    };
-
-    const submitOrder = () => {
-      Swal.fire({
-        title: '付款處理中',
-        html: '請稍候...',
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        }
-      }).then(result => {
-        if (result.dismiss === Swal.DismissReason.timer) {
-          Swal.fire({
-            title: '付款成功！',
-            icon: 'success',
-            confirmButtonText: '確定',
-          }).then(() => {
-            router.push('/ordercomplete');
-          });
-        }
-      });
     };
 
     return {
@@ -202,9 +204,9 @@ export default {
       cardYear,
       cardCvv,
       focusNext,
-      handleSubmit,
+      handleSubmit
     };
-  },
+  }
 };
 </script>
 
