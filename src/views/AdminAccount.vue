@@ -271,7 +271,7 @@ export default {
         return result
       } else {
         // 編輯邏輯
-        const result = await adminStore.updateAdmin(params)
+        const result = await adminStore.updateAdmin(params, this.originalAdmin)
 
         if (result.success) {
           const index = this.admins.findIndex((admin) => admin.id === formData.id)
@@ -338,7 +338,10 @@ export default {
 
       if (confirmation.isConfirmed) {
         const updatedAdmin = { ...admin, admin_status: admin.admin_status ? 1 : 0 }
-        const result = await adminStore.updateAdmin(updatedAdmin)
+
+        this.originalAdmin = { ...admin, admin_status: admin.admin_status ? 0 : 1 }
+
+        const result = await adminStore.updateAdmin(updatedAdmin, this.originalAdmin)
 
         if (!result.success) {
           await Swal.fire({
