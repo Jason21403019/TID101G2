@@ -53,18 +53,17 @@ try {
             }
             break;
 
-        case 'PUT':
-            // 更新數據
-            $data = json_decode(file_get_contents('php://input'), true);
-            if (!empty($data['id']) && !empty($data['note'])) {
-                $stmt = $conn->prepare("UPDATE article_class SET note = ? WHERE id = ?");
-                $stmt->execute([$data['note'], $data['id']]);
-                echo json_encode(["message" => "記錄更新成功。"]);
-            } else {
-                echo json_encode(["message" => "無效輸入。"]);
-            }
-            break;
-
+            case 'PUT':
+                $data = json_decode(file_get_contents('php://input'), true);
+                $originalId = isset($_GET['id']) ? intval($_GET['id']) : null;
+                if ($originalId && !empty($data['id']) && !empty($data['note'])) {
+                    $stmt = $conn->prepare("UPDATE article_class SET id = ?, note = ? WHERE id = ?");
+                    $stmt->execute([$data['id'], $data['note'], $originalId]);
+                    echo json_encode(["message" => "記錄更新成功。"]);
+                } else {
+                    echo json_encode(["message" => "無效輸入或缺少原始ID。"]);
+                }
+                break;
         default:
             echo json_encode(["message" => "不支援的請求方法。"]);
             break;
