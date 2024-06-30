@@ -30,6 +30,7 @@ export default { name: 'DefaultFooter' }
   padding: 1vw;
   color: black;
   text-align: center;
+  font-family: $fontfamily, $fontfamily-en;
 
   &__bg {
     display: flex;
@@ -39,12 +40,12 @@ export default { name: 'DefaultFooter' }
 
   &__logo img {
     max-width: 100px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
   }
 
   &__text {
     h1 {
-      font-size:$fontSize_h5;
+      font-size: $fontSize_h5;
       margin: 5px 0;
     }
   }

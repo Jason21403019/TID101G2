@@ -17,11 +17,11 @@
         </div>
         <div class="register__container-phone">
           <label for="phone">電話</label>
-          <input id="phone" v-model="form.phone" type="tel" placeholder="請輸入電話" />
+          <input id="phone" v-model="form.phone" type="tel" placeholder="09123456789" />
         </div>
         <div class="register__container-email">
           <label for="email">電子郵件</label>
-          <input id="email" v-model="form.email" type="email" placeholder="請輸入電子郵件" />
+          <input id="email" v-model="form.email" type="email" placeholder="example@gmail.com" />
         </div>
         <div class="register__container-password">
           <label for="password">密碼</label>
@@ -44,7 +44,7 @@
           <!-- <h3>快速登入</h3> -->
         </div>
         <div class="login__container-googleaccount">
-          <button class="login__googleaccount-btn">
+          <button class="login__googleaccount-btn" @click="googleLogin">
             <img src="../imgs/icon/google.svg" alt="" />
             <span>使用Google登入</span>
           </button>
@@ -74,6 +74,8 @@
 <script>
 import axios from 'axios'
 import ForgetPasswordPop from '@/components/ForgetPasswordPop.vue'
+import Swal from 'sweetalert2'
+import { googleAuthCodeLogin } from 'vue3-google-login'
 import { mapActions } from 'pinia'
 import { useUserStore } from '@/stores/user'
 
@@ -95,23 +97,13 @@ export default {
         birth: '',
         address: ''
       },
-      // form: {
-      //   full_name: 'Test',
-      //   phone: '3333333',
-      //   email: 'xxx@gmail.com',
-      //   password: '12345678A',
-      //   birth: '1987-12-22',
-      //   address: 'xxx'
-      // },
       loginForm: {
         email: '',
         password: ''
       },
-      // loginForm: {
-      //   email: 'song@gmail.com',
-      //   password: 'song123456'
-      // },
-      passwordError: false
+      passwordError: false,
+      phoneError: false,
+      emailError: false
     }
   },
   watch: {
@@ -133,46 +125,36 @@ export default {
     toggleLogin() {
       useUserStore().toggleLogin()
     },
-    async login() {
-      const userStore = useUserStore()
-
-      if (!this.loginForm.email || !this.loginForm.password) {
-        this.passwordError = 'Email 和 Password 是必填的'
-        return
-      }
-
-      // console.log(this.loginForm)
-
-      try {
-        // console.log('start login')
-        const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}Login.php`, this.loginForm, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
+    validateEmail() {
+      const emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+      this.emailError = !emailPattern.test(this.form.email)
+      if (!emailPattern.test(this.form.email)) {
+        this.emailError = true
+        Swal.fire({
+          icon: 'error',
+          title: '無效的輸入',
+          text: '請輸入有效的電子郵件地址。',
+          confirmButtonText: '確定'
         })
-        // console.log('end login', response)
-        // console.log(response);
-
-        // console.log('aaa')
-
-        const result = response.data
-
-        // console.log(result)
-
-        if (result.success) {
-          this.passwordError = null
-          userStore.login(result.userid)
-          this.$router.push('/member')
-        } else {
-          this.passwordError = result.message || 'Login failed'
-        }
-      } catch (err) {
-        console.error('Error:', err)
-        this.passwordError = 'An error occurred'
-        alert(err)
+      } else {
+        this.emailError = false
       }
     },
-
+    validatePhone() {
+      const phonePattern = /^[0][9]\d{8}$/
+      this.phoneError = !phonePattern.test(this.form.phone)
+      if (!phonePattern.test(this.form.phone)) {
+        this.phoneError = true
+        Swal.fire({
+          icon: 'error',
+          title: '無效的輸入',
+          text: '請輸入有效的手機號碼。',
+          confirmButtonText: '確定'
+        })
+      } else {
+        this.phoneError = false
+      }
+    },
     validatePasswords() {
       const password = this.form.password
       const minLength = 8
@@ -194,8 +176,96 @@ export default {
         this.passwordError = '' // 清除錯誤
       }
     },
+    clearForm() {
+      this.form = {
+        full_name: '',
+        phone: '',
+        email: '',
+        password: '',
+        birth: '',
+        address: ''
+      }
+    },
+    async googleLogin() {
+      try {
+        const response = await googleAuthCodeLogin()
+        if (response.code) {
+          console.log('Google authorization code:', response.code)
+          // 將授權碼發送到後端
+          this.registerUser(response.code)
+        } else {
+          console.error('No authorization code provided')
+        }
+      } catch (error) {
+        console.error('Google login error:', error)
+      }
+    },
+    async registerUser(code) {
+      if (!code) {
+        console.error('No authorization code provided')
+        return
+      }
+      axios
+        .post(`${import.meta.env.VITE_PHP_PATH}TestGoogleLogin.php`, { code: code })
+        .then((response) => {
+          this.user = response.data
+
+          console.log('User registered:', response)
+        })
+        .catch((error) => {
+          console.error('Error registering user:', error)
+        })
+    },
+    // async handleGoogleLogin() {
+    //   try {
+    //     const googleUser = await this.$gAuth.signIn()
+    //     console.log(googleUser)
+    //     // 這裡可以添加後端API呼叫，將googleUser資訊發送到後端處理
+    //   } catch (error) {
+    //     console.error('登入失敗:', error)
+    //   }
+    // },
+    async login() {
+      const userStore = useUserStore()
+
+      if (!this.loginForm.email || !this.loginForm.password) {
+        this.passwordError = 'Email 和 Password 是必填的'
+        return
+      }
+
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}Login.php`, this.loginForm, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+
+        const result = response.data
+
+        if (result.success) {
+          this.passwordError = null
+          userStore.login(result.userid)
+          this.$router.push('/member')
+        } else {
+          this.passwordError = result.message || 'Login failed'
+        }
+      } catch (err) {
+        console.error('Error:', err)
+        this.passwordError = 'An error occurred'
+        alert(err)
+      }
+    },
     async register() {
       this.validatePasswords()
+      this.validatePhone()
+      this.validateEmail()
+
+      if (this.emailError) {
+        return
+      }
+      if (this.phoneError) {
+        return
+      }
 
       if (this.passwordError) {
         return
@@ -212,22 +282,27 @@ export default {
             'Content-Type': 'application/json'
           }
         })
-        // console.log('Response:', response)
 
         const data = response.data
-        // console.log('Registration response:', data)
 
         if (data.success) {
-          // console.log('aaaa')
-          alert('Registration successful')
+          this.clearForm()
+          Swal.fire({
+            icon: 'success',
+            title: '註冊成功',
+            text: '您已成功註冊！',
+            confirmButtonText: '確定'
+          })
         } else {
           this.passwordError = data.message
         }
       } catch (error) {
-        console.error('Error:', error)
-
-        // console.error('Error during registration:', error)
-        alert('An error occurred during registration. Please try again later.')
+        Swal.fire({
+          icon: 'error',
+          title: '註冊失敗',
+          text: '註冊過程中出現錯誤，請稍後再試。',
+          confirmButtonText: '確定'
+        })
       }
     }
   }
@@ -453,6 +528,7 @@ export default {
           padding-top: 3px;
           width: 30px;
           height: 30px;
+          margin-right: 1rem;
         }
         span {
           margin-left: 0.5rem;

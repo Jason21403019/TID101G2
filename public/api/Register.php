@@ -4,6 +4,47 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include ("conn.php");
+function getAccessToken($code) {
+    $client_id = '
+    1044890836835-59gl5r2o3efhla80sosf9lab07uulbj8.apps.googleusercontent.com';
+    $client_secret = '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';
+    $redirect_uri = 'http://localhost:5173/tid101/g2/';
+
+    $url = 'https://oauth2.googleapis.com/token';
+    $data = array(
+        'code' => $code,
+        'client_id' => $client_id,
+        'client_secret' => $client_secret,
+        'redirect_uri' => $redirect_uri,
+        'grant_type' => 'authorization_code'
+    );
+
+    $options = array(
+        'http' => array(
+            'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method' => 'POST',
+            'content' => http_build_query($data)
+        )
+    );
+
+    $context = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+    if ($result === FALSE) {
+        return null;
+    }
+
+    return json_decode($result, true);
+}
+function getUserInfo($access_token) {
+    $url = 'https://www.googleapis.com/oauth2/v1/userinfo?access_token=' . $access_token;
+
+    $response = file_get_contents($url);
+    if ($response === FALSE) {
+        return null;
+    }
+
+    return json_decode($response, true);
+}
 
 try {
     $conn->beginTransaction();  // 開始事務
@@ -19,15 +60,30 @@ try {
         ]);
         exit();
     }
-    if (strlen($data['password']) > 255) {
-        echo json_encode(["success" => false, "message" => "Password is too long"]);
-        exit();
-    }
     
-    // 簡單驗證
-    if ($data['password'] !== $data['confirmPassword']) {
-        echo json_encode(["success" => false, "message" => "Passwords do not match"]);
-        exit();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $input = json_decode(file_get_contents('php://input'), true);
+        $code = $input['code'];
+    
+        if ($code) {
+            $accessTokenData = getAccessToken($code);
+            if ($accessTokenData && isset($accessTokenData['access_token'])) {
+                $userInfo = getUserInfo($accessTokenData['access_token']);
+                if ($userInfo && isset($userInfo['email'])) {
+                    // 在這裡執行用戶註冊或更新操作
+                    // 您可能還需要檢查資料庫中是否已經存在這個電子郵件
+                    echo json_encode(['status' => 'success', 'message' => 'User registered successfully']);
+                } else {
+                    echo json_encode(['status' => 'error', 'message' => 'Failed to retrieve user info']);
+                }
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to retrieve access token']);
+            }
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'No authorization code provided']);
+        }
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
     }
     
     // 生成會員ID (例如: "M001")
@@ -68,7 +124,7 @@ try {
     $stmt->bindParam(':birth', $birth, $birth === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
     $stmt->bindParam(':address', $address, $address === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
     $stmt->execute();
-    
+
      // 插入兩張優惠券
      $couponNames = ['折扣五百元', '貼心免運券'];
      $discounts = [500, 250];
