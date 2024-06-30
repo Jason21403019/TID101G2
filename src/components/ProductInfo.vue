@@ -29,7 +29,7 @@
 import { useProductStore } from '../stores/product'
 import Paginator from './tabs/Paginator.vue'
 import Swal from 'sweetalert2'
-import { useUserStore } from '../stores/user'
+// import { useUserStore } from '../stores/user'
 export default {
   props: ['currentTab', 'phpdataSearch'],
   components: { Paginator },
@@ -211,34 +211,6 @@ export default {
         this.fetchProductsCar(product)
         this.id++
       }
-    },
-    // clickpage(pageNumber) {
-    //   // 更新 currentPage
-    //   this.currentPage = pageNumber
-
-    //   // 根據 currentPage 計算要顯示的商品範圍
-    //   const startIndex = (this.currentPage - 1) * this.pageSize
-    //   const endIndex = startIndex + this.pageSize
-
-    //   // 更新 paginatedProducts
-    //   this.paginatedProducts = this.phpdata.slice(startIndex, endIndex)
-    // }
-
-    // memberId() {
-    //   // 获取存储在 localStorage 中的值
-    //   this.memberId = localStorage.getItem('isLoggedIn')
-
-    //   // 使用获取到的值
-    //   console.log(this.memberId) // 输出存储的值
-    // },
-
-    checkLoginStatus() {
-      const login_check = localStorage.getItem('isLoggedIn')
-      if (login_check) {
-        this.isLoggedIn = login_check
-        return true
-      }
-      return false
     }
   },
   watch: {
@@ -265,8 +237,8 @@ export default {
     }
   },
   mounted() {
-    const userStore = useUserStore()
-    userStore.checkLoginStatus()
+    // const userStore = useUserStore()
+    // userStore.checkLoginStatus()
 
     this.fetchAllProductData()
     // 获取存储在 localStorage 中的值，并赋给 memberId
@@ -361,6 +333,9 @@ article {
 }
 article {
   margin-right: auto; /* 使用 auto Margin 将项目靠左对齐 */
+  @include breakpoint(mobile) {
+    margin: 0;
+  }
 }
 
 @media (max-width: 768px) {
@@ -377,7 +352,7 @@ article {
     background-image: url('/src/imgs/icon/icon_cart-shopping-w.svg');
     background-size: 30%;
     background-repeat: no-repeat;
-    background-position: right top;
+    background-position: right 0 top -6px;
     padding-right: 30px;
   }
 

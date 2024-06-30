@@ -4,7 +4,7 @@
 
     <div class="member_order">
       <div class="content">
-        <h1>我的優惠券</h1>
+        <h1>優惠券</h1>
       </div>
       <div class="order-list">
         <MemberOrderCard
@@ -87,6 +87,8 @@ export default {
   background-color: $campari;
   padding-top: 100px;
   display: flex;
+  padding-bottom: 60%;
+
   .member_account {
     flex: 1;
     margin-left: 20px;

@@ -1,7 +1,7 @@
 <template>
   <main id="commodity_tab">
     <div class="searchButton">
-      <h4><router-link to="/home">首頁</router-link> > 全部商品</h4>
+      <h4><router-link to="/home">首頁</router-link> > <span>全部商品</span></h4>
       <input type="text" class="searchText" v-model="search" placeholder="查詢商品名稱" />
       <button class="search" @click="fetchProductSearch(search)">
         <img src="../imgs/icon/icon_admin-search.svg" alt="" />
@@ -256,7 +256,7 @@ main {
   padding-left: 5%;
   width: 100%;
   @include breakpoint(mobile) {
-    padding-left: 3%;
+    padding-left: 0%;
   }
 }
 
@@ -301,6 +301,11 @@ article div::before {
   padding: 0 0;
   border-radius: 10px;
   border: none;
+  span {
+    color: #cead82;
+    border-bottom: 1px solid #cead82;
+    padding-bottom: 0.1%;
+  }
   input {
     height: 100%;
     background-color: #fcf0d8;
@@ -323,7 +328,10 @@ article div::before {
       margin-left: -8%;
     }
     img {
-      width: 20px;
+      width: 25px;
+      @include breakpoint(mobile) {
+        margin-left: -118%;
+      }
     }
   }
 }

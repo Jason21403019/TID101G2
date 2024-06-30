@@ -2,7 +2,8 @@
   <main id="app">
     <!-- 商品詳細資訊 -->
     <h4 class="breadCrumbs">
-      <router-link to="/home">首頁</router-link> > <router-link to="/product">全部商品</router-link> > 商品資訊
+      <router-link to="/home">首頁</router-link> > <router-link to="/product">全部商品</router-link> >
+      <span>商品資訊</span>
     </h4>
     <section class="productInformation">
       <article class="productImg">
@@ -11,9 +12,12 @@
       <article class="details">
         <h1>{{ selectedProduct().brand }}</h1>
 
-        <h1>{{ selectedProduct().name }}{{ selectedProduct().details }}</h1>
+        <h1>
+          {{ selectedProduct().name }}
+          <span class="detailstext">{{ selectedProduct().details }}</span>
+        </h1>
 
-        <h4>商品編號:{{ selectedProduct().id }}</h4>
+        <h4 class="number">商品編號:{{ selectedProduct().id }}</h4>
 
         <span v-html="selectedProduct().content" class="content"></span>
         <div>
@@ -113,6 +117,23 @@ export default {
           }
         })
         this.$router.push('/register')
+        return // 停止执行后续代码
+      }
+
+      if (this.selectedProduct().stock === 0) {
+        // 如果为空或 null，弹出提示框要求用户先登录
+        Swal.fire({
+          icon: 'warning',
+          position: 'top',
+          title: '商品補貨中',
+          showConfirmButton: false,
+          timer: 1500,
+          toast: true,
+          onClose: () => {
+            console.log('Alert closed')
+          }
+        })
+
         return // 停止执行后续代码
       }
 
@@ -221,7 +242,7 @@ export default {
       const y = event.clientY - rect.top
 
       // 根据点击位置判断是哪个部分
-      if (x > rect.width * 0.7 && y > rect.height * 0.42) {
+      if (x > rect.width * 0.7 && y > rect.height * 0.45) {
         // 点击了右下角区域
         this.fetchProductsCarMobile(phpdata)
         // Swal.fire({
@@ -235,7 +256,7 @@ export default {
         //     console.log('Alert closed')
         //   }
         // })
-      } else {
+      } else if (event.target.tagName === 'IMG') {
         // 点击了其他区域
         this.handleOverlayClick(index)
       }
@@ -264,8 +285,9 @@ export default {
       //   top: 0,
       //   behavior: 'smooth' // 可選的，平滑滾動
       // })
-      this.count = 0
+
       this.$router.push('/product_subpages')
+      this.count = 1
     }
   },
   mounted() {
@@ -299,7 +321,7 @@ export default {
       @content;
     }
   } @else if $point == mobile4 {
-    @media (max-width: 430px) {
+    @media (max-width: 431px) {
       @content;
     }
   }
@@ -312,12 +334,13 @@ body {
     color: white;
     background-color: #381b1d;
     background-image: url('../imgs/productsImg/bg.png');
-    background-size: 60%;
+    background-size: cover;
     background-repeat: no-repeat;
 
     align-items: center;
     .productInformation {
       display: flex;
+
       .details {
         padding-right: 2%;
         width: 50%;
@@ -349,6 +372,9 @@ body {
           @include breakpoint(mobile) {
             font-size: 20px;
           }
+          @include breakpoint(mobile3) {
+            font-size: 30px;
+          }
         }
 
         .counts {
@@ -361,6 +387,9 @@ body {
           @include breakpoint(mobile) {
             font-size: 20px;
           }
+          @include breakpoint(mobile3) {
+            font-size: 30px;
+          }
         }
         .quantitys {
           padding-left: 3%;
@@ -372,6 +401,9 @@ body {
           }
           @include breakpoint(mobile) {
             margin: auto 0;
+          }
+          @include breakpoint(mobile3) {
+            font-size: 20px;
           }
         }
         div {
@@ -400,7 +432,7 @@ body {
           font-size: 48px;
           font-weight: bold;
           letter-spacing: 0.3em;
-          padding: 2% 0;
+          padding: 4% 0;
           margin-top: 3%;
           border-radius: 10px;
         }
@@ -480,6 +512,34 @@ body {
     }
     @include breakpoint(mobile3) {
       font-size: 20px;
+      // padding-bottom: 2%;
+      line-height: 25px;
+    }
+    @include breakpoint(mobile4) {
+      font-size: 18px;
+    }
+  }
+  .detailstext {
+    font-weight: bolder;
+    font-size: 28px;
+    padding-bottom: 1%;
+    color: #fcf0d8;
+    @include breakpoint(pc) {
+      font-size: 24px;
+    }
+    @include breakpoint(mobile) {
+      font-size: 21px;
+    }
+    @include breakpoint(mobile2) {
+      font-size: 18px;
+    }
+    @include breakpoint(mobile3) {
+      font-size: 16px;
+      // padding-bottom: 2%;
+      line-height: 25px;
+    }
+    @include breakpoint(mobile4) {
+      font-size: 14px;
     }
   }
   h2 {
@@ -496,7 +556,7 @@ body {
       font-size: 40px;
     }
     @include breakpoint(mobile3) {
-      font-size: 35px;
+      font-size: 45px;
     }
   }
   h3 {
@@ -513,6 +573,7 @@ body {
     @include breakpoint(mobile) {
       font-size: 20px;
     }
+
     a {
       color: inherit;
       text-decoration: none;
@@ -527,7 +588,14 @@ body {
     @include breakpoint(pc) {
     }
     @include breakpoint(mobile) {
-      font-size: 11px;
+      font-size: 19px;
+      padding-bottom: 2%;
+    }
+    span {
+      font-size: 19px;
+      color: #cead82;
+      border-bottom: 1px solid #cead82;
+      padding-bottom: 0.1%;
     }
   }
   h5 {
@@ -538,10 +606,10 @@ body {
     @include breakpoint(mobile) {
       font-size: 20px;
 
-      background-image: url(/src/imgs/icon/icon_cart-shopping-w.svg);
-      background-size: 30%;
-      background-repeat: no-repeat;
-      background-position: right bottom;
+      // background-image: url(/src/imgs/icon/icon_cart-shopping-w.svg);
+      // background-size: 30%;
+      // background-repeat: no-repeat;
+      // background-position: right bottom;
     }
   }
   span {
@@ -590,6 +658,14 @@ body {
   }
   .Related {
     padding: 0 2%;
+    h3 {
+      margin-bottom: 2%;
+    }
+  }
+}
+.number {
+  @include breakpoint(mobile3) {
+    // font-size: 16px;
   }
 }
 </style>

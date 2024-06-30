@@ -4,7 +4,7 @@
       <article>
         <div class="text">
           <p class="voucherName">{{ name }}</p>
-          <p><strong>折抵$</strong> {{ discount }}</p>
+          <p class="discount"><strong>折抵$</strong> {{ discount }}</p>
           <p>
             使用狀態:<span class="status">{{ use }}</span>
           </p>
@@ -77,5 +77,10 @@ export default {
   font-size: 25px;
   font-weight: bold;
   color: red;
+}
+.discount {
+  padding-top: 7%;
+  padding-bottom: 2%;
+  font-size: 20px;
 }
 </style>

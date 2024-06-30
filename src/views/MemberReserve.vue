@@ -4,7 +4,7 @@
 
     <div class="member_order">
       <div class="content">
-        <h1>我的預約</h1>
+        <h1>查看預約</h1>
       </div>
       <div class="order-list">
         <MemberOrderCard

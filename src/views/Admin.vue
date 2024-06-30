@@ -39,12 +39,12 @@
     <h2>{{ CommonFunctions }}</h2>
 
     <section>
-      <input type="button" :value="commodity" @click="openModal('edit', product)" />
-      <input type="button" :value="article" @click="openModalA('edit', article)" />
+      <input type="button" :value="commodity" @click="openModal('add', product)" />
+      <input type="button" :value="article" @click="openModalA('add', article)" />
       <input type="button" :value="reserve" @click="commodityPage(reserve)" />
     </section>
   </main>
-  <ModalArticle ref="modal" :action-type="currentActionType" :article="currentArticle" @save="handleSave" />
+  <ModalArticle ref="modalA" :action-type="currentActionType" :article="currentArticle" @save="handleSave" />
   <ModalProduct ref="modal" :action-type="currentActionType" :product="currentProduct" @save="handleSaveA" />
 </template>
 
@@ -118,7 +118,7 @@ export default {
     openModalA(action, article = {}) {
       this.currentActionTypeA = action
       this.currentArticle = { ...article }
-      this.$refs.modal.show()
+      this.$refs.modalA.show()
     },
     handleSaveA(formData) {
       if (this.currentActionTypeA === 'add') {
@@ -141,7 +141,7 @@ export default {
         const response = await axios.put(`${import.meta.env.VITE_PHP_PATH}adminarticle.php?id=${articleData.name}`, articleData)
         console.log('Article updated:', response.data)
         this.fetchArticles()
-        this.$refs.modal.hide()
+        this.$refs.modalA.hide()
       } catch (error) {
         console.error('Error updating article:', error)
       }
