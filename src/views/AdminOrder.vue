@@ -368,6 +368,15 @@ export default {
       const query = this.selectedOption === '2' ? this.selectedOrderStatus : this.inputValue
       const field = this.selectedOption === '2' ? 'status' : this.selectedOption === '' ? 'order.id' : 'member_name'
 
+      // 檢查是否有輸入值或選擇下拉式選單
+      if (!query && !this.startDate && !this.endDate) {
+        await this.loadOrders() // 呼叫 loadOrders 方法
+        // console.log('沒有輸入查詢條件，顯示所有訂單')
+        this.isSearching = false
+
+        return
+      }
+      // 檢查日期範圍
       if (this.startDate && this.endDate) {
         const diffTime = Math.abs(new Date(this.endDate) - new Date(this.startDate))
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
@@ -387,7 +396,12 @@ export default {
           this.orders = result.orders
           this.currentPage = 1 // 搜索後重置頁碼
         } else {
-          alert('查詢失敗: ' + result.message)
+          Swal.fire({
+            title: '查無資料',
+            text: result.message,
+            icon: 'info',
+            confirmButtonText: '確定'
+          })
         }
       } catch (error) {
         console.error('查詢過程中發生錯誤:', error)

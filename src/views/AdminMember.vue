@@ -92,6 +92,7 @@ import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
 import AdminBulkBtn from '../components/AdminBulkBtn.vue'
 import AdminInput from '../components/AdminInput.vue'
+import Swal from 'sweetalert2'
 import { useAdminMemberStore } from '../stores/adminMember'
 import { variables } from '../js/AdminVariables.js'
 
@@ -187,11 +188,25 @@ export default {
     async search() {
       const adminMemberStore = useAdminMemberStore()
 
+      // 檢查是否有輸入查詢條件
+      if (!this.searchQuery) {
+        await this.loadMembers() // 呼叫 loadMembers 方法
+        // console.log('沒有輸入查詢條件，顯示所有會員')
+
+        return
+      }
       const result = await adminMemberStore.searchMembers(this.searchField, this.searchQuery)
 
       if (result.success) {
         this.members = result.members
         this.currentPage = 1 // 搜索後重置頁碼
+      } else {
+        Swal.fire({
+          title: '查無資料',
+          text: result.message,
+          icon: 'info',
+          confirmButtonText: '確定'
+        })
       }
     },
     async clearSearch() {
