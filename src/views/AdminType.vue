@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     fetchTypes() {
-      let url = 'http://localhost/TID101G2/public/api/AdminType.php';
+      let url = `${import.meta.env.VITE_PHP_PATH}adminType.php`;
       console.log('Fetching types with URL:', url);
       axios.get(url)
         .then(response => {
@@ -121,7 +121,7 @@ export default {
     handleSave(formData) {
       if (this.currentActionType === 'add') {
         // 新增邏輯
-        axios.post('http://localhost/TID101G2/public/api/AdminType.php', formData)
+        axios.post(`${import.meta.env.VITE_PHP_PATH}adminType.php`, formData)
           .then(response => {
             const data = response.data;
             this.types.push(data);
@@ -132,7 +132,7 @@ export default {
           });
       } else {
         // 編輯邏輯
-        axios.put('http://localhost/TID101G2/public/api/AdminType.php', formData)
+        axios.put(`${import.meta.env.VITE_PHP_PATH}adminType.php`, formData)
           .then(response => {
             const data = response.data;
             const index = this.types.findIndex(type => type.id === data.id);
@@ -147,7 +147,7 @@ export default {
       }
     },
     handleDelete(typeId) {
-      axios.delete('http://localhost/TID101G2/public/api/AdminType.php', { data: { id: typeId } })
+      axios.delete(`${import.meta.env.VITE_PHP_PATH}adminType.php`, { data: { id: typeId } })
         .then(response => {
           const data = response.data;
           if (data.status === 'success') {

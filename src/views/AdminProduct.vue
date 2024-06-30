@@ -149,7 +149,7 @@ export default {
   },
   methods: {
     fetchProducts(name = '', product_class_id = '') {
-      let url = `http://localhost/TID101G2/public/api/adminproduct.php?name=${encodeURIComponent(name)}`;
+      let url = `${import.meta.env.VITE_PHP_PATH}adminproduct.php?name=${encodeURIComponent(name)}`;
       if (product_class_id) {
         url += `&product_class_id=${encodeURIComponent(product_class_id)}`;
       }
@@ -175,12 +175,18 @@ export default {
         });
     },
     search() {
-    const name = this.selectedOption === '1' ? '' : this.inputValue;
-    const product_class_id = this.selectedOption === '1' ? this.selectedCategory : '';
+  let searchTerm = ''; // 預設搜尋字串為空
 
-    console.log('Searching with name:', name, 'and selectedCategory:', product_class_id);
-    this.fetchProducts(product_class_id);
-  },   
+  if (this.selectedOption === '1') {
+    searchTerm = this.selectedCategory; // 如果選擇了選項 '1'，就用 selectedCategory 來搜尋
+  } else {
+    searchTerm = this.inputValue; // 否則就用 inputValue 來搜尋
+  }
+
+  console.log('搜尋字串：', searchTerm); 
+
+  this.fetchProducts(searchTerm); // 使用搜尋字串來抓取產品資料
+},
   openModal(actionType, product = {}) {
       this.currentActionType = actionType;
       this.currentProduct = product;
@@ -207,7 +213,7 @@ export default {
       }).then(result => {
         if (result.isConfirmed) {
           console.log(productId); 
-          axios.delete(`http://localhost/TID101G2/public/api/adminproduct.php`, {
+          axios.delete(`${import.meta.env.VITE_PHP_PATH}adminproduct.php`, {
             params: { id: productId } 
           })
           .then(response => {
@@ -242,7 +248,7 @@ export default {
       }).then(result => {
         if (result.isConfirmed) {
           const deletePromises = selectedProducts.map(product => {
-            return axios.delete(`http://localhost/TID101G2/public/api/adminproduct.php`, { 
+            return axios.delete(`${import.meta.env.VITE_PHP_PATH}adminproduct.php`, { 
               params: { id: product.id } 
             });
           });

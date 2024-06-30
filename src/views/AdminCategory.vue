@@ -108,7 +108,8 @@ export default {
             console.error('Error adding category:', error)
           })
       } else {
-        axios.put(`http://localhost/TID101G2/public/api/adminarticle_class.php?id=${formData.id}`, formData)
+    const originalId = this.currentCategory.id
+        axios.put(`http://localhost/TID101G2/public/api/adminarticle_class.php?id=${originalId}`, formData)
           .then(response => {
             this.fetchCategories()
           })
