@@ -301,4 +301,9 @@ nav {
     }
   }
 }
+.rm-button {
+  position: absolute;
+  top: 50%;
+  height: 50px;
+}
 </style>
