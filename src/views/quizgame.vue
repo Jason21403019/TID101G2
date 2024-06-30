@@ -25,7 +25,6 @@
         <span aria-hidden="true" class="hover-text">&nbsp;開始&nbsp;</span>
       </button>
     </div>
-    <audio src="../imgs/quizGameImg/gamequiz_clouds-08.svg"></audio>
   </div>
 </template>
 
