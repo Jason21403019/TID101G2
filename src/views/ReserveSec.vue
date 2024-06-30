@@ -76,20 +76,35 @@ export default {
   },
   methods: {
     cancelReservation() {
-      this.showPopup = false
-      // 这里可以添加取消逻辑，例如清空表单或发送取消请求
-
-      // 调用 SweetAlert2 弹窗显示取消预约成功
       Swal.fire({
-        icon: 'success',
-        title: '取消預約成功',
-        text: '您的預約已成功取消。',
-        confirmButtonText: '確認'
-      })
+        title: '確定取消訂位嗎？',
+        // text: '取消後無法復原，確定要取消此次訂位嗎？',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '確定',
+        cancelButtonText: '取消'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // 確定取消訂位的處理流程
+          this.showPopup = false
 
-      // 新增跳轉回預約頁面
-      this.$router.push('/reserve_first')
-      this.fetchReserve()
+          // 调用 SweetAlert2 弹窗显示取消预约成功
+          Swal.fire({
+            icon: 'success',
+            title: '取消預約成功',
+            text: '您的預約已成功取消。',
+            showConfirmButton: false,
+            timer: 1200
+          })
+
+          // 新增跳轉回預約頁面
+          this.$router.push('/reserve_first')
+          this.fetchReserve()
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          // 如果取消，不做任何事情，可以在這裡添加取消後的額外處理
+          return
+        }
+      })
     },
     // php
     fetchReserve() {

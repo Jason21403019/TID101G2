@@ -131,12 +131,30 @@ export default {
             note: this.note
           })
         )
+     
+        if (!this.memberId) {
+          // 如果为空或 null，弹出提示框要求用户先登录
+          Swal.fire({
+            icon: 'warning',
+            position: 'top',
+            title: '請先登入帳號',
+            showConfirmButton: false,
+            timer: 1500,
+            toast: true,
+            onClose: () => {
+              console.log('Alert closed')
+            }
+          })
+          this.$router.push('/register')
+          return // 停止执行后续代码
+        }
 
         Swal.fire({
           icon: 'success',
           title: '預約成功',
           text: '您的預約已成功。',
-          confirmButtonText: '確認'
+          showConfirmButton: false,
+          timer: 1000
         })
 
         // 執行 fetchReserve() 方法
