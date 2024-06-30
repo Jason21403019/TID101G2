@@ -17,7 +17,7 @@ if (empty($member_id)) {
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // 解析 JSON 資料
     $data = json_decode(file_get_contents("php://input"), true);
     //SQL指令 - 修
@@ -40,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 } 
     // 抓取會員ＩＤ資料
-    else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        $sql = "SELECT * FROM TID101_G2.member WHERE id = :member_id";
+    else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $sql = "SELECT full_name, birth, email, phone, address FROM member WHERE id = :member_id";
         try {
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':member_id', $member_id, PDO::PARAM_STR);

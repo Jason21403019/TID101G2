@@ -7,23 +7,23 @@
       <form @submit.prevent="saveSettings" class="tabe_account">
         <div class="form-row">
           <label for="name">名字:</label>
-          <input type="text" id="name" v-model="member.full_name" required />
+          <input type="text" id="name" v-model="memberfull_name" required />
         </div>
         <div class="form-row">
           <label for="birth">出生日期:</label>
-          <input type="date" id="birth" v-model="member.birth" required />
+          <input type="date" id="birth" v-model="memberbirth" required />
         </div>
         <div class="form-row">
           <label for="email">信箱:</label>
-          <input type="email" id="email" v-model="member.email" required />
+          <input type="email" id="email" v-model="memberemail" required />
         </div>
         <div class="form-row">
           <label for="phone">手機:</label>
-          <input type="tel" id="phone" v-model="member.phone" required />
+          <input type="tel" id="phone" v-model="memberphone" required />
         </div>
         <div class="form-row">
           <label for="address">地址:</label>
-          <input type="text" id="address" v-model="member.address" required />
+          <input type="text" id="address" v-model="memberaddress" required />
         </div>
         <!-- 按鈕 -->
         <button type="submit">儲存</button>
@@ -45,13 +45,12 @@ export default {
   data() {
     return {
       // 會員專區資料
-      member: {
-        full_name: '',
-        birth: '',
-        email: '',
-        phone: '',
-        address: ''
-      },
+
+      memberfull_name: '',
+      memberbirth: '',
+      memberemail: '',
+      memberphone: '',
+      memberaddress: '',
       member_id: null
     }
   },
@@ -77,16 +76,21 @@ export default {
       this.checkLogin().then(() => {
         if (this.member_id) {
           axios
-            .get(`${import.meta.env.VITE_PHP_PATH}Member.php?id=${this.member_id}`)
+            .get(`${import.meta.env.VITE_PHP_PATH}cartreceiver.php`, {
+              // axios.get('http://localhost:8087/TID101G2/public/api/cartreceiver.php', {
+              params: {
+                id: this.member_id
+              }
+            })
             .then((response) => {
               //渲染出資料
               if (response.data && response.data.length > 0) {
                 const memberData = response.data[0]
-                this.member.full_name = memberData.full_name || memberData.name
-                this.member.birth = memberData.birth
-                this.member.email = memberData.email
-                this.member.phone = memberData.phone
-                this.member.address = memberData.address
+                this.memberfull_name = memberData.full_name
+                this.memberbirth = memberData.birth
+                this.memberemail = memberData.email
+                this.memberphone = memberData.phone
+                this.memberaddress = memberData.address
               } else {
                 console.error('No data found')
               }
