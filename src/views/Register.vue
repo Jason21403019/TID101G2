@@ -234,6 +234,9 @@ export default {
       }
 
       try {
+        
+        // const response = await axios.post('http://localhost:8087/TID101G2/public/api/Login.php', this.loginForm, {
+
         const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}Login.php`, this.loginForm, {
           headers: {
             'Content-Type': 'application/json'
@@ -277,6 +280,8 @@ export default {
       }
 
       try {
+        // const response = await axios.post('http://localhost:8087/TID101G2/public/api/Register.php', this.form, {
+
         const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}Register.php`, this.form, {
           headers: {
             'Content-Type': 'application/json'

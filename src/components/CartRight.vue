@@ -165,9 +165,9 @@ export default {
 
             this.checkLogin().then(() =>{
                 if(this.member_id){
-                    // axios.get('http://localhost:8087/TID101G2/public/api/cartproduct.php', {
+                    // axios.get('http://localhost:8087/TID101G2/public/api/CartProduct.php', {
 
-                    axios.get(`${import.meta.env.VITE_PHP_PATH}cartproduct.php`, {
+                    axios.get(`${import.meta.env.VITE_PHP_PATH}CartProduct.php`, {
                         params: {
                             id: this.member_id
                         }
@@ -198,9 +198,9 @@ export default {
         },
 
         fetchCartItems() {
-            axios.get(`${import.meta.env.VITE_PHP_PATH}cartproduct.php`, {
+            axios.get(`${import.meta.env.VITE_PHP_PATH}CartProduct.php`, {
 
-            // axios.get('http://localhost:8087/TID101G2/public/api/cartproduct.php', {
+            // axios.get('http://localhost:8087/TID101G2/public/api/CartProduct.php', {
             params: {
                 id: this.member_id
                 }

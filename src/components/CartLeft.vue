@@ -139,7 +139,7 @@ export default {
 
             this.checkLogin().then(() =>{
                 if(this.member_id){
-                    axios.get(`${import.meta.env.VITE_PHP_PATH}cartreceiver.php`, {
+                    axios.get(`${import.meta.env.VITE_PHP_PATH}CartReceiver.php`, {
 
                     // axios.get('http://localhost:8087/TID101G2/public/api/cartreceiver.php', {
                         params: {

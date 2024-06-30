@@ -169,8 +169,8 @@ export default {
 
 
           try {
-            // const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}cartreceiver.php`, orderData, {
-            const response = await axios.post('http://localhost:8087/TID101G2/public/api/submitOrder.php', orderData, {
+            const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}SubmitOrder.php`, orderData, {
+            // const response = await axios.post('http://localhost:8087/TID101G2/public/api/SubmitOrder.php', orderData, {
               cancelToken: axiosCancelSource.token // 使用 cancel token
             });
             if (response.data.success) {
