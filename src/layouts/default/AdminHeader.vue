@@ -13,7 +13,7 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
           <li><router-link class="dropdown-item" to="/admin_panel">個人資料</router-link></li>
-          <li><router-link class="dropdown-item" to="/admin_login">登出</router-link></li>
+          <li><router-link class="dropdown-item" to="/admin_login" @click="handleLogout">登出</router-link></li>
         </ul>
       </div>
     </div>
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { useAdminStore } from '../../stores/admin'
+
 export default {
   name: 'AdminHeader',
   props: {
@@ -34,6 +36,13 @@ export default {
     handleClick(event) {
       this.$emit('toggleSidebar')
       event.target.blur() // 移除焦點
+    },
+    handleLogout() {
+      const adminStore = useAdminStore()
+
+      adminStore.$reset() // 重置Pinia Store
+      localStorage.removeItem('admin_user') // 清除本地儲存的資料
+      this.$router.push('/admin_login') // 跳轉到登入頁
     }
   }
 }
