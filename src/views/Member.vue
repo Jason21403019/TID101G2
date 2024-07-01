@@ -9,10 +9,10 @@
           <label for="name">名字:</label>
           <input type="text" id="name" v-model="memberName" required />
         </div>
-        <!-- <div class="form-row">
+        <div class="form-row">
           <label for="birth">出生日期:</label>
           <input type="date" id="birth" v-model="memberBirth" required />
-        </div> -->
+        </div>
         <div class="form-row">
           <label for="email">信箱:</label>
           <input type="email" id="email" v-model="memberEmail" required />
@@ -26,7 +26,8 @@
           <input type="text" id="address" v-model="memberAddress" required />
         </div>
         <!-- 按鈕 -->
-        <button type="submit">儲存</button>
+        <!-- <div>{{ statusMessage }}</div>
+        <button type="submit">儲存</button> -->
       </form>
     </div>
   </div>
@@ -35,7 +36,7 @@
 <script>
 import MemberMenu from '../components/MemberMenu.vue'
 import axios from 'axios'
-import { useUserStore } from '../stores/user' //引入抓登入的會員編號的js
+import { useUserStore } from '../stores/user'
 
 export default {
   name: 'Member',
@@ -44,73 +45,69 @@ export default {
   },
   data() {
     return {
-      // 會員專區資料
-
       memberName: '',
-      memberbirth: '',
-      memberemail: '',
-      memberphone: '',
-      memberaddress: '',
-      member_id: null
+      memberBirth: '',
+      memberEmail: '',
+      memberPhone: '',
+      memberAddress: '',
+      member_id: null,
+      statusMessage: '' //顯示儲存狀態
     }
   },
-  //資料庫渲染
   async mounted() {
     await this.checkLogin()
-    await this.fetchMemberData2()
+    if (this.member_id) {
+      await this.fetchMemberData()
+    }
   },
   methods: {
-    //先抓登入的會員編號
     async checkLogin() {
       const userStore = useUserStore()
       if (userStore.checkLoginStatus()) {
-        this.member_id = userStore.isLoggedIn // 把存取在localStorage 抓出來
-        // console.log('Logged in member ID:', this.member_id);
+        this.member_id = userStore.isLoggedIn
       } else {
         console.error('沒抓取到會員編號')
       }
     },
-
-    fetchMemberData2() {
-      // 從後端撈資料
-      this.checkLogin().then(() => {
-        if (this.member_id) {
-          axios
-            .get(`${import.meta.env.VITE_PHP_PATH}CartReceiver.php`, {
-              // axios.get('http://localhost:8087/TID101G2/public/api/Member.php', {
-              params: {
-                id: this.member_id
-              }
-            })
-            .then((response) => {
-              //渲染出資料
-              if (response.data && response.data.length > 0) {
-                const memberData = response.data[0]
-                this.memberfulName = memberData.full_name
-                this.memberBirth = memberData.birth
-                this.memberEmail = memberData.email
-                this.memberPhone = memberData.phone
-                this.memberAddress = memberData.address
-              } else {
-                console.error('No data found')
-              }
-            })
-            .catch((error) => {
-              console.error('Error fetching member data:', error)
-            })
-        } else {
-          console.error('Member ID is not set')
-        }
-      })
+    //帶入登入會員的資料
+    async fetchMemberData() {
+      axios
+        .get(`${import.meta.env.VITE_PHP_PATH}Members.php`, {
+          params: {
+            id: this.member_id
+          }
+        })
+        .then((response) => {
+          if (response.data && response.data.length > 0) {
+            const memberData = response.data[0]
+            this.memberName = memberData.full_name
+            this.memberBirth = memberData.birth
+            this.memberEmail = memberData.email
+            this.memberPhone = memberData.phone
+            this.memberAddress = memberData.address
+          } else {
+            console.error('No data found')
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching member data:', error)
+        })
     },
+    // 儲存
     saveSettings() {
       axios
-        .post(`${import.meta.env.VITE_PHP_PATH}Member.php?id=${this.member_id}`, this.member)
+        .post(`${import.meta.env.VITE_PHP_PATH}Memberu.php?id=${this.member_id}`, {
+          fullName: this.memberName,
+          email: this.memberEmail,
+          phone: this.memberPhone,
+          address: this.memberAddress
+        })
         .then((response) => {
-          alert('設置已保存！')
+          alert('儲存成功！')
         })
         .catch((error) => {
           console.error('Error saving settings:', error)
+          alert('儲存失敗')
         })
     }
   }
