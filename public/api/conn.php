@@ -7,16 +7,16 @@ header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json');
 
 // 緯育 資料庫連線設定
-// $db_host = "127.0.0.1";
-// $db_user = "tibamefe_since2021";
-// $db_pass = "vwRBSb.j&K#E";
-// $db_select = "tibamefe_tid101g2";
+$db_host = "127.0.0.1";
+$db_user = "tibamefe_since2021";
+$db_pass = "vwRBSb.j&K#E";
+$db_select = "tibamefe_tid101g2";
 
 //本地端 資料庫連線設定
-$db_host = "localhost";
-$db_user = "root";
-$db_pass = "password";
-$db_select = "tid101_g2";
+// $db_host = "localhost";
+// $db_user = "root";
+// $db_pass = "password";
+// $db_select = "tid101_g2";
 try {
     
     // 建立連線
