@@ -25,6 +25,7 @@
           <th scope="col">名稱</th>
           <th scope="col">備註</th>
           <th scope="col">編輯</th>
+          <th scope="col">刪除</th>
         </tr>
       </thead>
       <tbody class="table-tbody">
@@ -34,6 +35,11 @@
           <td>
             <button @click="openModal('edit', category)">
               <img src="../imgs/icon/icon_admin-edit.svg" alt="editIcon" width="20px" height="20px" />
+            </button>
+          </td>
+          <td>
+            <button @click="deleteClass(category.id)">
+              <img src="../imgs/icon/icon_delete.svg" alt="deleteIcon" width="20px" height="20px" />
             </button>
           </td>
         </tr>
@@ -54,6 +60,8 @@ import AdminBreadcrumb from '../components/AdminBreadcrumb.vue'
 import AdminBtn from '../components/AdminBtn.vue'
 import ModalCategory from '../components/AdminModalCategory.vue'
 import { variables } from '../js/AdminVariables.js'
+import Swal from 'sweetalert2';
+
 
 export default {
   name: 'AdminCategory',
@@ -85,7 +93,7 @@ export default {
   },
   methods: {
     fetchCategories() {
-      axios.get('http://localhost/TID101G2/public/api/adminarticle_class.php')
+      axios.get(`${import.meta.env.VITE_PHP_PATH}adminarticle_class.php`)
         .then(response => {
           this.categories = response.data
         })
@@ -100,7 +108,7 @@ export default {
     },
     handleSave(formData) {
       if (this.currentActionType === 'add') {
-        axios.post('http://localhost/TID101G2/public/api/adminarticle_class.php', formData)
+        axios.post(`${import.meta.env.VITE_PHP_PATH}adminarticle_class.php`, formData)
           .then(response => {
             this.fetchCategories()
           })
@@ -108,8 +116,8 @@ export default {
             console.error('Error adding category:', error)
           })
       } else {
-    const originalId = this.currentCategory.id
-        axios.put(`http://localhost/TID101G2/public/api/adminarticle_class.php?id=${originalId}`, formData)
+        const originalId = this.currentCategory.id
+        axios.put(`${import.meta.env.VITE_PHP_PATH}adminarticle_class.php?id=${originalId}`, formData)
           .then(response => {
             this.fetchCategories()
           })
@@ -117,11 +125,42 @@ export default {
             console.error('Error updating category:', error)
           })
       }
+    },
+    deleteClass(categoryId) {
+    Swal.fire({
+    title: '確定要刪除嗎？',
+    text: '刪除後將無法恢復！',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: '刪除',
+    cancelButtonText: '取消'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // 使用者確認刪除
+      axios.delete(`${import.meta.env.VITE_PHP_PATH}adminarticle_class.php?id=${categoryId}`)
+        .then(response => {
+          // 刪除成功後重新整理類別列表
+          this.fetchCategories();
+          Swal.fire(
+            '已刪除!',
+            '此類別已成功刪除',
+            'success'
+          )
+        })
+        .catch(error => {
+          console.error('刪除類別時發生錯誤：', error);
+          Swal.fire(
+            '發生錯誤!',
+            '刪除類別時發生錯誤',
+            'error'
+          )
+        });
     }
+  } )
+    }   
   }
 }
 </script>
-
 <style lang="scss" scoped>
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 

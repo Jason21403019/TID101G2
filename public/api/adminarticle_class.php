@@ -14,14 +14,14 @@ include 'conn.php';
 
 // 獲取請求方法
 $method = $_SERVER['REQUEST_METHOD'];
-$id = isset($_GET['id']) ? intval($_GET['id']) : null;
+$id = isset($_GET['id']) ? $_GET['id']: null;
 
 try {
     switch ($method) {
         case 'GET':
             // 讀取數據
             if ($id) {
-                $stmt = $conn->prepare("SELECT id, note FROM article_class WHERE id = ? desc");
+                $stmt = $conn->prepare("SELECT id, note FROM article_class WHERE id = ?");
                 $stmt->execute([$id]);
                 $product = $stmt->fetch(PDO::FETCH_ASSOC);
                 if ($product) {
@@ -53,17 +53,35 @@ try {
             }
             break;
 
-            case 'PUT':
-                $data = json_decode(file_get_contents('php://input'), true);
-                $originalId = isset($_GET['id']) ? intval($_GET['id']) : null;
-                if ($originalId && !empty($data['id']) && !empty($data['note'])) {
-                    $stmt = $conn->prepare("UPDATE article_class SET id = ?, note = ? WHERE id = ?");
-                    $stmt->execute([$data['id'], $data['note'], $originalId]);
+        case 'PUT':
+            // 更新數據
+            $data = json_decode(file_get_contents('php://input'), true);
+            $originalId = isset($_GET['id']) ? $_GET['id'] : null;
+            if ($originalId && !empty($data['note'])) {
+                $stmt = $conn->prepare("UPDATE article_class SET note = ? WHERE id = ?");
+                if ($stmt->execute([$data['note'], $originalId])) {
                     echo json_encode(["message" => "記錄更新成功。"]);
                 } else {
-                    echo json_encode(["message" => "無效輸入或缺少原始ID。"]);
+                    echo json_encode(["message" => "記錄更新失敗。"]);
                 }
-                break;
+            } else {
+                echo json_encode(["message" => "無效輸入或缺少原始ID。"]);
+            }
+            break;
+        case 'DELETE':
+            // 刪除數據
+            if ($id) {
+                $stmt = $conn->prepare("DELETE FROM article_class WHERE id = ?");
+                if ($stmt->execute([$id])) {
+                    echo json_encode(["message" => "記錄刪除成功。"]);
+                } else {
+                    echo json_encode(["message" => "記錄刪除失敗。"]);
+                }
+            } else {
+                echo json_encode(["message" => "缺少ID。"]);
+            }
+            break;
+
         default:
             echo json_encode(["message" => "不支援的請求方法。"]);
             break;

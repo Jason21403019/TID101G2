@@ -16,8 +16,8 @@
         <div class="modal-body">
           <form @submit.prevent="handleSave">
             <div class="mb-3">
-              <label for="category-name" class="form-label">名稱:</label>
-              <input id="category-name" v-model="categoryData.id" type="text" class="form-control" />
+              <label for="category-id" class="form-label">ID:</label>
+              <input id="category-id" v-model="categoryData.id" type="text" class="form-control" :readonly="actionType === 'edit'" />
             </div>
             <div class="mb-3">
               <label for="category-memo" class="form-label">備註:</label>
@@ -114,7 +114,10 @@ export default {
           console.log('新增分類成功:', response.data);
         } else {
           // 修改分類
-          const response = await axios.put(`${import.meta.env.VITE_PHP_PATH}adminproduct.php/${this.categoryData.id}`, this.categoryData);
+          if (!this.categoryData.id) {
+            throw new Error('無效輸入或缺少原始ID。');
+          }
+          const response = await axios.put(`${import.meta.env.VITE_PHP_PATH}adminarticle_class.php?id=${this.categoryData.id}`, this.categoryData);
           console.log('修改分類成功:', response.data);
         }
         this.$emit('save', this.categoryData);
