@@ -9,17 +9,17 @@ error_reporting(E_ALL); // 設置報告所有錯誤
 include("conn.php"); // 包含數據庫連接文件
 
 // 函數：通過授權碼獲取訪問令牌
-function getAccessToken($code) {
+function getAccessToken($authorization_code) {
     // 客戶端ID、密鑰和重定向URI，這些都應與Google API控制台中的設置一致
     $client_id = '1044890836835-r8en0b6503kt2ee6fdt1d4oto00a63jb.apps.googleusercontent.com';
     $client_secret = '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';
-    $redirect_uri = 'http://localhost:5173/tid101/g2/register';
+    $redirect_uri = 'https://tibamef2e.com/tid101/g2';
 
     // Google OAuth 2.0 令牌請求URL
     $url = 'https://oauth2.googleapis.com/token';
     // 請求數據，包括授權碼和其他必要信息
     $data = array(
-        'code' => $code,
+        'code' => '$authorization_code',
         'client_id' => $client_id,
         'client_secret' => $client_secret,
         'redirect_uri' => $redirect_uri,
@@ -116,6 +116,8 @@ try {
         error_log('Authorization code: ' . $data['code']); // 記錄授權碼
         $accessTokenData = getAccessToken($data['code']); // 獲取訪問令牌
         if ($accessTokenData && isset($accessTokenData['access_token'])) {
+            error_log('Access token: ' . $accessTokenData['access_token']); // 記錄訪問令牌
+            echo 'jjj';
             $userInfo = getUserInfo($accessTokenData['access_token']); // 獲取用戶信息
             if ($userInfo && isset($userInfo['email'])) {
                 $email = $userInfo['email'];

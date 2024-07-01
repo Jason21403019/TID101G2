@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'WineColumnCategory',
   props: {
@@ -62,8 +63,23 @@ export default {
   methods: {
     goToSecondPopup() {
       if (this.email !== '') {
+        // try {
+        // const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}CkeckEmail.php`, {
+        //   email: this.email
+        // })
+        // console.log(response.data)
+        // if (response.data.exists) {
         this.showFirstPopup = false
         this.showSecondPopup = true
+        //   } else {
+        //     alert('此信箱不存在')
+        //   }
+        // } catch (error) {
+        // console.log(error)
+        // alert('檢查信箱時發生錯誤！')
+        // }
+      } else {
+        alert('請輸入信箱')
       }
     },
     goToThirdPopup() {

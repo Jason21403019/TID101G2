@@ -206,7 +206,7 @@ export default {
         return
       }
       axios
-        .post(`${import.meta.env.VITE_PHP_PATH}TestGoogleLogin.php`, { code: code })
+        .post(`${import.meta.env.VITE_PHP_PATH}GoogleLogin.php`, { code: code })
         .then((response) => {
           this.user = response.data
 
@@ -234,7 +234,6 @@ export default {
       }
 
       try {
-        
         // const response = await axios.post('http://localhost:8087/TID101G2/public/api/Login.php', this.loginForm, {
 
         const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}Login.php`, this.loginForm, {
