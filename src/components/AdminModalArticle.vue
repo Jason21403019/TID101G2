@@ -22,7 +22,7 @@
                 <option value="調酒新世代">Cotail World 調酒新世代</option>
               </select>
             </div>
-            <div class="mb-3">
+            <div class="mb-3" v-if="actionType === 'add'">
               <label for="article-id" class="col-form-label">id:</label>
               <input id="article-id" v-model="article.id" type="text" class="form-control" />
             </div>
