@@ -87,7 +87,7 @@ export default {
   background-color: $campari;
   padding-top: 100px;
   display: flex;
-  padding-bottom: 60%;
+  padding-bottom: 210px;
 
   .member_account {
     flex: 1;
