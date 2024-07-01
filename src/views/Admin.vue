@@ -8,7 +8,7 @@
           <h3>{{ phpdata.data2[0].member }}</h3>
           <h4>{{ notShipped }}</h4>
         </div>
-        <img :src="icons1" alt="" />
+        <img src="/src/imgs/icon/icon_admin-rectangle.svg" alt="" />
       </article>
 
       <article v-if="phpdata.data3 && phpdata.data3.length > 0">
@@ -16,7 +16,7 @@
           <h3>{{ phpdata.data3[0].payment }}</h3>
           <h4>{{ Unpaid }}</h4>
         </div>
-        <img :src="icons2" alt="" />
+        <img src="/src/imgs/icon/icon_admin-money-bill.svg" alt="" />
       </article>
 
       <article v-if="phpdata.data && phpdata.data.length > 0">
@@ -25,7 +25,7 @@
           <!-- this.phpdata.data.counts -->
           <h4>{{ needRestock }}</h4>
         </div>
-        <img :src="icons3" alt="" />
+        <img src="/src/imgs/icon/icon_admin-tags.svg" alt="" />
       </article>
     </section>
     <h2>{{ dataAnalysis }}</h2>
@@ -75,9 +75,9 @@ export default {
       Unpaid: '訂單未付款',
       needRestock_count: 0,
       needRestock: '商品需補貨',
-      icons1: 'src/imgs/icon/icon_admin-rectangle.svg',
-      icons2: 'src/imgs/icon/icon_admin-money-bill.svg',
-      icons3: '/src/imgs/icon/icon_admin-tags.svg',
+      // icons1: 'src/imgs/icon/icon_admin-rectangle.svg',
+      // icons2: 'src/imgs/icon/icon_admin-money-bill.svg',
+      // icons3: '/src/imgs/icon/icon_admin-tags.svg',
       commodity: '新增商品',
       article: '新增文章',
       reserve: '預約管理',
