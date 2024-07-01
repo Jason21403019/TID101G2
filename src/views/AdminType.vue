@@ -28,6 +28,7 @@
           <th scope="col"></th>
           <th scope="col"></th>
           <th scope="col">編輯</th>
+          <th scope="col">刪除</th>
         </tr>
       </thead>
       <tbody class="table-tbody">
@@ -40,6 +41,11 @@
           <td>
             <button @click="openModal('edit', type)">
               <img src="../imgs/icon/icon_admin-edit.svg" alt="editIcon" width="20px" height="20px" />
+            </button>
+          </td>
+          <td>
+            <button @click="handleDelete(type.id)">
+            <img src="../imgs/icon/icon_delete.svg" alt="deleteIcon" width="20px" height="20px" />
             </button>
           </td>
         </tr>
@@ -125,6 +131,9 @@ export default {
           .then(response => {
             const data = response.data;
             this.types.push(data);
+            if(document.querySelector('.modal-backdrop.fade.show')) {
+              document.querySelector('.modal-backdrop.fade.show').remove();
+            }
           })
           .catch(error => {
             console.error('Error adding type:', error);
@@ -147,20 +156,35 @@ export default {
       }
     },
     handleDelete(typeId) {
+  Swal.fire({
+    title: '確定要刪除嗎？',
+    text: "此操作無法撤銷！",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: '是的，刪除它！',
+    cancelButtonText: '取消'
+  }).then((result) => {
+    if (result.isConfirmed) {
       axios.delete(`${import.meta.env.VITE_PHP_PATH}adminType.php`, { data: { id: typeId } })
         .then(response => {
           const data = response.data;
           if (data.status === 'success') {
             this.types = this.types.filter(type => type.id !== typeId);
+            Swal.fire('已刪除!', '該類型已被刪除。', 'success');
+          } else {
+            Swal.fire('已刪除', data.message || '刪除失敗', 'success');
           }
         })
         .catch(error => {
-          console.error('Error deleting type:', error);
           Swal.fire('錯誤', '無法刪除類型。', 'error');
         });
     }
-  }
+  });
 }
+    }
+  }
 </script>
 
 <style lang="scss" scoped>

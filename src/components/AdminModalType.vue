@@ -8,7 +8,7 @@
         </div>
         <div class="modal-body">
           <form @submit.prevent="handleSave">
-            <div class="mb-3">
+            <div class="mb-3" v-if="actionType === 'add'">
               <label for="type-name" class="form-label">名稱:</label>
               <input id="type-name" v-model="type.id" type="text" class="form-control" />
             </div>
