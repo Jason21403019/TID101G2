@@ -156,7 +156,7 @@ setup() {
         shipping_fee: cartSummary?.shipping_fee,
         discount: cartSummary?.discount,
         total_amount: cartSummary?.total,
-        payment_status: "已付款", // 因信用卡驗證成功而設定
+        payment_status: "已付款", 
         payment_method: "信用卡",
         status: "未處理",
         id:"",

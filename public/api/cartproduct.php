@@ -14,8 +14,7 @@ if (empty($member_id)) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $sql = "
-        SELECT 
+    $sql = "SELECT 
             cart.id, 
             cart.product_id, 
             cart.count, 
@@ -24,13 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             product.stock, 
             product.details, 
             product.picture 
-        FROM 
-            cart 
-        JOIN 
-            product ON cart.product_id = product.id 
-        WHERE 
-            cart.member_id = :member_id
-    ";
+        FROM cart 
+        JOIN product ON cart.product_id = product.id 
+        WHERE cart.member_id = :member_id";
     
     try {
         $stmt = $conn->prepare($sql);

@@ -81,7 +81,6 @@
 
 <script>
 import axios from 'axios';
-import { useUserStore } from '../stores/user';   //引入抓登入的會員編號的js
 
 export default {
     data() {
@@ -102,6 +101,10 @@ export default {
 
     },
 
+    created() {
+        this.fetchMemberId();  // 在组件创建时获取 member_id
+    },
+
     watch: {
       shipName(newVal) {
         this.$emit('updateData', { shipName: newVal });
@@ -120,54 +123,35 @@ export default {
       },
   },
 
-    async mounted() {
-        await this.checkLogin();
-        await this.fetchMemberData();
-    },
     methods: {
-        async checkLogin() {
-            const userStore = useUserStore();
-            if(userStore.checkLoginStatus()){
-                this.member_id = userStore.isLoggedIn;
-                console.log('logged in member_id: ',this.member_id);
-            }else{
-                console.log('not logged in');
+       
+        fetchMemberId() {
+            const memberId = localStorage.getItem('isLoggedIn');  // 确保这里的键名与你存储的键名相匹配
+            if (memberId) {
+                this.member_id = memberId;
+                this.fetchMemberData();  
+            } else {
+                console.error('No member_id found in localStorage');
+                
             }
         },
 
         fetchMemberData() {
+            axios.get(`${import.meta.env.VITE_PHP_PATH}CartReceiver.php`, {
 
-            this.checkLogin().then(() =>{
-                if(this.member_id){
-                    axios.get(`${import.meta.env.VITE_PHP_PATH}CartReceiver.php`, {
-
-                    // axios.get('http://localhost:8087/TID101G2/public/api/cartreceiver.php', {
-                        params: {
-                            id: this.member_id
-                        }
-                    })
-                    
-                    .then((response) => {
-                        if(response.data && response.data.length > 0) {
-                            const memberData = response.data[0];
-                            this.orderName = memberData.full_name;
-                            this.orderPhone = memberData.phone;
-                            this.orderEmail = memberData.email;
-                            this.orderAddress = memberData.address;
-                            
-                        } else{
-                            console.log('No member data found');
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error fetching member info:', error);
-                    });
-                        
-                }else {
-                    console.log('No member_id found');
-                }
+            // axios.get('http://localhost:8087/TID101G2/public/api/CartReceiver.php', {
+                params: { id: this.member_id }
+            })
+            .then(response => {
+                const memberData = response.data[0];  // 假设返回的数据是数组形式
+                this.orderName = memberData.full_name;
+                this.orderPhone = memberData.phone;
+                this.orderEmail = memberData.email;
+                this.orderAddress = memberData.address;
+            })
+            .catch(error => {
+                console.error('Error fetching member data:', error);
             });
-
         },
         copyOrderInfo() {
             if (this.isSyncActive) {
