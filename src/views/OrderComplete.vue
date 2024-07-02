@@ -115,11 +115,11 @@ export default {
         return;
       }
 
-      const url = `${import.meta.env.VITE_PHP_PATH}OrderComplete.php`;
+      const url = `${import.meta.env.VITE_PHP_PATH}OrderComplete.php?member_id=${memberId}`;
 
       // const url = `http://localhost:8087/TID101G2/public/api/OrderComplete.php?member_id=${memberId}`;
       console.log('Fetching order details from:', url);
-
+// 
       try {
         const response = await axios.get(url);
         console.log('Received data:', response.data);

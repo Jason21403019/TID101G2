@@ -12,7 +12,6 @@ if (!isset($data['receiver'], $data['total_amount'], $data['receiver_phone'], $d
     echo json_encode(['success' => false, 'message' => 'Missing required fields']);
     exit;
 }
-
 try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
