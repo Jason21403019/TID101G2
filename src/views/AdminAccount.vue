@@ -337,9 +337,9 @@ export default {
       })
 
       if (confirmation.isConfirmed) {
-        const updatedAdmin = { ...admin, admin_status: admin.admin_status ? 1 : 0 }
+        const updatedAdmin = { ...admin, admin_status: admin.admin_status ? 0 : 1 }
 
-        this.originalAdmin = { ...admin, admin_status: admin.admin_status ? 0 : 1 }
+        this.originalAdmin = { ...admin, admin_status: admin.admin_status ? 1 : 0 }
 
         const result = await adminStore.updateAdmin(updatedAdmin, this.originalAdmin)
 
