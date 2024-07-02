@@ -88,7 +88,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .wrapper {
   font-family: $fontfamily;
   line-height: $lineheight;

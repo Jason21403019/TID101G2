@@ -130,12 +130,12 @@ export default {
       try {
         if (this.actionType === 'add') {
           // 新增商品
-          const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}adminProduct.php`, this.productData);
+          const response = await axios.post(`${import.meta.env.VITE_PHP_PATH}adminproduct.php`, this.productData);
           console.log('新增商品成功:', response.data);
           console.log(this.productData);
         } else {
           // 修改商品
-          const response = await axios.put(`${import.meta.env.VITE_PHP_PATH}adminProduct.php`, this.productData);
+          const response = await axios.put(`${import.meta.env.VITE_PHP_PATH}adminproduct.php`, this.productData);
           console.log('修改商品成功:', response.data);
           console.log(this.productData);
         }
