@@ -3,8 +3,8 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
-
-include './conn.php';  // 确保包含你的数据库连接文件
+include("conn.php"); 
+// include './conn.php';  
 
 $member_id = isset($_GET['id']) ? $_GET['id'] : null;
 

@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json');
-include './conn.php';  // 包含您的PDO連接設定文件
+// include './conn.php';  
+include("conn.php"); 
 
 // 從POST請求中讀取JSON數據
 $data = json_decode(file_get_contents('php://input'), true);

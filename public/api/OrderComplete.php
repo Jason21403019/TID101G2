@@ -2,7 +2,8 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
-include './conn.php';  
+include("conn.php"); 
+// include './conn.php';  
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     echo json_encode(['error' => 'Invalid Request Method']);

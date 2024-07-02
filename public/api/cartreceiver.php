@@ -2,7 +2,9 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
-include './conn.php';  // 確保包含你的數據庫連接檔
+include("conn.php"); 
+
+// include './conn.php';  // 確保包含你的數據庫連接檔
 
 // $member_id = "M001";  // 從GET請求中獲取會員ID
 
