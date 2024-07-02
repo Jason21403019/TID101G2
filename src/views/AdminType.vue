@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     fetchTypes() {
-      let url = `${import.meta.env.VITE_PHP_PATH}adminType.php`;
+      let url = `${import.meta.env.VITE_PHP_PATH}AdminType.php`;
       console.log('Fetching types with URL:', url);
       axios.get(url)
         .then(response => {
