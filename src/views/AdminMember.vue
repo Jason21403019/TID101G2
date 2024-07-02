@@ -42,6 +42,7 @@
           <tr>
             <th scope="col">會員編號</th>
             <th scope="col">姓名</th>
+            <th scope="col">生日</th>
             <th scope="col">E-mail</th>
             <th scope="col">手機</th>
             <th scope="col">地址</th>
@@ -51,6 +52,7 @@
           <tr v-for="member in paginatedMembers" :key="member.id">
             <th scope="row">{{ member.id }}</th>
             <td>{{ member.full_name }}</td>
+            <td>{{ member.birth }}</td>
             <td>{{ member.email }}</td>
             <td>{{ member.phone }}</td>
             <td>{{ member.address }}</td>

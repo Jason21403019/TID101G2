@@ -36,7 +36,7 @@ function fetchMembers() {
   global $conn;
 
   try {
-    $sql = "SELECT id, full_name, phone, email, address FROM member";
+    $sql = "SELECT id, full_name, birth,phone, email, address FROM member";
     $stmt = $conn->query($sql);
     $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
