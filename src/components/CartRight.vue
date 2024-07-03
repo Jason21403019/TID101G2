@@ -202,10 +202,18 @@ export default {
         updateItemCount(itemId, increment) {
             const item = this.items.find(item => item.id === itemId);
             if (item) {
-                const newCount = increment ? item.count + 1 : item.count - 1;
+                const newCount = increment ? parseInt(item.count) + 1 : parseInt(item.count) - 1;
                 if (newCount >= 1 && newCount <= item.stock) {
-                    item.count = newCount;
-                    item.price = item.unitPrice * item.count;
+                    console.log("abc");
+                    console.log(newCount);
+                    //item.count = newCount;
+                    //item.price = item.unitPrice * parseInt(item.count);
+                    for(let i = 0; i < this.items.length; i++) {
+                        if(this.items[i].id === itemId) {
+                            this.items[i].count = newCount;
+                            this.items[i].price = parseInt(this.items[i].unitPrice) * newCount;
+                        }
+                    }
                     this.calculateTotal();
                 } else {
                     Swal.fire({
