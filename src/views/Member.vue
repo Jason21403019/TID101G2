@@ -9,25 +9,25 @@
           <label for="name">名字:</label>
           <input type="text" id="name" v-model="memberName" required />
         </div>
-        <div class="form-row">
+        <!-- <div class="form-row">
           <label for="birth">出生日期:</label>
           <input type="date" id="birth" v-model="memberBirth" required />
-        </div>
+        </div> -->
         <div class="form-row">
           <label for="email">信箱:</label>
           <input type="email" id="email" v-model="memberEmail" required />
         </div>
         <div class="form-row">
           <label for="phone">手機:</label>
-          <input type="tel" id="phone" v-model="memberPhone" required />
+          <input type="tel" id="phone" v-model="memberPhone" @blur="validatePhone" required />
         </div>
         <div class="form-row">
           <label for="address">地址:</label>
           <input type="text" id="address" v-model="memberAddress" required />
         </div>
         <!-- 按鈕 -->
-        <!-- <div>{{ statusMessage }}</div>
-        <button type="submit">儲存</button> -->
+        <div>{{ statusMessage }}</div>
+        <button type="submit">儲存</button>
       </form>
     </div>
   </div>
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       memberName: '',
-      memberBirth: '',
+      // memberBirth: '',
       memberEmail: '',
       memberPhone: '',
       memberAddress: '',
@@ -60,6 +60,7 @@ export default {
       await this.fetchMemberData()
     }
   },
+
   methods: {
     async checkLogin() {
       const userStore = useUserStore()
@@ -80,8 +81,9 @@ export default {
         .then((response) => {
           if (response.data && response.data.length > 0) {
             const memberData = response.data[0]
+            console.log(memberData)
             this.memberName = memberData.full_name
-            this.memberBirth = memberData.birth
+            // this.memberBirth = memberData.birth
             this.memberEmail = memberData.email
             this.memberPhone = memberData.phone
             this.memberAddress = memberData.address
@@ -99,6 +101,7 @@ export default {
         .post(`${import.meta.env.VITE_PHP_PATH}Memberu.php?id=${this.member_id}`, {
           fullName: this.memberName,
           email: this.memberEmail,
+          // birth: this.memberBirth,
           phone: this.memberPhone,
           address: this.memberAddress
         })
@@ -109,6 +112,12 @@ export default {
           console.error('Error saving settings:', error)
           alert('儲存失敗')
         })
+    },
+    //電話正規化
+    validatePhone() {
+      if (!/^\d+$/.test(this.memberPhone)) {
+        alert('電話必須為數字！')
+      }
     }
   }
 }
