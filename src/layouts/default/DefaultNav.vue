@@ -266,6 +266,7 @@ export default {
       align-items: center;
       // border: 1px solid green;
       position: relative;
+      z-index: 1;
       cursor: pointer;
       button {
         border: none;
@@ -378,7 +379,7 @@ export default {
     transition: transform 0.5s ease 0.2s;
     background: $negroni;
 
-    z-index: -1;
+    z-index: 1;
     &.active {
       transform: scale(120);
     }
