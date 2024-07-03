@@ -64,7 +64,7 @@
           <th scope="col">商品名稱</th>
           <th scope="col">商品類別</th>
           <th scope="col">商品售價</th>
-          <th scope="col">銷售數量</th>
+          <th scope="col"></th>
           <th scope="col">庫存數</th>
           <th scope="col">編輯</th>
           <th scope="col">刪除</th>
@@ -79,7 +79,7 @@
           <td>{{ product.name }}</td>
           <td>{{ product.product_class_id }}</td>
           <td>NT$ {{ product.price }}</td>
-          <td>{{ product.sales }}</td>
+          <td></td>
           <td>{{ product.stock }}</td>
           <td>
             <button @click="openModal('edit', product)">

@@ -64,9 +64,9 @@ try {
                     $stock = intval($data['stock']); 
                     $subpage_photo = htmlspecialchars($data['subpage_photo']);
                     $picture = isset($data['picture']) && $data['picture'] !== null ? base64_decode($data['picture']) : null;
+                    $subpage_photo = isset($data['subpage_photo']) && $data['subpage_photo'] !== null ? base64_decode($data['picture']) : null;
                     $content = htmlspecialchars($data['content']);
                     $product_class_id = htmlspecialchars($data['product_class_id']);
-            
                     $stmt = $conn->prepare("INSERT INTO product (id, brand, name, details, price, stock, subpage_photo, picture, content, product_class_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                     $stmt->execute([$id, $brand, $name, $details, $price, $stock, $subpage_photo, $picture, $content, $product_class_id]);
                     echo json_encode(["message" => "Product added successfully.", "id" => $conn->lastInsertId()], 201);
@@ -87,7 +87,7 @@ try {
                     $details = htmlspecialchars($data['details']);
                     $price = intval($data['price']);
                     $stock = intval($data['stock']);
-                    $subpage_photo = htmlspecialchars($data['subpage_photo']);
+                    $subpage_photo = isset($data['subpage_photo']) && $data['subpage_photo'] !== null ? base64_decode($data['subpage_photo']) : null;
                     $picture = isset($data['picture']) && $data['picture'] !== null ? base64_decode($data['picture']) : null;
                     $content = htmlspecialchars($data['content']);
                     $product_class_id = htmlspecialchars($data['product_class_id']);

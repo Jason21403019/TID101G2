@@ -54,8 +54,12 @@
             </div>
             <!-- 上傳商品圖的input -->
             <div class="mb-3">
-              <label for="productImage" class="col-form-label">上傳商品圖:</label>
-              <input id="productImage" type="file" class="form-control" @change="handleFileUpload" />
+              <label for="productImage" class="col-form-label">上傳主要商品圖:</label>
+              <input id="productImage" type="file" class="form-control" @change="handleFileUpload($event, 'main')" />
+            </div>
+            <div class="mb-3">
+              <label for="productImage" class="col-form-label">上傳次要商品圖:</label>
+              <input id="productImage" type="file" class="form-control" @change="handleFileUpload($event, 'sub')" />
             </div>
           </form>
         </div>
@@ -145,11 +149,24 @@ export default {
         console.error('儲存商品失敗:', error);
       }
     },
-    handleFileUpload(event) {
-      const file = event.target.files[0];
-      this.productData.image = file; // 將文件存儲到productData中
-      console.log('上傳的文件:', file);
-    }
+    handleFileUpload(event, type) {
+  const file = event.target.files[0];
+  const propertyName = type === 'main' ? 'picture' : 'subpage_photo';
+
+  // 存储文件对象
+  this.productData[`${propertyName}File`] = file;
+
+  // 将文件转换为base64格式
+  const reader = new FileReader();
+  reader.onload = () => {
+    // 存储base64字符串
+    this.productData[propertyName] = reader.result;
+    console.log(`上传的文件Base64 (${propertyName}):`, reader.result);
+  };
+  reader.readAsDataURL(file);
+},
+
+
   }
 }
 </script>

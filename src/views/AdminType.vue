@@ -130,6 +130,7 @@ export default {
         axios.post(`${import.meta.env.VITE_PHP_PATH}adminType.php`, formData)
           .then(response => {
             const data = response.data;
+            console.log('新增類型成功:', data);
             this.types.push(data);
             if(document.querySelector('.modal-backdrop.fade.show')) {
               document.querySelector('.modal-backdrop.fade.show').remove();
@@ -170,6 +171,7 @@ export default {
       axios.delete(`${import.meta.env.VITE_PHP_PATH}adminType.php`, { data: { id: typeId } })
         .then(response => {
           const data = response.data;
+          this.fetchTypes();
           if (data.status === 'success') {
             this.types = this.types.filter(type => type.id !== typeId);
             Swal.fire('已刪除!', '該類型已被刪除。', 'success');
