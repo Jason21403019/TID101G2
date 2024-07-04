@@ -3,15 +3,15 @@
     <div class="loginpage">
       <div class="box">
         <div class="wrapper">
-          <a draggable="true" data-link="/home" @dragstart="onDragStart">
+          <a @click="handleClick('/home')" data-link="/home">
             <img class="log_home" src="../imgs/loginImg/login_but-02.svg" width="125" height="125" />
           </a>
-          <p style="color: #fff">請拖動冰塊到酒杯中，進入頁面</p>
-          <a draggable="true" data-link="/admin_login" @dragstart="onDragStart">
+          <p style="color: #fff">點擊冰塊進入頁面</p>
+          <a @click="handleClick('/admin_login')" data-link="/admin_login">
             <img class="log_admin" src="../imgs/loginImg/login_but-03.svg" width="125" height="125" />
           </a>
         </div>
-        <div class="login" @dragover.prevent @drop="onDrop">
+        <div class="login">
           <img :src="onImage" width="590" />
         </div>
       </div>
@@ -24,32 +24,16 @@ export default {
   name: 'Login',
   data() {
     return {
-      // 拖移事件觸發後更換圖片
-      // onImage: 'src/imgs/loginImg/login-on.jpg',
-      // offImage: 'src/imgs/loginImg/login-off.jpg'
       onImage: new URL(`@/imgs/loginImg/login-on.jpg`, import.meta.url).href,
       offImage: new URL(`@/imgs/loginImg/login-off.jpg`, import.meta.url).href
     }
   },
   methods: {
-    onDragStart(event) {
-      // 原本的設定會只吃到第一個父層連結也就是home
-      // event.dataTransfer.setData('link', event.target.closest('a').getAttribute('data-link'));
-
-      // 透過抓到a標籤，找到裡面的data-link的屬性值，獲得要去路徑網址
-      const link = event.target.closest('a').getAttribute('data-link')
-
-      event.dataTransfer.setData('link', link)
-    },
-    onDrop(event) {
-      const link = event.dataTransfer.getData('link')
-
-      if (link) {
-        this.onImage = this.offImage
-        setTimeout(() => {
-          this.$router.push(link)
-        }, 300)
-      }
+    handleClick(link) {
+      this.onImage = this.offImage // 更换图片以显示动画或视觉反馈
+      setTimeout(() => {
+        this.$router.push(link) // 跳转到相应页面
+      }, 300) // 短暂延迟以显示动画效果
     }
   }
 }
@@ -62,27 +46,30 @@ section {
   .wrapper {
     display: flex;
     justify-content: space-evenly;
-    padding-top: 40px;
+    padding-top: 100px;
     z-index: 1;
   }
   .login {
     text-align: center;
+    overflow: hidden;
     img {
-      // mix-blend-mode: hard-light;
-      position: relative;
+      display: flex;
+      @media (max-width: 767px) {
+        margin: 0 auto;
+        display: block;
+        width: 100vw;
+      }
     }
   }
   .log_home,
   .log_admin {
-    cursor: grab;
+    cursor: pointer;
     transition: transform 0.3s ease;
   }
 
   .log_home:hover,
   .log_admin:hover {
-    cursor: grab;
     transform: scale(1.1);
-    cursor: pointer;
   }
 }
 </style>
