@@ -15,7 +15,7 @@
         </div> -->
         <div class="form-row">
           <label for="email">信箱:</label>
-          <input type="email" id="email" v-model="memberEmail" required />
+          <input type="email" id="email" v-model="memberEmail" @blur="validateEmail" required />
         </div>
         <div class="form-row">
           <label for="phone">手機:</label>
@@ -117,6 +117,11 @@ export default {
     validatePhone() {
       if (!/^\d+$/.test(this.memberPhone)) {
         alert('電話必須為數字！')
+      }
+    },
+    validateEmail() {
+      if (this.shipEmail && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.shipEmail)) {
+        alert('電子郵件格式不正確！')
       }
     }
   }
