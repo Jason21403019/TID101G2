@@ -205,8 +205,8 @@ export default {
         console.error('No authorization code provided')
         return
       }
-      axios
-        .post(`${import.meta.env.VITE_PHP_PATH}GoogleLogin.php`, { code: code })
+      await axios
+        .post(`${import.meta.env.VITE_PHP_PATH}TestGoogleLogin.php`, { code: code })
         .then((response) => {
           this.user = response.data
 

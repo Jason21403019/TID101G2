@@ -204,7 +204,7 @@ export default {
       const currentPos = window.scrollY
 
       if (currentPos > this.lastPos) {
-        this.navTop = '-100px'
+        this.navTop = '0px'
       } else {
         this.navTop = '0px'
       }
