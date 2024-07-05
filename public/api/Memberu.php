@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 include("conn.php"); 
@@ -14,7 +14,7 @@ if (empty($member_id)) {
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
     // 解析 JSON 資料
     $data = json_decode(file_get_contents("php://input"), true);
     
