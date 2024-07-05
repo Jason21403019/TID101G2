@@ -107,7 +107,8 @@ export default {
     }
   },
   watch: {
-    'form.password': 'validatePasswords'
+    'form.password': 'validatePasswords',
+    'loginForm.password': 'validatePasswordsLogin'
   },
   computed: {
     isLoggedIn() {
@@ -140,6 +141,21 @@ export default {
         this.emailError = false
       }
     },
+    validateLoginEmail() {
+      const emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+      this.emailError = !emailPattern.test(this.loginForm.email)
+      if (!emailPattern.test(this.loginForm.email)) {
+        this.emailError = true
+        Swal.fire({
+          icon: 'error',
+          title: '無效的輸入',
+          text: '請輸入有效的電子郵件地址。',
+          confirmButtonText: '確定'
+        })
+      } else {
+        this.emailError = false
+      }
+    },
     validatePhone() {
       const phonePattern = /^[0][9]\d{8}$/
       this.phoneError = !phonePattern.test(this.form.phone)
@@ -157,6 +173,27 @@ export default {
     },
     validatePasswords() {
       const password = this.form.password
+      const minLength = 8
+      const hasNumber = /\d/
+      const hasLetter = /[a-zA-Z]/
+
+      if (typeof password !== 'string') {
+        this.passwordError = 'Password must be a valid string'
+        return
+      }
+
+      if (password.length < minLength) {
+        this.passwordError = 'Password must be at least 8 characters long'
+      } else if (!hasNumber.test(password)) {
+        this.passwordError = 'Password must contain at least one number'
+      } else if (!hasLetter.test(password)) {
+        this.passwordError = 'Password must contain at least one letter'
+      } else {
+        this.passwordError = '' // 清除錯誤
+      }
+    },
+    validatePasswordsLogin() {
+      const password = this.loginForm.password
       const minLength = 8
       const hasNumber = /\d/
       const hasLetter = /[a-zA-Z]/
@@ -226,6 +263,8 @@ export default {
     //   }
     // },
     async login() {
+      this.validateLoginEmail()
+      this.validateLoginPassword()
       const userStore = useUserStore()
 
       if (!this.loginForm.email || !this.loginForm.password) {
@@ -348,7 +387,7 @@ export default {
         outline: none;
         border: none;
         width: 300px;
-        margin: 0.25rem 0;
+        margin: 0.5rem 0.5rem;
         line-height: 70px;
         font-size: $fontSize_h3;
         @include border-radius(8px);

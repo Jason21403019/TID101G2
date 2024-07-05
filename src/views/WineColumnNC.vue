@@ -244,6 +244,14 @@ nav {
   flex-direction: column;
   position: relative;
   z-index: 10;
+  @include breakpoint(430px) {
+    width: 95%;
+    height: 300px;
+  }
+  @include breakpoint(390px) {
+    width: 85%;
+    height: 290px;
+  }
   &::before {
     content: '';
     position: absolute;
@@ -251,6 +259,14 @@ nav {
     height: 400px;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
+    @include breakpoint(430px) {
+      width: 100%;
+      height: 300px;
+    }
+    @include breakpoint(390px) {
+      width: 100%;
+      height: 290px;
+    }
   }
   &:hover .read-more-button {
     position: absolute;
@@ -304,5 +320,9 @@ nav {
   position: absolute;
   top: 50%;
   height: 50px;
+  @include breakpoint(768px) {
+    position: absolute;
+    top: 90%;
+  }
 }
 </style>

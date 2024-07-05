@@ -75,22 +75,7 @@ export default {
   props: {},
   data() {
     return {
-      articles: [],
-
-      title: '專業品酒師的開瓶技巧',
-      //   imageSrc:
-      //     '@/imgs/wineColumnImg/bartender-opens-bottle-red-wine-using-wine-opener-pour-lot-empty-glasses-bar-counter-blurred-background-wine-tasting-open-beverage-bartender-dinner-concept.jpg',
-      category: '酒品知識',
-      title2: '簡易草莓瑪莉調酒配方',
-      category2: '調酒新世界',
-      title3: '日本清酒歷史故事',
-      category3: '酒品知識',
-      title4: '探索葡萄酒的秘密',
-      category4: '國外報導',
-      title5: '在櫻花樹下品嘗清酒',
-      category5: '國外報導',
-      title6: '品嚐來自世界各地調酒師的最佳調酒',
-      category6: '調酒新世界'
+      articles: []
     }
   },
   mounted() {
