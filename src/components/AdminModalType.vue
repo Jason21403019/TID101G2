@@ -78,13 +78,15 @@ export default {
         if (this.actionType === 'add') {
           response = await axios.post(`${import.meta.env.VITE_PHP_PATH}AdminType.php`, this.type);
         } else {
-          response = await axios.put(`/${import.meta.env.VITE_PHP_PATH}AdminType.php/${this.type.id}`, this.type);
-        }
+          response = await axios.put(`${import.meta.env.VITE_PHP_PATH}AdminType.php/${this.type.id}`, this.type);        }
 
         if (response.data.success) {
           this.onSave(response.data.type);
           if (this.myModal) {
             this.myModal.hide();
+            if (document.querySelector('.modal-backdrop.fade.show')) {
+              document.querySelector('.modal-backdrop.fade.show').remove();
+            }
           } else {
             console.error('Modal instance is not available to hide.');
           }
