@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   props: {
     actionType: {
@@ -70,17 +72,33 @@ export default {
         console.error('typeModal reference is not found.')
       }
     },
-    handleSave() {
-      this.onSave(this.type)
-      if (this.myModal) {
-        this.myModal.hide()
-      } else {
-        console.error('Modal instance is not available to hide.')
+    async handleSave() {
+      try {
+        let response;
+        if (this.actionType === 'add') {
+          response = await axios.post(`${import.meta.env.VITE_PHP_PATH}AdminType.php`, this.type);
+        } else {
+          response = await axios.put(`/${import.meta.env.VITE_PHP_PATH}AdminType.php/${this.type.id}`, this.type);
+        }
+
+        if (response.data.success) {
+          this.onSave(response.data.type);
+          if (this.myModal) {
+            this.myModal.hide();
+          } else {
+            console.error('Modal instance is not available to hide.');
+          }
+        } else {
+          console.error('Error saving type:', response.data.message);
+        }
+      } catch (error) {
+        console.error('Error saving type:', error);
       }
     }
   }
 }
 </script>
+
 <style lang="scss" scoped>
 @import '../../node_modules/bootstrap/scss/bootstrap.scss';
 

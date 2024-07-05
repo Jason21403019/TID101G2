@@ -56,6 +56,11 @@
       </caption>
     </table>
   </section>
+  <div v-if="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
 
   <ModalType ref="modal" :action-type="currentActionType" :type="currentType" :on-save="handleSave"></ModalType>
 </template>
@@ -77,6 +82,7 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       mainTitle: variables.productblock.product,
       subTitle: variables.productblock.typeList,
       breadcrumbItems: [
@@ -97,6 +103,7 @@ export default {
   },
   methods: {
     fetchTypes() {
+      this.isLoading = true;
       let url = `${import.meta.env.VITE_PHP_PATH}AdminType.php`;
       console.log('Fetching types with URL:', url);
       axios.get(url)
@@ -116,8 +123,11 @@ export default {
         .catch(error => {
           console.error('Error fetching types:', error);
           this.types = [];
-          Swal.fire('錯誤', '無法獲取類型數據。', 'error');
-        });
+          Swal.fire('錯誤', '無法獲取類型數據。', 'error'); 
+        })
+        .finally(() => {
+          this.isLoading = false;
+        })
     },
     openModal(action, type = null) {
       this.currentActionType = action;
@@ -127,7 +137,7 @@ export default {
     handleSave(formData) {
       if (this.currentActionType === 'add') {
         // 新增邏輯
-        axios.post(`${import.meta.env.VITE_PHP_PATH}adminType.php`, formData)
+        axios.post(`${import.meta.env.VITE_PHP_PATH}AdminType.php`,formData)
           .then(response => {
             const data = response.data;
             console.log('新增類型成功:', data);
@@ -142,7 +152,7 @@ export default {
           });
       } else {
         // 編輯邏輯
-        axios.put(`${import.meta.env.VITE_PHP_PATH}adminType.php`, formData)
+        axios.put(`${import.meta.env.VITE_PHP_PATH}AdminType.php`,formData)
           .then(response => {
             const data = response.data;
             const index = this.types.findIndex(type => type.id === data.id);
@@ -168,7 +178,7 @@ export default {
     cancelButtonText: '取消'
   }).then((result) => {
     if (result.isConfirmed) {
-      axios.delete(`${import.meta.env.VITE_PHP_PATH}adminType.php`, { data: { id: typeId } })
+      axios.delete(`${import.meta.env.VITE_PHP_PATH}AdminType.php`, { data: { id: typeId } })
         .then(response => {
           const data = response.data;
           this.fetchTypes();
