@@ -4,6 +4,8 @@
       <span class="story1_span">
         <h2>in this city</h2>
         <h3>在這個城市裡，有一家餐酒館<br />名為「紙醉金迷」<br />它坐落在城市的中心<br />是城市的靈魂所在.....</h3>
+        <!-- 滾動提示 -->
+        <div class="scroll_icon"></div>
       </span>
     </div>
     <div class="story2 homeBackground_3" ref="story2">
@@ -19,13 +21,13 @@
       </span>
     </div>
     <div @click="aboutPage">
-    <div :class="animation2" class="story4 homeBackground_5" ref="story4">
-      <span class="story1_span4">
-        <h2>intoxicating dreams</h2>
-        <h3>歡迎來到紙醉金迷<br />讓我們一同迷失在美酒與夜色的奇妙之中<br />盡情享受這片醉人的夢境.....</h3>
-      </span>
+      <div :class="animation2" class="story4 homeBackground_5" ref="story4">
+        <span class="story1_span4">
+          <h2>intoxicating dreams</h2>
+          <h3>歡迎來到紙醉金迷<br />讓我們一同迷失在美酒與夜色的奇妙之中<br />盡情享受這片醉人的夢境.....</h3>
+        </span>
+      </div>
     </div>
-  </div>
   </section>
 </template>
 
@@ -71,7 +73,7 @@ export default {
       const story2 = this.$refs.story2
       const story3 = this.$refs.story3
       const story4 = this.$refs.story4
-      
+
       // gsap.from(story1, {
       //   scrollTrigger: {
       //     trigger: story1,
@@ -234,7 +236,6 @@ section {
     background-size: cover;
     background-position: center;
     height: 200vh;
-    
   }
 
   .homeBackground_5 {
@@ -247,14 +248,12 @@ section {
     background-size: cover;
     background-position: center;
     height: 250vh;
-
   }
   .homeBackground_7 {
     background-image: url(../imgs/homePageImg/homePage_story4_on.png);
     background-size: cover;
     background-position: center;
     height: 250vh;
- 
   }
   // 按鈕範圍
   .box_btn {
@@ -266,6 +265,54 @@ section {
       width: 100%;
       cursor: pointer;
     }
+  }
+
+  //滾動提示
+  .scroll_icon {
+    position: absolute;
+    top: 140%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid $ramos-gin-fizz;
+    width: 50px;
+    height: 90px;
+    border-radius: 90px;
+    background-color: rgba($color: $ramos-gin-fizz, $alpha: 0.6);
+    animation: scrolldown 1.2s 1s linear 2;
+  }
+
+  .scroll_icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    animation: scrollDown 2s 1s linear 5;
+    opacity: 0;
+  }
+}
+
+@keyframes scrolldown {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes scrollDown {
+  0% {
+    top: 46%;
+    opacity: 1;
+  }
+  100% {
+    top: 54%;
+    opacity: 0;
   }
 }
 </style>
