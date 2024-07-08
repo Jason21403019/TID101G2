@@ -10,36 +10,26 @@
           <p><strong>總價:</strong> {{ order.total_amount }}</p>
           <p><strong>付款狀態:</strong> {{ order.payment_status }}</p>
           <p><strong>出貨狀態:</strong> {{ order.delivery_status }}</p>
-          <!-- <button type="button"
-                  class="btn btn-primary"
-                  :disabled="order.status === '已取消'"
-                  data-bs-toggle="modal"
-                  data-bs-target="#exampleModal">
-            取消訂單
-          </button> -->
 
-          <!-- Modal -->
-          <div
-            class="modal fade"
-            id="exampleModal"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-            ref="modal"
+          <!-- 取消訂單按鈕 -->
+          <button
+            type="submit"
+            class="btn btn-primary"
+            :disabled="isButtonDisabled('cancel')"
+            @click.prevent="confirmCancellation"
           >
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">確定取消該筆訂單嗎？</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                  <button type="button" class="btn btn-primary" @click="cancelOrder">確定取消</button>
-                </div>
-              </div>
-            </div>
-          </div>
+            取消訂單
+          </button>
+
+          <!-- 退換貨按鈕 -->
+          <button
+            type="submit"
+            class="btn btn-primary"
+            :disabled="isButtonDisabled('returnExchange')"
+            @click.prevent="confirmReturnExchange"
+          >
+            退換貨
+          </button>
         </div>
       </article>
     </main>
@@ -48,6 +38,7 @@
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'MemberOrderCard',
@@ -56,24 +47,68 @@ export default {
   },
   data() {
     return {
-      orders: []
+      processingAction: false
     }
   },
   methods: {
-    cancelOrder() {
+    // 確定按鈕是否應該禁用
+    isButtonDisabled(action) {
+      return this.order.status !== '未處理' || this.processingAction
+    },
+    // 取消訂單彈跳視窗
+    confirmCancellation() {
+      Swal.fire({
+        title: '確定取消該筆訂單嗎？',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '確定取消',
+        cancelButtonText: '取消',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.processingAction = true
+          this.changeOrderStatus('已取消')
+        }
+      })
+    },
+    // 退換貨彈跳視窗
+    confirmReturnExchange() {
+      Swal.fire({
+        title: '確定要進行退換貨操作嗎？',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '確定',
+        cancelButtonText: '取消',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.processingAction = true
+          this.changeOrderStatus('退換貨中')
+        }
+      })
+    },
+    // 更新訂單狀態
+    changeOrderStatus(newStatus) {
       axios
-        .post(`${import.meta.env.VITE_PHP_PATH}MemberOrder.php`, { orderId: this.order.id })
+        .post(`${import.meta.env.VITE_PHP_PATH}MemberOrder.php`, {
+          orderId: this.order.id,
+          newStatus
+        })
         .then((response) => {
-          console.log('訂單取消成功', response)
-          this.order.status = '已取消'
-          // 關閉模態視窗
-          const modalElement = this.$refs.modal
-          const modalInstance = bootstrap.Modal.getInstance(modalElement)
-          modalInstance.hide()
+          if (response.data && response.data.success) {
+            console.log('訂單狀態更新成功', response)
+            this.order.status = newStatus
+            Swal.fire('成功', '訂單狀態已更新', 'success')
+          } else {
+            throw new Error(response.data.error || '訂單狀態更新失敗')
+          }
         })
         .catch((error) => {
-          console.error('取消訂單失敗', error)
-          this.loading = false
+          console.error('更新訂單狀態失敗', error)
+          Swal.fire('錯誤', error.message, 'error')
+        })
+        .finally(() => {
+          this.processingAction = false
         })
     }
   }
@@ -81,7 +116,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/* Your styles */
 .grid > article {
   border: 1px solid $ramos-gin-fizz;
   box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);

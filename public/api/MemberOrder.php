@@ -31,24 +31,39 @@ if ($method === 'GET') {
     }
 } elseif ($method === 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
-    $orderId = $data['orderId'] ?? null;
-
-    if ($orderId === null) {
-        echo json_encode(["message" => "缺少orderId"]);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        echo json_encode(["success" => false, "message" => "無效的 JSON 數據"]);
         exit();
     }
 
-    $sql = "UPDATE `order` SET status = '已取消' WHERE id = :orderId";
+    $orderId = $data['orderId'] ?? null;
+    $newStatus = $data['newStatus'] ?? null;
+
+    if ($orderId === null || $newStatus === null) {
+        echo json_encode(["success" => false, "message" => "缺少orderId或newStatus"]);
+        exit();
+    }
+
+    if ($newStatus !== '已取消' && $newStatus !== '退換貨中') {
+        echo json_encode(["success" => false, "message" => "不支援的訂單狀態"]);
+        exit();
+    }
+
+    $sql = "UPDATE `order` SET status = :newStatus WHERE id = :orderId";
 
     try {
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':orderId', $orderId, PDO::PARAM_INT);
+        $stmt->bindParam(':newStatus', $newStatus, PDO::PARAM_STR);
         $stmt->execute();
-        echo json_encode(["message" => "訂單已取消", "orderId" => $orderId]);
+        if ($stmt->rowCount() > 0) {
+            echo json_encode(["success" => true, "message" => "訂單狀態已更新為{$newStatus}", "orderId" => $orderId]);
+        } else {
+            echo json_encode(["success" => false, "message" => "未找到訂單或狀態未變更"]);
+        }
     } catch (PDOException $e) {
-        echo json_encode(["message" => "取消訂單失敗: " . $e->getMessage()]);
+        echo json_encode(["success" => false, "message" => "更新訂單狀態失敗: " . $e->getMessage()]);
     }
-} else {
-    echo json_encode(["message" => "不支援的請求方法"]);
 }
+
 ?>
