@@ -592,7 +592,7 @@ body {
       padding-bottom: 2%;
     }
     span {
-      font-size: 19px;
+      font-size: 23px;
       color: #cead82;
       border-bottom: 1px solid #cead82;
       padding-bottom: 0.1%;
