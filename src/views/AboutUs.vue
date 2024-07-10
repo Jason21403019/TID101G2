@@ -77,7 +77,7 @@
     </section>
 
     <!-- 商品 -->
-    <article id="content" class="site-content" role="section">
+    <section id="content" class="site-content" role="section">
       <article id="panels">
         <div id="panels-container" style="width: 300%">
           <article id="panel-1" class="panel full-screen red">
@@ -137,7 +137,7 @@
           </article>
         </div>
       </article>
-    </article>
+    </section>
 
     <!-- 心理測驗 -->
     <section class="parallax-section aboutBackground_3" id="section2">
@@ -177,7 +177,7 @@ import ScrollTrigger from 'gsap/ScrollTrigger'
 export default {
   mounted() {
     gsap.registerPlugin(ScrollTrigger)
-
+    this.scrollToTop()
     // 商品
     let panelsSection = document.querySelector('#panels'),
       panelsContainer = document.querySelector('#panels-container'),
@@ -202,7 +202,7 @@ export default {
       })
     })
 
-    /* Panels */
+    // /* Panels */
     const panels = gsap.utils.toArray('#panels-container .panel')
     tween = gsap.to(panels, {
       // xPercent: -100 * ( panels.length - 1 ),
@@ -221,6 +221,12 @@ export default {
     this.initScrollTriggers()
   },
   methods: {
+    scrollToTop() {
+      // 使用 setTimeout 延迟执行，确保页面完全加载后再滚动到顶部
+      setTimeout(() => {
+        window.scrollTo(0, 0)
+      }, 50) // 可以适当调整延迟时间，以确保在大多数浏览器中都能正常工作
+    },
     initScrollTriggers() {
       // logo
       // gsap.from('.logo_1', {
