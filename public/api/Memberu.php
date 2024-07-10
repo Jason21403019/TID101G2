@@ -14,7 +14,7 @@ if (empty($member_id)) {
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // 解析 JSON 資料
     $data = json_decode(file_get_contents("php://input"), true);
     
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
     }
 
     //SQL指令 - 修
-    $updateSql = "UPDATE TID101_G2.member SET full_name = :full_name, email = :email, phone = :phone, address = :address WHERE id = :member_id";
+    $updateSql = "UPDATE member SET full_name = :full_name, email = :email, phone = :phone, address = :address WHERE id = :member_id";
     
     // 將修改後資料帶入
     try {
